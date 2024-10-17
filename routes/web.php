@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('user.sanpham.home');
+    return view('user.sanpham.shop_sidebar');
 });
