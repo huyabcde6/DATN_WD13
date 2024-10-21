@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sizes', function (Blueprint $table) {
             $table->id('size_id');
-            $table->string('valu');
+            $table->string('value');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

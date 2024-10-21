@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Color;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\color>
@@ -14,10 +15,14 @@ class ColorFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
+    protected $model = Color::class;
+
     public function definition(): array
     {
         return [
-            //
+            'value' => $this->faker->safeColorName(),
+            'status' => $this->faker->boolean(),
         ];
     }
 }

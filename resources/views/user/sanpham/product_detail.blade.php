@@ -114,7 +114,7 @@
 
                     <!-- Product Head Start -->
                     <div class="product-head mb-3">
-                        <h2 class="product-title">Sample product</h2>
+                        <h2 class="product-title">{{ $product->name }}</h2>
                     </div>
                     <!-- Product Head End -->
 
@@ -143,6 +143,38 @@
                     <!-- Description Start -->
                     <p class="desc-content mb-5">I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.</p>
                     <!-- Description End -->
+
+                    <div class="product-meta mb-3">
+                        <!-- Product Size Start -->
+                        <div class="product-size">
+                            <span>Size:</span>
+                            @foreach ($sizes as $size)
+                                <a href="#" class="size-option" data-value="{{ $size->size_id }}">
+                                    <strong>{{ $size->value }}</strong>
+                                </a>
+                            @endforeach
+                        </div>
+                        <!-- Product Size End -->
+
+                        <!-- Product Color Start -->
+                        <div class="product-color">
+                            @foreach ($colors as $color)
+                                <a href="#" class="color-option" data-value="{{ $color->color_id }}" 
+                                style="background-color: {{ $color->value }}; 
+                                        display: inline-block; 
+                                        width: 25px; 
+                                        height: 25px; 
+                                        margin-right: 5px; 
+                                        margin-top: 10px; 
+                                        border-radius: 50%; 
+                                        border: 2px solid #000;">
+                                    <strong style="display: none;">{{ $color->value }}</strong>
+                                </a>
+                            @endforeach
+
+                        </div>
+                        <!-- Product Color End -->
+                    </div>
 
                     <!-- Quantity Start -->
                     <div class="quantity mb-5">
@@ -209,8 +241,7 @@
                 <div class="tab-content mb-text" id="myTabContent">
                     <div class="tab-pane fade show active" id="connect-1" role="tabpanel" aria-labelledby="home-tab">
                         <div class="desc-content border p-3">
-                            <p class="mb-3">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>
-                            <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+                            <p class="mb-3">{{ $product->description }}</p>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="connect-2" role="tabpanel" aria-labelledby="profile-tab">
@@ -680,7 +711,7 @@
 
                         <!-- Product Head Start -->
                         <div class="product-head mb-3">
-                            <h2 class="product-title">Sample product</h2>
+                            <h2 class="product-title">{{ $product->name }}</h2>
                         </div>
                         <!-- Product Head End -->
 
@@ -715,10 +746,9 @@
                             <!-- Product Size Start -->
                             <div class="product-size">
                                 <span>Size :</span>
-                                <a href="#"><strong>S</strong></a>
-                                <a href="#"><strong>M</strong></a>
-                                <a href="#"><strong>L</strong></a>
-                                <a href="#"><strong>XL</strong></a>
+                                @foreach ($product->productDetails as $detail)đsdsad
+                                <option value="{{ $detail->sizes_id }}">{{ $detail->size->value }}</option>
+                                @endforeach
                             </div>
                             <!-- Product Size End -->
                         </div>
@@ -796,3 +826,26 @@
 </div>
 <!-- Modal End  -->
 @endsection
+
+@section('js')
+<script>
+    document.querySelectorAll('.size-option').forEach(item => {
+        item.addEventListener('click', event => {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+            const sizeId = item.dataset.value; // Lấy giá trị size_id từ data-value
+            console.log("Selected Size ID:", sizeId);
+            // Thực hiện hành động bạn muốn (cập nhật giá trị, gửi AJAX, v.v.)
+        });
+    });
+
+    document.querySelectorAll('.color-option').forEach(item => {
+        item.addEventListener('click', event => {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+            const colorId = item.dataset.value; // Lấy giá trị color_id từ data-value
+            console.log("Selected Color ID:", colorId);
+            // Thực hiện hành động bạn muốn (cập nhật giá trị, gửi AJAX, v.v.)
+        });
+    });
+</script>
+@endsection
+

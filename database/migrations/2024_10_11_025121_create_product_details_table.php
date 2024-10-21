@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\color;
+use App\Models\colors;
 use App\Models\products;
 use App\Models\sizes;
 use Illuminate\Database\Migrations\Migration;
@@ -17,13 +17,14 @@ return new class extends Migration
         Schema::create('product_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(products::class)->constrained();
-            $table->foreignIdFor(sizes::class)->constrained();
-            $table->foreignIdFor(color::class)->constrained();
+            $table->foreignId('size_id')->constrained('sizes', 'size_id');
+            $table->foreignId('color_id')->constrained('colors', 'color_id');
             $table->string('image');
             $table->boolean('is_active')->default(true);
             $table->double('price');
             $table->integer('quantity');
         });
+        
     }
 
     /**

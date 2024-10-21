@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\oders;
-use App\Models\productDetail;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ProductDetail;
+use App\Models\Order;
 
 return new class extends Migration
 {
@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(oders::class)->constrained();
-            $table->foreignIdFor(productDetail::class)->constrained();
+            $table->foreignIdFor(Order::class)->constrained();
+            $table->foreignIdFor(ProductDetail::class)->constrained();
             $table->integer('quantity');
             $table->string('color');
             $table->string('size');
