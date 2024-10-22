@@ -34,10 +34,10 @@
                      </a>
                  </li>
                  <li>
-                     <a class='tp-link' href='calendar.html'>
-                         <i data-feather="users"></i>
-                         <span> Quản lý tài khoản </span>
-                     </a>
+                    <a class='tp-link' href='{{ route('users.index') }}'>
+                        <i data-feather="users"></i>
+                        <span> Quản lý người dùng </span>
+                    </a>
                  </li>
                  <li class="menu-title">Kinh doanh</li>
                  <li>
