@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -9,9 +10,15 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $users = User::when($request->search, function($query) use ($request) {
+            $query->where('name', 'like', "%{$request->search}%");
+        })
+                    ->latest('id')
+                    ->paginate(5);
+
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -41,8 +48,9 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'Xóa thành công!');
     }
 }
