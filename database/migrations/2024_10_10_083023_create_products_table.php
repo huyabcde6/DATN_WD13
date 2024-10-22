@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('iS_hot')->default(true);
             $table->boolean('iS_new')->default(true);
             $table->boolean('iS_show')->default(true);
+            $table->timestamps();
         });
     }
 

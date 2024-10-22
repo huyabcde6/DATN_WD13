@@ -161,10 +161,10 @@
 
                                 <!-- Shopping Cart Header Action Button Start -->
                                 <a
-                                    href="javascript:void(0)"
+                                    href="{{route ('cart.index') }}"
                                     class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span class="header-action-num">3</span>
+                                    <span class="header-action-num">{{session('cart') ? count(session('cart')) : '0'}}</span>
                                 </a>
                                 <!-- Shopping Cart Header Action Button End -->
 
