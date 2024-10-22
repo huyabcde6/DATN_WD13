@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 /*
@@ -22,3 +23,8 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 
 
 
+Route::get('/', function () {
+    return view('layouts.admin');
+});
+
+Route::resource('users', UserController::class);
