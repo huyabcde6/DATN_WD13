@@ -16,7 +16,7 @@ class UserController extends Controller
             $query->where('name', 'like', "%{$request->search}%");
         })
                     ->latest('id')
-                    ->paginate(5);
+                    ->paginate(5); 
 
         return view('admin.users.index', compact('users'));
     }
