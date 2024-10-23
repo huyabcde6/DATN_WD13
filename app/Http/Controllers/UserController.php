@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 
 class UserController extends Controller
 {
@@ -12,6 +13,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        Route::get('/login', [UserController::class,'login'])->name('login');
         $users = User::when($request->search, function($query) use ($request) {
             $query->where('name', 'like', "%{$request->search}%");
         })
@@ -19,6 +21,12 @@ class UserController extends Controller
                     ->paginate(5);
 
         return view('admin.users.index', compact('users'));
+
+    }
+    public function login(Request $request)
+    {
+        return view('user.sanpham.login');
+
     }
 
     /**
