@@ -528,68 +528,69 @@ $(document).ready(function() {
     $('.size-option').on('click', function(event) {
         event.preventDefault();
         selectedSize = $(this).data('value');
-        $('#selected-size').val(selectedSize); // Cập nhật trường ẩn cho kích thước
-        $('.size-option').removeClass('active'); // Xóa class active khỏi các tùy chọn khác
-        $(this).addClass('active'); // Đánh dấu kích thước đã chọn
+        $('#selected-size').val(selectedSize);
+        $('.size-option').removeClass('active');
+        $(this).addClass('active');
     });
 
     // Khi người dùng chọn màu sắc
     $('.color-option').on('click', function(event) {
         event.preventDefault();
         selectedColor = $(this).data('value');
-        $('#selected-color').val(selectedColor); // Cập nhật trường ẩn cho màu sắc
-        $('.color-option').removeClass('active'); // Xóa class active khỏi các tùy chọn khác
-        $(this).addClass('active'); // Đánh dấu màu đã chọn
+        $('#selected-color').val(selectedColor);
+        $('.color-option').removeClass('active');
+        $(this).addClass('active');
     });
 
     // Khi người dùng nhấn nút tăng số lượng
     $('.inc.qtybutton').on('click', function() {
         var currentQuantity = parseInt($('#product-quantity').val());
-        $('#product-quantity').val(currentQuantity + 1); // Tăng số lượng
-        $('#product-quantity-hidden').val(currentQuantity + 1); // Cập nhật số lượng ẩn
+        $('#product-quantity').val(currentQuantity + 1);
+        $('#product-quantity-hidden').val(currentQuantity + 1);
     });
 
     // Khi người dùng nhấn nút giảm số lượng
     $('.dec.qtybutton').on('click', function() {
         var currentQuantity = parseInt($('#product-quantity').val());
         if (currentQuantity > 1) {
-            $('#product-quantity').val(currentQuantity - 1); // Giảm số lượng nhưng không được nhỏ hơn 1
-            $('#product-quantity-hidden').val(currentQuantity - 1); // Cập nhật số lượng ẩn
+            $('#product-quantity').val(currentQuantity - 1);
+            $('#product-quantity-hidden').val(currentQuantity - 1);
         }
     });
 
-    // Khi người dùng nhấn nút thêm vào giỏ hàng
-    $('#add-to-cart-button').on('click', function(event) {
-        event.preventDefault();
+// Khi người dùng nhấn nút thêm vào giỏ hàng
+$('#add-to-cart-button').on('click', function(event) {
+    event.preventDefault();
+    if (!selectedSize || !selectedColor) {
+        alert('Please select both size and color before adding to cart.');
+        return;
+    }
 
-        // Kiểm tra xem người dùng đã chọn kích thước và màu chưa
-        if (!selectedSize || !selectedColor) {
-            alert('Please select both size and color before adding to cart.');
-            return;
-        }
-
-        // Gửi AJAX Request
-        $.ajax({
-            url: "{{ route('cart.add') }}", // Đường dẫn tới route xử lý thêm vào giỏ hàng
-            method: "POST",
-            data: $('#add-to-cart-form').serialize(), // Lấy dữ liệu từ form
-            success: function(response) {
-                if (response.status === 'success') {
-                    alert(response.message); // Thông báo thành công
-                    $('#cart-count').text(response.cart_count); // Cập nhật số lượng giỏ hàng
-                } else {
-                    alert('Something went wrong. Please try again.');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText); // In ra console để xem thông báo lỗi
-                alert('Error: ' + error);
+    // Gửi AJAX Request
+    $.ajax({
+        url: '{{ route("cart.add") }}',
+        method: 'POST',
+        data: {
+            product_detail_id: $('input[name="product_detail_id"]').val(),
+            quantity: $('#product-quantity-hidden').val(),
+            size: selectedSize,
+            color: selectedColor,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            if (response.status === 'success') {
+                $('.total-amount').text(response.total_price + ' $');
+                alert(response.message);
             }
-        });
+        },
+        error: function(xhr) {
+            alert(xhr.responseJSON.message);
+        }
     });
 });
 
-</script>
+});
 
+</script>
 @endsection
 

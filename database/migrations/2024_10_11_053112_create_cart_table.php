@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(productDetail::class)->constrained();
+            $table->string('session_id')->nullable();
             $table->integer('quantity');
             $table->timestamps();
         });

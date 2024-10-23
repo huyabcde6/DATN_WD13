@@ -126,18 +126,20 @@
                         <!-- Responsive Table Start -->
                         <div class="table-responsive">
                             <table class="table">
-                                <tr>
-                                    <td>Sub Total</td>
-                                    <td>{{ number_format(Cart::getSubTotal(), 2) }} $</td>
-                                </tr>
-                                <tr>
-                                    <td>Shipping</td>
-                                    <td>Free</td>
-                                </tr>
-                                <tr class="total">
-                                    <td>Total</td>
-                                    <td class="total-amount">{{ number_format(Cart::getTotal(), 2) }} $</td>
-                                </tr>
+                            <tr>
+                                <td>Sub Total</td>
+                                <td class="sub-total">{{ number_format($subTotal, 2) }} $</td>
+                            </tr>
+                            <tr>
+                                <td>Shipping</td>
+                                <td>{{ number_format($shippingFee, 2) }} $</td> <!-- Hiển thị phí vận chuyển -->
+                            </tr>
+                            <tr class="total">
+                                <td>Total</td>
+                                <td class="total-amount">
+                                    {{ number_format($total, 2) }} $ <!-- Hiển thị tổng tiền bao gồm phí ship -->
+                                </td>
+                            </tr>
                             </table>
                         </div>
                         <!-- Responsive Table End -->
@@ -146,7 +148,7 @@
                     <!-- Cart Calculate Items End -->
 
                     <!-- Cart Checkout Button Start -->
-                    <a href="" class="btn btn-dark btn-hover-primary rounded-0 w-100">Proceed To Checkout</a>
+                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Proceed To Checkout</a>
                     <!-- Cart Checkout Button End -->
 
                 </div>
@@ -171,42 +173,50 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Xử lý sự kiện tăng/giảm số lượng
-        $('.qtybutton').on('click', function() {
-            var productDetailId = $(this).data('id');
-            var inputField = $(this).siblings('.cart-plus-minus-box');
-            var quantity = parseInt(inputField.val());
 
-            // Tăng hoặc giảm số lượng
-            if ($(this).hasClass('inc')) {
-                quantity++;
-            } else if ($(this).hasClass('dec') && quantity > 1) {
-                quantity--;
-            }
+    var shippingFee = 5.00;
 
-            // Gửi AJAX để cập nhật số lượng
-            $.ajax({
-                url: '{{ route("cart.update") }}',
-                method: 'POST',
-                data: {
-                    product_detail_id: productDetailId,
-                    quantity: quantity,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.status === 'success') {
-                        inputField.val(quantity);
+    // Xử lý sự kiện tăng/giảm số lượng
+    $('.qtybutton').on('click', function() {
+        var productDetailId = $(this).data('id');
+        var inputField = $(this).siblings('.cart-plus-minus-box');
+        var quantity = parseInt(inputField.val());
 
-                        // Cập nhật subtotal trong giao diện
-                        var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
-                        subtotalCell.text(response.item_price + ' $');
-                        
-                        // Cập nhật tổng giá trị đơn hàng
-                        $('.total-amount').text(response.total_price + ' $');
-                    }
+        // Tăng hoặc giảm số lượng
+        if ($(this).hasClass('inc')) {
+            quantity++;
+        } else if ($(this).hasClass('dec') && quantity > 1) {
+            quantity--;
+        }
+
+        // Gửi AJAX để cập nhật số lượng
+        $.ajax({
+            url: '{{ route("cart.update") }}',
+            method: 'POST',
+            data: {
+                product_detail_id: productDetailId,
+                quantity: quantity,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    inputField.val(quantity);
+
+                    var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
+                    subtotalCell.text(response.item_price + ' $');
+
+                    var subTotal = 0;
+                    $('.pro-subtotal span').each(function() {
+                        subTotal += parseFloat($(this).text());
+                    });
+
+                    $('.total-amount').text((subTotal + shippingFee).toFixed(2) + ' $');
+                    $('.sub-total').text(subTotal.toFixed(2) + ' $');
                 }
-            });
+            }
         });
     });
+});
 </script>
 @endsection
+

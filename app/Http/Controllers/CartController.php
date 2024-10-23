@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProductDetail;
+use App\Models\products;
+use App\Models\Color;
+use App\Models\Size;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
@@ -14,67 +17,82 @@ class CartController extends Controller
         // Lấy tất cả sản phẩm trong giỏ hàng từ session
         $cartItems = Session::get('cart', []); // Sử dụng session để lấy dữ liệu giỏ hàng
         
-        return view('user.sanpham.cart', compact('cartItems')); // Truyền dữ liệu giỏ hàng sang view
+        // Thiết lập phí vận chuyển
+        $shippingFee = 5.00;
+
+        // Tính tổng Sub Total (tổng tiền hàng trước phí vận chuyển)
+        $subTotal = 0;
+        foreach ($cartItems as $item) {
+            $subTotal += $item['price'] * $item['quantity'];
+        }
+
+        // Tính tổng tiền bao gồm phí vận chuyển
+        $total = $subTotal + $shippingFee;
+
+        // Truyền dữ liệu giỏ hàng, phí vận chuyển và tổng tiền sang view
+        return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
 
     // Thêm sản phẩm vào giỏ hàng
     public function addToCart(Request $request)
-    {
-        // Kiểm tra xem sản phẩm đã được chọn chưa
-        $request->validate([
-            'product_detail_id' => 'required|exists:product_details,id', // Kiểm tra xem sản phẩm tồn tại trong bảng product_details
-            'size' => 'required|string',
-            'color' => 'required|string',
-            'quantity' => 'required|integer|min:1', // Kiểm tra số lượng sản phẩm
-        ]);
+{
+    // Kiểm tra dữ liệu đầu vào
+    $request->validate([
+        'product_detail_id' => 'required|exists:product_details,id',
+        'size' => 'required|string',
+        'color' => 'required|string',
+        'quantity' => 'required|integer|min:1',
+    ]);
 
-        // Lấy giỏ hàng từ session
-        $cart = Session::get('cart', []);
+    // Lấy giỏ hàng từ session
+    $cart = Session::get('cart', []);
+    $productDetailId = $request->input('product_detail_id');
+    $size = $request->input('size');
+    $color = $request->input('color');
+    $quantity = $request->input('quantity');
 
-        // Lấy thông tin sản phẩm từ request
-        $productDetailId = $request->input('product_detail_id');
-        $size = $request->input('size');
-        $color = $request->input('color');
-        $quantity = $request->input('quantity');
-
-        // Lấy thông tin chi tiết sản phẩm từ database
-        $productDetail = ProductDetail::find($productDetailId);
-
-        // Kiểm tra xem sản phẩm có tồn tại không
-        if (!$productDetail) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Product not found.',
-            ], 404);
-        }
-
-        // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
-        if (isset($cart[$productDetailId])) {
-            // Nếu đã có, cập nhật số lượng
-            $cart[$productDetailId]['quantity'] += $quantity;
-        } else {
-            // Nếu chưa có, thêm mới vào giỏ hàng
-            $cart[$productDetailId] = [
-                'product_detail_id' => $productDetailId,
-                'size' => $size,
-                'color' => $color,
-                'quantity' => $quantity,
-                'product_name' => $productDetail->product_code, // Lấy tên sản phẩm từ database
-                'price' => $productDetail->price, // Lấy giá sản phẩm từ database
-                'image' => $productDetail->image, // Lấy hình ảnh sản phẩm từ database
-            ];
-        }
-
-        // Lưu giỏ hàng vào session
-        Session::put('cart', $cart);
-
-        // Trả về phản hồi JSON cho Ajax
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Product added to cart successfully!',
-            'cart_count' => count($cart), // Số lượng sản phẩm trong giỏ hàng
-        ]);
+    // Lấy thông tin chi tiết sản phẩm
+    $productDetail = ProductDetail::find($productDetailId);
+    if (!$productDetail) {
+        return response()->json(['status' => 'error', 'message' => 'Product not found.'], 404);
     }
+
+    // Thêm sản phẩm vào giỏ hàng
+    if (isset($cart[$productDetailId])) {
+        $cart[$productDetailId]['quantity'] += $quantity;
+    } else {
+        $cart[$productDetailId] = [
+            'product_detail_id' => $productDetailId,
+            'size' => $size,
+            'color' => $color,
+            'quantity' => $quantity,
+            'product_name' => $productDetail->products->name,
+            'price' => $productDetail->price,
+            'image' => $productDetail->image,
+        ];
+    }
+
+    // Lưu giỏ hàng vào session
+    Session::put('cart', $cart);
+
+    // Tính toán tổng tiền
+    $total = 0;
+    foreach ($cart as $item) {
+        $total += $item['price'] * $item['quantity'];
+    }
+
+    // Thêm phí vận chuyển
+    $shippingFee = 5.00;
+    $totalWithShipping = $total + $shippingFee;
+
+    // Trả về phản hồi JSON cho Ajax
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Product added to cart successfully!',
+        'total_price' => number_format($totalWithShipping, 2), // Tổng tiền bao gồm phí vận chuyển
+    ]);
+}
+
 
     public function removeFromCart($productDetailId)
     {
@@ -116,13 +134,16 @@ class CartController extends Controller
             foreach ($cart as $item) {
                 $total += $item['price'] * $item['quantity'];
             }
-            $total = number_format($total, 2); // Định dạng tổng
+
+            // Thêm phí vận chuyển
+            $shippingFee = 5.00;
+            $totalWithShipping = $total + $shippingFee;
 
             // Trả về JSON để JavaScript cập nhật lại giao diện
             return response()->json([
                 'status' => 'success',
                 'item_price' => $itemSubtotal, // Giá subtotal của sản phẩm
-                'total_price' => $total, // Tổng giá trị đơn hàng
+                'total_price' => number_format($totalWithShipping, 2), // Tổng giá trị đơn hàng bao gồm phí vận chuyển
             ]);
         }
 
@@ -132,4 +153,18 @@ class CartController extends Controller
             'message' => 'Product not found in cart',
         ], 404);
     }
+    public function getTotal()
+{
+    $cart = Session::get('cart', []);
+    $total = 0;
+
+    foreach ($cart as $item) {
+        $total += $item['price'] * $item['quantity'];
+    }
+
+    return response()->json([
+        'total_price' => number_format($total, 2),
+    ]);
+}
+
 }
