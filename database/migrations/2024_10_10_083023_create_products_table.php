@@ -17,10 +17,15 @@ return new class extends Migration
             $table->string('name');
             $table->foreignIdFor(categories::class)->constrained();
             $table->string('avata');
+            $table->double('price');
+            $table->double('discount_price')->nullable();
+            $table->integer('stock_quantity')->default(0);
+            $table->string('short_description')->nullable();
             $table->text('description')->nullable();
             $table->boolean('iS_hot')->default(true);
             $table->boolean('iS_new')->default(true);
             $table->boolean('iS_show')->default(true);
+            $table->timestamps();
         });
     }
 
