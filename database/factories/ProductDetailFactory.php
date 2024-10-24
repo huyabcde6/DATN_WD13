@@ -22,13 +22,16 @@ class ProductDetailFactory extends Factory
     public function definition(): array
     {
         return [
-            'products_id' => products::factory(),
-            'sizes_id' => Size::factory(),
-            'color_id' => Color::factory(),
+            'products_id' => products::inRandomOrder()->first()->id,
+            'size_id' => Size::inRandomOrder()->first()->size_id,
+            'color_id' => Color::inRandomOrder()->first()->color_id,
             'image' => $this->faker->imageUrl(),
             'is_active' => $this->faker->boolean(),
             'price' => $this->faker->randomFloat(2, 10, 100),
-            'quantity' => $this->faker->numberBetween(1, 100), 
+            'discount_price' => $this->faker->randomFloat(2, 5, 90),
+            'quantity' => $this->faker->numberBetween(1, 100),
+            'product_code' => $this->faker->unique()->regexify('[A-Z0-9]{8}'), 
         ];
     }
+
 }

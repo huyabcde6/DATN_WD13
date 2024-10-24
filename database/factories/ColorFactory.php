@@ -21,7 +21,7 @@ class ColorFactory extends Factory
     public function definition(): array
     {
         return [
-            'value' => $this->faker->safeColorName(),
+            'valu' => $this->faker->safeColorName(),
             'status' => $this->faker->boolean(),
         ];
     }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->double('price');
             $table->integer('quantity');
+            $table->timestamps();
         });
         
     }
