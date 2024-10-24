@@ -28,6 +28,12 @@ class UserController extends Controller
         return view('user.sanpham.login');
 
     }
+    public function register(Request $request)
+    {
+        return view('user.sanpham.register');
+
+    }
+
 
     /**
      * Store a newly created resource in storage.
