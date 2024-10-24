@@ -31,7 +31,7 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 
 
-Route::get('/', function () {
+Route::get('/admin', function () {
     return view('layouts.admin');
 });
 

@@ -14,22 +14,18 @@ class CartController extends Controller
     // Hiển thị giỏ hàng
     public function index()
     {
-        // Lấy tất cả sản phẩm trong giỏ hàng từ session
-        $cartItems = Session::get('cart', []); // Sử dụng session để lấy dữ liệu giỏ hàng
+
+        $cartItems = Session::get('cart', []); 
         
         // Thiết lập phí vận chuyển
         $shippingFee = 5.00;
 
-        // Tính tổng Sub Total (tổng tiền hàng trước phí vận chuyển)
         $subTotal = 0;
         foreach ($cartItems as $item) {
             $subTotal += $item['price'] * $item['quantity'];
         }
 
-        // Tính tổng tiền bao gồm phí vận chuyển
         $total = $subTotal + $shippingFee;
-
-        // Truyền dữ liệu giỏ hàng, phí vận chuyển và tổng tiền sang view
         return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
 
@@ -63,10 +59,11 @@ class CartController extends Controller
     } else {
         $cart[$productDetailId] = [
             'product_detail_id' => $productDetailId,
-            'size' => $size,
-            'color' => $color,
+            'size' => $productDetail->size ? $productDetail->size->value : 'Unknown Size',
+            'color' => $productDetail->color ? $productDetail->color->value : 'Unknown Color',
             'quantity' => $quantity,
             'product_name' => $productDetail->products->name,
+            'product_id' => $productDetail->products->id,
             'price' => $productDetail->price,
             'image' => $productDetail->image,
         ];

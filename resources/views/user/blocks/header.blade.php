@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Destry - Fashion eCommerce HTML Template</title>
+    <title>Poly Store - Tìm phong cách của bạn</title>
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico')}}" />
 
@@ -41,7 +41,7 @@
                         <!-- Header Logo Start -->
                         <div class="col-xl-2 col-6">
                             <div class="header-logo">
-                                <a href="index.html"><img src="{{ asset('ngdung/assets/images/logo/logo1.png')}}" alt="Site Logo"
+                                <a href="/"><img src="{{ asset('ngdung/assets/images/logo/logo1.png')}}" alt="Site Logo"
                                         width="250xp" height="135px" /></a>
                             </div>
                         </div>
@@ -52,10 +52,10 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="#"><span>Trang Chủ</span></a>
+                                        <a href="/"><span>Trang Chủ</span></a>
                                     </li>
                                     <li class="has-children position-static">
-                                        <a href="#"><span>Sản Phẩm</span> <i class="fa fa-angle-down"></i></a>
+                                        <a href="/products"><span>Sản Phẩm</span> <i class="fa fa-angle-down"></i></a>
                                         <ul class="mega-menu row-cols">
                                             <li class="col">
                                                 <h4 class="mega-menu-title">Shop Layout</h4>
