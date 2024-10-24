@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Auth;
+use Hash;
 
 class UserController extends Controller
 {
@@ -31,6 +33,28 @@ class UserController extends Controller
     public function register(Request $request)
     {
         return view('user.sanpham.register');
+
+    }
+    public function postRegister(Request $req)
+    {
+        //validate
+        // dd(Hash::make($req->password));
+        $req->merge(['password'=>Hash::make($req->password)]);
+        try {
+            User::create($req->all());
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+        return redirect()->route('login');
+
+    }
+    public function postLogin(Request $req)
+    {
+        if(Auth::attempt(['email'=> $req->email, 'password'=> $req->password])){
+            return redirect()->route('index');
+
+        }
+        return redirect()->back()->with('error','sai tt');
 
     }
 

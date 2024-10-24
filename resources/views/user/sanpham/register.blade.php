@@ -37,29 +37,30 @@
                     <!-- Login Title & Content End -->
 
                     <!-- Form Action Start -->
-                    <form action="#" method="post">
+                    <form action="" method="post">
+                        @csrf
 
                         <!-- Input First Name Start -->
                         <div class="single-input-item mb-3">
-                            <input type="text" placeholder="Full Name">
+                            <input type="text" name="name" placeholder="Full Name">
                         </div>
                         <!-- Input First Name End -->
 
                         <!-- Input Last Name Start -->
                         <div class="single-input-item mb-3">
-                            <input type="email" placeholder="Email">
+                            <input type="email" name="email" placeholder="Email">
                         </div>
                         <!-- Input Last Name End -->
 
                         <!-- Input Email Or Username Start -->
                         <div class="single-input-item mb-3">
-                            <input type="password" placeholder="Password">
+                            <input type="password" name="password" placeholder="Password">
                         </div>
                         <!-- Input Email Or Username End -->
 
                         <!-- Input Password Start -->
                         <div class="single-input-item mb-3">
-                            <input type="password" placeholder="Confirm password">
+                            <input type="password" name="password" placeholder="Confirm password">
                         </div>
                         <!-- Input Password End -->
 
