@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewController extends Controller
@@ -24,6 +25,17 @@ class NewController extends Controller
     public function add(Request $request)
     {
         if ($request->isMethod('POST')) {
+            $param = $request->except('_token');
+            $param['new_date'] = date("d/m/Y");
+
+            if ($request->hasFile('avata')) {
+                $params['avata'] = $request->file('avata');
+            } else {
+                $params['avata'] = null;
+            }
+            dd($param);
+            News::query()->create($params);
+            return redirect()->route('new.show')->with('success', 'Thêm tin tức thành công!');
         }
     }
 

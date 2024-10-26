@@ -54,7 +54,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
+require __DIR__ . '/auth.php';
 // Tin tức
 Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
 Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
-require __DIR__ . '/auth.php';
+Route::post('/postNew', [NewController::class, 'add'])->name('new.postnew');

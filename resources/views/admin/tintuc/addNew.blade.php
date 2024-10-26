@@ -6,60 +6,116 @@ Thêm mới tin tức
 
 @section('content')
 
-<body data-menu-color="light" data-sidebar="default">
-    <div class="d-flex justify-content-center m-3">
-        <h2>Thêm Mới Tin Tức</h2>
-    </div>
-    <form action="" method="post">
-        <div class="mb-3">
-            <label for="simpleinput" class="form-label">Tiêu đề</label>
-            <input type="text" id="simpleinput" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="example-email" class="form-label">Mô tả ngắn</label>
-            <input type="text" name="example-email" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="formFile" class="form-label">Ảnh bìa</label>
-            <input class="form-control" type="file" id="formFile">
-        </div>
-        <!-- <div class="content"> -->
-        <!-- Start Content-->
-        <!-- <div class="container-xxl"> -->
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
 
-        <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-            <div class="flex-grow-1">
-                <h4 class="fs-18 fw-semibold m-0">Chi tiết tin tức</h4>
-            </div>
-        </div>
+            <div class="card-header">
+                <h5 class="card-title mb-0">Thêm Tin Tức</h5>
+            </div><!-- end card header -->
 
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div id="quill-editor" style="height: 400px;">
-                            <H1>Hell world</H1>
+            <div class="card-body">
+                <form action="{{route('new.postnew')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <div class="col-lg-4">
+
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Tiêu đề</label>
+                                <input type="text" id="title" name="title" class="form-control @error('title') is_invalid @enderror" value="{{old('title')}}">
+                                @error('title')
+                                <p class="text-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Mô tả ngắn</label>
+                                <textarea name="description" id="description" class="form-control @error('description') is_invalid @enderror" rows="3">{{old('description')}}</textarea>
+                                @error('description')
+                                <p class="text-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="avata" class="form-label">Hình ảnh</label>
+                                <input type="file" id="avata" name="avata" class="form-control" onchange="showImage(event)">
+                                <img src="" id="img_danhmuc" alt="Hình ảnh sản phẩm" style="width: 150px; display: none;">
+                                @error('avata')
+                                <p class="text-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div class="col-sm-10 mb-3 d-flex gap-2">
+                                <label for="status" class="form-label">Trạng thái: </label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="gridRadios1" value="1" checked>
+                                    <label class="form-check-label text-success" for="gridRadios1">
+                                        Hiển thị
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="gridRadios2" value="0">
+                                    <label class="form-check-label text-danger" for="gridRadios2">
+                                        Ẩn
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+
+                        <div class="col-lg-8">
+                            <div class="mb-3">
+                                <label for="detail" class="form-label"> Mô tả chi tiết sản phẩm</label>
+                                <div id="quill-editor" style="height: 400px;">
+                                    <h1>Nhập mô tả chi tiết sản phẩm</h1>
+                                </div>
+                                <textarea name="detail" cols="30" rows="10" class="d-none"></textarea>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                </form>
+
             </div>
         </div>
+    </div>
 
-        <!-- </div> -->
-        <!-- container-fluid -->
-
-        <div class=" container d-flex justify-content-end">
-            <button type="submit" class="btn btn-outline-success rounded-pill">Thêm mới</button>
-        </div>
-
-    </form>
-</body>
+</div>
 @endsection
 @section('js')
+<script>
+    function showImage(event) {
+        const img_dm = document.getElementById('img_danhmuc');
+
+        // Truy cập file được chọn an toàn hơn
+        const file = event.target.files[0];
+
+        if (file) { // Kiểm tra nếu có file được chọn
+            console.log(img_dm);
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                img_dm.src = e.target.result;
+                img_dm.style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            // Xử lý trường hợp không chọn file (tùy chọn)
+            console.error('Vui lòng chọn một hình ảnh.');
+        }
+    }
+</script>
 <!-- Quill Editor Js -->
 <script src="{{ asset('assets/admin/libs/quill/quill.core.js')}}"></script>
 <script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
+<!-- chi tiết -->
+<script>
+    var quill = new Quill('#quill-editor', {
+        theme: 'snow'
+    });
 
-<!-- Quill Demo Js -->
-<script src="{{ asset('assets/admin/js/pages/quilljs.init.js')}}"></script>
+    // Triggered when the form is submitted
+    document.querySelector('form').addEventListener('submit', function(event) {
+        var content = quill.root.innerHTML;
+        document.querySelector('textarea[name="detail"]').value = content;
+    });
+</script>
 @endsection

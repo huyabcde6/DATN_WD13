@@ -10,12 +10,12 @@ Danh sách Tin Tức
     {{ session()->get('error') }}
 </div>
 @endif
-
+-->
 @if (session()->has('success'))
 <div class="alert alert-success">
     {{ session()->get('success') }}
 </div>
-@endif -->
+@endif
 <div class="d-flex justify-content-center m-3">
     <h2>Danh Sách Tin Tức</h2>
 </div>
