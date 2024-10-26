@@ -1,5 +1,5 @@
 @extends('layouts.home')
-
+{{-- cap nhap  --}}
 @section('content')
     <div class="section">
 
