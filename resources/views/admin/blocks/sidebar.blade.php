@@ -34,10 +34,10 @@
                      </a>
                  </li>
                  <li>
-                    <a class='tp-link' href='{{ route('users.index') }}'>
-                        <i data-feather="users"></i>
-                        <span> Quản lý người dùng </span>
-                    </a>
+                     <a class='tp-link' href='{{ route('users.index') }}'>
+                         <i data-feather="users"></i>
+                         <span> Quản lý người dùng </span>
+                     </a>
                  </li>
                  <li class="menu-title">Kinh doanh</li>
                  <li>
@@ -50,6 +50,12 @@
                      <a class='tp-link' href="">
                          <i data-feather="package"></i>
                          <span> Sản phẩm </span>
+                     </a>
+                 </li>
+                 <li>
+                     <a class='tp-link' href="admNew">
+                         <i data-feather="package"></i>
+                         <span>Quản Lý Tin Tức </span>
                      </a>
                  </li>
 
