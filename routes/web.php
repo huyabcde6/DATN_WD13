@@ -56,4 +56,5 @@ Route::middleware('auth')->group(function () {
 
 // Tin tức
 Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
+Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
 require __DIR__ . '/auth.php';

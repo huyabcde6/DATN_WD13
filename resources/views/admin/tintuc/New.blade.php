@@ -19,7 +19,7 @@ Danh sách Tin Tức
 <div class="d-flex justify-content-center m-3">
     <h2>Danh Sách Tin Tức</h2>
 </div>
-<button type="button" class="btn btn-info bg-5">Thêm mới</button>
+<a href="addNew"><button type="button" class="btn btn-info bg-5">Thêm mới</button></a>
 <div class="row">
 
     <div class="col-12">

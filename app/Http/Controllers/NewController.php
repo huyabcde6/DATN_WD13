@@ -19,7 +19,12 @@ class NewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return view('admin.tintuc.addNew');
+    }
+    public function add(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+        }
     }
 
     /**
