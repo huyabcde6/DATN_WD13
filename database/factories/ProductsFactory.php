@@ -24,13 +24,9 @@ class ProductsFactory extends Factory
             'categories_id' => categories::factory(),
             'avata' => $this->faker->imageUrl(),
             'description' => $this->faker->paragraph,
-            'short_description' => $this->faker->sentence,
-            'price' => $this->faker->randomFloat(2, 10, 1000),
-            'discount_price' => $this->faker->randomFloat(2, 5, 900),
-            'stock_quantity' => $this->faker->numberBetween(0, 100),
             'iS_hot' => $this->faker->boolean,
             'iS_new' => $this->faker->boolean,
             'iS_show' => $this->faker->boolean,
-        ];       
+        ];
     }
 }
