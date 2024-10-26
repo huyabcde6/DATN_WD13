@@ -32,5 +32,5 @@ Route::get('/admin', function () {
 
 Route::resource('users', UserController::class);
 Route::get('/home', function () {
-    return view('user.sanpham.home');
+    return view('user.sanpham.home') ;
 });
