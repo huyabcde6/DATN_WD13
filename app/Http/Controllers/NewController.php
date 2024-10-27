@@ -22,14 +22,13 @@ class NewController extends Controller
     {
         return view('admin.tintuc.addNew');
     }
-    public function add(Request $request)
+    public function create(Request $request)
     {
         if ($request->isMethod('POST')) {
             $param = $request->except('_token');
             $param['new_date'] = date("d/m/Y");
-
             if ($request->hasFile('avata')) {
-                $params['avata'] = $request->file('avata');
+                $params['avata'] = $request->file('avata')->store('update/', 'public');
             } else {
                 $params['avata'] = null;
             }

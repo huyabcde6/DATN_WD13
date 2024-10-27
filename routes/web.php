@@ -60,4 +60,4 @@ require __DIR__ . '/auth.php';
 // Tin tức
 Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
 Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
-Route::post('/postNew', [NewController::class, 'add'])->name('new.postnew');
+Route::post('/postNew', [NewController::class, 'create'])->name('new.postnew');
