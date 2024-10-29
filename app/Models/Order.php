@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'order_code',
         'user_id',
@@ -46,5 +45,4 @@ class Order extends Model
     {
         return $this->hasManyThrough(products::class, OrderDetail::class, 'order_id', 'id', 'id', 'products_id');
     }
-    
 }

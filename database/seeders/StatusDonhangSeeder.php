@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\StatusDonHang;
 
 class StatusDonhangSeeder extends Seeder
 {
@@ -20,5 +19,6 @@ class StatusDonhangSeeder extends Seeder
             ['type' => 'Đã giao hàng'],
             ['type' => 'Đã hủy']
         ]);
+
     }
 }

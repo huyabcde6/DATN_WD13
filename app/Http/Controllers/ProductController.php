@@ -7,7 +7,6 @@ use App\Models\products;
 use App\Models\categories;
 use App\Models\Color;
 use App\Models\Size;
-use App\Models\ProductDetail;
 
 
 class ProductController extends Controller
@@ -20,10 +19,10 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = products::with(['productDetails.color', 'productDetails.size', 'categories'])->findOrFail($id);
-        $products = products::with('categories')->get();
         $sizes = Size::all();
         $colors = Color::all();
         
-        return view('user.sanpham.product_detail', compact('products', 'product', 'sizes', 'colors'));
+        return view('user.sanpham.product_detail', compact('product', 'sizes', 'colors'));
     }
+
 }
