@@ -55,7 +55,7 @@
                                     <a href="#"><img class="img-fluid" src="{{ $item['image'] ?? '' }}" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
-                                    <a href="#">{{ $item['product_name'] ?? 'Product Name' }} <br> {{ $item['size'] ?? '' }} / {{ $item['color'] ?? '' }}</a>
+                                    <a href="#">{{ $item['product_name'] }} <br> {{ $item['size'] }} / {{ $item['color'] }}</a>
                                 </td>
                                 <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 2) }} $</span></td>
                                 <td class="pro-quantity">

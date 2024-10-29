@@ -15,8 +15,9 @@ class StatusDonhangSeeder extends Seeder
     {
         StatusDonHang::insert([
             ['type' => 'Chờ xác nhận'],
-            ['type' => 'Đang xử lý'],
-            ['type' => 'Đã giao'],
+            ['type' => 'Đã xác nhận'],
+            ['type' => 'Đang vận chuyển'],
+            ['type' => 'Đã giao hàng'],
             ['type' => 'Đã hủy']
         ]);
     }

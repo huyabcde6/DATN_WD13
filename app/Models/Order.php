@@ -41,5 +41,10 @@ class Order extends Model
     {
         return $this->belongsTo(StatusDonHang::class, 'status_donhang_id');
     }
+
+    public function products()
+    {
+        return $this->hasManyThrough(products::class, OrderDetail::class, 'order_id', 'id', 'id', 'products_id');
+    }
     
 }
