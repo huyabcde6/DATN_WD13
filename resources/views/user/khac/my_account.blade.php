@@ -71,7 +71,8 @@
                                             <table class="table table-bordered">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th>Order</th>
+                                                        <th>STT</th>
+                                                        <th>Order code</th>
                                                         <th>Date</th>
                                                         <th>Status</th>
                                                         <th>Total</th>
@@ -79,27 +80,35 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($orders as $key => $order)
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>Aug 22, 2023</td>
-                                                        <td>Pending</td>
-                                                        <td>$3000</td>
-                                                        <td><a href="cart.html" class="btn btn btn-dark btn-hover-primary btn-sm rounded-0">View</a></td>
+                                                        <td>{{ $key + 1 }}</td>
+                                                        <td>{{ $order->order_code }}</td>
+                                                        <td>{{ $order->created_at->format('d-m-Y') }}</td>
+                                                        <td>{{ $order->status->type ?? 'N/A' }}</td>
+                                                        <td>{{ number_format($order->total_price, 2) }} $</td>
+                                                        <td>
+                                                            <a href="{{ route('orders.show', $order->id) }}" class="btn btn-dark btn-hover-primary btn-sm rounded-0">View</a>
+                                                            <form action="{{ route('orders.update', $order->id) }}" method="POST" style="display:inline;">
+                                                                @csrf
+                                                                @method('POST')
+                                                                @if($order->status->type === \App\Models\StatusDonHang::CHO_XAC_NHAN)
+                                                                    <input type="hidden" name="huy_don_hang" value="1">
+                                                                    <button type="submit" class="btn btn-danger btn-sm rounded-0" 
+                                                                        onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">
+                                                                        Hủy đơn hàng
+                                                                    </button>
+                                                                @elseif($order->status->type === \App\Models\StatusDonHang::DANG_VAN_CHUYEN)
+                                                                    <input type="hidden" name="da_giao_hang" value="3">
+                                                                    <button type="submit" class="btn btn-success btn-sm rounded-0" 
+                                                                        onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
+                                                                        Đã giao hàng
+                                                                    </button>
+                                                                @endif
+                                                            </form>
+                                                        </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>July 22, 2023</td>
-                                                        <td>Approved</td>
-                                                        <td>$200</td>
-                                                        <td><a href="cart.html" class="btn btn btn-dark btn-hover-primary btn-sm rounded-0">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>June 12, 2019</td>
-                                                        <td>On Hold</td>
-                                                        <td>$990</td>
-                                                        <td><a href="cart.html" class="btn btn btn-dark btn-hover-primary btn-sm rounded-0">View</a></td>
-                                                    </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -221,6 +230,8 @@
                                         </div>
                                     </div>
                                 </div> <!-- Single Tab Content End -->
+
+                                
                             </div>
                         </div> <!-- My Account Tab Content End -->
                     </div>

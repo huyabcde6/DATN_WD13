@@ -52,8 +52,12 @@
                          <span> Sản phẩm </span>
                      </a>
                  </li>
-
-
+                 <li>
+                     <a class='tp-link' href="{{route('admin.orders.index')}}">
+                         <i data-feather="clipboard"></i>
+                         <span> Quản lý đơn hàng </span>
+                     </a>
+                 </li>
              </ul>
 
          </div>

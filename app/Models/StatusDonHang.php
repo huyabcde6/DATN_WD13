@@ -16,12 +16,17 @@ class StatusDonHang extends Model
     protected $fillable = ['type'];
 
     const CHO_XAC_NHAN = 'Chờ xác nhận';
-    const DANG_XU_LY = 'Đang xử lý';
-    const DA_GIAO = 'Đã giao';
+    const DA_XAC_NHAN = 'Đã xác nhận';    
+    const DANG_VAN_CHUYEN = 'Đang vận chuyển';
+    const DA_GIAO_HANG = 'Đã giao hàng';
     const DA_HUY = 'Đã hủy';
 
     public function orders()
     {
         return $this->hasMany(Order::class, 'status_donhang_id');
+    }
+    public static function getIdByType($type)
+    {
+        return self::where('type', $type)->value('id');
     }
 }
