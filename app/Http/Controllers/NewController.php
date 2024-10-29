@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NewController extends Controller
 {
@@ -12,7 +14,9 @@ class NewController extends Controller
      */
     public function index(Request $request)
     {
-        return view('admin.tintuc.New');
+        $db = DB::table('news')->get()->all();
+
+        return view('admin.tintuc.New', compact('db'));
     }
 
     /**
@@ -27,13 +31,23 @@ class NewController extends Controller
         if ($request->isMethod('POST')) {
             $param = $request->except('_token');
             $param['new_date'] = date("d/m/Y");
+            $param['view'] = 0;
             if ($request->hasFile('avata')) {
-                $params['avata'] = $request->file('avata')->store('update/', 'public');
+                $params['avata'] = $request->file('avata')->store('update/');
+                // dd($request->file('avata'));
             } else {
                 $params['avata'] = null;
             }
-            dd($param);
-            News::query()->create($params);
+            // News::create($params);
+            DB::table('news')->insert([
+                'title' => $param['title'],
+                'description' => $param['description'],
+                'status' => $param['status'],
+                'detail' => $param['detail'],
+                'avata' => $param['avata'],
+                'new_date' => Carbon::now()->format('Y-m-d H:i:s'),
+                'view' => 0
+            ]);
             return redirect()->route('new.show')->with('success', 'Thêm tin tức thành công!');
         }
     }
