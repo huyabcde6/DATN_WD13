@@ -86,6 +86,21 @@
     <!-- Widgets Init Js -->
     @yield('js')
     <!-- <script src="{{ asset('assets/admin//js/pages/analytics-dashboard.init.js')}}"></script> -->
+
+    <script type="module">
+        @if (session()->has('status_succeed'))
+            toastr.success('{{ session()->pull('status_succeed') }}', {
+                timeOut: 1000
+            });
+        @endif
+
+        @if (session()->has('status_failed'))
+            toastr.error('{{ session()->pull('status_failed') }}', {
+                timeOut: 1000
+            });
+        @endif
+    </script>
+
     <!-- App js-->
     <script src="{{ asset('assets/admin/js/app.js')}}"></script>
 
