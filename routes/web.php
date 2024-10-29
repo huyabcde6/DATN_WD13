@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -36,5 +37,5 @@ Route::get('/home', function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::resource('news', Admin\NewsController::class);
+    Route::resource('news', [NewsController::class,'news']);
 });
