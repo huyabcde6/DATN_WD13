@@ -37,3 +37,4 @@ Route::get('/home', function () {
 });
 
 Route::get('/admin/news', [NewsController::class, 'index'])->name('admin.news.index');
+Route::get('/admin/news/create', [App\Http\Controllers\Admin\NewsController::class, 'create'])->name('admin.news.create');
