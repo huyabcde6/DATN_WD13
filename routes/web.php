@@ -36,6 +36,4 @@ Route::get('/home', function () {
     return view('user.sanpham.home') ;
 });
 
-Route::prefix('admin')->group(function () {
-    Route::resource('news', [NewsController::class,'news']);
-});
+Route::get('/admin/news', [NewsController::class, 'index'])->name('admin.news.index');

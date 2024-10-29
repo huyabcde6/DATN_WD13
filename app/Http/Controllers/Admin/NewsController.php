@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 class NewsController extends Controller
 {
     public function index()
-    {
-        $news = News::latest()->paginate(10);
-        return view('admin.news.index', compact('news'));
-    }
+{
+    $news = News::latest()->paginate(10);
+    return view('admin.news.index', compact('news'));
+}
 
     public function create()
     {
