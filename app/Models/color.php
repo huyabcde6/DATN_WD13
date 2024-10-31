@@ -13,7 +13,7 @@ class Color extends Model
 
     protected $primaryKey = 'color_id';
     protected $fillable = ['value'];
-
+    
     public function productDetails()
     {
         return $this->hasMany(ProductDetail::class, 'color_id', 'color_id');

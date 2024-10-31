@@ -7,7 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
-Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -44,6 +44,7 @@ Route::prefix('admin/orders')->middleware('auth')->group(function () {
     Route::get('/{id}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
     Route::post('/{id}', [AdminOrderController::class, 'update'])->name('admin.orders.update');
 });
+
 
 require __DIR__.'/auth.php';
 

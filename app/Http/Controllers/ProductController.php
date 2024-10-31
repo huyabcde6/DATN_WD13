@@ -23,7 +23,10 @@ class ProductController extends Controller
         $products = products::with('categories')->get();
         $sizes = Size::all();
         $colors = Color::all();
+        $productDetails = $product->productDetails; 
         
-        return view('user.sanpham.product_detail', compact('products', 'product', 'sizes', 'colors'));
+        return view('user.sanpham.product_detail', compact('products', 'product', 'sizes', 'colors', 'productDetails'));
     }
+
+
 }
