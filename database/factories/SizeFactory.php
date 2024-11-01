@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Factories;
+
 use App\Models\Size;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,7 +20,7 @@ class SizeFactory extends Factory
     public function definition(): array
     {
         return [
-            'value' => $this->faker->randomElement(['S', 'M', 'L', 'XL']),
+            'valu' => $this->faker->randomElement(['S', 'M', 'L', 'XL']),
             'status' => $this->faker->boolean(),
         ];
     }

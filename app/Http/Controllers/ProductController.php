@@ -7,7 +7,6 @@ use App\Models\products;
 use App\Models\categories;
 use App\Models\Color;
 use App\Models\Size;
-use App\Models\ProductDetail;
 
 
 class ProductController extends Controller
@@ -24,9 +23,7 @@ class ProductController extends Controller
         $sizes = Size::all();
         $colors = Color::all();
         $productDetails = $product->productDetails; 
-        
         return view('user.sanpham.product_detail', compact('products', 'product', 'sizes', 'colors', 'productDetails'));
     }
-
 
 }

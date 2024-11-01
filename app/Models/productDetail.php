@@ -11,18 +11,6 @@ class ProductDetail extends Model
 
     protected $table = 'product_details';
 
-    protected $fillable = [
-        'product_code',
-        'products_id',
-        'size_id',
-        'color_id',
-        'image',
-        'is_active',
-        'price',
-        'discount_price',
-        'quantity',
-    ];  
-
     public function products()
     {
         return $this->belongsTo(products::class, 'products_id');
@@ -38,9 +26,5 @@ class ProductDetail extends Model
         return $this->belongsTo(Color::class, 'color_id', 'color_id');
     }
 
-    public function orderDetails()
-    {
-        return $this->hasMany(OrderDetail::class);
-    }
 
 }

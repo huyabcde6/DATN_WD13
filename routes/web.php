@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -15,12 +17,20 @@ Route::delete('/cart/remove/{productDetailId}', [CartController::class, 'removeF
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 
-Route::get('/', function () {
+Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::post('/login', [UserController::class, 'postLogin']);
+Route::get('/register', [UserController::class, 'register'])->name('register');
+Route::post('/register', [UserController::class, 'postRegister']);
+
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
+
+Route::get('/admin', function () {
     return view('layouts.admin');
 });
 
 Route::resource('users', UserController::class);
-
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function(){
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
@@ -48,3 +58,18 @@ Route::prefix('admin/orders')->middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::prefix('categories')
+            ->name('categories.')
+            ->controller(CategoryProductController::class)
+            ->group(function () {
+                Route::get('index', 'index')->name('index');
+                Route::get('create', 'create')->name('create');
+                Route::post('store', 'store')->name('store');
+                Route::get('{id}/edit', 'edit')->name('edit');
+                Route::post('{id}/update', 'update')->name('update');
+                Route::delete('{id}/delete', 'delete')->name('delete');
+            });
+    });
