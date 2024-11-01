@@ -23,9 +23,6 @@ Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register', [UserController::class, 'postRegister']);
 
 
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
-
 Route::get('/admin', function () {
     return view('layouts.admin');
 });
