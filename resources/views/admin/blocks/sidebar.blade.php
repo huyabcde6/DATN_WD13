@@ -52,6 +52,12 @@
                          <span> Sản phẩm </span>
                      </a>
                  </li>
+                 <li>
+                    <a class='tp-link' href="{{ route('news.index') }}">
+                        <i data-feather="package"></i>
+                        <span> Tin tức </span>
+                    </a>
+                </li>
 
 
              </ul>

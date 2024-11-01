@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -36,5 +36,8 @@ Route::get('/home', function () {
     return view('user.sanpham.home') ;
 });
 
-Route::get('/admin/news', [NewsController::class, 'index'])->name('admin.news.index');
-Route::get('/admin/news/create', [App\Http\Controllers\Admin\NewsController::class, 'create'])->name('admin.news.create');
+
+
+
+
+Route::resource('news', NewsController::class);
