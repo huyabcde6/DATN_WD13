@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
-Route::get('/products', [ProductController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index']);
+
+Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -17,14 +20,11 @@ Route::delete('/cart/remove/{productDetailId}', [CartController::class, 'removeF
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 
-Route::get('/login', [UserController::class, 'login'])->name('login');
-Route::post('/login', [UserController::class, 'postLogin']);
-Route::get('/register', [UserController::class, 'register'])->name('register');
-Route::post('/register', [UserController::class, 'postRegister']);
+// Route::get('/login', [UserController::class, 'login'])->name('login');
+// Route::post('/login', [UserController::class, 'postLogin']);
+// Route::get('/register', [UserController::class, 'register'])->name('register');
+// Route::post('/register', [UserController::class, 'postRegister']);
 
-
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
 
 Route::get('/admin', function () {
     return view('layouts.admin');
