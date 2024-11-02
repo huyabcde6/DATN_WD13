@@ -179,5 +179,11 @@ class CartController extends Controller
             'total_price' => number_format($total, 2),
         ]);
     }
+    public function count()
+    {
+        $count = session('cart') ? count(session('cart')) : 0;
+        return response()->json(['count' => $count]);
+    }
+
 
 }
