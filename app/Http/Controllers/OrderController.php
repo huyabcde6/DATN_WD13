@@ -39,10 +39,8 @@ class OrderController extends Controller
      */
     public function create()
     {
-        // Lấy thông tin người dùng hiện tại đã đăng nhập
         $user = Auth::user();
 
-        // Lấy giỏ hàng từ session
         $cartItems = Session::get('cart', []);
         if(!empty($cartItems)){
 
@@ -54,7 +52,6 @@ class OrderController extends Controller
             $shippingFee = 5.00;
             $total = $subTotal + $shippingFee;
 
-            // Trả về view với thông tin đã điền sẵn
             return view('user.sanpham.thanhtoan', compact(
                 'cartItems', 'subTotal', 'shippingFee', 'total', 
                 'user'

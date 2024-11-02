@@ -102,7 +102,7 @@
                                                                     <input type="hidden" name="da_giao_hang" value="3">
                                                                     <button type="submit" class="btn btn-success btn-sm rounded-0" 
                                                                         onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
-                                                                        Đã giao hàng
+                                                                        Đã nhận hàng
                                                                     </button>
                                                                 @endif
                                                             </form>
