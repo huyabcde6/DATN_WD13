@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Categories\CategoryProductRequest;
-use App\Models\CategoryProduct;
+use App\Models\categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +12,7 @@ class CategoryProductController extends Controller
 {
     public function index()
     {
-        $categories = CategoryProduct::select('id', 'name', 'status')->paginate(perPage: 6);
+        $categories = categories::select('id', 'name', 'status')->paginate(perPage: 6);
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -28,7 +28,7 @@ class CategoryProductController extends Controller
         try {
             DB::beginTransaction();
 
-            CategoryProduct::create([
+            categories::create([
                 'name' => $request->name,
                 'status' => $request->status ? 1 : 0
             ]);
@@ -45,7 +45,7 @@ class CategoryProductController extends Controller
 
     public function edit($id)
     {
-        $category = CategoryProduct::find($id);
+        $category = categories::find($id);
 
         if (!$category) {
             return redirect()->route('admin.categories.index')->with('status_failed', 'Danh mục không tồn tại');
@@ -59,7 +59,7 @@ class CategoryProductController extends Controller
         try {
             DB::beginTransaction();
 
-            $category = CategoryProduct::find($id);
+            $category = categories::find($id);
 
             if (!$category) {
                 return redirect()->route('admin.categories.index')->with('status_failed', 'Danh mục không tồn tại');
@@ -82,7 +82,7 @@ class CategoryProductController extends Controller
 
     public function delete($id)
     {
-        $category = CategoryProduct::find($id);
+        $category = categories::find($id);
 
         if (!$category) {
             return redirect()->route('admin.categories.index')->with('status_failed', 'Danh mục không tồn tại');

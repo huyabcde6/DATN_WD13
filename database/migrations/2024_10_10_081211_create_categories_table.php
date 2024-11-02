@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('gioi_tinh');
             $table->string('name');
+            $table->string('slug')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
