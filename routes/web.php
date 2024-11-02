@@ -5,12 +5,14 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\NewController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
-Route::get('/home', [HomeController::class, 'index']);
+
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
@@ -19,6 +21,8 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::delete('/cart/remove/{productDetailId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
+Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+
 
 // Route::get('/login', [UserController::class, 'login'])->name('login');
 // Route::post('/login', [UserController::class, 'postLogin']);
@@ -55,7 +59,9 @@ Route::prefix('admin/orders')->middleware('auth')->group(function () {
     Route::post('/{id}', [AdminOrderController::class, 'update'])->name('admin.orders.update');
 });
 
+
 require __DIR__.'/auth.php';
+
 
 Route::prefix('admin')
     ->name('admin.')
@@ -72,3 +78,9 @@ Route::prefix('admin')
                 Route::delete('{id}/delete', 'delete')->name('delete');
             });
     });
+
+// Tin tức
+Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
+Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
+Route::post('/postNew', [NewController::class, 'create'])->name('new.postnew');
+
