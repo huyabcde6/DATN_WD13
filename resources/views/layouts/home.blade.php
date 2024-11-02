@@ -1,4 +1,5 @@
 @include('user.blocks.header')
+
 <main>
     @yield('content')
 </main>

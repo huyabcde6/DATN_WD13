@@ -24,33 +24,33 @@ class UserController extends Controller
 
         return view('admin.users.index', compact('users'));
     }
-    public function login(Request $request)
-    {
-        return view('user.sanpham.login');
-    }
-    public function register(Request $request)
-    {
-        return view('user.sanpham.register');
-    }
-    public function postRegister(Request $req)
-    {
-        //validate
-        // dd(Hash::make($req->password));
-        $req->merge(['password' => Hash::make($req->password)]);
-        try {
-            User::create($req->all());
-        } catch (\Throwable $th) {
-            dd($th);
-        }
-        return redirect()->route('login');
-    }
-    public function postLogin(Request $req)
-    {
-        if (Auth::attempt(['email' => $req->email, 'password' => $req->password])) {
-            return redirect()->route('index');
-        }
-        return redirect()->back()->with('error', 'sai tt');
-    }
+    // public function login(Request $request)
+    // {
+    //     return view('user.sanpham.login');
+    // }
+    // public function register(Request $request)
+    // {
+    //     return view('user.sanpham.register');
+    // }
+    // public function postRegister(Request $req)
+    // {
+    //     //validate
+    //     // dd(Hash::make($req->password));
+    //     $req->merge(['password' => Hash::make($req->password)]);
+    //     try {
+    //         User::create($req->all());
+    //     } catch (\Throwable $th) {
+    //         dd($th);
+    //     }
+    //     return redirect()->route('login');
+    // }
+    // public function postLogin(Request $req)
+    // {
+    //     if (Auth::attempt(['email' => $req->email, 'password' => $req->password])) {
+    //         return redirect()->route('index');
+    //     }
+    //     return redirect()->back()->with('error', 'sai tt');
+    // }
 
 
     /**
