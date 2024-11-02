@@ -41,7 +41,7 @@
                  </li>
                  <li class="menu-title">Kinh doanh</li>
                  <li>
-                     <a class='tp-link' href="">
+                     <a class='tp-link' href="{{ route('admin.categories.index') }}">
                          <i data-feather="align-center"></i>
                          <span> Danh mục sản phẩm </span>
                      </a>
@@ -52,8 +52,12 @@
                          <span> Sản phẩm </span>
                      </a>
                  </li>
-
-
+                 <li>
+                     <a class='tp-link' href="{{route('admin.orders.index')}}">
+                         <i data-feather="clipboard"></i>
+                         <span> Quản lý đơn hàng </span>
+                     </a>
+                 </li>
              </ul>
 
          </div>
