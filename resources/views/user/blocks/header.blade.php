@@ -59,7 +59,9 @@
                                             <li class="col">
                                                 <h4 class="mega-menu-title">Shop Layout</h4>
                                                 <ul class="mb-n2">
-                                                    <li><a href="{{route('products.index')}}">Shop</a></li>
+
+                                                    <li><a href="{{route('shop.index')}}">Shop</a></li>
+
                                                     <li>
                                                         <a href="shop-left-sidebar.html">Left Sidebar</a>
                                                     </li>
