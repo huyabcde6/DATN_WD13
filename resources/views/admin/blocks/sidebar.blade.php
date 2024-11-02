@@ -34,14 +34,14 @@
                      </a>
                  </li>
                  <li>
-                     <a class='tp-link' href='calendar.html'>
+                     <a class='tp-link' href='{{ route('users.index') }}'>
                          <i data-feather="users"></i>
-                         <span> Quản lý tài khoản </span>
+                         <span> Quản lý người dùng </span>
                      </a>
                  </li>
                  <li class="menu-title">Kinh doanh</li>
                  <li>
-                     <a class='tp-link' href="">
+                     <a class='tp-link' href="{{ route('admin.categories.index') }}">
                          <i data-feather="align-center"></i>
                          <span> Danh mục sản phẩm </span>
                      </a>
@@ -52,7 +52,20 @@
                          <span> Sản phẩm </span>
                      </a>
                  </li>
+                 <li>
 
+                     <a class='tp-link' href="{{route('admin.orders.index')}}">
+                         <i data-feather="clipboard"></i>
+                         <span> Quản lý đơn hàng </span>
+                     </a>
+                 </li>
+                 <li>
+
+                     <a class='tp-link' href="admNew">
+                         <i data-feather="package"></i>
+                         <span>Quản Lý Tin Tức </span>
+                     </a>
+                 </li>
 
              </ul>
 
