@@ -14,14 +14,15 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/fontawesome.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/pe-icon-7-stroke.min.css') }}" />
 
-    <!-- Plugins CSS (All Plugins Files) -->
 
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css')}}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 
     <!-- Main Style CSS -->
 
@@ -58,7 +59,9 @@
                                             <li class="col">
                                                 <h4 class="mega-menu-title">Shop Layout</h4>
                                                 <ul class="mb-n2">
+
                                                     <li><a href="{{route('shop.index')}}">Shop</a></li>
+
                                                     <li>
                                                         <a href="shop-left-sidebar.html">Left Sidebar</a>
                                                     </li>
@@ -156,10 +159,13 @@
                                 <!-- Wishlist Header Action Button End -->
 
                                 <!-- Shopping Cart Header Action Button Start -->
-                                <a href="javascript:void(0)" class="header-action-btn header-action-btn-cart">
+                                <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span class="header-action-num">3</span>
+                                    <span
+                                        class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
+                                    </span>
                                 </a>
+
                                 <!-- Shopping Cart Header Action Button End -->
 
                                 <!-- Mobile Menu Hambarger Action Button Start -->
