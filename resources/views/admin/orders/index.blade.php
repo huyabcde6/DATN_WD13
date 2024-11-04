@@ -42,27 +42,26 @@ Quản lý đơn hàng
                     <table class="table table-striped text-center">
                         <thead>
                             <tr>
-                                <th>STT</th>
+                                <th>#</th>
                                 <th>Mã đơn hàng</th>
                                 <th>Ngày tạo</th>
-
                                 <th>Tổng tiền</th>
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="order-list">
                             @foreach($orders as $key => $order)
-                            <tr>
+                            <tr data-order-id="{{ $order->id }}">
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $order->order_code }}</td>
                                 <td>{{ $order->created_at->format('d-m-Y') }}</td>
                                 <td>{{ number_format($order->total_price, 2) }} $</td>
                                 <td>
-                                    <form action="{{ route('admin.orders.update', $order->id) }}" method="post">
+                                    <form action="{{ route('admin.orders.update', $order->id) }}" method="post" class="order-status-form">
                                         @csrf
-                                        @method('POST')
+                                        @method('PUT')
                                         <select class="form-select text-center" name="status"
                                             onchange="this.form.submit()">
                                             <option value="1" {{ $order->status_donhang_id === 1 ? 'selected' : '' }}>
@@ -95,6 +94,21 @@ Quản lý đơn hàng
                 </div>
             </div>
         </div>
+        {{ $orders->links('pagination::bootstrap-5') }}
     </div>
 </div>
+
+
+@endsection
+
+@section('js')
+<script>
+    window.Echo.channel('order-updated')
+        .listen('.order.updated', (e) => {
+            const orderRow = document.querySelector(`[data-order-id="${e.order.id}"]`);
+            if (orderRow) {
+                orderRow.querySelector('select[name="status"]').value = e.order.status_donhang_id;
+            }
+        });
+</script>
 @endsection

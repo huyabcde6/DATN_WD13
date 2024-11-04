@@ -47,7 +47,7 @@
                      </a>
                  </li>
                  <li>
-                     <a class='tp-link' href="">
+                     <a class='tp-link' href="{{route('admin.products.index')}}">
                          <i data-feather="package"></i>
                          <span> Sản phẩm </span>
                      </a>
