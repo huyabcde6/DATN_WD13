@@ -299,7 +299,7 @@
                 <div class="tab-content mb-text" id="myTabContent">
                     <div class="tab-pane fade show active" id="connect-1" role="tabpanel" aria-labelledby="home-tab">
                         <div class="desc-content border p-3">
-                            <p class="mb-3">{{ $product->description }}</p>
+                            <p class="mb-3">{!! $product->description !!}</p>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="connect-2" role="tabpanel" aria-labelledby="profile-tab">

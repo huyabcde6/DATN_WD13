@@ -7,12 +7,13 @@ use App\Models\Order;
 use App\Models\StatusDonHang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Events\OrderUpdated;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with('status')->get();
+        $orders = Order::with('status')->paginate(7);
         return view('admin.orders.index', compact('orders'));
     }
 
@@ -42,8 +43,9 @@ class OrderController extends Controller
                     return redirect()->route('admin.orders.index')->with('error', 'Không thể chuyển trạng thái theo quy định.');
                 }
                 $order->save();
+                event(new OrderUpdated($order)); 
             }
-
+            
             DB::commit();
 
             return redirect()->route('admin.orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
