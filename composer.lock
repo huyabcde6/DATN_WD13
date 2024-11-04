@@ -3420,7 +3420,6 @@
         },
         {
             "name": "symfony/css-selector",
-
             "version": "v7.1.6",
             "source": {
                 "type": "git",
@@ -3431,7 +3430,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/css-selector/zipball/4aa4f6b3d6749c14d3aa815eef8226632e7bbc66",
                 "reference": "4aa4f6b3d6749c14d3aa815eef8226632e7bbc66",
-
                 "shasum": ""
             },
             "require": {
@@ -3467,9 +3465,7 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-
                 "source": "https://github.com/symfony/css-selector/tree/v7.1.6"
-
             },
             "funding": [
                 {
@@ -3485,9 +3481,7 @@
                     "type": "tidelift"
                 }
             ],
-
             "time": "2024-09-25T14:20:29+00:00"
-
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -3633,7 +3627,6 @@
         },
         {
             "name": "symfony/event-dispatcher",
-
             "version": "v7.1.6",
             "source": {
                 "type": "git",
@@ -3644,7 +3637,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/87254c78dd50721cfd015b62277a8281c5589702",
                 "reference": "87254c78dd50721cfd015b62277a8281c5589702",
-
                 "shasum": ""
             },
             "require": {
@@ -3695,9 +3687,7 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
-
                 "source": "https://github.com/symfony/event-dispatcher/tree/v7.1.6"
-
             },
             "funding": [
                 {
@@ -3713,9 +3703,7 @@
                     "type": "tidelift"
                 }
             ],
-
             "time": "2024-09-25T14:20:29+00:00"
-
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -5078,7 +5066,6 @@
         },
         {
             "name": "symfony/string",
-
             "version": "v7.1.6",
             "source": {
                 "type": "git",
@@ -5089,7 +5076,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/string/zipball/61b72d66bf96c360a727ae6232df5ac83c71f626",
                 "reference": "61b72d66bf96c360a727ae6232df5ac83c71f626",
-
                 "shasum": ""
             },
             "require": {
@@ -5147,9 +5133,7 @@
                 "utf8"
             ],
             "support": {
-
                 "source": "https://github.com/symfony/string/tree/v7.1.6"
-
             },
             "funding": [
                 {
@@ -5165,9 +5149,7 @@
                     "type": "tidelift"
                 }
             ],
-
             "time": "2024-09-25T14:20:29+00:00"
-
         },
         {
             "name": "symfony/translation",
@@ -8163,7 +8145,6 @@
         },
         {
             "name": "symfony/yaml",
-
             "version": "v7.1.6",
             "source": {
                 "type": "git",
@@ -8174,7 +8155,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/yaml/zipball/3ced3f29e4f0d6bce2170ff26719f1fe9aacc671",
                 "reference": "3ced3f29e4f0d6bce2170ff26719f1fe9aacc671",
-
                 "shasum": ""
             },
             "require": {
@@ -8216,9 +8196,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-
                 "source": "https://github.com/symfony/yaml/tree/v7.1.6"
-
             },
             "funding": [
                 {
@@ -8234,9 +8212,7 @@
                     "type": "tidelift"
                 }
             ],
-
             "time": "2024-09-25T14:20:29+00:00"
-
         },
         {
             "name": "theseer/tokenizer",
