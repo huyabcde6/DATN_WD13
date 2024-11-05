@@ -16,7 +16,7 @@ class products extends Model
     protected $fillable = [
         'name',
         'slug',
-        'category_id',
+        'categories_id',
         'avata',
         'description',
         'is_hot',
@@ -29,12 +29,17 @@ class products extends Model
         'stock_quantity',
         'short_description',
     ];
+    protected $casts = [
+        'is_show' => 'boolean',
+        'is_new' => 'boolean',
+        'is_hot' => 'boolean',
+    ];
 
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'name'  
+                'source' => 'name'
             ]
         ];
     }
@@ -53,6 +58,8 @@ class products extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
-
-
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class, 'products_id');
+    }
 }

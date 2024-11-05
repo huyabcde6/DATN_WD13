@@ -17,9 +17,9 @@ class ProductController extends Controller
         $products = products::with('categories')->get();
         return view('user.sanpham.shop_sidebar', compact('products'));
     }
-    public function show($id)
+    public function show($slug)
     {
-        $product = products::with(['productDetails.color', 'productDetails.size', 'categories'])->findOrFail($id);
+        $product = products::with(['productDetails.color', 'productDetails.size', 'categories'])->where('slug', $slug)->firstOrFail();
         $products = products::with('categories')->get();
         $sizes = Size::all();
         $colors = Color::all();
