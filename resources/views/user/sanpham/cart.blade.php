@@ -11,9 +11,9 @@
                 <h1 class="title">Shopping Cart</h1>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="/">Home</a>
                     </li>
-                    <li class="active"> Shopping Cart</li>
+                    <li class="active">Shopping Cart</li>
                 </ul>
             </div>
         </div>
@@ -49,78 +49,36 @@
 
                         <!-- Table Body Start -->
                         <tbody>
+                            @foreach ($cartItems as $item)
                             <tr>
-                                <td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="assets/images/products/small-product/1.jpg" alt="Product" /></a></td>
-                                <td class="pro-title"><a href="#">Brother Hoddies in Grey <br> s / green</a></td>
-                                <td class="pro-price"><span>$95.00</span></td>
+                                <td class="pro-thumbnail">
+                                    <a href="#"><img class="img-fluid" src="{{ $item['image'] ?? '' }}" alt="Product" /></a>
+                                </td>
+                                <td class="pro-title">
+                                    <a href="#">{{ $item['product_name'] }} <br> {{ $item['size'] }} / {{ $item['color'] }}</a>
+                                </td>
+                                <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 2) }} $</span></td>
                                 <td class="pro-quantity">
                                     <div class="quantity">
                                         <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" value="0" type="text">
-                                            <div class="dec qtybutton">-</div>
-                                            <div class="inc qtybutton">+</div>
-                                            <div class="dec qtybutton"><i class="fa fa-minus"></i></div>
-                                            <div class="inc qtybutton"><i class="fa fa-plus"></i></div>
+                                            <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}" type="text" data-id="{{ $item['product_detail_id'] }}">
+                                            <div class="dec qtybutton" data-id="{{ $item['product_detail_id'] }}">-</div>
+                                            <div class="inc qtybutton" data-id="{{ $item['product_detail_id'] }}">+</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="pro-subtotal"><span>$95.00</span></td>
-                                <td class="pro-remove"><a href="#"><i class="pe-7s-trash"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="assets/images/products/small-product/2.jpg" alt="Product" /></a></td>
-                                <td class="pro-title"><a href="#">Basic Jogging Shorts <br> Blue</a></td>
-                                <td class="pro-price"><span>$75.00</span></td>
-                                <td class="pro-quantity">
-                                    <div class="quantity">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" value="0" type="text">
-                                            <div class="dec qtybutton">-</div>
-                                            <div class="inc qtybutton">+</div>
-                                            <div class="dec qtybutton"><i class="fa fa-minus"></i></div>
-                                            <div class="inc qtybutton"><i class="fa fa-plus"></i></div>
-                                        </div>
-                                    </div>
+                                <td class="pro-subtotal">
+                                    <span class="subtotal-{{ $item['product_detail_id'] }}">{{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 2) }} $</span>
                                 </td>
-                                <td class="pro-subtotal"><span>$75.00</span></td>
-                                <td class="pro-remove"><a href="#"><i class="pe-7s-trash"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="assets/images/products/small-product/10.jpg" alt="Product" /></a></td>
-                                <td class="pro-title"><a href="#">Lust For Life <br> Bulk/S</a></td>
-                                <td class="pro-price"><span>$295.00</span></td>
-                                <td class="pro-quantity">
-                                    <div class="quantity">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" value="0" type="text">
-                                            <div class="dec qtybutton">-</div>
-                                            <div class="inc qtybutton">+</div>
-                                            <div class="dec qtybutton"><i class="fa fa-minus"></i></div>
-                                            <div class="inc qtybutton"><i class="fa fa-plus"></i></div>
-                                        </div>
-                                    </div>
+                                <td class="pro-remove">
+                                    <form action="{{ route('cart.remove', $item['product_detail_id']) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger"><i class="pe-7s-trash"></i></button>
+                                    </form>
                                 </td>
-                                <td class="pro-subtotal"><span>$295.00</span></td>
-                                <td class="pro-remove"><a href="#"><i class="pe-7s-trash"></i></a></td>
                             </tr>
-                            <tr>
-                                <td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="assets/images/products/small-product/4.jpg" alt="Product" /></a></td>
-                                <td class="pro-title"><a href="#">Simple Woven Fabrics</a></td>
-                                <td class="pro-price"><span>$60.00</span></td>
-                                <td class="pro-quantity">
-                                    <div class="quantity">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" value="2" type="text">
-                                            <div class="dec qtybutton">-</div>
-                                            <div class="inc qtybutton">+</div>
-                                            <div class="dec qtybutton"><i class="fa fa-minus"></i></div>
-                                            <div class="inc qtybutton"><i class="fa fa-plus"></i></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="pro-subtotal"><span>$110.00</span></td>
-                                <td class="pro-remove"><a href="#"><i class="pe-7s-trash"></i></a></td>
-                            </tr>
+                            @endforeach
                         </tbody>
                         <!-- Table Body End -->
 
@@ -168,18 +126,20 @@
                         <!-- Responsive Table Start -->
                         <div class="table-responsive">
                             <table class="table">
-                                <tr>
-                                    <td>Sub Total</td>
-                                    <td>$230</td>
-                                </tr>
-                                <tr>
-                                    <td>Shipping</td>
-                                    <td>$70</td>
-                                </tr>
-                                <tr class="total">
-                                    <td>Total</td>
-                                    <td class="total-amount">$300</td>
-                                </tr>
+                            <tr>
+                                <td>Sub Total</td>
+                                <td class="sub-total">{{ number_format($subTotal, 2) }} $</td>
+                            </tr>
+                            <tr>
+                                <td>Shipping</td>
+                                <td>{{ number_format($shippingFee, 2) }} $</td> <!-- Hiển thị phí vận chuyển -->
+                            </tr>
+                            <tr class="total">
+                                <td>Total</td>
+                                <td class="total-amount">
+                                    {{ number_format($total, 2) }} $ <!-- Hiển thị tổng tiền bao gồm phí ship -->
+                                </td>
+                            </tr>
                             </table>
                         </div>
                         <!-- Responsive Table End -->
@@ -187,9 +147,9 @@
                     </div>
                     <!-- Cart Calculate Items End -->
 
-                    <!-- Cart Checktout Button Start -->
-                    <a href="checkout.html" class="btn btn-dark btn-hover-primary rounded-0 w-100">Proceed To Checkout</a>
-                    <!-- Cart Checktout Button End -->
+                    <!-- Cart Checkout Button Start -->
+                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Proceed To Checkout</a>
+                    <!-- Cart Checkout Button End -->
 
                 </div>
                 <!-- Cart Calculation Area End -->
@@ -200,6 +160,7 @@
     </div>
 </div>
 <!-- Shopping Cart Section End -->
+
 <!-- Scroll Top Start -->
 <a href="#" class="scroll-top" id="scroll-top">
     <i class="arrow-top fa fa-long-arrow-up"></i>
@@ -207,3 +168,55 @@
 </a>
 <!-- Scroll Top End -->
 @endsection
+
+@section('js')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+    var shippingFee = 5.00;
+
+    // Xử lý sự kiện tăng/giảm số lượng
+    $('.qtybutton').on('click', function() {
+        var productDetailId = $(this).data('id');
+        var inputField = $(this).siblings('.cart-plus-minus-box');
+        var quantity = parseInt(inputField.val());
+
+        // Tăng hoặc giảm số lượng
+        if ($(this).hasClass('inc')) {
+            quantity++;
+        } else if ($(this).hasClass('dec') && quantity > 1) {
+            quantity--;
+        }
+
+        // Gửi AJAX để cập nhật số lượng
+        $.ajax({
+            url: '{{ route("cart.update") }}',
+            method: 'POST',
+            data: {
+                product_detail_id: productDetailId,
+                quantity: quantity,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    inputField.val(quantity);
+
+                    var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
+                    subtotalCell.text(response.item_price + ' $');
+
+                    var subTotal = 0;
+                    $('.pro-subtotal span').each(function() {
+                        subTotal += parseFloat($(this).text());
+                    });
+
+                    $('.total-amount').text((subTotal + shippingFee).toFixed(2) + ' $');
+                    $('.sub-total').text(subTotal.toFixed(2) + ' $');
+                }
+            }
+        });
+    });
+});
+</script>
+@endsection
+

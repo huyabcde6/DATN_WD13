@@ -12,6 +12,13 @@ class StatusDonhangSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        StatusDonHang::insert([
+            ['type' => 'Chờ xác nhận'],
+            ['type' => 'Đã xác nhận'],
+            ['type' => 'Đang vận chuyển'],
+            ['type' => 'Đã giao hàng'],
+            ['type' => 'Đã hủy']
+        ]);
+
     }
 }

@@ -93,7 +93,7 @@
                             </div>
                             <div class="content">
                                 <h4 class="sub-title"><a href="single-product.html">{{ $product->categories->name }}</a></h4>
-                                <h5 class="title"><a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a></h5>
+                                <h5 class="title"><a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h5>
                                 <span class="ratings">
                                     <span class="rating-wrap">
                                         <span class="star" style="width: 100%"></span>

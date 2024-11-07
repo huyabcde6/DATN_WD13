@@ -7,16 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Destry - Fashion eCommerce HTML Template</title>
     <!-- Favicons -->
-    <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico')}}" />
+    <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico') }}" />
 
     <!-- Vendor CSS (Icon Font) -->
 
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/fontawesome.min.css')}}" />
-    <link
-        rel="stylesheet"
-        href="{{ asset('ngdung/assets/css/vendor/pe-icon-7-stroke.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/fontawesome.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/pe-icon-7-stroke.min.css') }}" />
 
-    <!-- Plugins CSS (All Plugins Files) -->
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css')}}" />
@@ -24,10 +21,12 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css')}}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 
     <!-- Main Style CSS -->
 
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/style.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/style.css') }}" />
 </head>
 
 <body>
@@ -41,8 +40,8 @@
                         <!-- Header Logo Start -->
                         <div class="col-xl-2 col-6">
                             <div class="header-logo">
-                                <a href="index.html"><img src="{{ asset('ngdung/assets/images/logo/logo1.png')}}" alt="Site Logo"
-                                        width="250xp" height="135px" /></a>
+                                <a href="index.html"><img src="{{ asset('ngdung/assets/images/logo/logo1.png') }}"
+                                        alt="Site Logo" width="250xp" height="135px" /></a>
                             </div>
                         </div>
                         <!-- Header Logo End -->
@@ -60,7 +59,9 @@
                                             <li class="col">
                                                 <h4 class="mega-menu-title">Shop Layout</h4>
                                                 <ul class="mb-n2">
-                                                    <li><a href="shop-grid.html">Shop Grid</a></li>
+
+                                                    <li><a href="{{route('shop.index')}}">Shop</a></li>
+
                                                     <li>
                                                         <a href="shop-left-sidebar.html">Left Sidebar</a>
                                                     </li>
@@ -94,7 +95,8 @@
                                                         <a href="single-product-normal.html">Single Product Normal</a>
                                                     </li>
                                                     <li>
-                                                        <a href="single-product-affiliate.html">Single Product Affiliate</a>
+                                                        <a href="single-product-affiliate.html">Single Product
+                                                            Affiliate</a>
                                                     </li>
                                                     <li>
                                                         <a href="single-product-slider.html">Single Product Slider</a>
@@ -140,37 +142,34 @@
                         <div class="col-xl-2 col-6">
                             <div class="header-actions">
                                 <!-- Search Header Action Button Start -->
-                                <a
-                                    href="javascript:void(0)"
-                                    class="header-action-btn header-action-btn-search"><i class="pe-7s-search"></i></a>
+                                <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
+                                        class="pe-7s-search"></i></a>
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
-                                <a
-                                    href="login-register.html"
-                                    class="header-action-btn d-none d-md-block"><i class="pe-7s-user"></i></a>
+                                <a href="{{ route('login') }}" class="header-action-btn d-none d-md-block"><i
+                                        class="pe-7s-user"></i></a>
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->
-                                <a
-                                    href="wishlist.html"
+                                <a href="wishlist.html"
                                     class="header-action-btn header-action-btn-wishlist d-none d-md-block">
                                     <i class="pe-7s-like"></i>
                                 </a>
                                 <!-- Wishlist Header Action Button End -->
 
                                 <!-- Shopping Cart Header Action Button Start -->
-                                <a
-                                    href="javascript:void(0)"
-                                    class="header-action-btn header-action-btn-cart">
+                                <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span class="header-action-num">3</span>
+                                    <span
+                                        class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
+                                    </span>
                                 </a>
+
                                 <!-- Shopping Cart Header Action Button End -->
 
                                 <!-- Mobile Menu Hambarger Action Button Start -->
-                                <a
-                                    href="javascript:void(0)"
+                                <a href="javascript:void(0)"
                                     class="header-action-btn header-action-btn-menu d-xl-none d-lg-block">
                                     <i class="fa fa-bars"></i>
                                 </a>
@@ -264,10 +263,7 @@
 
                 <!-- Offcanvas Search Form Start -->
                 <form class="offcanvas-search-form" action="#">
-                    <input
-                        type="text"
-                        placeholder="Search Here..."
-                        class="offcanvas-search-input" />
+                    <input type="text" placeholder="Search Here..." class="offcanvas-search-input" />
                 </form>
                 <!-- Offcanvas Search Form End -->
             </div>
@@ -298,7 +294,7 @@
                         <div class="single-cart-product">
                             <div class="cart-product-thumb">
                                 <a href="single-product.html"><img
-                                        src="{{ asset('ngdung/assets/images/products/small-product/1.jpg')}}"
+                                        src="{{ asset('ngdung/assets/images/products/small-product/1.jpg') }}"
                                         alt="Cart Product" /></a>
                             </div>
                             <div class="cart-product-content">
@@ -327,7 +323,7 @@
                         <div class="single-cart-product">
                             <div class="cart-product-thumb">
                                 <a href="single-product.html"><img
-                                        src="{{ asset('ngdung/assets/images/products/small-product/2.jpg')}}"
+                                        src="{{ asset('ngdung/assets/images/products/small-product/2.jpg') }}"
                                         alt="Cart Product" /></a>
                             </div>
                             <div class="cart-product-content">
@@ -356,7 +352,7 @@
                         <div class="single-cart-product">
                             <div class="cart-product-thumb">
                                 <a href="single-product.html"><img
-                                        src="{{ asset('ngdung/assets/images/products/small-product/3.jpg')}}"
+                                        src="{{ asset('ngdung/assets/images/products/small-product/3.jpg') }}"
                                         alt="Cart Product" /></a>
                             </div>
                             <div class="cart-product-content">
@@ -388,12 +384,9 @@
 
                     <!-- Cart Product Button Start -->
                     <div class="cart-product-btn mt-4">
-                        <a
-                            href="cart.html"
-                            class="btn btn-dark btn-hover-primary rounded-0 w-100">Xem giỏ hàng</a>
-                        <a
-                            href="checkout.html"
-                            class="btn btn-dark btn-hover-primary rounded-0 w-100 mt-4">Thanh toán</a>
+                        <a href="cart.html" class="btn btn-dark btn-hover-primary rounded-0 w-100">Xem giỏ hàng</a>
+                        <a href="checkout.html" class="btn btn-dark btn-hover-primary rounded-0 w-100 mt-4">Thanh
+                            toán</a>
                     </div>
                     <!-- Cart Product Button End -->
                 </div>
