@@ -94,3 +94,4 @@ Route::prefix('admin')
 Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
 Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
 Route::post('/postNew', [NewController::class, 'create'])->name('new.postnew');
+Route::delete('/dlNew{id}', [NewController::class, 'destroy'])->name('new.destroy');
