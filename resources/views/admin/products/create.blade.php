@@ -162,10 +162,10 @@
                                     <label for="avata">Hình ảnh sản phẩm</label>
                                     <input class="form-control" type="file" name="avata" id="avata" required>
                                 </div>
-                                <!-- <div class="mb-3">
+                                <div class="mb-3">
                                     <label for="images">Hình ảnh phụ</label>
                                     <input class="form-control" type="file" name="images[]" id="images" multiple>
-                                </div> -->
+                                </div>
                                 <div class="button-group">
                                     <label for="sizes">Chọn kích thước</label>
                                     <div class="options" id="sizes">
@@ -270,29 +270,17 @@ document.getElementById('generate-variants').addEventListener('click', function(
     });
 });
 
-const quill = new Quill('#quill-editor', {
-    theme: 'snow',
-    modules: {
-        toolbar: [
-            ['bold', 'italic', 'underline'],
-            ['code-block'],
-            [{
-                'list': 'ordered'
-            }, {
-                'list': 'bullet'
-            }],
-            [{
-                'header': [1, 2, 3, false]
-            }],
-            ['clean']
-        ]
-    }
-});
-
-document.querySelector('form').addEventListener('submit', function(event) {
-    const content = quill.root.innerHTML;
-    document.getElementById('description_content').value = content;
-});
+document.addEventListener('DOMContentLoaded', function() {
+    var quill = new Quill("#quill-editor", {
+        theme: "snow",
+    })
+    var old_content = `{!! old('description') !!}`;
+    quill.root.innerHTML = old_content;
+    quill.on('text-change', function() {
+        var html = quill.root.innerHTML;
+        document.getElementById('description_content').value = html;
+    })
+})
 </script>
 <script>
     document.getElementById('name').addEventListener('keyup', function() {

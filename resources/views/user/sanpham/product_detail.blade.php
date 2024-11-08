@@ -61,34 +61,14 @@
                         <div class="swiper-wrapper popup-gallery">
                             <a class="swiper-slide h-auto"
                                 href="{{ asset('ngdung/assets/images/products/large-size/1.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/1.jpg')}}"
-                                    alt="Product">
+                                <img class="w-100 h-100" src="{{ url('storage/'. $product->avata) }}" alt="Product">
                             </a>
+                            @foreach($product->productImages as $image)
                             <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/2.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/2.jpg')}}"
-                                    alt="Product">
+                                href="{{ asset('ngdung/assets/images/products/large-size/1.jpg')}}">
+                                <img class="w-100 h-100" src="{{ url('storage/'. $image->image_path) }}" alt="Product">
                             </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/3.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/3.jpg')}}"
-                                    alt="Product">
-                            </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/4.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/4.jpg')}}"
-                                    alt="Product">
-                            </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/5.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/5.jpg')}}"
-                                    alt="Product">
-                            </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/6.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/6.jpg')}}"
-                                    alt="Product">
-                            </a>
+                            @endforeach
                         </div>
 
                         <!-- Swiper Pagination Start -->
@@ -107,30 +87,11 @@
                     <div
                         class="product-thumb-vertical vertical-style-thumb overflow-hidden swiper-container gallery-thumbs order-2">
                         <div class="swiper-wrapper">
+                            @foreach($product->productImages as $image)
                             <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/1.jpg')}}"
-                                    alt="Product">
+                                <img src="{{ url('storage/'. $image->image_path) }}" alt="Product">
                             </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/2.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/3.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/4.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/5.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/6.jpg')}}"
-                                    alt="Product">
-                            </div>
+                            @endforeach
                         </div>
 
                         <!-- Swiper Pagination Start -->
@@ -162,11 +123,13 @@
 
                     <!-- Price Box Start -->
                     <div class="price-box mb-2">
-                        <span class="regular-price" id="current-price">${{ number_format($product->price, 2) }}</span>
+                        <span class="regular-price" id="current-price">{{ number_format($product->discount_price, 0, '', '.') }}
+                            đ</span>
                         <!-- Giữ lại giá sản phẩm chính -->
 
                         @if($product->discount_price)
-                        <span class="old-price"><del>${{ number_format($product->discount_price, 2) }}</del></span>
+                        <span class="old-price"><del>{{ number_format($product->price, 0, '', '.') }} ₫
+                            </del></span>
                         @endif
                     </div>
 
@@ -646,7 +609,9 @@ $(document).ready(function() {
         if (selectedColor && selectedSize) {
             const variant = variantDetails.find(v => v.color_id == selectedColor && v.size_id == selectedSize);
             if (variant) {
-                $('#current-price').text(`$${variant.price.toFixed(2)}`);
+                $('#current-price').text(
+                    `${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(variant.discount_price)}`
+                );
                 $('#current-sku').text(`SKU: ${variant.product_code}`);
                 $('#current-stock').text(`In Stock: ${variant.quantity}`);
                 $('#product-quantity').attr('max', variant.quantity);

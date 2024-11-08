@@ -9,6 +9,8 @@ use App\Http\Controllers\NewController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 
@@ -59,13 +61,12 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     Route::resource('products', AdminProductController::class);
 
     Route::resource('orders', AdminOrderController::class);
+    // Quản lý kích thước
+    Route::resource('sizes', SizeController::class);
+    
+    // Quản lý màu sắc
+    Route::resource('colors', ColorController::class);
 
-
-    // // Quản lý kích thước
-    // Route::resource('sizes', SizeController::class);
-
-    // // Quản lý màu sắc
-    // Route::resource('colors', ColorController::class);
 
     // Route::resource('users', UserController::class);
 });
