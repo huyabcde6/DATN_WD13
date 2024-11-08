@@ -59,7 +59,7 @@ Danh sách Tin Tức
 
     /*------ ADDED CSS ---------*/
     .slider:after {
-        content: 'DISABLED';
+        content: 'Ẩn';
         color: white;
         display: block;
         position: absolute;
@@ -71,7 +71,7 @@ Danh sách Tin Tức
     }
 
     input:checked+.slider:after {
-        content: 'ENABLED';
+        content: 'Hiện';
     }
 
     /*--------- END --------*/
@@ -124,11 +124,27 @@ Danh sách Tin Tức
                             <td>{{$tiem->new_date}}</td>
                             <td>
                                 <label class="switch">
-                                    <input type="checkbox">
+                                    <input type="checkbox" {{ $tiem->status ? 'checked' : '' }}>
                                     <span class="slider"></span>
                                 </label>
                             </td>
-                            <td>{{$tiem->title}}</td>
+                            <td class="d-flex justify-content-center align-items-center">
+                                <a href="{{ route('admin.products.edit', $tiem->id) }}"
+                                    class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
+                                    data-bs-toggle="tooltip" title="Sửa">
+                                    <i class="fa fa-pencil-alt"></i>
+                                </a>
+                                <form action="{{ route('new.destroy', $tiem->id) }}" method="POST"
+                                    class="form-delete">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
+                                        data-bs-toggle="tooltip" title="Xóa">
+                                        <i class="fa fa-fw fa-times text-danger"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

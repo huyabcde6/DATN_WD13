@@ -78,12 +78,12 @@ class ProductController extends Controller
                     $variant->quantity = $quantity;
                     $variant->price = $request->variant_price[$sizeId][$colorId];
                     $variant->discount_price = $request->variant_discount_price[$sizeId][$colorId];
-    
+
                     // Xử lý ảnh của biến thể
                     if (isset($request->variant_image[$sizeId][$colorId])) {
                         $variant->image = $request->file("variant_image.$sizeId.$colorId")->store('product_variants', 'public');
                     }
-    
+
                     $variant->save();
                 }
             }
@@ -213,23 +213,24 @@ class ProductController extends Controller
 }
 
 
-    public function edit($id){
+    public function edit($id)
+    {
         $products = products::findOrFail($id);
         $categories = categories::where('status', true)->get();
         $sizes = Size::where('status', true)->get();
         $colors = Color::where('status', true)->get();
         $product = products::findOrFail($id);
         $existingVariants = $product->ProductDetails()->get(['size_id', 'color_id'])->toArray();
-        $variants = $product->productDetails; 
-        return view('admin.products.edit', compact('products', 'variants','colors', 'existingVariants', 'sizes', 'categories'));
+        $variants = $product->productDetails;
+        return view('admin.products.edit', compact('products', 'variants', 'colors', 'existingVariants', 'sizes', 'categories'));
     }
 
-    
+
     public function show(string $id)
     {
         $product = products::findOrFail($id);
 
-        $variants = $product->productDetails; 
+        $variants = $product->productDetails;
         return view('admin.products.show', compact('product', 'variants'));
     }
 
@@ -240,8 +241,5 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được xóa .');
     }
-
-    
-
-    
 }
+

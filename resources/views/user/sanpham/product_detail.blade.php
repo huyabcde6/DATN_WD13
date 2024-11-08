@@ -145,7 +145,6 @@
                         </div>
 
                         <!-- SKU End -->
-
                         <!-- Stock Quantity Start -->
                         <div class="stock-quantity mb-3">
                             <span id="current-stock">In Stock: {{ $product->productDetails->first()->quantity }}</span>
@@ -230,6 +229,27 @@
                         </ul>
                         <!-- Product Delivery Policy End -->
                     </div>
+
+                    <!-- Cart & Wishlist Button End -->
+
+                    <!-- Social Share Start -->
+                    <div class="social-share">
+                        <span>Share :</span>
+                        <a href="#"><i class="fa fa-facebook-square facebook-color"></i></a>
+                        <a href="#"><i class="fa fa-twitter-square twitter-color"></i></a>
+                        <a href="#"><i class="fa fa-linkedin-square linkedin-color"></i></a>
+                        <a href="#"><i class="fa fa-pinterest-square pinterest-color"></i></a>
+                    </div>
+                    <!-- Social Share End -->
+
+                    <!-- Product Delivery Policy Start -->
+                    <ul class="product-delivery-policy border-top pt-4 mt-4 border-bottom pb-4">
+                        <li><i class="fa fa-check-square"></i><span>Chính sách bảo mật</span></li>
+                        <li><i class="fa fa-truck"></i><span>Chính sách giao hàng</span></li>
+                        <li><i class="fa fa-refresh"></i><span>Chính sách hoàn trả</span></li>
+                    </ul>
+                    <!-- Product Delivery Policy End -->
+
                     <!-- Product Summery End -->
                 </div>
             </div>
@@ -535,6 +555,24 @@
                 updateVariantDetails();
             });
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        var selectedSize = null;
+        var selectedColor = null;
+        var variantDetails = @json($productDetails);
+
+        // Khi người dùng chọn kích thước
+        $('.size-option').on('click', function(event) {
+            event.preventDefault();
+            selectedSize = $(this).data('value');
+            $('#selected-size').val(selectedSize);
+            $('.size-option').removeClass('active');
+            $(this).addClass('active');
+            updateColorAvailability();
+            updateVariantDetails();
+        });
             // Khi người dùng chọn màu sắc
             $('.color-option').on('click', function(event) {
                 event.preventDefault();
@@ -560,8 +598,12 @@
                     }
                 });
             }
+            selectedColor = $(this).data('value');
+            $('#selected-color').val(selectedColor);
+            $('.color-option').removeClass('active');
+            $(this).addClass('active');
+            updateVariantDetails();
         });
-    }
 
     function updateVariantDetails() {
         if (selectedColor && selectedSize) {
