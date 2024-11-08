@@ -37,13 +37,14 @@
                         <td>{{ $key + 1 }}</td>
                         <td>{{ $detail->products->name }}</td>
                         <td>
-                            <img src="{{ $detail->productDetail->image ?? '' }}" alt="{{ $detail->products->name }}"
+                            <img src="{{ url('storage/'. $detail->products->avata)}}" alt="{{ $detail->products->name }}"
                                 style="width: 70px; height: auto;">
                         </td>
                         <td>{{ $detail->color }}</td>
                         <td>{{ $detail->size }}</td>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ number_format($detail->price, 2) }} $</td>
+                        <td>{{ number_format($detail->price, 0, '', '.') }}
+                        đ</td>
                     </tr>
                     @endforeach
                 </tbody>
