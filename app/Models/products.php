@@ -39,7 +39,7 @@ class products extends Model
     {
         return [
             'slug' => [
-                'source' => 'name'  
+                'source' => 'name'
             ]
         ];
     }
@@ -58,10 +58,8 @@ class products extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
-
     public function productImages()
     {
         return $this->hasMany(ProductImage::class, 'products_id');
     }
-
 }

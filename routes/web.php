@@ -38,7 +38,7 @@ Route::get('/admin', function () {
 });
 
 Route::resource('users', UserController::class);
-Route::prefix('orders')->middleware('auth')->as('orders.')->group(function(){
+Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
     Route::get('/create', [OrderController::class, 'create'])->name('create');
@@ -61,19 +61,18 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     Route::resource('products', AdminProductController::class);
 
     Route::resource('orders', AdminOrderController::class);
-
-    
     // Quản lý kích thước
     Route::resource('sizes', SizeController::class);
     
     // Quản lý màu sắc
     Route::resource('colors', ColorController::class);
 
+
     // Route::resource('users', UserController::class);
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 Route::prefix('admin')
@@ -96,4 +95,3 @@ Route::prefix('admin')
 Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
 Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
 Route::post('/postNew', [NewController::class, 'create'])->name('new.postnew');
-
