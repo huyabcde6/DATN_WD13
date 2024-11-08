@@ -26,9 +26,9 @@ class Order extends Model
         'payment_status',
     ];
 
-    public function orderDetails()
+    public function orderDetail()
     {
-        return $this->hasMany(OrderDetail::class);
+        return $this->hasMany(OrderDetail::class, 'order_id', 'id');
     }
 
     public function user()
