@@ -60,6 +60,23 @@
                      </a>
                  </li>
                  <li>
+                     <a href="#sidebarMarketing" data-bs-toggle="collapse">
+                         <i data-feather="sliders"></i>
+                         <span>Quản lý biến thể</span>
+                         <span class="menu-arrow"></span>
+                     </a>
+                     <div class="collapse" id="sidebarMarketing">
+                         <ul class="nav-second-level">
+                             <li>
+                                 <a class='tp-link' href="{{ route('admin.colors.index') }}">Màu sắc</a>
+                             </li>
+                             <li>
+                                 <a class='tp-link' href="{{ route('admin.sizes.index') }}">Kích thước</a>
+                             </li>
+                         </ul>
+                     </div>
+                 </li>
+                 <li>
 
                      <a class='tp-link' href="admNew">
                          <i data-feather="package"></i>

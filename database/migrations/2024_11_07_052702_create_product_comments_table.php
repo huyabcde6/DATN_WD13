@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\products;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\products;
+
 return new class extends Migration
 {
     /**
@@ -11,10 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_images', function (Blueprint $table) {
+        Schema::create('product_comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(products::class)->constrained()->onDelete('cascade');
-            $table->text('image_path');
+            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(products::class)->constrained();
+            $table->text('description');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_images');
+        Schema::dropIfExists('product_comments');
     }
 };

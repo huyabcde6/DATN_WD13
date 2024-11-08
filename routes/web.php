@@ -9,11 +9,20 @@ use App\Http\Controllers\NewController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
-
+use App\Http\Controllers\CommentController;
 
 Route::get('/', [HomeController::class, 'index']);
+
+
+Route::get('/', function () {
+    return view('layouts.admin');
+});
+
+Route::resource('users', UserController::class);
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
@@ -59,13 +68,12 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     Route::resource('products', AdminProductController::class);
 
     Route::resource('orders', AdminOrderController::class);
+    // Quản lý kích thước
+    Route::resource('sizes', SizeController::class);
+    
+    // Quản lý màu sắc
+    Route::resource('colors', ColorController::class);
 
-
-    // // Quản lý kích thước
-    // Route::resource('sizes', SizeController::class);
-
-    // // Quản lý màu sắc
-    // Route::resource('colors', ColorController::class);
 
     // Route::resource('users', UserController::class);
 });
@@ -95,3 +103,8 @@ Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
 Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
 Route::post('/postNew', [NewController::class, 'create'])->name('new.postnew');
 Route::delete('/dlNew{id}', [NewController::class, 'destroy'])->name('new.destroy');
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
+});
+Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');

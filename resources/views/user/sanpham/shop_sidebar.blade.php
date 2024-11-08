@@ -64,8 +64,10 @@
                         </div>
 
                         <div class="shop_toolbar_btn">
-                            <button data-role="grid_3" type="button" class="active btn-grid-4" title="Grid"><i class="fa fa-th"></i></button>
-                            <button data-role="grid_list" type="button" class="btn-list" title="List"><i class="fa fa-th-list"></i></button>
+                            <button data-role="grid_3" type="button" class="active btn-grid-4" title="Grid"><i
+                                    class="fa fa-th"></i></button>
+                            <button data-role="grid_list" type="button" class="btn-list" title="List"><i
+                                    class="fa fa-th-list"></i></button>
                         </div>
                     </div>
                     <!-- Shopt Top Bar Right End -->
@@ -81,37 +83,54 @@
                     <div class="col-lg-4 col-md-4 col-sm-6 product" data-aos="fade-up" data-aos-delay="200">
                         <div class="product-inner">
                             <div class="thumb">
-                                <a href="single-product.html" class="image">
-                                    <img class="first-image" src="{{ asset('ngdung/assets/images/products/medium-size/2.jpg')}}" alt="Product" />
-                                    <img class="second-image" src="{{ asset('ngdung/assets/images/products/medium-size/3.jpg')}}" alt="Product" />
+                                <a href="{{ route('product.show', $product->slug) }}" class="image">
+                                    <img class="first-image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
+                                        width="200" height="285" />
+                                    <img class="second-image"
+                                        src="{{ asset('ngdung/assets/images/products/medium-size/3.jpg')}}"
+                                        alt="Product" />
                                 </a>
                                 <div class="actions">
-                                    <a href="wishlist.html" title="Wishlist" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                    <a href="#" title="Quickview" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                    <a href="compare.html" title="Compare" class="action compare"><i class="pe-7s-shuffle"></i></a>
+                                    <a href="wishlist.html" title="Wishlist" class="action wishlist"><i
+                                            class="pe-7s-like"></i></a>
+                                    <a href="#" title="Quickview" class="action quickview" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
+                                    <a href="compare.html" title="Compare" class="action compare"><i
+                                            class="pe-7s-shuffle"></i></a>
                                 </div>
                             </div>
                             <div class="content">
-                                <h4 class="sub-title">{{ $product->categories->name }}</h4>
-                                <h5 class="title"><a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h5>
+
+                                <h4 class="sub-title"><a href="single-product.html">{{ $product->categories->name }}</a>
+                                </h4>
+                                <h5 class="title"><a
+                                        href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h5>
                                 <span class="ratings">
                                     <span class="rating-wrap">
                                         <span class="star" style="width: 100%"></span>
                                     </span>
                                     <span class="rating-num">(4)</span>
                                 </span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla tempus.</p>
-                                <span class="price">
-                                    @if ($product->productDetails->isNotEmpty())
-                                    <span class="old">{{ $product->productDetails->first()->price }}</span>
-                                    @else
-                                    <span class="old">Price not available</span>
-                                    @endif
-                                </span>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae
+                                    arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla
+                                    tempus.</p>
+                                    <span class="price">
+    @if ($product->discount_price)
+        <span class="new">{{ number_format($product->discount_price, 0, '', '.') }} ₫</span>&nbsp;&nbsp;
+        <span class="old">{{ number_format($product->price, 0, '', '.') }} ₫</span>
+    @else
+        <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
+    @endif
+</span>
                                 <div class="shop-list-btn">
-                                    <a title="Wishlist" href="#" class="btn btn-sm btn-outline-dark btn-hover-primary wishlist"><i class="fa fa-heart"></i></a>
-                                    <button class="btn btn-sm btn-outline-dark btn-hover-primary" title="Add To Cart">Add To Cart</button>
-                                    <a title="Compare" href="#" class="btn btn-sm btn-outline-dark btn-hover-primary compare"><i class="fa fa-random"></i></a>
+                                    <a title="Wishlist" href="#"
+                                        class="btn btn-sm btn-outline-dark btn-hover-primary wishlist"><i
+                                            class="fa fa-heart"></i></a>
+                                    <button class="btn btn-sm btn-outline-dark btn-hover-primary"
+                                        title="Add To Cart">Add To Cart</button>
+                                    <a title="Compare" href="#"
+                                        class="btn btn-sm btn-outline-dark btn-hover-primary compare"><i
+                                            class="fa fa-random"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +190,8 @@
                         <div class="widget-list mb-10">
                             <h3 class="widget-title mb-4">Search</h3>
                             <div class="search-box">
-                                <input type="text" class="form-control" placeholder="Search Our Store" aria-label="Search Our Store">
+                                <input type="text" class="form-control" placeholder="Search Our Store"
+                                    aria-label="Search Our Store">
                                 <button class="btn btn-dark btn-hover-primary" type="button">
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -311,8 +331,10 @@
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
-                                            <img class="first-image" src="assets/images/products/small-product/1.jpg" alt="Product" />
-                                            <img class="second-image" src="assets/images/products/small-product/5.jpg" alt="Product" />
+                                            <img class="first-image" src="assets/images/products/small-product/1.jpg"
+                                                alt="Product" />
+                                            <img class="second-image" src="assets/images/products/small-product/5.jpg"
+                                                alt="Product" />
                                         </a>
                                     </div>
                                     <div class="content">
@@ -335,8 +357,10 @@
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
-                                            <img class="first-image" src="assets/images/products/small-product/2.jpg" alt="Product" />
-                                            <img class="second-image" src="assets/images/products/small-product/3.jpg" alt="Product" />
+                                            <img class="first-image" src="assets/images/products/small-product/2.jpg"
+                                                alt="Product" />
+                                            <img class="second-image" src="assets/images/products/small-product/3.jpg"
+                                                alt="Product" />
                                         </a>
                                     </div>
                                     <div class="content">
@@ -359,8 +383,10 @@
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
-                                            <img class="first-image" src="assets/images/products/small-product/4.jpg" alt="Product" />
-                                            <img class="second-image" src="assets/images/products/small-product/10.jpg" alt="Product" />
+                                            <img class="first-image" src="assets/images/products/small-product/4.jpg"
+                                                alt="Product" />
+                                            <img class="second-image" src="assets/images/products/small-product/10.jpg"
+                                                alt="Product" />
                                         </a>
                                     </div>
                                     <div class="content">
