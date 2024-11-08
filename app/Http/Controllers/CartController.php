@@ -24,7 +24,7 @@ class CartController extends Controller
         foreach ($cartItems as $item) {
             $subTotal += $item['price'] * $item['quantity'];
         }
-
+       
         $total = $subTotal + $shippingFee;
         return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
@@ -79,10 +79,10 @@ class CartController extends Controller
                     'product_name' => $productDetail->products->name,
                     'product_id' => $productDetail->products_id,
                     'price' => $productDetail->price,
-                    'image' => $productDetail->image,
+                    'image' => $productDetail->products->avata,
                 ];
             }
-
+            
             // Lưu giỏ hàng vào session
             Session::put('cart', $cart);
 

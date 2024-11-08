@@ -43,54 +43,37 @@
         <!-- Breadcrumb Area End -->
 
     </div>
-    <!-- Breadcrumb Section End -->
 
-    <!-- Shop Section Start -->
-    <div class="section section-margin">
-        <div class="container">
+    <!-- Breadcrumb Area End -->
 
-            <div class="row">
-                <div class="col-lg-6 offset-lg-0 col-md-8 offset-md-2 col-custom">
+</div>
+<!-- Breadcrumb Section End -->
 
-                    <!-- Product Details Image Start -->
-                    <div class="product-details-img d-flex overflow-hidden flex-row">
+<!-- Shop Section Start -->
+<div class="section section-margin">
+    <div class="container">
 
-                        <!-- Single Product Image Start -->
-                        <div
-                            class="single-product-vertical-tab vertical-style-tab swiper-container gallery-top order-1 ms-0 me-2">
-                            <div class="swiper-wrapper popup-gallery">
-                                <a class="swiper-slide h-auto"
-                                    href="{{ asset('ngdung/assets/images/products/large-size/1.jpg') }}">
-                                    <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/1.jpg') }}"
-                                        alt="Product">
-                                </a>
-                                <a class="swiper-slide h-auto"
-                                    href="{{ asset('ngdung/assets/images/products/large-size/2.jpg') }}">
-                                    <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/2.jpg') }}"
-                                        alt="Product">
-                                </a>
-                                <a class="swiper-slide h-auto"
-                                    href="{{ asset('ngdung/assets/images/products/large-size/3.jpg') }}">
-                                    <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/3.jpg') }}"
-                                        alt="Product">
-                                </a>
-                                <a class="swiper-slide h-auto"
-                                    href="{{ asset('ngdung/assets/images/products/large-size/4.jpg') }}">
-                                    <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/4.jpg') }}"
-                                        alt="Product">
-                                </a>
-                                <a class="swiper-slide h-auto"
-                                    href="{{ asset('ngdung/assets/images/products/large-size/5.jpg') }}">
-                                    <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/5.jpg') }}"
-                                        alt="Product">
-                                </a>
-                                <a class="swiper-slide h-auto"
-                                    href="{{ asset('ngdung/assets/images/products/large-size/6.jpg') }}">
-                                    <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/6.jpg') }}"
-                                        alt="Product">
-                                </a>
-                            </div>
+        <div class="row">
+            <div class="col-lg-6 offset-lg-0 col-md-8 offset-md-2 col-custom">
 
+                <!-- Product Details Image Start -->
+                <div class="product-details-img d-flex overflow-hidden flex-row">
+
+                    <!-- Single Product Image Start -->
+                    <div
+                        class="single-product-vertical-tab vertical-style-tab swiper-container gallery-top order-1 ms-0 me-2">
+                        <div class="swiper-wrapper popup-gallery">
+                            <a class="swiper-slide h-auto"
+                                href="{{ asset('ngdung/assets/images/products/large-size/1.jpg')}}">
+                                <img class="w-100 h-100" src="{{ url('storage/'. $product->avata) }}" alt="Product">
+                            </a>
+                            @foreach($product->productImages as $image)
+                            <a class="swiper-slide h-auto"
+                                href="{{ asset('ngdung/assets/images/products/large-size/1.jpg')}}">
+                                <img class="w-100 h-100" src="{{ url('storage/'. $image->image_path) }}" alt="Product">
+                            </a>
+                            @endforeach
+                        </div>
                             <!-- Swiper Pagination Start -->
                             <!-- <div class="swiper-pagination d-none"></div> -->
                             <!-- Swiper Pagination End -->
@@ -99,51 +82,23 @@
                             <!-- <div class="swiper-product-tab-next swiper-button-next"><i class="pe-7s-angle-right"></i></div>
                                                 <div class="swiper-product-tab-prev swiper-button-prev"><i class="pe-7s-angle-left"></i></div> -->
                             <!-- Next Previous Button End -->
+                    </div>
+                    <!-- Single Product Image End -->
 
+                    <!-- Single Product Thumb Start -->
+                    <div
+                        class="product-thumb-vertical vertical-style-thumb overflow-hidden swiper-container gallery-thumbs order-2">
+                        <div class="swiper-wrapper">
+                            @foreach($product->productImages as $image)
+                            <div class="swiper-slide">
+                                <img src="{{ url('storage/'. $image->image_path) }}" alt="Product">
+                            </div>
+                            @endforeach
                         </div>
-                        <!-- Single Product Image End -->
 
-                        <!-- Single Product Thumb Start -->
-                        <div
-                            class="product-thumb-vertical vertical-style-thumb overflow-hidden swiper-container gallery-thumbs order-2">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <img src="{{ asset('ngdung/assets/images/products/small-product/1.jpg') }}"
-                                        alt="Product">
-                                </div>
-                                <div class="swiper-slide">
-                                    <img src="{{ asset('ngdung/assets/images/products/small-product/2.jpg') }}"
-                                        alt="Product">
-                                </div>
-                                <div class="swiper-slide">
-                                    <img src="{{ asset('ngdung/assets/images/products/small-product/3.jpg') }}"
-                                        alt="Product">
-                                </div>
-                                <div class="swiper-slide">
-                                    <img src="{{ asset('ngdung/assets/images/products/small-product/4.jpg') }}"
-                                        alt="Product">
-                                </div>
-                                <div class="swiper-slide">
-                                    <img src="{{ asset('ngdung/assets/images/products/small-product/5.jpg') }}"
-                                        alt="Product">
-                                </div>
-                                <div class="swiper-slide">
-                                    <img src="{{ asset('ngdung/assets/images/products/small-product/6.jpg') }}"
-                                        alt="Product">
-                                </div>
-                            </div>
-
-                            <!-- Swiper Pagination Start -->
-                            <!-- <div class="swiper-pagination d-none"></div> -->
-                            <!-- Swiper Pagination End -->
-
-                            <!-- Next Previous Button Start -->
-                            <div class="swiper-button-vertical-next  swiper-button-next"><i class="pe-7s-angle-right"></i>
-                            </div>
-                            <div class="swiper-button-vertical-prev swiper-button-prev"><i class="pe-7s-angle-left"></i>
-                            </div>
-                            <!-- Next Previous Button End -->
-
+                        <!-- Swiper Pagination Start -->
+                        <!-- <div class="swiper-pagination d-none"></div> -->
+                        <!-- Swiper Pagination End -->
                         </div>
                         <!-- Single Product Thumb End -->
 
@@ -160,15 +115,18 @@
                         </div>
                         <!-- Product Head End -->
 
-                        <!-- Price Box Start -->
-                        <div class="price-box mb-2">
-                            <span class="regular-price" id="current-price">${{ number_format($product->price, 2) }}</span>
-                            <!-- Giữ lại giá sản phẩm chính -->
 
-                            @if ($product->discount_price)
-                                <span class="old-price"><del>${{ number_format($product->discount_price, 2) }}</del></span>
-                            @endif
-                        </div>
+                    <!-- Price Box Start -->
+                    <div class="price-box mb-2">
+                        <span class="regular-price" id="current-price">{{ number_format($product->discount_price, 0, '', '.') }}
+                            đ</span>
+                        <!-- Giữ lại giá sản phẩm chính -->
+
+                        @if($product->discount_price)
+                        <span class="old-price"><del>{{ number_format($product->price, 0, '', '.') }} ₫
+                            </del></span>
+                        @endif
+                    </div>
 
                         <!-- Price Box End -->
 
@@ -602,18 +560,19 @@
                     }
                 });
             }
+        });
+    }
 
-            function updateVariantDetails() {
-                if (selectedColor && selectedSize) {
-                    const variant = variantDetails.find(v => v.color_id == selectedColor && v.size_id ==
-                        selectedSize);
-                    if (variant) {
-                        $('#current-price').text(`$${variant.price.toFixed(2)}`);
-                        $('#current-sku').text(`SKU: ${variant.product_code}`);
-                        $('#current-stock').text(`In Stock: ${variant.quantity}`);
-                        $('#product-quantity').attr('max', variant.quantity);
-                    }
-                }
+    function updateVariantDetails() {
+        if (selectedColor && selectedSize) {
+            const variant = variantDetails.find(v => v.color_id == selectedColor && v.size_id == selectedSize);
+            if (variant) {
+                $('#current-price').text(
+                    `${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(variant.discount_price)}`
+                );
+                $('#current-sku').text(`SKU: ${variant.product_code}`);
+                $('#current-stock').text(`In Stock: ${variant.quantity}`);
+                $('#product-quantity').attr('max', variant.quantity);
             }
 
             $('.inc.qtybutton').on('click', function() {

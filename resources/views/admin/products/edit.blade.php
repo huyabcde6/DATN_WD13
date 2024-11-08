@@ -155,6 +155,20 @@
                                         style="width: 100px; height: auto;">
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="images">Hình ảnh phụ sản phẩm</label>
+                                    <input class="form-control mb-3" type="file" name="images[]" id="images" multiple>
+
+                                    <div class="mt-2">
+                                        @foreach($products->productImages as $image)
+                                        <div style="display: inline-block; position: relative; margin: 5px;">
+                                            <img src="{{ url('storage/'. $image->image_path) }}" alt="Hình ảnh phụ"
+                                                style="width: 100px; height: 100px;">
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
                                 <div class="button-group">
                                     <label for="sizes">Chọn kích thước</label>
                                     <div class="options" id="sizes">
@@ -232,24 +246,6 @@
 <script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
 
 <script>
-const quill = new Quill('#quill-editor', {
-    theme: 'snow',
-    modules: {
-        toolbar: [
-            ['bold', 'italic', 'underline'],
-            ['code-block'],
-            [{
-                'list': 'ordered'
-            }, {
-                'list': 'bullet'
-            }],
-            [{
-                'header': [1, 2, 3, false]
-            }],
-            ['clean']
-        ]
-    }
-});
 
 document.addEventListener('DOMContentLoaded', function() {
     var quill = new Quill("#quill-editor", {

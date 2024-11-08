@@ -52,7 +52,7 @@
                             @foreach ($cartItems as $item)
                             <tr>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ $item['image'] ?? '' }}" alt="Product" /></a>
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
                                     <a href="#">{{ $item['product_name'] }} <br> {{ $item['size'] }} / {{ $item['color'] }}</a>
