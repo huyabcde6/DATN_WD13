@@ -13,9 +13,12 @@ use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
-
+use App\Http\Controllers\CommentController;
 
 Route::get('/', [HomeController::class, 'index']);
+
+
+Route::resource('users', UserController::class);
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
@@ -95,3 +98,9 @@ Route::prefix('admin')
 Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
 Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
 Route::post('/postNew', [NewController::class, 'create'])->name('new.postnew');
+Route::delete('/dlNew{id}', [NewController::class, 'destroy'])->name('new.destroy');
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
+});
+Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');

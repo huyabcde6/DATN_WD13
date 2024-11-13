@@ -14,9 +14,7 @@
                 <p><strong>Số điện thoại:</strong> {{ $order->number_phone }}</p>
                 <p><strong>Địa chỉ:</strong> {{ $order->address }}</p>
                 <p><strong>Ghi chú:</strong> {{ $order->ghi_chu }}</p>
-                <p><strong>Tổng tiền:</strong>
-                    {{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 2) }}
-                    $</p>
+                <p><strong>Tổng tiền:</strong> {{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 0, '', ',') }} ₫</p>
             </div>
 
             <table class="table table-bordered mt-4 text-center">
@@ -43,8 +41,7 @@
                         <td>{{ $detail->color }}</td>
                         <td>{{ $detail->size }}</td>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ number_format($detail->price, 0, '', '.') }}
-                        đ</td>
+                        <td>{{ number_format($detail->price, 0, '', ',') }} ₫</td>
                     </tr>
                     @endforeach
                 </tbody>

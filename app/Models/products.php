@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Egulias\EmailValidator\Parser\Comment;
 
 class products extends Model
 {
@@ -61,5 +62,11 @@ class products extends Model
     public function productImages()
     {
         return $this->hasMany(ProductImage::class, 'products_id');
+    }
+    public function order() {
+        return $this->hasMany(Order::class);
+    }
+    public function productComments() {
+        return $this->hasMany(productComment::class);
     }
 }

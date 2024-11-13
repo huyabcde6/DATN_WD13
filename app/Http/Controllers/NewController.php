@@ -33,11 +33,11 @@ class NewController extends Controller
             $param['new_date'] = date("d/m/Y");
             $param['view'] = 0;
             if ($request->hasFile('avata')) {
-                $params['avata'] = $request->file('avata')->store('update/');
-                // dd($request->file('avata'));
+                $params['avata'] = $request->file('avata')->store('update', 'public');
             } else {
                 $params['avata'] = null;
             }
+            // dd($params['avata']);
             // News::create($params);
             DB::table('news')->insert([
                 'title' => $param['title'],
@@ -71,5 +71,11 @@ class NewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy() {}
+    public function destroy($id)
+    {
+        $products = News::findOrFail($id);
+        $products->delete();
+
+        return redirect()->route('new.show')->with('success', 'Tin tức đã được xóa .');
+    }
 }
