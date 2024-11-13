@@ -19,15 +19,18 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Hiển thị danh sách các đơn hàng.
      */
     public function index()
-    {   
-        $orders = Auth::user()->order()->with('status')->get();;
+    {
+        $orders = Auth::user()->order()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
 
         return view('user.khac.my_account', compact('orders'));
     }
 
+    /**
+     * Hiển thị chi tiết của một đơn hàng cụ thể.
+     */
     public function show($id)
     {
         $order = Order::with(['orderDetails.productDetail.products', 'status'])->findOrFail($id);
@@ -35,48 +38,54 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Hiển thị form tạo đơn hàng mới.
      */
     public function create()
     {
         $user = Auth::user();
 
+        // Lấy các sản phẩm trong giỏ hàng từ session
         $cartItems = Session::get('cart', []);
-        if(!empty($cartItems)){
+        if (!empty($cartItems)) {
 
             $subTotal = 0;
             foreach ($cartItems as $item) {
-                $subTotal += $item['price'] * $item['quantity'];
+                $subTotal += $item['price'] * $item['quantity']; // Tính tổng tiền của giỏ hàng
             }
 
-            $shippingFee = 5.00;
-            $total = $subTotal + $shippingFee;
+            // Phí vận chuyển bằng VND
+            $shippingFee = 30000; // 30,000 VND
+            $total = $subTotal + $shippingFee; // Tổng cộng bao gồm phí vận chuyển
 
             return view('user.sanpham.thanhtoan', compact(
                 'cartItems', 'subTotal', 'shippingFee', 'total', 
                 'user'
             ));
         }
+
+        return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
     }
 
-
     /**
-     * Store a newly created resource in storage.
+     * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
     public function store(Request $request)
     {
         if ($request->isMethod('POST')) {
             DB::beginTransaction();
             try {
+                // Chuẩn bị dữ liệu cho đơn hàng
                 $params = $request->except('_token');
-                $params['order_code'] = $this->generateUniqueOrderCode();
-                $params['date_order'] = now();
-                $params['status_donhang_id'] = 1;
+                $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
+                $params['date_order'] = now(); // Lấy thời gian hiện tại
+                $params['status_donhang_id'] = 1; // Trạng thái đơn hàng mặc định là chờ xử lý
 
+                // Tạo đơn hàng
                 $order = Order::query()->create($params);
                 $orderId = $order->id;
                 $carts = Session::get('cart', []);
 
+                // Thêm chi tiết đơn hàng
                 foreach ($carts as $productDetailId => $value) {
                     $orderDetail = $order->orderDetails()->create([
                         'order_id' => $orderId,
@@ -87,6 +96,7 @@ class OrderController extends Controller
                         'price' => $value['price'],
                     ]);
 
+                    // Giảm số lượng sản phẩm trong kho sau khi mua
                     $productDetail = ProductDetail::find($productDetailId);
                     if ($productDetail) {
                         $productDetail->quantity -= $value['quantity'];
@@ -96,26 +106,38 @@ class OrderController extends Controller
 
                 DB::commit();
 
+                // Gửi email xác nhận đơn hàng
                 Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
 
+                // Xóa giỏ hàng trong session
                 Session::put('cart', []);
                 return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được tạo thành công.');
-
             } catch (\Exception $e) {
                 DB::rollBack();
-                \Log::error('Order creation error: ' . $e->getMessage());
+                Log::error('Lỗi tạo đơn hàng: ' . $e->getMessage());
                 return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra trong quá trình tạo đơn hàng: ' . $e->getMessage());
             }
         }
+
+        return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
     }
 
-    function generateUniqueOrderCode() {
+    /**
+     * Tạo mã đơn hàng duy nhất.
+     */
+    public function generateUniqueOrderCode()
+    {
         do {
+            // Tạo mã đơn hàng bằng cách sử dụng ID người dùng và thời gian hiện tại
             $orderCode = 'ORD-' . Auth::id() . '-' . now()->timestamp;
         } while (Order::where('order_code', $orderCode)->exists());
+
         return $orderCode;
     }
 
+    /**
+     * Cập nhật trạng thái đơn hàng (hủy hoặc đã giao).
+     */
     public function update(Request $request, $id)
     {
         if ($request->isMethod('POST')) {
@@ -125,6 +147,7 @@ class OrderController extends Controller
                 $order = Order::findOrFail($id);
                 $params = [];
 
+                // Kiểm tra hành động hủy đơn hàng hoặc giao hàng
                 if ($request->has('huy_don_hang')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_HUY);
                 } elseif ($request->has('da_giao_hang')) {
@@ -133,17 +156,18 @@ class OrderController extends Controller
                     throw new \Exception('Hành động không hợp lệ.');
                 }
 
+                // Cập nhật trạng thái đơn hàng
                 $order->update($params);
 
                 DB::commit();
                 return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
             } catch (\Exception $e) {
                 DB::rollBack();
-                \Log::error('Order update error: ' . $e->getMessage());
+                Log::error('Lỗi cập nhật đơn hàng: ' . $e->getMessage());
                 return redirect()->route('orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
             }
         }
+
         return redirect()->route('orders.index')->with('error', 'Phương thức không hợp lệ.');
     }
-    
 }

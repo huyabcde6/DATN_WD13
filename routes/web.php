@@ -18,10 +18,6 @@ use App\Http\Controllers\CommentController;
 Route::get('/', [HomeController::class, 'index']);
 
 
-Route::get('/', function () {
-    return view('layouts.admin');
-});
-
 Route::resource('users', UserController::class);
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');

@@ -86,7 +86,7 @@
                                                         <td>{{ $order->order_code }}</td>
                                                         <td>{{ $order->created_at->format('d-m-Y') }}</td>
                                                         <td>{{ $order->status->type ?? 'N/A' }}</td>
-                                                        <td>{{ number_format($order->total_price, 2) }} $</td>
+                                                        <td>{{ number_format($order->total_price, 0, ',', '.') }} đ</td>
                                                         <td>
                                                             <a href="{{ route('orders.show', $order->id) }}" class="btn btn-dark btn-hover-primary btn-sm rounded-0">View</a>
                                                             <form action="{{ route('orders.update', $order->id) }}" method="POST" style="display:inline;">

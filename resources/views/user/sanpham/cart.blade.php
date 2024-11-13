@@ -8,12 +8,12 @@
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">Shopping Cart</h1>
+                <h1 class="title">Giỏ Hàng</h1>
                 <ul>
                     <li>
-                        <a href="/">Home</a>
+                        <a href="/">Trang Chủ</a>
                     </li>
-                    <li class="active">Shopping Cart</li>
+                    <li class="active">Giỏ Hàng</li>
                 </ul>
             </div>
         </div>
@@ -37,12 +37,12 @@
                         <!-- Table Head Start -->
                         <thead>
                             <tr>
-                                <th class="pro-thumbnail">Image</th>
-                                <th class="pro-title">Product</th>
-                                <th class="pro-price">Price</th>
-                                <th class="pro-quantity">Quantity</th>
-                                <th class="pro-subtotal">Total</th>
-                                <th class="pro-remove">Remove</th>
+                                <th class="pro-thumbnail">Hình ảnh</th>
+                                <th class="pro-title">Sản phẩm</th>
+                                <th class="pro-price">Giá</th>
+                                <th class="pro-quantity">Số lượng</th>
+                                <th class="pro-subtotal">Tổng</th>
+                                <th class="pro-remove">Xóa</th>
                             </tr>
                         </thead>
                         <!-- Table Head End -->
@@ -52,29 +52,38 @@
                             @foreach ($cartItems as $item)
                             <tr>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" alt="Product" /></a>
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
+                                            alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
-                                    <a href="#">{{ $item['product_name'] }} <br> {{ $item['size'] }} / {{ $item['color'] }}</a>
+                                    <a href="#">{{ $item['product_name'] }} <br> {{ $item['size'] }} /
+                                        {{ $item['color'] }}</a>
                                 </td>
-                                <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 2) }} $</span></td>
+                                <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
+                                        đ</span></td>
                                 <td class="pro-quantity">
                                     <div class="quantity">
                                         <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}" type="text" data-id="{{ $item['product_detail_id'] }}">
-                                            <div class="dec qtybutton" data-id="{{ $item['product_detail_id'] }}">-</div>
-                                            <div class="inc qtybutton" data-id="{{ $item['product_detail_id'] }}">+</div>
+                                            <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}"
+                                                type="text" data-id="{{ $item['product_detail_id'] }}">
+                                            <div class="dec qtybutton" data-id="{{ $item['product_detail_id'] }}">-
+                                            </div>
+                                            <div class="inc qtybutton" data-id="{{ $item['product_detail_id'] }}">+
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="pro-subtotal">
-                                    <span class="subtotal-{{ $item['product_detail_id'] }}">{{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 2) }} $</span>
+                                    <span
+                                        class="subtotal-{{ $item['product_detail_id'] }}">{{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 0, ',', '.') }}
+                                        đ</span>
                                 </td>
                                 <td class="pro-remove">
                                     <form action="{{ route('cart.remove', $item['product_detail_id']) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"><i class="pe-7s-trash"></i></button>
+                                        <button type="submit" class="btn btn-danger"><i
+                                                class="pe-7s-trash"></i></button>
                                     </form>
                                 </td>
                             </tr>
@@ -91,16 +100,16 @@
 
                     <!-- Apply Coupon Wrapper Start -->
                     <div class="apply-coupon-wrapper">
-                        <form action="#" method="post" class=" d-block d-md-flex">
-                            <input type="text" placeholder="Enter Your Coupon Code" required />
-                            <button class="btn btn-dark btn-hover-primary rounded-0">Apply Coupon</button>
+                        <form action="#" method="post" class="d-block d-md-flex">
+                            <input type="text" placeholder="Nhập mã giảm giá của bạn" required />
+                            <button class="btn btn-dark btn-hover-primary rounded-0">Áp dụng mã</button>
                         </form>
                     </div>
                     <!-- Apply Coupon Wrapper End -->
 
                     <!-- Cart Update Start -->
                     <div class="cart-update mt-sm-16">
-                        <a href="#" class="btn btn-dark btn-hover-primary rounded-0">Update Cart</a>
+                        <a href="#" class="btn btn-dark btn-hover-primary rounded-0">Cập nhật giỏ hàng</a>
                     </div>
                     <!-- Cart Update End -->
 
@@ -120,26 +129,27 @@
                     <div class="cart-calculate-items">
 
                         <!-- Cart Calculate Items Title Start -->
-                        <h3 class="title">Cart Totals</h3>
+                        <h3 class="title">Tổng giỏ hàng</h3>
                         <!-- Cart Calculate Items Title End -->
 
                         <!-- Responsive Table Start -->
                         <div class="table-responsive">
                             <table class="table">
-                            <tr>
-                                <td>Sub Total</td>
-                                <td class="sub-total">{{ number_format($subTotal, 2) }} $</td>
-                            </tr>
-                            <tr>
-                                <td>Shipping</td>
-                                <td>{{ number_format($shippingFee, 2) }} $</td> <!-- Hiển thị phí vận chuyển -->
-                            </tr>
-                            <tr class="total">
-                                <td>Total</td>
-                                <td class="total-amount">
-                                    {{ number_format($total, 2) }} $ <!-- Hiển thị tổng tiền bao gồm phí ship -->
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Tổng phụ</td>
+                                    <td class="sub-total">{{ number_format($subTotal, 0, ',', '.') }} đ</td>
+                                </tr>
+                                <tr>
+                                    <td>Phí vận chuyển</td>
+                                    <td>{{ number_format(30000, 0, ',', '.') }} đ</td> <!-- Hiển thị phí vận chuyển -->
+                                </tr>
+                                <tr class="total">
+                                    <td>Tổng cộng</td>
+                                    <td class="total-amount">
+                                        {{ number_format($total, 0, ',', '.') }} đ
+                                        <!-- Hiển thị tổng tiền bao gồm phí ship -->
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                         <!-- Responsive Table End -->
@@ -148,7 +158,8 @@
                     <!-- Cart Calculate Items End -->
 
                     <!-- Cart Checkout Button Start -->
-                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Proceed To Checkout</a>
+                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
+                        hành thanh toán</a>
                     <!-- Cart Checkout Button End -->
 
                 </div>
@@ -172,9 +183,9 @@
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
 
-    var shippingFee = 5.00;
+    var shippingFee = 30000; // Phí vận chuyển 30000 đồng
 
     // Xử lý sự kiện tăng/giảm số lượng
     $('.qtybutton').on('click', function() {
@@ -202,21 +213,29 @@
                 if (response.status === 'success') {
                     inputField.val(quantity);
 
+                    // Update the subtotal for this product
                     var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
-                    subtotalCell.text(response.item_price + ' $');
+                    var formattedSubtotal = response.item_price;  // Ensure price formatting here
+                    subtotalCell.text(formattedSubtotal);
 
+                    // Calculate the total for the cart
                     var subTotal = 0;
                     $('.pro-subtotal span').each(function() {
-                        subTotal += parseFloat($(this).text());
+                        var currentSubtotal = $(this).text().replace(' đ', '').replace('.', '').trim();
+                        subTotal += parseFloat(currentSubtotal);
                     });
 
-                    $('.total-amount').text((subTotal + shippingFee).toFixed(2) + ' $');
-                    $('.sub-total').text(subTotal.toFixed(2) + ' $');
+                    // Update the displayed totals
+                    $('.sub-total').text(subTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
                 }
+            },
+            error: function() {
+                alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
             }
         });
     });
 });
 </script>
-@endsection
 
+@endsection
