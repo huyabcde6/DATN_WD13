@@ -66,7 +66,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     Route::resource('orders', AdminOrderController::class);
     // Quản lý kích thước
     Route::resource('sizes', SizeController::class);
-    
+
     // Quản lý màu sắc
     Route::resource('colors', ColorController::class);
 
@@ -95,10 +95,21 @@ Route::prefix('admin')
     });
 
 // Tin tức
-Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
-Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
-Route::post('/postNew', [NewController::class, 'create'])->name('new.postnew');
-Route::delete('/dlNew{id}', [NewController::class, 'destroy'])->name('new.destroy');
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::prefix('new')
+            ->name('new.')
+            ->controller(NewController::class)
+            ->group(function () {
+                Route::get('/admNew', 'index')->name('index');
+                Route::get('/addNew', 'store')->name('store');
+                Route::post('/postNew', 'create')->name('postnew');
+                Route::delete('/dlNew{id}', 'destroy')->name('destroy');
+                Route::get('/edit{id}', 'show')->name('show');
+                Route::post('/update{id}', 'update')->name('update');
+            });
+    });
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');

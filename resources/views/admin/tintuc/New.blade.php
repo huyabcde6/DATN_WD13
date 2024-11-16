@@ -93,7 +93,7 @@ Danh sách Tin Tức
 <div class="d-flex justify-content-center m-3">
     <h2>Danh Sách Tin Tức</h2>
 </div>
-<a href="addNew"><button type="button" class="btn btn-info bg-5">Thêm mới</button></a>
+<a href="{{ route('admin.new.store') }}"><button type="button" class="btn btn-info bg-5">Thêm mới</button></a>
 <div class="row">
 
     <div class="col-12">
@@ -129,12 +129,12 @@ Danh sách Tin Tức
                                 </label>
                             </td>
                             <td class="d-flex justify-content-center align-items-center">
-                                <a href="{{ route('admin.products.edit', $tiem->id) }}"
+                                <a href="{{ route('admin.new.show', $tiem->id) }}"
                                     class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
                                     data-bs-toggle="tooltip" title="Sửa">
                                     <i class="fa fa-pencil-alt"></i>
                                 </a>
-                                <form action="{{ route('new.destroy', $tiem->id) }}" method="POST"
+                                <form action="{{ route('admin.new.destroy', $tiem->id) }}" method="POST"
                                     class="form-delete">
                                     @csrf
                                     @method('DELETE')

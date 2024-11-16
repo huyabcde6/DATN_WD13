@@ -48,7 +48,7 @@ class NewController extends Controller
                 'new_date' => Carbon::now()->format('Y-m-d H:i:s'),
                 'view' => 0
             ]);
-            return redirect()->route('new.show')->with('success', 'Thêm tin tức thành công!');
+            return redirect()->route('admin.new.index')->with('success', 'Thêm tin tức thành công!');
         }
     }
 
@@ -57,7 +57,8 @@ class NewController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $db = DB::table('news')->where('id', $id)->first();
+        return view('admin.tintuc.editNew', compact('db'));
     }
 
     /**
@@ -65,7 +66,29 @@ class NewController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        if ($request->isMethod('POST')) {
+            $db = DB::table('news')->where('id', $id)->first();
+            $param = $request->except('_token');
+            $param['new_date'] = date("d/m/Y");
+            $param['view'] = 0;
+            if ($request->hasFile('avata')) {
+                $params['avata'] = $request->file('avata')->store('update', 'public');
+            } else {
+                $params['avata'] = $db->avata;
+            }
+            // dd($params['avata']);
+            // News::create($params);
+            DB::table('news')->where('id', $id)->update([
+                'title' => $param['title'],
+                'description' => $param['description'],
+                'status' => $param['status'],
+                'detail' => $param['detail'],
+                'avata' => $params['avata'],
+                'new_date' => Carbon::now()->format('Y-m-d H:i:s'),
+                'view' => 0
+            ]);
+            return redirect()->route('admin.new.index')->with('success', 'Thêm tin tức thành công!');
+        }
     }
 
     /**
@@ -76,6 +99,6 @@ class NewController extends Controller
         $products = News::findOrFail($id);
         $products->delete();
 
-        return redirect()->route('new.show')->with('success', 'Tin tức đã được xóa .');
+        return redirect()->route('admin.new.index')->with('success', 'Tin tức đã được xóa .');
     }
 }
