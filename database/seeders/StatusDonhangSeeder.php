@@ -14,14 +14,14 @@ class StatusDonhangSeeder extends Seeder
     {
         // Insert các trạng thái đơn hàng
         StatusDonHang::insert([
-            ['type' => \App\Models\StatusDonHang::CHO_XU_LY],
-            ['type' => \App\Models\StatusDonHang::DANG_XU_LY],
-            ['type' => \App\Models\StatusDonHang::DA_GIAO],
-            ['type' => \App\Models\StatusDonHang::HOAN_TAT],
-            ['type' => \App\Models\StatusDonHang::YEU_CAU_TRA_HANG],
-            ['type' => \App\Models\StatusDonHang::DA_TRA_HANG],
-            ['type' => \App\Models\StatusDonHang::DA_HUY],
-            ['type' => \App\Models\StatusDonHang::THAT_BAI],
+            ['type' => StatusDonHang::CHO_XAC_NHAN],
+            ['type' => StatusDonHang::DA_XAC_NHAN],
+            ['type' => StatusDonHang::DANG_VAN_CHUYEN],
+            ['type' => StatusDonHang::DA_GIAO_HANG],
+            ['type' => StatusDonHang::HOAN_THANH],
+            ['type' => StatusDonHang::HOAN_HANG],
+            ['type' => StatusDonHang::DA_HUY],
+            ['type' => StatusDonHang::CHO_HOAN],
         ]);
     }
 }
