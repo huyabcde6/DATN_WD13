@@ -19,7 +19,11 @@ class StatusDonHang extends Model
     const DA_XAC_NHAN = 'Đã xác nhận';    
     const DANG_VAN_CHUYEN = 'Đang vận chuyển';
     const DA_GIAO_HANG = 'Đã giao hàng';
+    const HOAN_THANH = 'Hoàn thành';
+    const HOAN_HANG = 'Hoàn hàng';
     const DA_HUY = 'Đã hủy';
+    const CHO_HOAN = 'Chờ hoàn';
+
 
     public function orders()
     {
