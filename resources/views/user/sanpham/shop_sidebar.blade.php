@@ -84,11 +84,8 @@
                         <div class="product-inner">
                             <div class="thumb">
                                 <a href="{{ route('product.show', $product->slug) }}" class="image">
-                                    <img class="first-image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
-                                        width="200" height="285" />
-                                    <img class="second-image"
-                                        src="{{ asset('ngdung/assets/images/products/medium-size/3.jpg')}}"
-                                        alt="Product" />
+                                    <img class="image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
+                                        width="200" height="auto" />
                                 </a>
                                 <div class="actions">
                                     <a href="wishlist.html" title="Wishlist" class="action wishlist"><i
@@ -114,14 +111,13 @@
                                     arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla
                                     tempus.</p>
                                     <span class="price">
-    @if ($product->discount_price)
-        <span class="new">{{ number_format($product->discount_price, 0, '', '.') }} ₫</span>&nbsp;&nbsp;
-        <span class="old">{{ number_format($product->price, 0, '', '.') }} ₫</span>
-    @else
-        <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
-    @endif
-</span>
-
+                                    @if ($product->discount_price)
+                                        <span class="new">{{ number_format($product->discount_price, 0, '', '.') }} ₫</span>&nbsp;&nbsp;
+                                        <span class="old">{{ number_format($product->price, 0, '', '.') }} ₫</span>
+                                    @else
+                                        <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
+                                    @endif
+                                </span>
 
                                 <div class="shop-list-btn">
                                     <a title="Wishlist" href="#"

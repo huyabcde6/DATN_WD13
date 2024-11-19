@@ -109,24 +109,24 @@
                                             </a> 
                                             <strong> × {{ $item['quantity'] }}</strong>
                                         </td>
-                                        <td class="cart-product-total text-end">{{ number_format($item['price'] * $item['quantity'], 2) }}$</td>
+                                        <td class="cart-product-total text-end">{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}₫</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <th class="text-start">Subtotal</th>
-                                    <td class="text-end">{{ number_format($subTotal, 2) }}$</td>
+                                    <td class="text-end">{{ number_format($subTotal, 0, ',', '.') }} ₫</td>
                                     <input type="hidden" name="subtotal" value="{{ $subTotal }}">
                                 </tr>
                                 <tr>
                                     <th class="text-start">Shipping Fee</th>
-                                    <td class="text-end">{{ number_format($shippingFee, 2) }}$</td>
+                                    <td class="text-end">{{ number_format($shippingFee, 0, ',', '.') }} ₫</td>
                                     <input type="hidden" name="shipping_fee" value="{{ $shippingFee }}">
                                 </tr>
                                 <tr>
                                     <th class="text-start">Total</th>
-                                    <td class="text-end"><strong>{{ number_format($total, 2) }}$</strong></td>
+                                    <td class="text-end"><strong>{{ number_format($total, 0, ',', '.') }} ₫</strong></td>
                                     <input type="hidden" name="total_price" value="{{ $total }}">
                                 </tr>
                             </tfoot>
@@ -157,7 +157,6 @@
                 <!-- Payment Method End -->
 
             </div>
-            
             
         </div>
         </form>

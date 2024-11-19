@@ -59,7 +59,7 @@ Danh sách Tin Tức
 
     /*------ ADDED CSS ---------*/
     .slider:after {
-        content: 'DISABLED';
+        content: 'Ẩn';
         color: white;
         display: block;
         position: absolute;
@@ -71,7 +71,7 @@ Danh sách Tin Tức
     }
 
     input:checked+.slider:after {
-        content: 'ENABLED';
+        content: 'Hiện';
     }
 
     /*--------- END --------*/
@@ -93,7 +93,7 @@ Danh sách Tin Tức
 <div class="d-flex justify-content-center m-3">
     <h2>Danh Sách Tin Tức</h2>
 </div>
-<a href="addNew"><button type="button" class="btn btn-info bg-5">Thêm mới</button></a>
+<a href="{{ route('admin.new.store') }}"><button type="button" class="btn btn-info bg-5">Thêm mới</button></a>
 <div class="row">
 
     <div class="col-12">
@@ -124,11 +124,27 @@ Danh sách Tin Tức
                             <td>{{$tiem->new_date}}</td>
                             <td>
                                 <label class="switch">
-                                    <input type="checkbox">
+                                    <input type="checkbox" {{ $tiem->status ? 'checked' : '' }}>
                                     <span class="slider"></span>
                                 </label>
                             </td>
-                            <td>{{$tiem->title}}</td>
+                            <td class="d-flex justify-content-center align-items-center">
+                                <a href="{{ route('admin.new.show', $tiem->id) }}"
+                                    class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
+                                    data-bs-toggle="tooltip" title="Sửa">
+                                    <i class="fa fa-pencil-alt"></i>
+                                </a>
+                                <form action="{{ route('admin.new.destroy', $tiem->id) }}" method="POST"
+                                    class="form-delete">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
+                                        data-bs-toggle="tooltip" title="Xóa">
+                                        <i class="fa fa-fw fa-times text-danger"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
