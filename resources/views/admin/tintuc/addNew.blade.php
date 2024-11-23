@@ -15,7 +15,7 @@ Thêm mới tin tức
             </div><!-- end card header -->
 
             <div class="card-body">
-                <form action="{{route('new.postnew')}}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('admin.new.postnew') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-lg-4">
@@ -61,11 +61,10 @@ Thêm mới tin tức
 
                         <div class="col-lg-8">
                             <div class="mb-3">
-                                <label for="detail" class="form-label"> Mô tả chi tiết sản phẩm</label>
-                                <div id="quill-editor" style="height: 400px;">
-                                    <h1>Nhập mô tả chi tiết sản phẩm</h1>
-                                </div>
-                                <textarea name="detail" cols="30" rows="10" class="d-none"></textarea>
+                                <label for="detail" class="form-label">Mô tả chi tiết sản phẩm</label>
+                                <div id="quill-editor" style="height: 400px;"></div>
+                                <textarea name="detail" id="detail_content"
+                                    class="d-none">Nhập mô tả chi tiết sản phẩm</textarea>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -108,14 +107,27 @@ Thêm mới tin tức
 <script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
 <!-- chi tiết -->
 <script>
-    var quill = new Quill('#quill-editor', {
-        theme: 'snow'
+    const quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                ['code-block'],
+                [{
+                    'list': 'ordered'
+                }, {
+                    'list': 'bullet'
+                }],
+                [{
+                    'header': [1, 2, 3, false]
+                }],
+                ['clean']
+            ]
+        }
     });
-
-    // Triggered when the form is submitted
     document.querySelector('form').addEventListener('submit', function(event) {
-        var content = quill.root.innerHTML;
-        document.querySelector('textarea[name="detail"]').value = content;
+        const content = quill.root.innerHTML;
+        document.getElementById('detail_content').value = content;
     });
 </script>
 @endsection

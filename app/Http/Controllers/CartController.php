@@ -18,13 +18,13 @@ class CartController extends Controller
         $cartItems = Session::get('cart', []); 
         
 
-        $shippingFee = 5.00;
+        $shippingFee = 30000;
 
         $subTotal = 0;
         foreach ($cartItems as $item) {
             $subTotal += $item['price'] * $item['quantity'];
         }
-
+       
         $total = $subTotal + $shippingFee;
         return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
@@ -64,6 +64,9 @@ class CartController extends Controller
                 return response()->json(['status' => 'error', 'message' => 'Không tìm thấy sản phẩm hoặc không có sẵn biến thể.'], 404);
             }
 
+            // Kiểm tra xem sản phẩm có giá khuyến mãi không
+            $price = $productDetail->discount_price ? $productDetail->discount_price : $productDetail->price;
+
             // Tạo key duy nhất cho biến thể
             $variantKey = $productDetail->id;
 
@@ -78,8 +81,8 @@ class CartController extends Controller
                     'quantity' => $quantity,
                     'product_name' => $productDetail->products->name,
                     'product_id' => $productDetail->products_id,
-                    'price' => $productDetail->price,
-                    'image' => $productDetail->image,
+                    'price' => $price, // Dùng giá khuyến mãi nếu có
+                    'image' => $productDetail->products->avata,
                 ];
             }
 
@@ -92,21 +95,22 @@ class CartController extends Controller
             }, 0);
 
             // Thêm phí vận chuyển
-            $shippingFee = 5.00;
+            $shippingFee = 30000; // Phí vận chuyển 30.000 VND
             $totalWithShipping = $total + $shippingFee;
 
             // Trả về phản hồi JSON cho Ajax
             return response()->json([
                 'status' => 'success',
                 'message' => 'Product added to cart successfully!',
-                'total_price' => number_format($totalWithShipping, 2),
+                'total_price' => number_format($totalWithShipping, 0, ',', '.') . ' đ', // Định dạng tiền tệ
             ]);
         } catch (\Exception $e) {
             \Log::error('Error adding to cart: ' . $e->getMessage());
             return response()->json(['status' => 'error', 'message' => 'Có lỗi xảy ra, vui lòng thử lại sau.'], 500);
         }
-    }   
+    }
 
+ 
     public function removeFromCart($productDetailId)
     {
         $cart = Session::get('cart', []);
@@ -140,7 +144,7 @@ class CartController extends Controller
 
             // Tính toán giá của sản phẩm
             $itemPrice = $cart[$productDetailId]['price'];
-            $itemSubtotal = number_format($itemPrice * $quantity, 2); // Tính subtotal
+            $itemSubtotal = number_format($itemPrice * $quantity, 0, ',', '.') . ' đ'; // Tính subtotal
 
             // Tính tổng giá trị đơn hàng
             $total = 0;
@@ -149,14 +153,14 @@ class CartController extends Controller
             }
 
             // Thêm phí vận chuyển
-            $shippingFee = 5.00;
+            $shippingFee = 30000; // Phí vận chuyển 30.000 VND
             $totalWithShipping = $total + $shippingFee;
 
             // Trả về JSON để JavaScript cập nhật lại giao diện
             return response()->json([
                 'status' => 'success',
                 'item_price' => $itemSubtotal, // Giá subtotal của sản phẩm
-                'total_price' => number_format($totalWithShipping, 2), // Tổng giá trị đơn hàng bao gồm phí vận chuyển
+                'total_price' => number_format($totalWithShipping, 0, ',', '.') . ' đ', // Tổng giá trị đơn hàng bao gồm phí vận chuyển
             ]);
         }
 
@@ -166,6 +170,7 @@ class CartController extends Controller
             'message' => 'Product not found in cart',
         ], 404);
     }
+
     public function getTotal()
     {
         $cart = Session::get('cart', []);
@@ -175,15 +180,19 @@ class CartController extends Controller
             $total += $item['price'] * $item['quantity'];
         }
 
+        // Thêm phí vận chuyển
+        $shippingFee = 30000; // Phí vận chuyển 30.000 VND
+        $totalWithShipping = $total + $shippingFee;
+
         return response()->json([
-            'total_price' => number_format($total, 2),
+            'total_price' => number_format($totalWithShipping, 0, ',', '.') . ' đ', // Định dạng tiền tệ
         ]);
     }
+
     public function count()
     {
         $count = session('cart') ? count(session('cart')) : 0;
         return response()->json(['count' => $count]);
     }
-
 
 }

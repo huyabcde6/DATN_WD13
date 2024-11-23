@@ -27,7 +27,7 @@
 <div class="section">
 
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
+    <div class="breadcrumb-area bg-light ">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
                 <h1 class="title">Single Product Style 2</h1>
@@ -59,37 +59,21 @@
                     <div
                         class="single-product-vertical-tab vertical-style-tab swiper-container gallery-top order-1 ms-0 me-2">
                         <div class="swiper-wrapper popup-gallery">
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/1.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/1.jpg')}}"
+                            <!-- Ảnh chính: Ban đầu hiển thị ảnh đại diện -->
+                            <a id="main-image-link" class="swiper-slide h-auto"
+                                href="{{ url('storage/' . $product->avata) }}">
+                                <img id="main-image" class="w-100 h-100" src="{{ url('storage/' . $product->avata) }}"
                                     alt="Product">
                             </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/2.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/2.jpg')}}"
-                                    alt="Product">
+
+                            <!-- Danh sách hình ảnh phụ từ productImages -->
+                            @foreach($product->productImages as $image)
+                            <a class="swiper-slide h-auto" href="{{ url('storage/' . $image->image_path) }}">
+                                <img class="w-100 h-100" src="{{ url('storage/' . $image->image_path) }}" alt="Product">
                             </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/3.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/3.jpg')}}"
-                                    alt="Product">
-                            </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/4.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/4.jpg')}}"
-                                    alt="Product">
-                            </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/5.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/5.jpg')}}"
-                                    alt="Product">
-                            </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/6.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/6.jpg')}}"
-                                    alt="Product">
-                            </a>
+                            @endforeach
                         </div>
+
 
                         <!-- Swiper Pagination Start -->
                         <!-- <div class="swiper-pagination d-none"></div> -->
@@ -107,30 +91,12 @@
                     <div
                         class="product-thumb-vertical vertical-style-thumb overflow-hidden swiper-container gallery-thumbs order-2">
                         <div class="swiper-wrapper">
+                            @foreach($product->productImages as $image)
                             <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/1.jpg')}}"
-                                    alt="Product">
+                            <img src="{{ url('storage/' . $image->image_path) }}" alt="Product" style="max-height: auto;">
+
                             </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/2.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/3.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/4.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/5.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/6.jpg')}}"
-                                    alt="Product">
-                            </div>
+                            @endforeach
                         </div>
 
                         <!-- Swiper Pagination Start -->
@@ -162,14 +128,22 @@
 
                     <!-- Price Box Start -->
                     <div class="price-box mb-2">
-                        <span class="regular-price" id="current-price">${{ number_format($product->price, 2) }}</span>
-                        <!-- Giữ lại giá sản phẩm chính -->
-
-                        @if($product->discount_price)
-                        <span class="old-price"><del>${{ number_format($product->discount_price, 2) }}</del></span>
+                        <!-- Kiểm tra xem sản phẩm có giá khuyến mãi (discount_price) không -->
+                        @if($product->discount_price && $product->price)
+                            <span class="regular-price" id="current-price">
+                                {{ number_format($product->discount_price, 0, '', '.') }} đ
+                            </span>
+                            <span class="old-price">
+                                <del>{{ number_format($product->price, 0, '', '.') }} ₫</del>
+                            </span>
+                        @elseif($product->price) 
+                            <!-- Trường hợp không có giá khuyến mãi, chỉ hiển thị giá gốc -->
+                            <span class="regular-price" id="current-price">
+                                {{ number_format($product->price, 0, '', '.') }} đ
+                            </span>
+                            
                         @endif
                     </div>
-
                     <!-- Price Box End -->
 
                     <!-- Rating Start -->
@@ -202,10 +176,10 @@
                     <div class="product-meta mb-3">
                         <!-- Product Size Start -->
                         <div class="product-size">
-                            <span>Size:</span>
+                            <span class="mt-3">Size: <span id="selected-size">Chưa chọn</span> </span></br>
                             @foreach ($sizes as $size)
-                            <a href="#" class="size-option" data-value="{{ $size->size_id }}">
-                                <strong>{{ $size->value }}</strong>
+                            <a href="#" class="size-option  " data-value="{{ $size->size_id }}">
+                                <strong class=" btn btn border border-dark mt-3 mb-3 px-2 py-2">{{ $size->value }}</strong>
                             </a>
                             @endforeach
                         </div>
@@ -213,9 +187,10 @@
 
                         <!-- Product Color Start -->
                         <div class="product-color">
+                            <span>Color: <span id="selected-color-text">Chưa chọn</span></span></br>
                             @foreach ($colors as $color)
-                            <a href="#" class="color-option" data-value="{{ $color->color_id }}"
-                                style="background-color: {{ $color->value }}; display: inline-block; width: 25px; height: 25px; margin-right: 5px; margin-top: 10px; border-radius: 50%; border: 2px solid #000;">
+                            <a href="#" class="color-option mb-3" data-value="{{ $color->color_id }}" data-color-name="{{ $color->value }}"
+                            style="background-color: {{ $color->value }}; display: inline-block; width: 30px; height: 30px; margin-right: 5px; margin-top: 10px; border-radius: 50%; border: 2px solid #000;">
                             </a>
                             @endforeach
                         </div>
@@ -299,119 +274,71 @@
                 <div class="tab-content mb-text" id="myTabContent">
                     <div class="tab-pane fade show active" id="connect-1" role="tabpanel" aria-labelledby="home-tab">
                         <div class="desc-content border p-3">
-                            <p class="mb-3">{{ $product->description }}</p>
+                            <p class="mb-3">{!! $product->description !!}</p>
                         </div>
                     </div>
+                    {{-- Start Comment --}}
+
                     <div class="tab-pane fade" id="connect-2" role="tabpanel" aria-labelledby="profile-tab">
-                        <!-- Start Single Content -->
-                        <div class="product_tab_content  border p-3">
-                            <!-- Start Single Review -->
-                            <div class="single-review d-flex mb-4">
-
-                                <!-- Review Thumb Start -->
-                                <div class="review_thumb">
-                                    <img alt="review images" src="{{ asset('ngdung/assets/images/review/1.jpg')}}">
-                                </div>
-                                <!-- Review Thumb End -->
-
-                                <!-- Review Details Start -->
-                                <div class="review_details">
-                                    <div class="review_info mb-2">
-
-                                        <!-- Rating Start -->
-                                        <span class="ratings justify-content-start mb-3">
-                                            <span class="rating-wrap">
-                                                <span class="star" style="width: 100%"></span>
-                                            </span>
-                                            <span class="rating-num">(1)</span>
-                                        </span>
-                                        <!-- Rating End -->
-
-                                        <!-- Review Title & Date Start -->
-                                        <div class="review-title-date d-flex">
-                                            <h5 class="title">Admin - </h5><span> January 19, 2023</span>
-                                        </div>
-                                        <!-- Review Title & Date End -->
-
+                        <div class="product_tab_content border p-3">
+                            @auth
+                            <div class="review-form mb-4">
+                                <!-- Review Form Card -->
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-header bg-dark text-white py-2">
+                                        <h6 class="mb-0" style="color: white">Đánh giá sản phẩm</h6>
                                     </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in viverra ex,
-                                        vitae vestibulum arcu. Duis sollicitudin metus sed lorem commodo, eu dapibus
-                                        libero interdum. Morbi convallis viverra erat, et aliquet orci congue vel.
-                                        Integer in odio enim. Pellentesque in dignissim leo. Vivamus varius ex sit amet
-                                        quam tincidunt iaculis.</p>
-                                </div>
-                                <!-- Review Details End -->
 
-                            </div>
-                            <!-- End Single Review -->
-
-                            <!-- Rating Wrap Start -->
-                            <div class="rating_wrap">
-                                <h5 class="rating-title mb-2">Add a review </h5>
-                                <p class="mb-2">Your email address will not be published. Required fields are marked *
-                                </p>
-                                <h6 class="rating-sub-title mb-2">Your Rating</h6>
-
-                                <!-- Rating Start -->
-                                <span class="ratings justify-content-start mb-3">
-                                    <span class="rating-wrap">
-                                        <span class="star" style="width: 100%"></span>
-                                    </span>
-                                    <span class="rating-num">(2)</span>
-                                </span>
-                                <!-- Rating End -->
-
-                            </div>
-                            <!-- Rating Wrap End -->
-
-                            <!-- Comments ans Replay Start -->
-                            <div class="comments-area comments-reply-area">
-                                <div class="row">
-                                    <div class="col-lg-12 col-custom">
-
-                                        <!-- Comment form Start -->
-                                        <form action="#" class="comment-form-area">
-                                            <div class="row comment-input">
-
-                                                <!-- Input Name Start -->
-                                                <div class="col-md-6 col-custom comment-form-author mb-3">
-                                                    <label>Name <span class="required">*</span></label>
-                                                    <input type="text" required="required" name="Name">
-                                                </div>
-                                                <!-- Input Name End -->
-
-                                                <!-- Input Email Start -->
-                                                <div class="col-md-6 col-custom comment-form-emai mb-3">
-                                                    <label>Email <span class="required">*</span></label>
-                                                    <input type="text" required="required" name="email">
-                                                </div>
-                                                <!-- Input Email End -->
-
+                                    <div class="card-body bg-light">
+                                        <form method="POST" action="{{ route('product.comment', $product->slug) }}"
+                                            class="px-2">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label for="description" class="form-label small text-muted">Nội dung
+                                                    đánh giá</label>
+                                                <textarea name="description"
+                                                    class="form-control form-control-sm border-dark" rows="3" required
+                                                    placeholder="Nhập đánh giá của bạn về sản phẩm..."></textarea>
                                             </div>
-                                            <!-- Comment Texarea Start -->
-                                            <div class="comment-form-comment mb-3">
-                                                <label>Comment</label>
-                                                <textarea class="comment-notes" required="required"></textarea>
-                                            </div>
-                                            <!-- Comment Texarea End -->
-
-                                            <!-- Comment Submit Button Start -->
-                                            <div class="comment-form-submit">
-                                                <button class="btn btn-dark btn-hover-primary">Submit</button>
-                                            </div>
-                                            <!-- Comment Submit Button End -->
-
+                                            <button type="submit" class="btn btn-dark btn-sm">
+                                                Gửi đánh giá
+                                            </button>
                                         </form>
-                                        <!-- Comment form End -->
-
                                     </div>
                                 </div>
                             </div>
-                            <!-- Comments ans Replay End -->
+                            @endauth
 
+                            <!-- Comments List -->
+                            <div class="reviews-list">
+                                <h6 class="text-muted mb-3">Các đánh giá khác</h6>
+                                @if ($comments->isNotEmpty())
+                                @foreach ($comments as $comment)
+                                <div class="card mb-2 shadow-sm border-0">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="small fw-bold text-dark">{{ $comment->user->name }}</span>
+                                            <small
+                                                class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                        </div>
+                                        <hr class="my-2">
+                                        <p class="card-text small mb-0">{{ $comment->description }}</p>
+                                    </div>
+                                </div>
+                                @endforeach
+                                <div class="d-flex justify-content-end mt-4">
+                                    {{ $comments->links() }}
+                                </div>
+                                @else
+                                <div class="alert alert-dark py-2 small">
+                                    Chưa có đánh giá nào.
+                                </div>
+                                @endif
+                            </div>
                         </div>
-                        <!-- End Single Content -->
                     </div>
+
+                    {{-- end Comment --}}
                     <div class="tab-pane fade" id="connect-3" role="tabpanel" aria-labelledby="contact-tab">
                         <!-- Shipping Policy Start -->
                         <div class="shipping-policy mb-n2">
@@ -520,11 +447,8 @@
                                 <div class="product product-border-left" data-aos="fade-up" data-aos-delay="300">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
-                                            <img class="first-image"
-                                                src="{{ asset('ngdung/assets/images/products/medium-size/1.jpg')}}"
-                                                alt="Product" />
-                                            <img class="second-image"
-                                                src="{{ asset('ngdung/assets/images/products/medium-size/5.jpg')}}"
+                                            <img class="image w-100 h-100"
+                                                src="{{ url('storage/' . $item->avata) }}"
                                                 alt="Product" />
                                         </a>
                                         <div class="actions">
@@ -603,16 +527,19 @@
 $(document).ready(function() {
     var selectedSize = null;
     var selectedColor = null;
-    var variantDetails = @json($productDetails);
+    var variantDetails = @json($productDetails); // Dữ liệu về các biến thể sản phẩm
 
     // Khi người dùng chọn kích thước
     $('.size-option').on('click', function(event) {
         event.preventDefault();
         selectedSize = $(this).data('value');
-        $('#selected-size').val(selectedSize);
+        
+        // Hiển thị size đã chọn
+        $('#selected-size').text($(this).text());
+
         $('.size-option').removeClass('active');
         $(this).addClass('active');
-        updateColorAvailability();
+        updateColorAvailability(); // Cập nhật khả dụng của màu
         updateVariantDetails();
     });
 
@@ -624,36 +551,59 @@ $(document).ready(function() {
         }
         selectedColor = $(this).data('value');
         $('#selected-color').val(selectedColor);
+        const colorName = $(this).data('color-name'); // Lấy tên màu từ data attribute
+        $('#selected-color-text').text(colorName); // Cập nhật tên màu đã chọn
         $('.color-option').removeClass('active');
         $(this).addClass('active');
+        updateSizeAvailability(); // Cập nhật khả dụng của size
         updateVariantDetails();
     });
 
+    // Cập nhật khả dụng của các tùy chọn màu dựa trên size đã chọn
     function updateColorAvailability() {
         $('.color-option').each(function() {
             var colorId = $(this).data('value');
-            var isAvailable = variantDetails.some(v => v.color_id == colorId && v.size_id ==
-                selectedSize);
+            var isAvailable = variantDetails.some(v => v.color_id == colorId && v.size_id == selectedSize && v.quantity > 0);
             if (isAvailable) {
-                $(this).removeClass('unavailable').removeAttr('disabled');
+                $(this).removeClass('unavailable').css({ opacity: 1, textDecoration: 'none' });
             } else {
-                $(this).addClass('unavailable').attr('disabled', 'disabled');
+                $(this).addClass('unavailable').css({ opacity: 0.5, textDecoration: 'line-through' });
             }
         });
     }
 
+    // Cập nhật khả dụng của các tùy chọn size dựa trên màu đã chọn
+    function updateSizeAvailability() {
+        $('.size-option').each(function() {
+            var sizeId = $(this).data('value');
+            var isAvailable = variantDetails.some(v => v.size_id == sizeId && v.color_id == selectedColor && v.quantity > 0);
+            if (isAvailable) {
+                $(this).removeClass('unavailable').css({ opacity: 1, textDecoration: 'none' });
+            } else {
+                $(this).addClass('unavailable').css({ opacity: 0.5, textDecoration: 'line-through' });
+            }
+        });
+    }
+
+    // Cập nhật thông tin chi tiết biến thể (giá, SKU, số lượng tồn kho)
     function updateVariantDetails() {
         if (selectedColor && selectedSize) {
             const variant = variantDetails.find(v => v.color_id == selectedColor && v.size_id == selectedSize);
             if (variant) {
-                $('#current-price').text(`$${variant.price.toFixed(2)}`);
+                $('#current-price').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(variant.discount_price));
                 $('#current-sku').text(`SKU: ${variant.product_code}`);
                 $('#current-stock').text(`In Stock: ${variant.quantity}`);
                 $('#product-quantity').attr('max', variant.quantity);
+
+                if (variant.image) {
+                    $('#main-image').attr('src', `/storage/${variant.image}`);
+                    $('#main-image-link').attr('href', `/storage/${variant.image}`);
+                }
             }
         }
     }
 
+    // Điều chỉnh số lượng sản phẩm
     $('.inc.qtybutton').on('click', function() {
         var currentQuantity = parseInt($('#product-quantity').val());
         var maxQuantity = parseInt($('#product-quantity').attr('max'));
@@ -680,43 +630,31 @@ $(document).ready(function() {
     });
 
     // Thêm sản phẩm vào giỏ hàng
-    // Sự kiện khi nhấn nút "Thêm vào giỏ hàng"
     $('#add-to-cart-button').on('click', function(event) {
-        event.preventDefault(); // Ngăn chặn hành động mặc định của nút
-
-        // Kiểm tra nếu chưa chọn kích thước hoặc màu sắc
+        event.preventDefault();
         if (!selectedSize || !selectedColor) {
             Swal.fire({
                 title: 'Thông báo',
                 text: 'Vui lòng chọn cả kích thước và màu sắc trước khi thêm vào giỏ hàng.',
                 icon: 'warning'
             });
-            return; // Dừng thực hiện nếu chưa chọn
+            return;
         }
-
-        // Hiển thị trạng thái tải
         $(this).prop('disabled', true).text('Đang thêm...');
-
-        // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
         $.ajax({
-            url: '{{ route("cart.add") }}', // Đường dẫn đến route thêm sản phẩm vào giỏ hàng
+            url: '{{ route("cart.add") }}',
             method: 'POST',
             data: {
                 products_id: $('input[name="products_id"]').val(),
                 quantity: $('#product-quantity').val(),
                 size: selectedSize,
                 color: selectedColor,
-                _token: '{{ csrf_token() }}' // Thêm token CSRF để bảo mật
+                _token: '{{ csrf_token() }}'
             },
             success: function(response) {
                 if (response.status === 'success') {
-                    // Cập nhật tổng số tiền trong giỏ hàng
                     $('.total-amount').text(response.total_price + ' $');
-
-                    // Cập nhật số lượng sản phẩm trong giỏ hàng
                     updateCartCount();
-
-                    // Hiển thị thông báo thành công
                     Swal.fire({
                         title: 'Thành công',
                         text: response.message,
@@ -725,9 +663,7 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr) {
-                // Xử lý lỗi
-                var errorMessage = xhr.responseJSON.message ||
-                    'Có lỗi xảy ra, vui lòng thử lại.';
+                var errorMessage = xhr.responseJSON.message || 'Có lỗi xảy ra, vui lòng thử lại.';
                 Swal.fire({
                     title: 'Lỗi',
                     text: errorMessage,
@@ -735,7 +671,6 @@ $(document).ready(function() {
                 });
             },
             complete: function() {
-                // Đặt lại nút về trạng thái ban đầu
                 $('#add-to-cart-button').prop('disabled', false).text('Thêm vào giỏ hàng');
             }
         });
@@ -744,12 +679,10 @@ $(document).ready(function() {
     // Hàm để cập nhật số lượng sản phẩm trong giỏ hàng
     function updateCartCount() {
         $.ajax({
-            url: '{{ route("cart.count") }}', // Đường dẫn đến route để lấy số lượng sản phẩm trong giỏ hàng
+            url: '{{ route("cart.count") }}',
             method: 'GET',
             success: function(data) {
-                // Cập nhật số lượng sản phẩm trong giao diện
                 $('.header-action-num').text(data.count);
-                // $('.header-action-num').css('display', data.count > 0 ? 'flex' : 'none');
             },
             error: function(xhr) {
                 console.error('Có lỗi xảy ra khi cập nhật số lượng giỏ hàng.', xhr);
@@ -758,5 +691,7 @@ $(document).ready(function() {
     }
 
 });
+
 </script>
+
 @endsection

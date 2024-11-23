@@ -64,8 +64,10 @@
                         </div>
 
                         <div class="shop_toolbar_btn">
-                            <button data-role="grid_3" type="button" class="active btn-grid-4" title="Grid"><i class="fa fa-th"></i></button>
-                            <button data-role="grid_list" type="button" class="btn-list" title="List"><i class="fa fa-th-list"></i></button>
+                            <button data-role="grid_3" type="button" class="active btn-grid-4" title="Grid"><i
+                                    class="fa fa-th"></i></button>
+                            <button data-role="grid_list" type="button" class="btn-list" title="List"><i
+                                    class="fa fa-th-list"></i></button>
                         </div>
                     </div>
                     <!-- Shopt Top Bar Right End -->
@@ -81,37 +83,51 @@
                     <div class="col-lg-4 col-md-4 col-sm-6 product" data-aos="fade-up" data-aos-delay="200">
                         <div class="product-inner">
                             <div class="thumb">
-                                <a href="single-product.html" class="image">
-                                    <img class="first-image" src="{{ asset('ngdung/assets/images/products/medium-size/2.jpg')}}" alt="Product" />
-                                    <img class="second-image" src="{{ asset('ngdung/assets/images/products/medium-size/3.jpg')}}" alt="Product" />
+                                <a href="{{ route('product.show', $product->slug) }}" class="image">
+                                    <img class="image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
+                                        width="200" height="auto" />
                                 </a>
                                 <div class="actions">
-                                    <a href="wishlist.html" title="Wishlist" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                    <a href="#" title="Quickview" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                    <a href="compare.html" title="Compare" class="action compare"><i class="pe-7s-shuffle"></i></a>
+                                    <a href="wishlist.html" title="Wishlist" class="action wishlist"><i
+                                            class="pe-7s-like"></i></a>
+                                    <a href="#" title="Quickview" class="action quickview" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
+                                    <a href="compare.html" title="Compare" class="action compare"><i
+                                            class="pe-7s-shuffle"></i></a>
                                 </div>
                             </div>
                             <div class="content">
-                                <h4 class="sub-title"><a href="single-product.html">{{ $product->categories->name }}</a></h4>
-                                <h5 class="title"><a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a></h5>
+                                <h4 class="sub-title"><a href="single-product.html">{{ $product->categories->name }}</a>
+                                </h4>
+                                <h5 class="title"><a
+                                        href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h5>
                                 <span class="ratings">
                                     <span class="rating-wrap">
                                         <span class="star" style="width: 100%"></span>
                                     </span>
                                     <span class="rating-num">(4)</span>
                                 </span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla tempus.</p>
-                                <span class="price">
-                                    @if ($product->productDetails->isNotEmpty())
-                                        <span class="old">{{ $product->productDetails->first()->price }}</span>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae
+                                    arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla
+                                    tempus.</p>
+                                    <span class="price">
+                                    @if ($product->discount_price)
+                                        <span class="new">{{ number_format($product->discount_price, 0, '', '.') }} ₫</span>&nbsp;&nbsp;
+                                        <span class="old">{{ number_format($product->price, 0, '', '.') }} ₫</span>
                                     @else
-                                        <span class="old">Price not available</span>
+                                        <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
                                     @endif
                                 </span>
+
                                 <div class="shop-list-btn">
-                                    <a title="Wishlist" href="#" class="btn btn-sm btn-outline-dark btn-hover-primary wishlist"><i class="fa fa-heart"></i></a>
-                                    <button class="btn btn-sm btn-outline-dark btn-hover-primary" title="Add To Cart">Add To Cart</button>
-                                    <a title="Compare" href="#" class="btn btn-sm btn-outline-dark btn-hover-primary compare"><i class="fa fa-random"></i></a>
+                                    <a title="Wishlist" href="#"
+                                        class="btn btn-sm btn-outline-dark btn-hover-primary wishlist"><i
+                                            class="fa fa-heart"></i></a>
+                                    <button class="btn btn-sm btn-outline-dark btn-hover-primary"
+                                        title="Add To Cart">Add To Cart</button>
+                                    <a title="Compare" href="#"
+                                        class="btn btn-sm btn-outline-dark btn-hover-primary compare"><i
+                                            class="fa fa-random"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +187,8 @@
                         <div class="widget-list mb-10">
                             <h3 class="widget-title mb-4">Search</h3>
                             <div class="search-box">
-                                <input type="text" class="form-control" placeholder="Search Our Store" aria-label="Search Our Store">
+                                <input type="text" class="form-control" placeholder="Search Our Store"
+                                    aria-label="Search Our Store">
                                 <button class="btn btn-dark btn-hover-primary" type="button">
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -311,8 +328,10 @@
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
-                                            <img class="first-image" src="assets/images/products/small-product/1.jpg" alt="Product" />
-                                            <img class="second-image" src="assets/images/products/small-product/5.jpg" alt="Product" />
+                                            <img class="first-image" src="assets/images/products/small-product/1.jpg"
+                                                alt="Product" />
+                                            <img class="second-image" src="assets/images/products/small-product/5.jpg"
+                                                alt="Product" />
                                         </a>
                                     </div>
                                     <div class="content">
@@ -335,8 +354,10 @@
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
-                                            <img class="first-image" src="assets/images/products/small-product/2.jpg" alt="Product" />
-                                            <img class="second-image" src="assets/images/products/small-product/3.jpg" alt="Product" />
+                                            <img class="first-image" src="assets/images/products/small-product/2.jpg"
+                                                alt="Product" />
+                                            <img class="second-image" src="assets/images/products/small-product/3.jpg"
+                                                alt="Product" />
                                         </a>
                                     </div>
                                     <div class="content">
@@ -359,8 +380,10 @@
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
-                                            <img class="first-image" src="assets/images/products/small-product/4.jpg" alt="Product" />
-                                            <img class="second-image" src="assets/images/products/small-product/10.jpg" alt="Product" />
+                                            <img class="first-image" src="assets/images/products/small-product/4.jpg"
+                                                alt="Product" />
+                                            <img class="second-image" src="assets/images/products/small-product/10.jpg"
+                                                alt="Product" />
                                         </a>
                                     </div>
                                     <div class="content">
@@ -396,7 +419,8 @@
 <!-- Scroll Top End -->
 
 <!-- Modal Start  -->
-<div class="modalquickview modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modalquickview modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <button class="btn close" data-bs-dismiss="modal">×</button>
@@ -434,8 +458,10 @@
                             <!-- Swiper Pagination End -->
 
                             <!-- Next Previous Button Start -->
-                            <div class="swiper-product-button-next swiper-button-next"><i class="pe-7s-angle-right"></i></div>
-                            <div class="swiper-product-button-prev swiper-button-prev"><i class="pe-7s-angle-left"></i></div>
+                            <div class="swiper-product-button-next swiper-button-next"><i class="pe-7s-angle-right"></i>
+                            </div>
+                            <div class="swiper-product-button-prev swiper-button-prev"><i class="pe-7s-angle-left"></i>
+                            </div>
                             <!-- Next Previous Button End -->
                         </div>
                         <!-- Single Product Image End -->
@@ -478,7 +504,10 @@
                         <!-- SKU End -->
 
                         <!-- Description Start -->
-                        <p class="desc-content mb-5">I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.</p>
+                        <p class="desc-content mb-5">I must explain to you how all this mistaken idea of denouncing
+                            pleasure and praising pain was born and I will give you a complete account of the system,
+                            and expound the actual teachings of the great explorer of the truth, the master-builder of
+                            human happiness.</p>
                         <!-- Description End -->
 
                         <!-- Product Meta Start -->
@@ -534,7 +563,8 @@
                                 <a class="btn btn-outline-dark btn-hover-primary" href="cart.html">Add to cart</a>
                             </div>
                             <div class="add-to-wishlist mb-3">
-                                <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Add to Wishlist</a>
+                                <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Add to
+                                    Wishlist</a>
                             </div>
                         </div>
                         <!-- Cart & Wishlist Button End -->
@@ -551,9 +581,12 @@
 
                         <!-- Product Delivery Policy Start -->
                         <ul class="product-delivery-policy border-top pt-4 mt-4 border-bottom pb-4">
-                            <li> <i class="fa fa-check-square"></i> <span>Security Policy (Edit With Customer Reassurance Module)</span></li>
-                            <li><i class="fa fa-truck"></i><span>Delivery Policy (Edit With Customer Reassurance Module)</span></li>
-                            <li><i class="fa fa-refresh"></i><span>Return Policy (Edit With Customer Reassurance Module)</span></li>
+                            <li> <i class="fa fa-check-square"></i> <span>Security Policy (Edit With Customer
+                                    Reassurance Module)</span></li>
+                            <li><i class="fa fa-truck"></i><span>Delivery Policy (Edit With Customer Reassurance
+                                    Module)</span></li>
+                            <li><i class="fa fa-refresh"></i><span>Return Policy (Edit With Customer Reassurance
+                                    Module)</span></li>
                         </ul>
                         <!-- Product Delivery Policy End -->
 

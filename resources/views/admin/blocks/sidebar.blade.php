@@ -47,7 +47,7 @@
                      </a>
                  </li>
                  <li>
-                     <a class='tp-link' href="">
+                     <a class='tp-link' href="{{route('admin.products.index')}}">
                          <i data-feather="package"></i>
                          <span> Sản phẩm </span>
                      </a>
@@ -60,8 +60,25 @@
                      </a>
                  </li>
                  <li>
+                     <a href="#sidebarMarketing" data-bs-toggle="collapse">
+                         <i data-feather="sliders"></i>
+                         <span>Quản lý biến thể</span>
+                         <span class="menu-arrow"></span>
+                     </a>
+                     <div class="collapse" id="sidebarMarketing">
+                         <ul class="nav-second-level">
+                             <li>
+                                 <a class='tp-link' href="{{ route('admin.colors.index') }}">Màu sắc</a>
+                             </li>
+                             <li>
+                                 <a class='tp-link' href="{{ route('admin.sizes.index') }}">Kích thước</a>
+                             </li>
+                         </ul>
+                     </div>
+                 </li>
+                 <li>
 
-                     <a class='tp-link' href="admNew">
+                     <a class='tp-link' href="{{ route('admin.new.index') }}">
                          <i data-feather="package"></i>
                          <span>Quản Lý Tin Tức </span>
                      </a>
