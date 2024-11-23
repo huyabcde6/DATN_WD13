@@ -71,27 +71,13 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý màu sắc
     Route::resource('colors', ColorController::class);
+
+    // Quản lý Banner
     Route::resource('banners', BannerController::class);
 });
 
 
 require __DIR__ . '/auth.php';
-
-// Route::prefix('admin')
-//     ->name('admin.')
-//     ->group(function () {
-//         Route::prefix('banners')
-//             ->name('banners.')
-//             ->controller(BannerController::class)
-//             ->group(function () {
-//                 Route::get('index', 'index')->name('index');
-//                 Route::get('create', 'create')->name('create');
-//                 Route::post('store', 'store')->name('store');
-//                 Route::get('{id}/edit', 'edit')->name('edit');
-//                 Route::post('{id}/update', 'update')->name('update');
-//                 Route::delete('{id}/delete', 'delete')->name('delete');
-//             });
-//     });
 
 Route::prefix('admin')
     ->name('admin.')

@@ -76,17 +76,18 @@ class BannerController extends Controller
             "order"         => $request->order,      
         ];
 
-        if ($request->hasFile('image')) {
-            // Xóa ảnh cũ
-            if ($banner->image_path) {
-                Storage::disk('public')->delete($banner->image_path);
-            }
-
-            $imagePath = $request->file('image')->store('banners', 'public');
-            $dataBanner['image_path'] = $imagePath;
+        if($request->hasFile('image_path')) {
+            $dataBanner['image_path'] = Storage::put('banners', $request->file('image_path'));    
         }
 
-        $banner->update($dataBanner);
+            $currentPathImage = $banner->image_path;
+            
+            $banner->update($dataBanner);
+        
+
+        if($request->hasFile('image_path') && Storage::exists($currentPathImage)) {
+            Storage::delete($currentPathImage);
+        }
 
         return redirect()->route('admin.banners.index')->with('success', 'Thao tác thành công!');
     }
