@@ -18,6 +18,7 @@ class Order extends Model
         'address',
         'ghi_chu',
         'status_donhang_id',
+        'return_reason',
         'method',
         'subtotal',
         'discount',
