@@ -43,7 +43,7 @@ Danh sách sản phẩm
                             </span>
                             <input type="text" value="{{ request('search') }}" name="search" id="search"
                                 class="form-control" placeholder="Nhập từ khóa cần tìm..">
-                            <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                            <button type="submit" class="btn btn-dark">Tìm kiếm</button>
                         </div>
                     </form>
                     <a href="{{ route('admin.products.create') }}"
