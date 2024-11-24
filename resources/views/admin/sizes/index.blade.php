@@ -10,7 +10,7 @@
                 <th>ID</th>
                 <th>Giá Trị</th>
 
-                <th>Thao Tác</th>
+                <th>Tương tác</th>
             </tr>
         </thead>
         <tbody>

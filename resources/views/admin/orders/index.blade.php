@@ -47,7 +47,7 @@ Quản lý đơn hàng
                                 <th>Ngày tạo</th>
                                 <th>Tổng tiền</th>
                                 <th>Trạng thái</th>
-                                <th>Hành động</th>
+                                <th>Tương tác</th>
                             </tr>
                         </thead>
 

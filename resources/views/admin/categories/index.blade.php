@@ -35,7 +35,7 @@
                                             <th scope="col">#</th>
                                             <th scope="col">Tên danh mục</th>
                                             <th scope="col">Trạng thái</th>
-                                            <th scope="col">Thao tác</th>
+                                            <th scope="col">Tương tác</th>
                                         </tr>
                                     </thead>
                                     <tbody>

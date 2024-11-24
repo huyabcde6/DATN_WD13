@@ -98,8 +98,6 @@ Danh sách Tin Tức
 
     <div class="col-12">
         <div class="card">
-
-
             <div class="card-body">
                 <table id="scroll-vertical-datatable" class="table table-bordered dt-responsive nowrap w-100">
                     <thead>
@@ -110,7 +108,7 @@ Danh sách Tin Tức
                             <th>View</th>
                             <th>Ngày Đăng</th>
                             <th>Trạng thái</th>
-                            <th>Hành động</th>
+                            <th>Tương tác</th>
                         </tr>
                     </thead>
                     <tbody>
