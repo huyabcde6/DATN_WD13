@@ -52,7 +52,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-3">
-                                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                            <button type="submit" class="btn btn-warning">Cập nhật</button>
                                         </div>
                                     </form>
                                 </div>
