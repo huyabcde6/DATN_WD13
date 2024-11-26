@@ -33,10 +33,10 @@ class OrderController extends Controller
 
         try {
             $order = Order::findOrFail($id);
-
+            
             // Lấy trạng thái mới từ request
             $statusId = $request->input('status');
-
+            
             if ($statusId && is_numeric($statusId)) {
                 // Chuyển trạng thái đơn hàng theo quy định
                 if ($order->status_donhang_id == 1 && in_array($statusId, [2, 7])) { // Chờ xác nhận -> Đã xác nhận, Hoàn hàng
@@ -73,40 +73,43 @@ class OrderController extends Controller
             return redirect()->route('admin.orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
         }
     }    
-    private function moveOrderToInvoice(Order $order)
+
+    protected function moveOrderToInvoice(Order $order)
     {
-        $invoiceCode = 'Invoice-' . Carbon::now()->format('Y-m-d') . '-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
-        // Tạo bản ghi hóa đơn
-        $invoiceCode = $order->order_code;
-        \App\Models\Invoice::create([
-            'invoice_code' => $invoiceCode,
-            'order_code' => $order->order_code,
+        // Kiểm tra nếu hóa đơn đã tồn tại (tránh trùng lặp)
+        if ($order->toInvoice()->exists()) {
+            return;
+        }
+
+        $invoice = \App\Models\Invoice::create([
+            'invoice_code' => $order->order_code,
             'user_id' => $order->user_id,
-            'date_order' => $order->date_order,
+            'order_id' => $order->id,
             'nguoi_nhan' => $order->nguoi_nhan,
             'email' => $order->email,
             'number_phone' => $order->number_phone,
             'address' => $order->address,
+            'status_donhang_id' => $order->status_donhang_id,
             'ghi_chu' => $order->ghi_chu,
             'method' => $order->method,
             'subtotal' => $order->subtotal,
             'discount' => $order->discount,
             'shipping_fee' => $order->shipping_fee,
             'total_price' => $order->total_price,
-            'date_invoice' => Carbon::now(),
+            'date_invoice' => now(),
         ]);
 
-        // Sao chép chi tiết đơn hàng sang bảng hóa đơn chi tiết
-        foreach ($order->orderDetails as $detail) {
-            \App\Models\InvoiceDetail::create([
-                'invoice_id' => $order->id, // Chuyển ID hóa đơn mới
-                'product_detail_id' => $detail->product_detail_id,
-                'product_name'  => $orderDetail->product->name,
-                'quantity' => $detail->quantity,
-                'color' => $detail->color,
-                'size' => $detail->size,
-                'price' => $detail->price,
+        // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
+        foreach ($order->orderDetails as $orderDetail) {
+            $invoice->invoiceDetails()->create([
+                'product_name' => $orderDetail->productDetail->products->name,
+                'color' => $orderDetail->color,
+                'size' => $orderDetail->size,
+                'quantity' => $orderDetail->quantity,
+                'price' => $orderDetail->price,
             ]);
-        }  
-    }        
+        }
+    }
+
+      
 }
