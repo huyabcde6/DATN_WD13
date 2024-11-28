@@ -52,7 +52,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-3">
-                                            <button type="submit" class="btn btn-primary">Thêm</button>
+                                            <button type="submit" class="btn btn-success">Thêm</button>
                                         </div>
                                     </form>
                                 </div>

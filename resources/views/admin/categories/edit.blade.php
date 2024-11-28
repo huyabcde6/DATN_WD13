@@ -31,6 +31,7 @@
                                 <div class="col-lg-12">
                                     <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
                                         @csrf
+                                        @method('PUT')
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="mb-3">
@@ -52,7 +53,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-3">
-                                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                            <button type="submit" class="btn btn-warning">Cập nhật</button>
                                         </div>
                                     </form>
                                 </div>
