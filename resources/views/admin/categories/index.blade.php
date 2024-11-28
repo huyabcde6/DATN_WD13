@@ -42,6 +42,7 @@ Danh sách danh mục
                             <input type="text" value="{{ request('search') }}" name="search" id="search"
                                 class="form-control" placeholder="Nhập từ khóa cần tìm..">
                             <button type="submit" class="btn btn-dark">Tìm kiếm</button>
+
                         </div>
                     </form>
                     <a href="{{ route('admin.categories.create') }}"
@@ -74,7 +75,7 @@ Danh sách danh mục
                                                 data-bs-toggle="tooltip" title="Sửa">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
-                                            <form action="{{ route('admin.categories.delete', $item->id) }}" method="POST"
+                                            <form action="{{ route('admin.categories.destroy', $item->id) }}" method="POST"
                                                 class="form-delete">
                                                 @csrf
                                                 @method('DELETE')
@@ -97,12 +98,14 @@ Danh sách danh mục
                         </table>
                     </div>
                 </div>
-
+            <div class="d-flex justify-content-end">
+                <div class="mt-3">
                 <div class="d-flex justify-content-center mt-3">
                     {{ $categories->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 @endsection

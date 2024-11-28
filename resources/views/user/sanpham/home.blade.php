@@ -5,62 +5,31 @@
 <div class="section">
     <div class="hero-slider">
         <div class="swiper-container">
+            
             <div class="swiper-wrapper">
-                <!-- Single Hero Slider Item Start -->
+                @foreach($banners as $banner)
                 <div class="hero-slide-item-two swiper-slide">
-                    <!-- Hero Slider Background Image Start-->
                     <div class="hero-slide-bg">
-                        <img src="{{ asset('ngdung/assets/images/slider/slide-2.jpg')}}" alt="" />
+                        <img src="{{ asset('storage/'.$banner->image_path) }}" alt="{{ $banner->title }}" />
                     </div>
-                    <!-- Hero Slider Background Image End-->
-
-                    <!-- Hero Slider Container Start -->
                     <div class="container">
                         <div class="row">
-                            <div
-                                class="hero-slide-content col-lg-8 col-xl-6 col-12 text-lg-center text-left">
+                            <div class="hero-slide-content col-lg-8 col-xl-6 col-12 text-lg-center text-left">
                                 <h2 class="title">
-                                    Thời trang mới <br />
-                                    Bộ sưu tập
+                                    {!! nl2br($banner->title) !!}
                                 </h2>
-                                <p>Giảm tới 70% sản phẩm đã chọn</p>
-                                <a
-                                    href="shop-grid.html"
-                                    class="btn btn-lg btn-primary btn-hover-dark">Mua ngay</a>
+                                <p>
+                                    {{ $banner->description }}
+                                </p>
+                                <a href="shop-grid.html" 
+                                   class="btn btn-lg btn-primary btn-hover-dark">
+                                   Mua ngay
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <!-- Hero Slider Container End -->
                 </div>
-                <!-- Single Hero Slider Item End -->
-
-                <!-- Single Hero Slider Item Start -->
-                <div class="hero-slide-item-two swiper-slide">
-                    <!-- Hero Slider Background Image Start -->
-                    <div class="hero-slide-bg">
-                        <img src="{{ asset('ngdung/assets/images/slider/slide-2-2.jpg')}}" alt="" />
-                    </div>
-                    <!-- Hero Slider Background Image End -->
-
-                    <!-- Hero Slider Container Start -->
-                    <div class="container">
-                        <div class="row">
-                            <div
-                                class="hero-slide-content col-lg-8 col-xl-6 col-12 text-lg-center text-left">
-                                <h2 class="title">
-                                    Xu hướng thời trang <br />
-                                    Bộ sưu tập
-                                </h2>
-                                <p>Giảm tới 30% sản phẩm đã chọn</p>
-                                <a
-                                    href="shop-grid.html"
-                                    class="btn btn-lg btn-primary btn-hover-dark">Mua ngay</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Hero Slider Container End -->
-                </div>
-                <!-- Single Hero Slider Item End -->
+                @endforeach
             </div>
 
             <!-- Swiper Pagination Start -->
