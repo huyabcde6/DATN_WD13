@@ -88,7 +88,7 @@
                  </li>
                  <li>
 
-                     <a class='tp-link' href="admNew">
+                     <a class='tp-link' href="{{ route('admin.new.index') }}">
                          <i data-feather="package"></i>
                          <span>Quản Lý Tin Tức </span>
                      </a>

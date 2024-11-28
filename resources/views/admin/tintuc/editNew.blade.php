@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-Thêm mới tin tức
+Chỉnh Sửa tin tức
 @endsection
 
 @section('content')
@@ -11,25 +11,26 @@ Thêm mới tin tức
         <div class="card">
 
             <div class="card-header">
-                <h5 class="card-title mb-0">Thêm Tin Tức</h5>
+                <h5 class="card-title mb-0">Sửa Tin Tức</h5>
             </div><!-- end card header -->
 
             <div class="card-body">
-                <form action="{{ route('admin.new.postnew') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('admin.new.update', $db->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
+
                     <div class="row">
                         <div class="col-lg-4">
 
                             <div class="mb-3">
                                 <label for="title" class="form-label">Tiêu đề</label>
-                                <input type="text" id="title" name="title" class="form-control @error('title') is_invalid @enderror" value="{{old('title')}}">
+                                <input type="text" id="title" name="title" class="form-control @error('title') is_invalid @enderror" value="{{$db->title}}">
                                 @error('title')
                                 <p class="text-danger">{{$message}}</p>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Mô tả ngắn</label>
-                                <textarea name="description" id="description" class="form-control @error('description') is_invalid @enderror" rows="3">{{old('description')}}</textarea>
+                                <textarea name="description" id="description" class="form-control @error('description') is_invalid @enderror" rows="3">{{$db->description}}</textarea>
                                 @error('description')
                                 <p class="text-danger">{{$message}}</p>
                                 @enderror
@@ -45,13 +46,13 @@ Thêm mới tin tức
                             <div class="col-sm-10 mb-3 d-flex gap-2">
                                 <label for="status" class="form-label">Trạng thái: </label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="gridRadios1" value="1" checked>
+                                    <input class="form-check-input" type="radio" name="status" id="gridRadios1" value="1" {{ $db->status ? 'checked' : '' }}>
                                     <label class="form-check-label text-success" for="gridRadios1">
                                         Hiển thị
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="gridRadios2" value="0">
+                                    <input class="form-check-input" type="radio" name="status" id="gridRadios2" value="0" {{ $db->status ? '' : 'checked' }}>
                                     <label class="form-check-label text-danger" for="gridRadios2">
                                         Ẩn
                                     </label>
@@ -62,9 +63,9 @@ Thêm mới tin tức
                         <div class="col-lg-8">
                             <div class="mb-3">
                                 <label for="detail" class="form-label">Mô tả chi tiết sản phẩm</label>
-                                <div id="quill-editor" style="height: 400px;"></div>
+                                <div id="quill-editor" style="height: 400px;">{{$db->detail}}</div>
                                 <textarea name="detail" id="detail_content"
-                                    class="d-none">Nhập mô tả chi tiết sản phẩm</textarea>
+                                    class="d-none">MMM</textarea>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center">
