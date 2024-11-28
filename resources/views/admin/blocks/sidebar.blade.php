@@ -6,22 +6,26 @@
          <div id="sidebar-menu">
 
              <div class="logo-box">
-                 <a class='logo logo-light' href='index.html'>
+                 {{-- <a class='logo logo-light' href='index.html'>
                      <span class="logo-sm">
                          <img src="{{ asset('assets/admin/images/logo-sm.png')}}" alt="" height="22">
                      </span>
                      <span class="logo-lg">
                          <img src="{{ asset('assets/admin/images/logo-light.png')}}" alt="" height="24">
                      </span>
-                 </a>
-                 <a class='logo logo-dark' href='index.html'>
+                 </a> --}}
+                 {{-- <a class='logo logo-dark' href='index.html'>
                      <span class="logo-sm">
                          <img src="{{ asset('assets/admin/images/logo-sm.png')}}" alt="" height="22">
                      </span>
                      <span class="logo-lg">
                          <img src="{{ asset('assets/admin/images/logo-dark.png')}}" alt="" height="24">
                      </span>
-                 </a>
+                 </a> --}}
+                 <div class="header-logo">
+                    <a href="index.html"><img src="{{ asset('ngdung/assets/images/logo/logo1.png') }}"
+                            alt="Site Logo" width="140xp" height="70px" /></a>
+                </div>
              </div>
 
              <ul id="side-menu">
@@ -39,7 +43,7 @@
                          <span> Quản lý người dùng </span>
                      </a>
                  </li>
-                 <li class="menu-title">Kinh doanh</li>
+                 {{-- <li class="menu-title">Kinh doanh</li> --}}
                  <li>
                      <a class='tp-link' href="{{ route('admin.categories.index') }}">
                          <i data-feather="align-center"></i>
@@ -49,7 +53,7 @@
                  <li>
                      <a class='tp-link' href="{{route('admin.products.index')}}">
                          <i data-feather="package"></i>
-                         <span> Sản phẩm </span>
+                         <span> Quản lý sản phẩm </span>
                      </a>
                  </li>
                  <li>
@@ -87,12 +91,17 @@
                      </div>
                  </li>
                  <li>
-
                      <a class='tp-link' href="{{ route('admin.new.index') }}">
                          <i data-feather="package"></i>
                          <span>Quản Lý Tin Tức </span>
                      </a>
                  </li>
+                 <li>
+                    <a class='tp-link' href='{{ route('admin.banners.index') }}'>
+                        <i data-feather="file-text"></i>
+                        <span> Quản lý Banner </span>
+                    </a>
+                </li>
              </ul>
 
          </div>

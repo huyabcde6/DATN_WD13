@@ -30,12 +30,12 @@
     <div class="breadcrumb-area bg-light ">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">Single Product Style 2</h1>
+                <h1 class="title">Chi tiết</h1>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="index.html">Trang chủ </a>
                     </li>
-                    <li class="active">Single Product Style 2</li>
+                    <li class="active">Chi tiết sản phẩm</li>
                 </ul>
             </div>
         </div>
@@ -157,14 +157,14 @@
 
                     <!-- SKU Start -->
                     <div class="sku mb-3">
-                        <span id="current-sku">SKU: {{ $product->productDetails->first()->product_code }}</span>
+                        <span id="current-sku">MÃ: {{ $product->productDetails->first()->product_code }}</span>
                     </div>
 
                     <!-- SKU End -->
 
                     <!-- Stock Quantity Start -->
                     <div class="stock-quantity mb-3">
-                        <span id="current-stock">In Stock: {{ $product->productDetails->first()->quantity }}</span>
+                        <span id="current-stock">Số lượng: {{ $product->productDetails->first()->quantity }}</span>
                     </div>
 
                     <!-- Stock Quantity End -->
@@ -217,11 +217,11 @@
                                 <input type="hidden" name="color" value="" id="selected-color">
                                 <input type="hidden" name="quantity" id="product-quantity-hidden" value="1">
                                 <button type="button" class="btn btn-outline-dark btn-hover-primary"
-                                    id="add-to-cart-button">Add to cart</button>
+                                    id="add-to-cart-button">Thêm vào giỏ</button>
                             </form>
                         </div>
                         <div class="add-to-wishlist">
-                            <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Add to Wishlist</a>
+                            <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Yêu thích</a>
                         </div>
                     </div>
                     <!-- Cart & Wishlist Button End -->
@@ -238,12 +238,9 @@
 
                     <!-- Product Delivery Policy Start -->
                     <ul class="product-delivery-policy border-top pt-4 mt-4 border-bottom pb-4">
-                        <li><i class="fa fa-check-square"></i><span>Security Policy (Edit With Customer Reassurance
-                                Module)</span></li>
-                        <li><i class="fa fa-truck"></i><span>Delivery Policy (Edit With Customer Reassurance
-                                Module)</span></li>
-                        <li><i class="fa fa-refresh"></i><span>Return Policy (Edit With Customer Reassurance
-                                Module)</span></li>
+                        <li><i class="fa fa-check-square"></i><span>Chính sách bảo mật</span></li>
+                        <li><i class="fa fa-truck"></i><span>Chính sách giao hàng</span></li>
+                        <li><i class="fa fa-refresh"></i><span>Chính sách hoàn trả</span></li>
                     </ul>
                     <!-- Product Delivery Policy End -->
                 </div>
@@ -256,19 +253,19 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active text-uppercase" id="home-tab" data-bs-toggle="tab" href="#connect-1"
-                            role="tab" aria-selected="true">Description</a>
+                            role="tab" aria-selected="true">Mô tả</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" id="profile-tab" data-bs-toggle="tab" href="#connect-2"
-                            role="tab" aria-selected="false">Reviews</a>
+                            role="tab" aria-selected="false">Bình luận</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" id="contact-tab" data-bs-toggle="tab" href="#connect-3"
-                            role="tab" aria-selected="false">Shipping Policy</a>
+                            role="tab" aria-selected="false">Chính sách giao hàng</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" id="review-tab" data-bs-toggle="tab" href="#connect-4"
-                            role="tab" aria-selected="false">Size Chart</a>
+                            role="tab" aria-selected="false">Bảng size</a>
                     </li>
                 </ul>
                 <div class="tab-content mb-text" id="myTabContent">
@@ -342,39 +339,33 @@
                     <div class="tab-pane fade" id="connect-3" role="tabpanel" aria-labelledby="contact-tab">
                         <!-- Shipping Policy Start -->
                         <div class="shipping-policy mb-n2">
-                            <h4 class="title-3 mb-4">Shipping policy for our store</h4>
-                            <p class="desc-content mb-2">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                                diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut
-                                wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl
-                                ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in
-                                vulputate</p>
+                            <h4 class="title-3 mb-4">Chính sách vận chuyển của chúng tôi</h4>
+                            <p class="desc-content mb-2">Tại POLLY STORE, 
+                                chúng tôi cam kết mang đến trải nghiệm mua sắm thuận tiện và nhanh chóng cho quý khách hàng. 
+                                Chính sách vận chuyển của chúng tôi được thiết kế để đảm bảo sự hài lòng và tin tưởng.
+                            </p>
+                            <p class="desc-content mb-2">Các điều khoản vận chuyển:</p>
                             <ul class="policy-list mb-2">
-                                <li>1-2 business days (Typically by end of day)</li>
-                                <li><a href="#">30 days money back guaranty</a></li>
-                                <li>24/7 live support</li>
-                                <li>odio dignissim qui blandit praesent</li>
-                                <li>luptatum zzril delenit augue duis dolore</li>
-                                <li>te feugait nulla facilisi.</li>
+                                <li>Thời gian giao hàng: 1-2 ngày làm việc (Thông thường là trước cuối ngày)</li>
+                                <li><a href="#">Đảm bảo hoàn tiền: 30 ngày kể từ ngày mua</a></li>
+                                <li>Hỗ trợ khách hàng: 24/7 qua điện thoại và email</li>
+                                <li>Miễn phí vận chuyển cho đơn hàng trên 1.000.000đ</li>
+                                <li>Theo dõi đơn hàng trực tuyến</li>
+                                <li>Đóng gói cẩn thận, chuyên nghiệp</li>
                             </ul>
-                            <p class="desc-content mb-2">Nam liber tempor cum soluta nobis eleifend option congue nihil
-                                imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem
-                                insitam; est usus legentis in iis qui facit eorum</p>
-                            <p class="desc-content mb-2">claritatem. Investigationes demonstraverunt lectores legere me
-                                lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur
-                                mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc
-                                putamus parum claram, anteposuerit litterarum formas humanitatis per</p>
-                            <p class="desc-content mb-2">seacula quarta decima et quinta decima. Eodem modo typi, qui
-                                nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
+                            <p class="desc-content mb-2">Chúng tôi luôn nỗ lực để mang đến dịch vụ tốt nhất, 
+                                đảm bảo sản phẩm đến tay khách hàng an toàn và nhanh chóng.</p>
+                            <p class="desc-content mb-2">Để biết thêm chi tiết, vui lòng liên hệ bộ phận chăm sóc khách hàng của chúng tôi.</p>
                         </div>
                         <!-- Shipping Policy End -->
                     </div>
                     <div class="tab-pane fade" id="connect-4" role="tabpanel" aria-labelledby="review-tab">
                         <div class="size-tab table-responsive-lg">
-                            <h4 class="title-3 mb-4">Size Chart</h4>
+                            <h4 class="title-3 mb-4">Bản size</h4>
                             <table class="table border mb-0">
                                 <tbody>
                                     <tr>
-                                        <td class="cun-name"><span>UK</span></td>
+                                        <td class="cun-name"><span>VN</span></td>
                                         <td>18</td>
                                         <td>20</td>
                                         <td>22</td>
@@ -428,7 +419,7 @@
             <div class="col-12">
                 <!-- Section Title Start -->
                 <div class="section-title aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                    <h2 class="title pb-3">You Might Also Like</h2>
+                    <h2 class="title pb-3">Có thể bạn sẽ thích</h2>
                     <span></span>
                     <div class="title-border-bottom"></div>
                 </div>
@@ -472,8 +463,7 @@
                                             <span class="new">$38.50</span>
                                             <span class="old">$42.85</span>
                                         </span>
-                                        <button class="btn btn-sm btn-outline-dark btn-hover-primary">Add To
-                                            Cart</button>
+                                        <button class="btn btn-sm btn-outline-dark btn-hover-primary">Thêm vào giỏ</button>
                                     </div>
                                 </div>
                                 <!-- Single Product End -->
