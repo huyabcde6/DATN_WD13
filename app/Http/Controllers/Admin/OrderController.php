@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\OderEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\StatusDonHang;
@@ -26,14 +27,13 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
-
         try {
             $order = Order::findOrFail($id);
 
             $statusId = $request->input('status');
 
             if ($statusId && is_numeric($statusId)) {
-                if ($order->status_donhang_id == 1 && in_array($statusId, [2, 5])) { 
+                if ($order->status_donhang_id == 1 && in_array($statusId, [2, 5])) {
                     $order->status_donhang_id = $statusId;
                 } elseif ($order->status_donhang_id == 2 && $statusId == 3) {
                     $order->status_donhang_id = $statusId;
@@ -42,19 +42,17 @@ class OrderController extends Controller
                 } else {
                     return redirect()->route('admin.orders.index')->with('error', 'Không thể chuyển trạng thái theo quy định.');
                 }
-                $order->save();
-                event(new OrderUpdated($order)); 
+                $order->update();
+                broadcast(new OderEvent(Order::findOrFail($id)));
             }
-            
+
             DB::commit();
 
             return redirect()->route('admin.orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
-
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Order update error: ' . $e->getMessage());
             return redirect()->route('admin.orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
         }
     }
-
 }

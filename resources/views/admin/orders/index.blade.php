@@ -97,18 +97,10 @@ Quản lý đơn hàng
         {{ $orders->links('pagination::bootstrap-5') }}
     </div>
 </div>
-
+@vite('resources/js/public.js');
 
 @endsection
 
 @section('js')
-<script>
-    window.Echo.channel('order-updated')
-        .listen('.order.updated', (e) => {
-            const orderRow = document.querySelector(`[data-order-id="${e.order.id}"]`);
-            if (orderRow) {
-                orderRow.querySelector('select[name="status"]').value = e.order.status_donhang_id;
-            }
-        });
-</script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 @endsection

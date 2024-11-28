@@ -81,7 +81,7 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach($orders as $key => $order)
-                                                    <tr>
+                                                    <tr id="order-row-{{ $order->id }}">
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $order->order_code }}</td>
                                                         <td>{{ $order->created_at->format('d-m-Y') }}</td>
@@ -93,17 +93,17 @@
                                                                 @csrf
                                                                 @method('POST')
                                                                 @if($order->status->type === \App\Models\StatusDonHang::CHO_XAC_NHAN)
-                                                                    <input type="hidden" name="huy_don_hang" value="1">
-                                                                    <button type="submit" class="btn btn-danger btn-sm rounded-0" 
-                                                                        onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">
-                                                                        Hủy đơn hàng
-                                                                    </button>
+                                                                <input type="hidden" name="huy_don_hang" value="1">
+                                                                <button type="submit" class="btn btn-danger btn-sm rounded-0"
+                                                                    onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">
+                                                                    Hủy đơn hàng
+                                                                </button>
                                                                 @elseif($order->status->type === \App\Models\StatusDonHang::DANG_VAN_CHUYEN)
-                                                                    <input type="hidden" name="da_giao_hang" value="3">
-                                                                    <button type="submit" class="btn btn-success btn-sm rounded-0" 
-                                                                        onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
-                                                                        Đã nhận hàng
-                                                                    </button>
+                                                                <input type="hidden" name="da_giao_hang" value="3">
+                                                                <button type="submit" class="btn btn-success btn-sm rounded-0"
+                                                                    onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
+                                                                    Đã nhận hàng
+                                                                </button>
                                                                 @endif
                                                             </form>
                                                         </td>
@@ -231,7 +231,7 @@
                                     </div>
                                 </div> <!-- Single Tab Content End -->
 
-                                
+
                             </div>
                         </div> <!-- My Account Tab Content End -->
                     </div>
@@ -251,4 +251,5 @@
     <i class="arrow-bottom fa fa-long-arrow-up"></i>
 </a>
 <!-- Scroll Top End -->
+@vite('resources/js/public.js');
 @endsection
