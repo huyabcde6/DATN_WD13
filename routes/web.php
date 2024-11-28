@@ -12,6 +12,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
@@ -96,6 +98,13 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý Banner
     Route::resource('banners', BannerController::class);
+
+    Route::resource('invoices', InvoiceController::class);
+
+    // Route::resource('users', UserController::class);
+
+    Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');
+
 });
 
 

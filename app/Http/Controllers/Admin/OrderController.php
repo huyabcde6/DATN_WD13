@@ -33,10 +33,10 @@ class OrderController extends Controller
 
         try {
             $order = Order::findOrFail($id);
-
+            
             // Lấy trạng thái mới từ request
             $statusId = $request->input('status');
-
+            
             if ($statusId && is_numeric($statusId)) {
                 // Chuyển trạng thái đơn hàng theo quy định
                 if ($order->status_donhang_id == 1 && in_array($statusId, [2, 7])) { // Chờ xác nhận -> Đã xác nhận, Hoàn hàng
@@ -47,6 +47,9 @@ class OrderController extends Controller
                     $order->status_donhang_id = $statusId;
                 } elseif ($order->status_donhang_id == 4 && in_array($statusId, [5, 8])) { // Đã giao hàng -> Hoàn thành, Chờ
                     $order->status_donhang_id = $statusId;
+                    if ($statusId == 5) {
+                        $this->moveOrderToInvoice($order);
+                    }
                 } elseif ($order->status_donhang_id == 5) { // Hoàn thành không thể thay đổi trạng thái
                     return redirect()->route('admin.orders.index')->with('error', 'Đơn hàng đã hoàn thành và không thể thay đổi trạng thái.');
                 }elseif ($order->status_donhang_id == 8 && $statusId == 6) { // Chờ xác nhận hoàn hàng -> Hoàn hàng
@@ -69,5 +72,44 @@ class OrderController extends Controller
             \Log::error('Order update error: ' . $e->getMessage());
             return redirect()->route('admin.orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
         }
-    }              
+    }    
+
+    protected function moveOrderToInvoice(Order $order)
+    {
+        // Kiểm tra nếu hóa đơn đã tồn tại (tránh trùng lặp)
+        if ($order->toInvoice()->exists()) {
+            return;
+        }
+
+        $invoice = \App\Models\Invoice::create([
+            'invoice_code' => $order->order_code,
+            'user_id' => $order->user_id,
+            'order_id' => $order->id,
+            'nguoi_nhan' => $order->nguoi_nhan,
+            'email' => $order->email,
+            'number_phone' => $order->number_phone,
+            'address' => $order->address,
+            'status_donhang_id' => $order->status_donhang_id,
+            'ghi_chu' => $order->ghi_chu,
+            'method' => $order->method,
+            'subtotal' => $order->subtotal,
+            'discount' => $order->discount,
+            'shipping_fee' => $order->shipping_fee,
+            'total_price' => $order->total_price,
+            'date_invoice' => now(),
+        ]);
+
+        // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
+        foreach ($order->orderDetails as $orderDetail) {
+            $invoice->invoiceDetails()->create([
+                'product_name' => $orderDetail->productDetail->products->name,
+                'color' => $orderDetail->color,
+                'size' => $orderDetail->size,
+                'quantity' => $orderDetail->quantity,
+                'price' => $orderDetail->price,
+            ]);
+        }
+    }
+
+      
 }

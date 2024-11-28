@@ -32,13 +32,13 @@
 
                  <li class="menu-title">Quản trị</li>
                  <li>
-                     <a class='tp-link' href="">
+                     <a class='tp-link' href="{{ route('admin.statistics.index') }}">
                          <i data-feather="home"></i>
                          <span> Dashboards </span>
                      </a>
                  </li>
                  <li>
-                     <a class='tp-link' href='{{ route('users.index') }}'>
+                     <a class='tp-link' href="{{ route('users.index') }}">
                          <i data-feather="users"></i>
                          <span> Quản lý người dùng </span>
                      </a>
@@ -57,19 +57,29 @@
                      </a>
                  </li>
                  <li>
-
-                     <a class='tp-link' href="{{route('admin.orders.index')}}">
+                     <a href="#sideOrder" data-bs-toggle="collapse">
                          <i data-feather="clipboard"></i>
-                         <span> Quản lý đơn hàng </span>
+                         <span>Quản lý đơn hàng</span>
+                         <span class="menu-arrow"></span>
                      </a>
+                     <div class="collapse" id="sideOrder">
+                         <ul class="nav-second-level">
+                             <li>
+                                 <a class='tp-link' href="{{route('admin.orders.index')}}">Trạng thái đơn hàng</a>
+                             </li>
+                             <li>
+                                 <a class='tp-link' href="{{route('admin.invoices.index')}}">Hóa đơn</a>
+                             </li>
+                         </ul>
+                     </div>
                  </li>
                  <li>
-                     <a href="#sidebarMarketing" data-bs-toggle="collapse">
+                     <a href="#sidebar" data-bs-toggle="collapse">
                          <i data-feather="sliders"></i>
                          <span>Quản lý biến thể</span>
                          <span class="menu-arrow"></span>
                      </a>
-                     <div class="collapse" id="sidebarMarketing">
+                     <div class="collapse" id="sidebar">
                          <ul class="nav-second-level">
                              <li>
                                  <a class='tp-link' href="{{ route('admin.colors.index') }}">Màu sắc</a>

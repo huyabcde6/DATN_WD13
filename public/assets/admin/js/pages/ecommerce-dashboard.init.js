@@ -319,68 +319,68 @@ chart.render();
 
 
 
-// Sales by Country
-var options = {
-    series: [{
-        name: 'India',
-        data: [80, 50, 30, 40, 100, 20],
-    }, {
-        name: 'Australia',
-        data: [20, 30, 40, 80, 20, 80],
-    }, {
-        name: 'Canada',
-        data: [44, 76, 78, 13, 43, 10],
-    }],
-    chart: {
-        type: 'radar',
-        height: 350,
-        parentHeightOffset: 0,
-        dropShadow: {
-            enabled: true,
-            blur: 1,
-            left: 1,
-            top: 1
-        },
-        toolbar: {
-            show: false
-        },
-    },
-    stroke: {
-        width: 2,
-        dashArray: 2
-    },
-    fill: {
-        opacity: 0.1
-    },
-    markers: {
-        size: 0,
-        hover: {
-            size: 10
-        }
-    },
-    yaxis: {
-        stepSize: 20
-    },
-    xaxis: {
-        categories: ['2019', '2020', '2021', '2022', '2023', '2024'],
-        labels: {
-            show: true,
-            style: {
-                colors: ["#001b2f", "#001b2f", "#001b2f", "#001b2f", "#001b2f", "#001b2f"],
-                fontSize: "13px",
-            }
-        }
-    },
-    colors: ["#ec8290", "#537AEF", "#8c57d1"],
-    dataLabels: {
-        enabled: false,
-        background: {
-            enabled: true,
-        }
-    }
-};
-var chart = new ApexCharts(document.querySelector("#sales-country"), options);
-chart.render();
+// // Sales by Country
+// var options = {
+//     series: [{
+//         name: 'India',
+//         data: [80, 50, 30, 40, 100, 20],
+//     }, {
+//         name: 'Australia',
+//         data: [20, 30, 40, 80, 20, 80],
+//     }, {
+//         name: 'Canada',
+//         data: [44, 76, 78, 13, 43, 10],
+//     }],
+//     chart: {
+//         type: 'radar',
+//         height: 350,
+//         parentHeightOffset: 0,
+//         dropShadow: {
+//             enabled: true,
+//             blur: 1,
+//             left: 1,
+//             top: 1
+//         },
+//         toolbar: {
+//             show: false
+//         },
+//     },
+//     stroke: {
+//         width: 2,
+//         dashArray: 2
+//     },
+//     fill: {
+//         opacity: 0.1
+//     },
+//     markers: {
+//         size: 0,
+//         hover: {
+//             size: 10
+//         }
+//     },
+//     yaxis: {
+//         stepSize: 20
+//     },
+//     xaxis: {
+//         categories: ['2019', '2020', '2021', '2022', '2023', '2024'],
+//         labels: {
+//             show: true,
+//             style: {
+//                 colors: ["#001b2f", "#001b2f", "#001b2f", "#001b2f", "#001b2f", "#001b2f"],
+//                 fontSize: "13px",
+//             }
+//         }
+//     },
+//     colors: ["#ec8290", "#537AEF", "#8c57d1"],
+//     dataLabels: {
+//         enabled: false,
+//         background: {
+//             enabled: true,
+//         }
+//     }
+// };
+// var chart = new ApexCharts(document.querySelector("#sales-country"), options);
+// chart.render();
 
 
 // Repeat Custmer

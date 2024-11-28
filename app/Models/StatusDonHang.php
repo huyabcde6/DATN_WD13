@@ -33,4 +33,25 @@ class StatusDonHang extends Model
     {
         return self::where('type', $type)->value('id');
     }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'status_donhang_id');
+    }
+
+    public function getStatusColor()
+    {
+        $colors = [
+            'Chờ xác nhận' => 'bg-primary',
+            'Đã xác nhận' => 'bg-primary',
+            'Đang vận chuyển' => 'bg-primary',
+            'Đã giao hàng' => 'bg-primary',
+            'Hoàn thành' => 'bg-success',
+            'Hoàn hàng' => 'bg-danger',
+            'Đã hủy' => 'bg-danger',
+            'Chờ hoàn' => 'bg-warning',
+        ];
+
+        return $colors[$this->type] ?? 'bg-light';
+    }
 }

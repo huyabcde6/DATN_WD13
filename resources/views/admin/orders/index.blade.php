@@ -67,29 +67,10 @@ Quản lý đơn hàng
                                 <td>{{ $order->method }}</td>
                                 <td>{{ $order->payment_status }}</td>
                                 <td>
-                                    <span class="badge w-100
-                                        @if($order->status->type == 'Chờ xác nhận') 
-                                            bg-primary 
-                                        @elseif($order->status->type == 'Đã xác nhận') 
-                                            bg-primary 
-                                        @elseif($order->status->type == 'Đang vận chuyển') 
-                                            bg-primary 
-                                        @elseif($order->status->type == 'Đã giao hàng') 
-                                            bg-primary 
-                                        @elseif($order->status->type == 'Hoàn thành') 
-                                            bg-success 
-                                        @elseif($order->status->type == 'Hoàn hàng') 
-                                            bg-danger 
-                                        @elseif($order->status->type == 'Đã hủy') 
-                                            bg-danger 
-                                        @elseif($order->status->type == 'Chờ hoàn') 
-                                            bg-warning
-                                        @else 
-                                            bg-light 
-                                        @endif" style="height: 30px; line-height: 17px; font-size: 15px;">
+                                    <span class="badge {{ $order->status->getStatusColor() }}"
+                                        style="height: 20px; line-height: 11px; font-size: 11px;">
                                         {{ $order->status->type }}
                                     </span>
-
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.orders.show', $order->id) }}"
@@ -131,22 +112,30 @@ Quản lý đơn hàng
                     <div class="form-group">
                         <label for="status">Trạng thái</label>
                         <select class="form-select" name="status" id="status" required>
-                            <option value="1" {{ $order->status_donhang_id === 1 ? 'selected' : '' }}>Chờ xác nhận</option>
-                            <option value="2" {{ $order->status_donhang_id === 2 ? 'selected' : '' }}>Đã xác nhận</option>
-                            <option value="3" {{ $order->status_donhang_id === 3 ? 'selected' : '' }}>Đang vận chuyển</option>
-                            <option value="4" {{ $order->status_donhang_id === 4 ? 'selected' : '' }}>Đã giao hàng</option>
-                            <option value="5" {{ $order->status_donhang_id === 5 ? 'selected' : '' }}>Hoàn thành</option>
+                            <option value="1" {{ $order->status_donhang_id === 1 ? 'selected' : '' }}>Chờ xác nhận
+                            </option>
+                            <option value="2" {{ $order->status_donhang_id === 2 ? 'selected' : '' }}>Đã xác nhận
+                            </option>
+                            <option value="3" {{ $order->status_donhang_id === 3 ? 'selected' : '' }}>Đang vận chuyển
+                            </option>
+                            <option value="4" {{ $order->status_donhang_id === 4 ? 'selected' : '' }}>Đã giao hàng
+                            </option>
+                            <option value="5" {{ $order->status_donhang_id === 5 ? 'selected' : '' }}>Hoàn thành
+                            </option>
                             <option value="6" {{ $order->status_donhang_id === 6 ? 'selected' : '' }}>Hoàn hàng</option>
-                            <option value="8" {{ $order->status_donhang_id === 8 ? 'selected' : '' }}>Chờ xác nhận hoàn hàng</option>
+                            <option value="8" {{ $order->status_donhang_id === 8 ? 'selected' : '' }}>Chờ xác nhận hoàn
+                                hàng</option>
                             <option value="7" {{ $order->status_donhang_id === 7 ? 'selected' : '' }}>Đã hủy</option>
                         </select>
                     </div>
 
                     <!-- Phần lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng" -->
-                    @if($order->status_donhang_id == 8)  <!-- Kiểm tra trạng thái Chờ xác nhận hoàn hàng -->
+                    @if($order->status_donhang_id == 8)
+                    <!-- Kiểm tra trạng thái Chờ xác nhận hoàn hàng -->
                     <div class="mt-2">
                         <label for="return_reason">Lý do trả hàng</label>
-                        <textarea name="return_reason" id="return_reason" class="form-control">{{ old('return_reason', $order->return_reason) }}</textarea>
+                        <textarea name="return_reason" id="return_reason"
+                            class="form-control">{{ old('return_reason', $order->return_reason) }}</textarea>
                     </div>
                     @endif
 
@@ -174,29 +163,31 @@ window.Echo.channel('order-updated')
 </script>
 <script>
 var orderStatusModal = document.getElementById('orderStatusModal');
-orderStatusModal.addEventListener('show.bs.modal', function (event) {
-    // Lấy thông tin từ nút "Sửa"
-    var button = event.relatedTarget;
-    var orderId = button.getAttribute('data-order-id');
-    var currentStatus = button.getAttribute('data-current-status');
-    var returnReason = button.getAttribute('data-return-reason'); // Lấy lý do trả hàng từ data attribute
-    
-    // Cập nhật các giá trị trong modal
+orderStatusModal.addEventListener('show.bs.modal', function(event) {
+    var button = event.relatedTarget; // Nút bấm "Sửa" được nhấn
+    var orderId = button.getAttribute('data-order-id'); // Lấy ID của đơn hàng
+    var currentStatus = button.getAttribute('data-current-status'); // Lấy trạng thái hiện tại
+    var returnReason = button.getAttribute('data-return-reason'); // Lấy lý do trả hàng (nếu có)
+
+    // Cập nhật lại action của form trong modal
+    var form = orderStatusModal.querySelector('form');
+    form.action = `/admin/orders/${orderId}`; // Đảm bảo action chứa đúng ID của đơn hàng
+
+    // Cập nhật trạng thái đơn hàng trong select
     var statusSelect = orderStatusModal.querySelector('#status');
     statusSelect.value = currentStatus;
 
-    // Cập nhật giá trị lý do trả hàng (nếu có) vào textarea
+    // Cập nhật lý do trả hàng (nếu có) vào textarea
     var returnReasonTextarea = orderStatusModal.querySelector('#return_reason');
     returnReasonTextarea.value = returnReason || ''; // Nếu không có lý do trả hàng thì để trống
 
-    // Hiển thị/ẩn textarea lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng"
+    // Hiển thị hoặc ẩn textarea lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng"
     if (currentStatus == 8) {
         returnReasonTextarea.closest('.form-group').style.display = 'block';
     } else {
         returnReasonTextarea.closest('.form-group').style.display = 'none';
     }
 });
-
 </script>
 
 @endsection
