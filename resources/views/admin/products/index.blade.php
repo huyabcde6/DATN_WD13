@@ -43,7 +43,7 @@ Danh sách sản phẩm
                             </span>
                             <input type="text" value="{{ request('search') }}" name="search" id="search"
                                 class="form-control" placeholder="Nhập từ khóa cần tìm..">
-                            <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                            <button type="submit" class="btn btn-dark">Tìm kiếm</button>
                         </div>
                     </form>
                     <a href="{{ route('admin.products.create') }}"
@@ -80,8 +80,8 @@ Danh sách sản phẩm
                                         width="50" height="50" class="img-thumbnail">
                                 </td>
                                 <td>{{ $product->categories->name ?? 'Không có' }}</td>
-                                <td>{{ number_format($product->price, 2) }} VNĐ</td>
-                                <td>{{ $product->discount_price ? number_format($product->discount_price, 2) . ' VNĐ' : 'Không có' }}
+                                <td>{{ number_format($product->price, 0, ',', '.') }} đ</td>
+                                <td>{{ $product->discount_price ? number_format($product->discount_price, 0, ',', '.') . ' đ' : 'Không có' }}
                                 </td>
                                 <td>{{ $product->stock_quantity }}</td>
                                 <td>{{ $product->created_at->format('d/m/Y') }}</td>

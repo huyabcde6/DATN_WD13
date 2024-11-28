@@ -47,7 +47,14 @@
                                     address</a>
                                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account
                                     Details</a>
-                                <a href="login-register.html"><i class="fa fa-sign-out"></i> Logout</a>
+                                <a class='dropdown-item notify-item' href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="mdi mdi-location-exit fs-16 align-middle"></i>
+                                    <span>Đăng xuất</span>
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                         <!-- My Account Tab Menu End -->
