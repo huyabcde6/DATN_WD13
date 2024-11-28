@@ -15,7 +15,7 @@
         </div>
         
 
-        <button type="submit" class="btn btn-success mt-3">Cập Nhật</button>
-        <a href="{{ route('sizes.index') }}" class="btn btn-secondary mt-3">Quay lại</a>
+        <button type="submit" class="btn btn-warning mt-3">Cập Nhật</button>
+        <a href="{{ route('admin.sizes.index') }}" class="btn btn-secondary mt-3">Quay lại</a>
     </form>
 @endsection

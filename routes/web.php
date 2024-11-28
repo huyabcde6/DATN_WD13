@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryProductController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -41,8 +42,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/', [HomeController::class, 'index']);
 
-
+// CRUD users
 Route::resource('users', UserController::class);
+
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
@@ -93,16 +95,20 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý màu sắc
     Route::resource('colors', ColorController::class);
+
+    // Quản lý Banner
+    Route::resource('banners', BannerController::class);
+
     Route::resource('invoices', InvoiceController::class);
 
     // Route::resource('users', UserController::class);
 
     Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');
+
 });
 
 
 require __DIR__ . '/auth.php';
-
 
 Route::prefix('admin')
     ->name('admin.')

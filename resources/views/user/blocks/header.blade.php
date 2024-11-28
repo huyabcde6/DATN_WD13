@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Destry - Fashion eCommerce HTML Template</title>
+    <title>POLY STORE</title>
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico') }}" />
 
@@ -57,7 +57,7 @@
                                         <a href="#"><span>Sản Phẩm</span> <i class="fa fa-angle-down"></i></a>
                                         <ul class="mega-menu row-cols">
                                             <li class="col">
-                                                <h4 class="mega-menu-title">Shop Layout</h4>
+                                                <h4 class="mega-menu-title">Sản phẩm</h4>
                                                 <ul class="mb-n2">
 
                                                     <li><a href="{{route('shop.index')}}">Shop</a></li>

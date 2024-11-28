@@ -8,12 +8,12 @@
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">Checkout</h1>
+                <h1 class="title">Thanh toán</h1>
                 <ul>
                     <li>
-                        <a href="{{ url('/') }}">Home </a>
+                        <a href="{{ url('/') }}">Trang chủ </a>
                     </li>
-                    <li class="active"> Checkout</li>
+                    <li class="active"> Thanh toán</li>
                 </ul>
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <div class="checkbox-form">
 
                     <!-- Checkbox Form Title Start -->
-                    <h3 class="title">Billing Details</h3>
+                    <h3 class="title">Chi tiết thanh toán</h3>
                     <!-- Checkbox Form Title End -->
 
                     <div class="row">
@@ -52,7 +52,7 @@
                         <!-- Email Address Input Start -->
                         <div class="col-md-12">
                             <div class="checkout-form-list">
-                                <label>Email Address <span class="required">*</span></label>
+                                <label>Email <span class="required">*</span></label>
                                 <input placeholder="" name="email" type="email" value="{{ Auth::user()->email }}">
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                         <!-- Phone Input Start -->
                         <div class="col-md-12">
                             <div class="checkout-form-list">
-                                <label>Phone <span class="required">*</span></label>
+                                <label>Số điện thoại <span class="required">*</span></label>
                                 <input type="text" placeholder="number phone" name="number_phone" value="{{ Auth::user()->number_phone }}">
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                         <!-- Address Input Start -->
                         <div class="col-md-12">
                             <div class="checkout-form-list">
-                                <label>Address <span class="required">*</span></label>
+                                <label>Địa chỉ <span class="required">*</span></label>
                                 <input placeholder="Street address" name="address" type="text" value="{{ Auth::user()->address }}">
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                         <!-- Order Notes Start -->
                         <div class="order-notes mt-3 mb-n2">
                             <div class="checkout-form-list checkout-form-list-2">
-                                <label>Order Notes</label>
+                                <label>Ghi chú đặt hàng</label>
                                 <textarea id="checkout-mess" name="ghi_chu" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                             </div>
                         </div>
@@ -91,13 +91,13 @@
 
                 <!-- Your Order Area Start -->
                 <div class="your-order-area border">
-                    <h3 class="title">Your order</h3>
+                    <h3 class="title">Đơn hàng của bạn</h3>
                     <div class="your-order-table table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th class="cart-product-name text-start">Product</th>
-                                    <th class="cart-product-total text-end">Total</th>
+                                    <th class="cart-product-name text-start">Sản phẩm</th>
+                                    <th class="cart-product-total text-end">Tổng</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -115,17 +115,17 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="text-start">Subtotal</th>
+                                    <th class="text-start">Tổng phụ</th>
                                     <td class="text-end">{{ number_format($subTotal, 0, ',', '.') }} ₫</td>
                                     <input type="hidden" name="subtotal" value="{{ $subTotal }}">
                                 </tr>
                                 <tr>
-                                    <th class="text-start">Shipping Fee</th>
+                                    <th class="text-start">Phí vận chuyển</th>
                                     <td class="text-end">{{ number_format($shippingFee, 0, ',', '.') }} ₫</td>
                                     <input type="hidden" name="shipping_fee" value="{{ $shippingFee }}">
                                 </tr>
                                 <tr>
-                                    <th class="text-start">Total</th>
+                                    <th class="text-start">Tổng cộng</th>
                                     <td class="text-end"><strong>{{ number_format($total, 0, ',', '.') }} ₫</strong></td>
                                     <input type="hidden" name="total_price" value="{{ $total }}">
                                 </tr>
@@ -151,7 +151,7 @@
                     </div>
 
                     <div class="order-button-payment">
-                        <button type="submit" class="btn btn-dark btn-hover-primary rounded-0 w-100">Place Order</button>
+                        <button type="submit" class="btn btn-dark btn-hover-primary rounded-0 w-100">ĐẶT HÀNG</button>
                     </div>
                 </div>
                 <!-- Payment Method End -->
