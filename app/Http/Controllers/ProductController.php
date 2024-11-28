@@ -48,6 +48,7 @@ class ProductController extends Controller
         }
         
         return view('user.sanpham.product_detail', compact('products', 'product', 'sizes', 'colors', 'productDetails', 'hasPurchased', 'comments'));
+
     }
 
 }
