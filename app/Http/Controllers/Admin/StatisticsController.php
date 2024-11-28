@@ -62,7 +62,7 @@ class StatisticsController extends Controller
             ->groupBy('date')
             ->orderByDesc('date')
             ->get();
-
+            
         return view('admin.statistics.index', compact(
             'orderStatuses',
             'revenue',
