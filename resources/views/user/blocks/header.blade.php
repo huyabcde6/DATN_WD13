@@ -147,8 +147,11 @@
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
-                                <a href="{{ route('login') }}" class="header-action-btn d-none d-md-block"><i
-                                        class="pe-7s-user"></i></a>
+                                <a href="{{ auth()->check() ? route('orders.index') : route('login') }}"
+                                    class="header-action-btn d-none d-md-block">
+                                    <i class="pe-7s-user"></i>
+                                </a>
+
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->
@@ -161,8 +164,7 @@
                                 <!-- Shopping Cart Header Action Button Start -->
                                 <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span
-                                        class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
+                                    <span class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
                                     </span>
                                 </a>
 

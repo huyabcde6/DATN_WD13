@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\banner;
 use Illuminate\Http\Request;
-
+use App\Models\Order;
 class HomeController extends Controller
 {
     public function index() {

@@ -97,7 +97,7 @@
                      </a>
                  </li>
                  <li>
-                    <a class='tp-link' href='{{ route('admin.banners.index') }}'>
+                    <a class='tp-link' href="{{ route('admin.banners.index') }}">
                         <i data-feather="file-text"></i>
                         <span> Quản lý Banner </span>
                     </a>
