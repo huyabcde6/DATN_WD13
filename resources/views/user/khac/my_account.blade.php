@@ -92,14 +92,15 @@
                                                                 <h4 class="text-center">Mã đơn: <span
                                                                         class="text-danger">{{ $order->order_code }}</span>
                                                                 </h4>
-                                                                <h5 class="text-center mx-3">
+                                                                <h5 id="order-status-{{ $order->id }}" class="text-center mx-3">
                                                                     {{ $order->status->type ?? 'N/A' }}
                                                                 </h5>
 
                                                             </div>
                                                             <div class="d-flex  justify-content-start">
                                                                 <p><strong>Ngày đặt:</strong>
-                                                                    {{ $order->created_at->format('d-m-Y') }}</p>
+                                                                    {{ $order->created_at->format('d-m-Y') }}
+                                                                </p>
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -120,15 +121,18 @@
                                                                 <!-- Thông tin sản phẩm -->
                                                                 <div class="w-75">
                                                                     <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong>
-                                                                        {{ $detail->products->name }}</h6>
+                                                                        {{ $detail->products->name }}
+                                                                    </h6>
                                                                     <p class="mb-0 mx-3 text-muted text-start"><strong>Loại:</strong>
-                                                                        {{ $detail->color }} / {{ $detail->size }}</p>
+                                                                        {{ $detail->color }} / {{ $detail->size }}
+                                                                    </p>
 
-                                                                        <p class="mb-0 mx-3 text-start"><strong>Số lượng:</strong>
-                                                                            {{ $detail->quantity }}</p>
-                                                                        <p class="mb-0  mx-3 text-start"><strong>Giá:</strong>
-                                                                            {{ number_format($detail->price, 0, '', ',') }}₫
-                                                                        </p>
+                                                                    <p class="mb-0 mx-3 text-start"><strong>Số lượng:</strong>
+                                                                        {{ $detail->quantity }}
+                                                                    </p>
+                                                                    <p class="mb-0  mx-3 text-start"><strong>Giá:</strong>
+                                                                        {{ number_format($detail->price, 0, '', ',') }}₫
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>

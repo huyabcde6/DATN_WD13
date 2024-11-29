@@ -67,7 +67,7 @@ Quản lý đơn hàng
                                 <td>{{ $order->method }}</td>
                                 <td>{{ $order->payment_status }}</td>
                                 <td>
-                                    <span class="badge {{ $order->status->getStatusColor() }}"
+                                    <span id="order-{{$order->id}}" class="badge {{ $order->status->getStatusColor() }}"
                                         style="height: 20px; line-height: 11px; font-size: 11px;">
                                         {{ $order->status->type }}
                                     </span>
@@ -148,46 +148,46 @@ Quản lý đơn hàng
         </div>
     </div>
 </div>
-@vite('resources/js/public.js');
+@vite('resources/js/adminoder.js');
 @endsection
 
 @section('js')
 <script>
-window.Echo.channel('order-updated')
-    .listen('.order.updated', (e) => {
-        const orderRow = document.querySelector(`[data-order-id="${e.order.id}"]`);
-        if (orderRow) {
-            orderRow.querySelector('select[name="status"]').value = e.order.status_donhang_id;
-        }
-    });
+    window.Echo.channel('order-updated')
+        .listen('.order.updated', (e) => {
+            const orderRow = document.querySelector(`[data-order-id="${e.order.id}"]`);
+            if (orderRow) {
+                orderRow.querySelector('select[name="status"]').value = e.order.status_donhang_id;
+            }
+        });
 </script>
 <script>
-var orderStatusModal = document.getElementById('orderStatusModal');
-orderStatusModal.addEventListener('show.bs.modal', function(event) {
-    var button = event.relatedTarget; // Nút bấm "Sửa" được nhấn
-    var orderId = button.getAttribute('data-order-id'); // Lấy ID của đơn hàng
-    var currentStatus = button.getAttribute('data-current-status'); // Lấy trạng thái hiện tại
-    var returnReason = button.getAttribute('data-return-reason'); // Lấy lý do trả hàng (nếu có)
+    var orderStatusModal = document.getElementById('orderStatusModal');
+    orderStatusModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget; // Nút bấm "Sửa" được nhấn
+        var orderId = button.getAttribute('data-order-id'); // Lấy ID của đơn hàng
+        var currentStatus = button.getAttribute('data-current-status'); // Lấy trạng thái hiện tại
+        var returnReason = button.getAttribute('data-return-reason'); // Lấy lý do trả hàng (nếu có)
 
-    // Cập nhật lại action của form trong modal
-    var form = orderStatusModal.querySelector('form');
-    form.action = `/admin/orders/${orderId}`; // Đảm bảo action chứa đúng ID của đơn hàng
+        // Cập nhật lại action của form trong modal
+        var form = orderStatusModal.querySelector('form');
+        form.action = `/admin/orders/${orderId}`; // Đảm bảo action chứa đúng ID của đơn hàng
 
-    // Cập nhật trạng thái đơn hàng trong select
-    var statusSelect = orderStatusModal.querySelector('#status');
-    statusSelect.value = currentStatus;
+        // Cập nhật trạng thái đơn hàng trong select
+        var statusSelect = orderStatusModal.querySelector('#status');
+        statusSelect.value = currentStatus;
 
-    // Cập nhật lý do trả hàng (nếu có) vào textarea
-    var returnReasonTextarea = orderStatusModal.querySelector('#return_reason');
-    returnReasonTextarea.value = returnReason || ''; // Nếu không có lý do trả hàng thì để trống
+        // Cập nhật lý do trả hàng (nếu có) vào textarea
+        var returnReasonTextarea = orderStatusModal.querySelector('#return_reason');
+        returnReasonTextarea.value = returnReason || ''; // Nếu không có lý do trả hàng thì để trống
 
-    // Hiển thị hoặc ẩn textarea lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng"
-    if (currentStatus == 8) {
-        returnReasonTextarea.closest('.form-group').style.display = 'block';
-    } else {
-        returnReasonTextarea.closest('.form-group').style.display = 'none';
-    }
-});
+        // Hiển thị hoặc ẩn textarea lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng"
+        if (currentStatus == 8) {
+            returnReasonTextarea.closest('.form-group').style.display = 'block';
+        } else {
+            returnReasonTextarea.closest('.form-group').style.display = 'none';
+        }
+    });
 </script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 @endsection
