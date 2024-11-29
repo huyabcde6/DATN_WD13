@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Categories\CategoryProductRequest;
+use App\Http\Requests\CategoryRequest;
 use App\Models\categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +23,7 @@ class CategoryProductController extends Controller
         return view('admin.categories.create');
     }
 
-    public function store(CategoryProductRequest $request)
+    public function store(CategoryRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -54,7 +54,7 @@ class CategoryProductController extends Controller
         return view('admin.categories.edit', compact('category'));
     }
 
-    public function update(CategoryProductRequest $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
         try {
             DB::beginTransaction();
@@ -80,7 +80,7 @@ class CategoryProductController extends Controller
         }
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $category = categories::find($id);
 

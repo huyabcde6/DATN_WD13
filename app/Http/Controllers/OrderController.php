@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
     /**
-     * Hiển thị danh sách các đơn hàng.
+     * Hiển thị danh sách các đơn hàng của người dùng.
      */
     public function index()
     {
@@ -83,7 +83,7 @@ class OrderController extends Controller
                 // Tạo đơn hàng
                 $order = Order::query()->create($params);
                 $orderId = $order->id;
-                $carts = Session::get('cart', []);
+                $carts = Session::get('cart', []); // Giỏ hàng trong session
 
                 // Thêm chi tiết đơn hàng
                 foreach ($carts as $productDetailId => $value) {
@@ -136,11 +136,12 @@ class OrderController extends Controller
     }
 
     /**
-     * Cập nhật trạng thái đơn hàng (hủy hoặc đã giao).
+     * Cập nhật trạng thái đơn hàng (Admin chỉ thay đổi trạng thái đơn hàng).
      */
     public function update(Request $request, $id)
     {
         if ($request->isMethod('POST')) {
+            Log::info('Request data:', $request->all());
             DB::beginTransaction();
 
             try {
@@ -152,10 +153,16 @@ class OrderController extends Controller
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_HUY);
                 } elseif ($request->has('da_giao_hang')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_GIAO_HANG);
-                } else {
+                } elseif ($request->has('cho_xac_nhan')) {
+                    $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::CHO_HOAN);
+                    if ($request->filled('return_reason')) {
+                        $params['return_reason'] = $request->input('return_reason');
+                    } else {
+                        throw new \Exception('Bạn phải cung cấp lý do trả hàng.');
+                    }
+                }else {
                     throw new \Exception('Hành động không hợp lệ.');
                 }
-
                 // Cập nhật trạng thái đơn hàng
                 $order->update($params);
 
@@ -167,6 +174,8 @@ class OrderController extends Controller
                 return redirect()->route('orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
             }
         }
+        
+
 
         return redirect()->route('orders.index')->with('error', 'Phương thức không hợp lệ.');
     }

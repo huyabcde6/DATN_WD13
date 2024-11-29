@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Destry - Fashion eCommerce HTML Template</title>
+    <title>POLY STORE</title>
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico') }}" />
 
@@ -58,7 +58,7 @@
                                         <a href="#"><span>Sản Phẩm</span> <i class="fa fa-angle-down"></i></a>
                                         <ul class="mega-menu row-cols">
                                             <li class="col">
-                                                <h4 class="mega-menu-title">Shop Layout</h4>
+                                                <h4 class="mega-menu-title">Sản phẩm</h4>
                                                 <ul class="mb-n2">
 
                                                     <li><a href="{{route('shop.index')}}">Shop</a></li>
@@ -148,8 +148,11 @@
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
-                                <a href="{{ route('login') }}" class="header-action-btn d-none d-md-block"><i
-                                        class="pe-7s-user"></i></a>
+                                <a href="{{ auth()->check() ? route('orders.index') : route('login') }}"
+                                    class="header-action-btn d-none d-md-block">
+                                    <i class="pe-7s-user"></i>
+                                </a>
+
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->
@@ -162,8 +165,7 @@
                                 <!-- Shopping Cart Header Action Button Start -->
                                 <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span
-                                        class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
+                                    <span class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
                                     </span>
                                 </a>
 
