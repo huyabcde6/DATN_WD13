@@ -27,7 +27,7 @@ Quản lý đơn hàng
         <div class="col-12">
             <div class="card">
                 <div class="d-flex m-3">
-                    <form action="{{ route('users.index') }}" method="get" class="">
+                    <form action="" method="get" class="">
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="bi bi-search"></i>

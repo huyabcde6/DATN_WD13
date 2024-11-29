@@ -1,7 +1,10 @@
-<x-app-web-layout>
+@extends('layouts.admin')
 
-    @include('role-permission.nav-links')
+@section('title')
+Vai trò & quyền
+@endsection
 
+@section('content')
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
@@ -56,5 +59,4 @@
             </div>
         </div>
     </div>
-
-</x-app-web-layout>
+@endsection

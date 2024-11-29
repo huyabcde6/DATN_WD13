@@ -1,4 +1,21 @@
-<x-app-web-layout>
+    @extends('layouts.admin')
+
+    @section('title')
+    Quản lý Vai trò & Quyền
+    @endsection
+
+    @section('content')
+        @if (session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session()->get('error') }}
+            </div>
+        @endif
+
+        @if (session()->has('success'))
+            <div class="alert alert-success">
+                {{ session()->get('success') }}
+            </div>
+        @endif
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
@@ -6,8 +23,9 @@
                     <div class="card-header">
                         <h4>
                             Edit Permissions
-                            <a href="{{ url('permission') }}" class="btn btn-danger float-end ">Back</a>
+                            
                         </h4>
+                        <a href="{{ url('permission') }}" class="btn btn-danger float-end ">Back</a>
                     </div>
                     <div class="card-body">
                         <form action="{{url('permission/'.$permission->id)}}" method="POST">
@@ -27,5 +45,4 @@
             </div>
         </div>
     </div>
-
-</x-app-web-layout>
+    @endsection

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -11,7 +12,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::get();
+        $roles = Role::paginate(10);
         return view('role-permission.role.index', compact('roles'));
     }
 

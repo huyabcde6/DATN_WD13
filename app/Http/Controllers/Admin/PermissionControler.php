@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
@@ -9,7 +10,7 @@ class PermissionControler extends Controller
 {
     public function index()
     {
-        $permission = Permission::get();
+        $permission = Permission::paginate(10);
         return view('role-permission.permission.index', compact('permission'));
     }
 

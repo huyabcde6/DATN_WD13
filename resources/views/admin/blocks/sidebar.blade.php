@@ -102,6 +102,23 @@
                         <span> Quản lý Banner </span>
                     </a>
                 </li>
+                <li>
+                     <a href="#sideRole" data-bs-toggle="collapse">
+                         <i data-feather="clipboard"></i>
+                         <span>Vai trò & quyền</span>
+                         <span class="menu-arrow"></span>
+                     </a>
+                     <div class="collapse" id="sideRole">
+                         <ul class="nav-second-level">
+                             <li>
+                                 <a class='tp-link' href="{{ url('roles') }}">Vai trò</a>
+                             </li>
+                             <li>
+                                 <a class='tp-link' href="{{ url('permission') }}">Quyền</a>
+                             </li>
+                         </ul>
+                     </div>
+                 </li>
              </ul>
 
          </div>
