@@ -19,4 +19,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('order-updated', function ($user) {
     return auth()->check();
 });
-
+Broadcast::channel('order', function () {
+    return true;
+});

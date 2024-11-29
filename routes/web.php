@@ -12,11 +12,32 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
 
+
 Route::get('/', [HomeController::class, 'index'])->name('index');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('permission', App\Http\Controllers\PermissionControler::class);
+    Route::get('permission/{permissionId}/delete', [App\Http\Controllers\PermissionControler::class, 'destroy']);
+
+    Route::resource('roles', App\Http\Controllers\RoleController::class);
+    Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
+    Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
+    Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
+
+
+    Route::resource('users', App\Http\Controllers\UserController::class);
+    Route::get('user/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+});
+
+
+Route::get('/', [HomeController::class, 'index']);
+
 
 // CRUD users
 Route::resource('users', UserController::class);
@@ -74,28 +95,19 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý Banner
     Route::resource('banners', BannerController::class);
+
+    Route::resource('invoices', InvoiceController::class);
+
+    Route::resource('categories', CategoryProductController::class);
+    // Route::resource('users', UserController::class);
+
+    Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 });
 
 
 require __DIR__ . '/auth.php';
 
-Route::prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::prefix('categories')
-            ->name('categories.')
-            ->controller(CategoryProductController::class)
-            ->group(function () {
-                Route::get('index', 'index')->name('index');
-                Route::get('create', 'create')->name('create');
-                Route::post('store', 'store')->name('store');
-                Route::get('{id}/edit', 'edit')->name('edit');
-                Route::post('{id}/update', 'update')->name('update');
-                Route::delete('{id}/delete', 'delete')->name('delete');
-            });
-    });
 
-// Tin tức
 Route::prefix('admin')
     ->name('admin.')
     ->group(function () {

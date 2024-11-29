@@ -67,7 +67,6 @@
                                     <th class="text-center">Tương tác</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach ($products as $product)
                                     <tr>
