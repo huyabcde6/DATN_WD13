@@ -15,12 +15,12 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/pe-icon-7-stroke.min.css') }}" />
 
 
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 
@@ -51,84 +51,16 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="#"><span>Trang Chủ</span></a>
+                                        <a href="{{ route('index') }}"><span>Trang Chủ</span></a>
                                     </li>
                                     <li class="has-children position-static">
-                                        <a href="#"><span>Sản Phẩm</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="mega-menu row-cols">
-                                            <li class="col">
-                                                <h4 class="mega-menu-title">Sản phẩm</h4>
-                                                <ul class="mb-n2">
-
-                                                    <li><a href="{{route('shop.index')}}">Shop</a></li>
-
-                                                    <li>
-                                                        <a href="shop-left-sidebar.html">Left Sidebar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-right-sidebar.html">Right Sidebar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-list-fullwidth.html">List Fullwidth</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-list-left-sidebar.html">List Left Sidebar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-list-right-sidebar.html">List Right Sidebar</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="col">
-                                                <h4 class="mega-menu-title">Product Layout</h4>
-                                                <ul class="mb-n2">
-                                                    <li>
-                                                        <a href="single-product.html">Single Product</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-sale.html">Single Product Sale</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-group.html">Single Product Group</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-normal.html">Single Product Normal</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-affiliate.html">Single Product
-                                                            Affiliate</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-slider.html">Single Product Slider</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                        <a href="{{ route('shop.index') }}"><span>Sản Phẩm</span></a>
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Dịch Vụ</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="faq.html">Faq</a></li>
-                                            <li><a href="404-error.html">404 Error</a></li>
-                                        </ul>
+                                        <a href="#"><span>Dịch Vụ</span></a>
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Tin Tức</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog.html">Blog</a></li>
-                                            <li>
-                                                <a href="blog-left-sidebar.html">Blog Left Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-right-sidebar.html">Blog Right Sidebar</a>
-                                            </li>
-                                            <li><a href="blog-details.html">Blog Details</a></li>
-                                            <li>
-                                                <a href="blog-details-sidebar.html">Blog Details Sidebar</a>
-                                            </li>
-                                        </ul>
+                                        <a href="#"><span>Tin Tức</span></a>
                                     </li>
                                     <li>
                                         <a href="contact.html"> <span>Liên Hệ</span></a>
@@ -147,8 +79,9 @@
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
-                                <a href="{{ route('login') }}" class="header-action-btn d-none d-md-block"><i
-                                        class="pe-7s-user"></i></a>
+                                <a href="{{ Auth::check() ? route ('orders.index') : route ('login') }}" class="header-action-btn d-none d-md-block">
+                                    <i class="pe-7s-user"></i>
+                                </a>
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->

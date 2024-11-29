@@ -197,43 +197,15 @@
                             <h3 class="widget-title mb-4">Danh mục</h3>
                             <!-- Widget Menu Start -->
                             <nav>
+                                @if (!empty($categories))
+                                @foreach ($categories as $key => $item)
                                 <ul class="category-menu mb-n3">
                                     <li class="menu-item-has-children pb-4">
-                                        <a href="#">Nữ <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">Mỹ Phẩm Thiên Nhiên</a></li>
-                                            <li><a href="#">Áo thời trang</a></li>
-                                            <li><a href="#">Vải dệt kim</a></li>
-                                            <li><a href="#">Túi thủ công</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children pb-4">
-                                        <a href="#">Nam <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">Kính râm</a></li>
-                                            <li><a href="#">Thắt lưng và ví</a></li>
-                                            <li><a href="#">Giày</a></li>
-                                            <li><a href="#">Quần và áo sơ mi</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children pb-4">
-                                        <a href="#">Thời trang <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">Thời trang nổi tiếng thế giới</a></li>
-                                            <li><a href="#">Thời trang dân tộc</a></li>
-                                            <li><a href="#">Thời trang cổ điển</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children pb-4">
-                                        <a href="#">Khác <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">Bộ sưu tập mùa đông</a></li>
-                                            <li><a href="#">Bộ sưu tập mùa hè</a></li>
-                                            <li><a href="#">Chống nắng</a></li>
-                                            <li><a href="#">Chống nước</a></li>
-                                        </ul>
-                                    </li>
+                                        <a href="#">{{ $item->name }}</a>
+                                    </li>    
                                 </ul>
+                                @endforeach
+                                @endif
                             </nav>
                             <!-- Widget Menu End -->
                         </div>
@@ -261,38 +233,16 @@
                         <div class="widget-list mb-10">
                             <h3 class="widget-title">Màu sắc</h3>
                             <div class="sidebar-body">
+                                @foreach ($colors as $color)
                                 <ul class="checkbox-container categories-list">
                                     <li>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                            <label class="custom-control-label" for="customCheck12">Đen (20)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                            <label class="custom-control-label" for="customCheck13">Đỏ (6)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck14">
-                                            <label class="custom-control-label" for="customCheck14">Xanh da trời (8)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                            <label class="custom-control-label" for="customCheck11">Xanh lá cây (5)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck15">
-                                            <label class="custom-control-label" for="customCheck15">Hồng (4)</label>
+                                            <label class="custom-control-label" for="customCheck12">{{ $color->value }}</label>
                                         </div>
                                     </li>
                                 </ul>
+                                @endforeach
                             </div>
                         </div>
                         <div class="widget-list mb-10">
