@@ -169,7 +169,6 @@
                                                                 @endif
                                                             </form>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -331,4 +330,5 @@
     <i class="arrow-bottom fa fa-long-arrow-up"></i>
 </a>
 <!-- Scroll Top End -->
+@vite('resources/js/public.js');
 @endsection

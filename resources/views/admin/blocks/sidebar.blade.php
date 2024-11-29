@@ -9,23 +9,23 @@
                  {{-- <a class='logo logo-light' href='index.html'>
                      <span class="logo-sm">
                          <img src="{{ asset('assets/admin/images/logo-sm.png')}}" alt="" height="22">
-                     </span>
-                     <span class="logo-lg">
-                         <img src="{{ asset('assets/admin/images/logo-light.png')}}" alt="" height="24">
-                     </span>
+                 </span>
+                 <span class="logo-lg">
+                     <img src="{{ asset('assets/admin/images/logo-light.png')}}" alt="" height="24">
+                 </span>
                  </a> --}}
                  {{-- <a class='logo logo-dark' href='index.html'>
                      <span class="logo-sm">
                          <img src="{{ asset('assets/admin/images/logo-sm.png')}}" alt="" height="22">
-                     </span>
-                     <span class="logo-lg">
-                         <img src="{{ asset('assets/admin/images/logo-dark.png')}}" alt="" height="24">
-                     </span>
+                 </span>
+                 <span class="logo-lg">
+                     <img src="{{ asset('assets/admin/images/logo-dark.png')}}" alt="" height="24">
+                 </span>
                  </a> --}}
                  <div class="header-logo">
-                    <a href="index.html"><img src="{{ asset('ngdung/assets/images/logo/logo1.png') }}"
-                            alt="Site Logo" width="140xp" height="70px" /></a>
-                </div>
+                     <a href="index.html"><img src="{{ asset('ngdung/assets/images/logo/logo1.png') }}"
+                             alt="Site Logo" width="140xp" height="70px" /></a>
+                 </div>
              </div>
 
              <ul id="side-menu">
@@ -97,11 +97,11 @@
                      </a>
                  </li>
                  <li>
-                    <a class='tp-link' href='{{ route('admin.banners.index') }}'>
-                        <i data-feather="file-text"></i>
-                        <span> Quản lý Banner </span>
-                    </a>
-                </li>
+                     <a class='tp-link' href="{{ route('admin.banners.index') }}">
+                         <i data-feather="file-text"></i>
+                         <span> Quản lý Banner </span>
+                     </a>
+                 </li>
              </ul>
 
          </div>

@@ -101,32 +101,16 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     Route::resource('invoices', InvoiceController::class);
 
+    Route::resource('categories', CategoryProductController::class);
     // Route::resource('users', UserController::class);
 
     Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');
-
 });
 
 
 require __DIR__ . '/auth.php';
 
-Route::prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::prefix('categories')
-            ->name('categories.')
-            ->controller(CategoryProductController::class)
-            ->group(function () {
-                Route::get('index', 'index')->name('index');
-                Route::get('create', 'create')->name('create');
-                Route::post('store', 'store')->name('store');
-                Route::get('{id}/edit', 'edit')->name('edit');
-                Route::post('{id}/update', 'update')->name('update');
-                Route::delete('{id}/delete', 'delete')->name('delete');
-            });
-    });
 
-// Tin tức
 Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
