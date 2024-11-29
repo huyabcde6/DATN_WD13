@@ -148,7 +148,7 @@ Quản lý đơn hàng
         </div>
     </div>
 </div>
-
+@vite('resources/js/public.js');
 @endsection
 
 @section('js')
@@ -189,5 +189,5 @@ orderStatusModal.addEventListener('show.bs.modal', function(event) {
     }
 });
 </script>
-
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 @endsection

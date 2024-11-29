@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\OderEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\StatusDonHang;
@@ -30,7 +31,6 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
-
         try {
             $order = Order::findOrFail($id);
             
@@ -58,15 +58,13 @@ class OrderController extends Controller
                     return redirect()->route('admin.orders.index')->with('error', 'Không thể chuyển trạng thái theo quy định.');
                 }
 
-                // Lưu đơn hàng và gửi sự kiện cập nhật
-                $order->save();
-                event(new OrderUpdated($order)); 
-                Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
+   // Lưu đơn hàng và gửi sự kiện cập nhật
+                $order->update();
+                broadcast(new OderEvent(Order::findOrFail($id)));
+          Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
             }
-
             DB::commit();
             return redirect()->route('admin.orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
-
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Order update error: ' . $e->getMessage());
@@ -111,5 +109,4 @@ class OrderController extends Controller
         }
     }
 
-      
 }
