@@ -105,7 +105,6 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     // Route::resource('users', UserController::class);
 
     Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');
-
 });
 
 
