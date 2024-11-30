@@ -45,7 +45,7 @@ channel.bind("OderEvent", function (data) {
         }
 
         // Cập nhật nội dung của thẻ <h5>
-        statusHeader.textContent = statusText;
+        statusHeader.innerHTML = `<strong>Trạng thái:</strong> ${statusText}`;
     } else {
         console.log("Không tìm thấy thẻ <h5> trạng thái của đơn hàng.");
     }
