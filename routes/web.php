@@ -131,4 +131,3 @@ Route::prefix('admin')
 Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
 });
-Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');

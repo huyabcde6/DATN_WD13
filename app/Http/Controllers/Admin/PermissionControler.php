@@ -8,11 +8,19 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionControler extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $permission = Permission::paginate(10);
+        $query = Permission::query();
+
+        // Tìm kiếm theo tên quyền
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+        $permission = $query->paginate(10); // Phân trang 10 bản ghi mỗi trang
+
         return view('role-permission.permission.index', compact('permission'));
     }
+
 
     public function create()
     {

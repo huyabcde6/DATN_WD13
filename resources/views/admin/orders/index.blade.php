@@ -27,26 +27,116 @@ Quản lý đơn hàng
         <div class="col-12">
             <div class="card">
                 <div class="d-flex m-3">
-                    <form action="" method="get" class="">
+                    <form action="" method="get" class="mb-3">
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="bi bi-search"></i>
                             </span>
-                            <input type="text" value="{{ request('search') }}" name="search" id="search"
-                                class="form-control" placeholder="Nhập từ khóa cần tìm..">
-                            <button type="submit" class="btn btn-dark">Tìm kiếm</button>
+                            <input type="text" value="{{ request('search') }}" name="search" class="form-control"
+                                placeholder="Nhập từ khóa cần tìm..">
+                        </div>
+
+                        <div class="row mt-3">
+                            <!-- Lọc theo ngày -->
+                            <div class="col-md-4">
+                                <label for="from_date">Từ ngày</label>
+                                <input type="date" name="from_date" id="from_date" class="form-control"
+                                    value="{{ request('from_date') }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="to_date">Đến ngày</label>
+                                <input type="date" name="to_date" id="to_date" class="form-control"
+                                    value="{{ request('to_date') }}">
+                            </div>
+
+                            <!-- Lọc theo trạng thái đơn hàng -->
+                            <div class="col-md-4">
+                                <label for="status_donhang_id">Trạng thái đơn hàng</label>
+                                <select name="status_donhang_id" id="status_donhang_id" class="form-select">
+                                    <option value="">Chọn trạng thái</option>
+                                    @foreach($statuses as $status)
+                                    <option value="{{ $status->id }}"
+                                        {{ request('status_donhang_id') == $status->id ? 'selected' : '' }}>
+                                        {{ $status->type }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Lọc theo phương thức thanh toán -->
+                            <div class="col-md-4">
+                                <label for="method">Phương thức thanh toán</label>
+                                <select name="method" id="method" class="form-select">
+                                    <option value="">Chọn phương thức</option>
+                                    <option value="COD" {{ request('method') == 'COD' ? 'selected' : '' }}>COD</option>
+                                    <option value="credit_card"
+                                        {{ request('method') == 'credit_card' ? 'selected' : '' }}>Thẻ tín dụng</option>
+                                    <option value="paypal" {{ request('method') == 'paypal' ? 'selected' : '' }}>PayPal
+                                    </option>
+                                    <option value="momo" {{ request('method') == 'momo' ? 'selected' : '' }}>Momo
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Lọc theo trạng thái thanh toán -->
+                            <div class="col-md-4">
+                                <label for="payment_status">Trạng thái thanh toán</label>
+                                <select name="payment_status" id="payment_status" class="form-select">
+                                    <option value="">Chọn trạng thái thanh toán</option>
+                                    <option value="chưa thanh toán"
+                                        {{ request('payment_status') == 'chưa thanh toán' ? 'selected' : '' }}>Chưa
+                                        thanh toán</option>
+                                    <option value="đã thanh toán"
+                                        {{ request('payment_status') == 'đã thanh toán' ? 'selected' : '' }}>Đã thanh
+                                        toán</option>
+                                    <option value="đang xử lý"
+                                        {{ request('payment_status') == 'đang xử lý' ? 'selected' : '' }}>Đang xử lý
+                                    </option>
+                                    <option value="thất bại"
+                                        {{ request('payment_status') == 'thất bại' ? 'selected' : '' }}>Thất bại
+                                    </option>
+                                    <option value="đã hoàn lại"
+                                        {{ request('payment_status') == 'đã hoàn lại' ? 'selected' : '' }}>Đã hoàn lại
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-dark">Lọc</button>
                         </div>
                     </form>
                 </div>
+
                 <div class="col-md-12">
                     <table class="table table-striped text-center">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Mã đơn hàng</th>
-                                <th>Người nhận</th>
+                                <th>
+                                    <a
+                                        href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                        #
+                                    </a>
+                                </th>
+                                <th>
+                                    <a
+                                        href="{{ request()->fullUrlWithQuery(['sort' => 'order_code', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                        Mã đơn hàng
+                                    </a>
+                                </th>
+                                <th>
+                                    <a
+                                        href="{{ request()->fullUrlWithQuery(['sort' => 'user_name', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                        Người nhận
+                                    </a>
+                                </th>
                                 <th>SĐT</th>
-                                <th>Ngày tạo</th>
+                                <th>
+                                    <a
+                                        href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                        Ngày tạo
+                                    </a>
+                                </th>
                                 <th>Tổng tiền</th>
                                 <th>Hình thức thanh toán</th>
                                 <th>Trạng thái thanh toán</th>
@@ -96,7 +186,7 @@ Quản lý đơn hàng
         {{ $orders->links('pagination::bootstrap-5') }}
     </div>
 </div>
-<!-- Modal sửa trạng thái đơn hàng -->
+
 <!-- Modal sửa trạng thái đơn hàng -->
 <div class="modal fade" id="orderStatusModal" tabindex="-1" aria-labelledby="orderStatusModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -148,7 +238,6 @@ Quản lý đơn hàng
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('js')
