@@ -220,17 +220,17 @@
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
                                                             <label for="email" class="required mb-1">Email</label>
-                                                            <input type="text" id="email" value="{{ $user->name }}"/>
+                                                            <input type="text" id="email" value="{{ $user->email }}"/>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="single-input-item mb-3">
                                                     <label for="address" class="required mb-1">Địa chỉ</label>
-                                                    <input type="text" id="address"/>
+                                                    <input type="text" id="address" value="{{ $user->address }}"/>
                                                 </div>
                                                 <div class="single-input-item mb-3">
                                                     <label for="number_phone" class="required mb-1">Số điện thoại</label>
-                                                    <input type="number" id="number_phone"/>
+                                                    <input type="number" id="number_phone" value="{{ $user->number_phone }}"/>
                                                 </div>
                                             </form>
                                         </div>
