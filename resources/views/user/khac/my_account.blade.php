@@ -8,12 +8,12 @@
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">My Account</h1>
+                <h1 class="title">Tài khoản của tôi</h1>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="index.html">Trang chủ </a>
                     </li>
-                    <li class="active"> My Account</li>
+                    <li class="active"> Tài khoản</li>
                 </ul>
             </div>
         </div>
@@ -178,45 +178,6 @@
                                 </div>
                                 <!-- Single Tab Content End -->
 
-                                <!-- Single Tab Content Start -->
-                                <div class="tab-pane fade" id="download" role="tabpanel">
-                                    <div class="myaccount-content">
-                                        <h3 class="title">Downloads</h3>
-                                        <div class="myaccount-table table-responsive text-center">
-                                            <table class="table table-bordered">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th>Product</th>
-                                                        <th>Date</th>
-                                                        <th>Expire</th>
-                                                        <th>Download</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Haven - Free Real Estate PSD Template</td>
-                                                        <td>Aug 22, 2023</td>
-                                                        <td>Yes</td>
-                                                        <td><a href="#"
-                                                                class="btn btn btn-dark btn-hover-primary rounded-0"><i
-                                                                    class="fa fa-cloud-download me-1"></i> Download
-                                                                File</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>HasTech - Profolio Business Template</td>
-                                                        <td>Sep 12, 2023</td>
-                                                        <td>Never</td>
-                                                        <td><a href="#"
-                                                                class="btn btn btn-dark btn-hover-primary rounded-0"><i
-                                                                    class="fa fa-cloud-download me-1"></i> Download
-                                                                File</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Single Tab Content End -->
 
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="payment-method" role="tabpanel">
@@ -246,64 +207,30 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="account-info" role="tabpanel">
                                     <div class="myaccount-content">
-                                        <h3 class="title">Account Details</h3>
+                                        <h3 class="title">Chi tiết tài khoản</h3>
                                         <div class="account-details-form">
                                             <form action="#">
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
-                                                            <label for="first-name" class="required mb-1">First
-                                                                Name</label>
-                                                            <input type="text" id="first-name"
-                                                                placeholder="First Name" />
+                                                            <label for="name" class="required mb-1">Họ tên</label>
+                                                            <input type="text" id="name" value="{{ $user->name }}"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
-                                                            <label for="last-name" class="required mb-1">Last
-                                                                Name</label>
-                                                            <input type="text" id="last-name" placeholder="Last Name" />
+                                                            <label for="email" class="required mb-1">Email</label>
+                                                            <input type="text" id="email" value="{{ $user->name }}"/>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="single-input-item mb-3">
-                                                    <label for="display-name" class="required mb-1">Display Name</label>
-                                                    <input type="text" id="display-name" placeholder="Display Name" />
+                                                    <label for="address" class="required mb-1">Địa chỉ</label>
+                                                    <input type="text" id="address"/>
                                                 </div>
                                                 <div class="single-input-item mb-3">
-                                                    <label for="email" class="required mb-1">Email Addres</label>
-                                                    <input type="email" id="email" placeholder="Email Address" />
-                                                </div>
-                                                <fieldset>
-                                                    <legend>Password change</legend>
-                                                    <div class="single-input-item mb-3">
-                                                        <label for="current-pwd" class="required mb-1">Current
-                                                            Password</label>
-                                                        <input type="password" id="current-pwd"
-                                                            placeholder="Current Password" />
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="single-input-item mb-3">
-                                                                <label for="new-pwd" class="required mb-1">New
-                                                                    Password</label>
-                                                                <input type="password" id="new-pwd"
-                                                                    placeholder="New Password" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="single-input-item mb-3">
-                                                                <label for="confirm-pwd" class="required mb-1">Confirm
-                                                                    Password</label>
-                                                                <input type="password" id="confirm-pwd"
-                                                                    placeholder="Confirm Password" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                                <div class="single-input-item single-item-button">
-                                                    <button class="btn btn btn-dark btn-hover-primary rounded-0">Save
-                                                        Changes</button>
+                                                    <label for="number_phone" class="required mb-1">Số điện thoại</label>
+                                                    <input type="number" id="number_phone"/>
                                                 </div>
                                             </form>
                                         </div>

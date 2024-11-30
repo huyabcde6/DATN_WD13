@@ -233,16 +233,17 @@
                         <div class="widget-list mb-10">
                             <h3 class="widget-title">Màu sắc</h3>
                             <div class="sidebar-body">
-                                @foreach ($colors as $color)
-                                <ul class="checkbox-container categories-list">
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                            <label class="custom-control-label" for="customCheck12">{{ $color->value }}</label>
-                                        </div>
-                                    </li>
+                                <ul class="sidebar-list">
+                                    @foreach ($colors as $color)
+                                        <li>
+                                            <form action="{{ route('product.locMau', $color->color_id) }}" method="post" class="d-inline">
+                                                @csrf
+                                                <input type="hidden" name="color_id" value="{{ $color->color_id }}">
+                                                <button type="submit" class="btn btn-link p-0 text-decoration-none fw-normal">{{ $color->value }}</button>
+                                            </form>
+                                        </li>
+                                    @endforeach
                                 </ul>
-                                @endforeach
                             </div>
                         </div>
                         <div class="widget-list mb-10">

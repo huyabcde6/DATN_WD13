@@ -52,7 +52,7 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="{{ route('index') }}"><span>Trang Chủ</span></a>
+                                        <a href="{{ route('shop.index') }}"><span>Trang Chủ</span></a>
                                     </li>
                                     <li class="has-children position-static">
                                         <a href="{{ route('shop.index') }}"><span>Sản Phẩm</span></a>

@@ -64,6 +64,7 @@ Route::get('/admin', function () {
 });
 
 Route::resource('users', UserController::class);
+
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
@@ -98,6 +99,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     Route::resource('invoices', InvoiceController::class);
 
+    // Quản lý danh mục
     Route::resource('categories', CategoryProductController::class);
     // Route::resource('users', UserController::class);
 
@@ -128,3 +130,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
 });
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
+
+
+Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');

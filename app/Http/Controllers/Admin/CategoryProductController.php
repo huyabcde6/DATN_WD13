@@ -30,7 +30,8 @@ class CategoryProductController extends Controller
 
             categories::create([
                 'name' => $request->name,
-                'status' => $request->status ? 1 : 0
+                'status' => $request->status ? 1 : 0,
+                'gioi_tinh' => $request->gioi_tinh,
             ]);
 
             DB::commit();

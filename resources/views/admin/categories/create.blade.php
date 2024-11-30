@@ -32,6 +32,7 @@
                                     <form action="{{ route('admin.categories.store') }}" method="POST">
                                         @csrf
                                         <div class="row">
+                                            <input type="hidden" name="gioi_tinh" value="12">
                                             <div class="col-6">
                                                 <div class="mb-3">
                                                     <label for="simpleinput" class="form-label">Tên danh mục</label>

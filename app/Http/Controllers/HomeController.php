@@ -15,6 +15,7 @@ class HomeController extends Controller
     public function index() 
     {
         $banners = banner::orderBy('order')->get();
+        
         return view('user.sanpham.home', compact('banners'));
     }
 }

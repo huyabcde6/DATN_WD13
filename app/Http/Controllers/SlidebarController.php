@@ -11,7 +11,6 @@ class SlidebarController extends Controller
     public function index() 
     {
         $colors = Color::all();
-        dd($colors);
 
         return view('user.sanpham.shop_sidebar', compact( 'colors'));
     }
