@@ -1,27 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
+
 {
     /**
      * Display a listing of the resource.
      */
-    public function index1(Request $request)
-    {
-        $users = User::when($request->search, function ($query) use ($request) {
-            $query->where('name', 'like', "%{$request->search}%");
-        })
-            ->latest('id')
-            ->paginate(5);
+    // public function index1(Request $request)
+    // {
+    //     $users = User::when($request->search, function ($query) use ($request) {
+    //         $query->where('name', 'like', "%{$request->search}%");
+    //     })
+    //         ->latest('id')
+    //         ->paginate(5);
 
-        return view('admin.users.index', compact('users'));
-    }
+    //     return view('admin.users.index', compact('users'));
+    // }
 
     public function index()
     {

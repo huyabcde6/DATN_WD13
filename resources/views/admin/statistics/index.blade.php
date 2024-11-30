@@ -24,8 +24,7 @@
             </form>
         </div>
 
-        <!-- start row -->
-        <div class="row">
+        <!-- <div class="row">
             @foreach ($orderStatuses as $status)
             <div class="col-md-3 col-xl-3">
                 <div class="card">
@@ -58,8 +57,7 @@
                 </div>
             </div>
             @endforeach
-            <!-- end sales -->
-        </div> <!-- end row -->
+        </div> -->
 
 
         <!-- Sales Chart -->
@@ -130,7 +128,7 @@
             </div>
                     <!-- end card body -->
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-12">
                 <div class="card overflow-hidden">
                     <div class="card-header">
@@ -355,7 +353,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 

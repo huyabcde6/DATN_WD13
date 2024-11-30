@@ -16,10 +16,51 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with('status')->paginate(7);
-        return view('admin.orders.index', compact('orders'));
+        $query = Order::query();
+
+        // Lọc theo ngày
+        if ($request->has('from_date') && $request->from_date) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+
+        if ($request->has('to_date') && $request->to_date) {
+            $query->whereDate('created_at', '<=', $request->to_date);
+        }
+
+        // Lọc theo trạng thái
+        if ($request->has('status_donhang_id') && $request->status_donhang_id) {
+            $query->where('status_donhang_id', $request->status_donhang_id);
+        }
+
+        // Lọc theo phương thức thanh toán
+        if ($request->has('method') && $request->method) {
+            $query->where('method', $request->method);
+        }
+
+        // Lọc theo trạng thái thanh toán
+        if ($request->has('payment_status') && $request->payment_status) {
+            $query->where('payment_status', $request->payment_status);
+        }
+
+        // Xử lý sắp xếp
+        $validSortColumns = ['created_at', 'status_donhang_id', 'method', 'payment_status']; // Danh sách cột hợp lệ để sắp xếp
+        $sortBy = in_array($request->get('sort_by'), $validSortColumns) ? $request->get('sort_by') : 'created_at'; // Chọn cột sắp xếp hợp lệ
+        $sortOrder = $request->get('sort_order', 'asc') === 'desc' ? 'desc' : 'asc'; // Chỉ cho phép 'asc' hoặc 'desc'
+
+        $query->orderBy($sortBy, $sortOrder);
+
+        // Paginate kết quả
+        $orders = $query->paginate(10);
+
+        // Truyền các biến cần thiết vào view
+        return view('admin.orders.index', [
+            'orders' => $orders,
+            'statuses' => StatusDonhang::all(),
+            'sort_by' => $sortBy,  // Truyền lại tham số sắp xếp để giữ giá trị trong view
+            'sort_order' => $sortOrder, // Truyền lại thứ tự sắp xếp
+        ]);
     }
 
     public function show($id)

@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\NewController;
@@ -24,17 +24,17 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-    Route::resource('permission', App\Http\Controllers\PermissionControler::class);
-    Route::get('permission/{permissionId}/delete', [App\Http\Controllers\PermissionControler::class, 'destroy']);
+    Route::resource('permission', App\Http\Controllers\Admin\PermissionControler::class);
+    Route::get('permission/{permissionId}/delete', [App\Http\Controllers\Admin\PermissionControler::class, 'destroy']);
 
-    Route::resource('roles', App\Http\Controllers\RoleController::class);
-    Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
-    Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
-    Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
+    Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
+    Route::get('roles/{roleId}/delete', [App\Http\Controllers\Admin\RoleController::class, 'destroy']);
+    Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'addPermissionToRole']);
+    Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'givePermissionToRole']);
 
 
-    Route::resource('users', App\Http\Controllers\UserController::class);
-    Route::get('user/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+    Route::resource('users', UserController::class);
+    Route::get('users/{userId}/delete', [App\Http\Controllers\Admin\UserController::class, 'destroy']);
 });
 
 
@@ -42,8 +42,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/', [HomeController::class, 'index']);
 
-// CRUD users
-Route::resource('users', UserController::class);
+// // CRUD users
+// Route::resource('users', UserController::class);
 
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
@@ -66,7 +66,7 @@ Route::get('/admin', function () {
     return view('layouts.admin');
 });
 
-Route::resource('users', UserController::class);
+// Route::resource('users', UserController::class);
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');

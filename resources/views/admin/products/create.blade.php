@@ -260,16 +260,6 @@
                                         <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-center">
-                                    <button type="button" id="generate-variants" class="btn btn-success">Tạo biến
-                                        thể</button>
-                                </div>
-                            </div>
-
-                            <div id="variants-container"></div>
-                            <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-success">Lưu sản phẩm</button>
-                            </div>
                             </form>
                         </div>
                     </div>

@@ -16,11 +16,43 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Products::with('categories')->paginate(7);
-        return view('admin.products.index', compact('products'));
+        $query = products::query();
+
+        if ($request->has('sort') && $request->has('order')) {
+            $sort = $request->input('sort');
+            $order = $request->input('order');
+            $query->orderBy($sort, $order);
+        } else {
+            $query->orderBy('created_at', 'desc'); // Sắp xếp mặc định theo ngày tạo
+        }
+
+        // Tìm kiếm theo tên sản phẩm
+        if ($request->has('search') && $request->search) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Lọc theo danh mục
+        if ($request->has('categories_id') && $request->categories_id) {
+            $query->where('categories_id', $request->categories_id);
+        }
+
+        // Lọc theo ngày
+        if ($request->has('from_date') && $request->from_date) {
+            $query->where('created_at', '>=', $request->from_date);
+        }
+
+        if ($request->has('to_date') && $request->to_date) {
+            $query->where('created_at', '<=', $request->to_date);
+        }
+
+        $categories = categories::all();
+        $products = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.products.index', compact('products', 'categories'));
     }
+
 
     public function create()
     {

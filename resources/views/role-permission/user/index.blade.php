@@ -1,60 +1,96 @@
-<x-app-web-layout>
+@extends('layouts.admin')
 
-    @include('role-permission.nav-links')
+@section('title')
+Vai trò & Quyền
+@endsection
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                @if (session('status'))
-                    <div class="alert alert-success">{{ session('status') }}</div>
-                @endif
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h4>
-                            User
-                            <a href="{{ url('users/create') }}" class="btn btn-primary float-end "> Add
-                                Roles</a>
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{ $user->id }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
+@section('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+@endsection
 
-                                        <td>
-                                            @if (!@empty($user->getRoleNames()))
-                                            @foreach ($user->getRoleNames() as $rolename )
-                                            <label class="badge bg-primary mx-1">{{ $rolename }}</label>
-                                            @endforeach
-                                            @endif
-                                            <a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-success">Edit</a>
-                                            <a href="{{ url('users/'.$user->id.'/delete') }}"class="btn btn-danger mx-2"
-                                                onclick="return confirm('Are you sure you want to delete this permission?');">
-                                                Delete
-                                             </a>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
+@section('content')
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+            @endif
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Danh sách người dùng và vai trò</h4>
+                    <a href="{{ url('users/create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Thêm vai trò
+                    </a>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-bordered text-center" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>Vai trò</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($users as $user)
+                            <tr>
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>
+                                    @if ($user->getRoleNames())
+                                    @foreach ($user->getRoleNames() as $role)
+                                    <span class="badge bg-primary">{{ $role }}</span>
+                                    @endforeach
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ url('users/' . $user->id . '/edit') }}" class="btn btn-sm btn-warning mx-1"
+                                        title="Chỉnh sửa">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{{ url('users/' . $user->id . '/delete') }}" class="btn btn-sm btn-danger mx-1"
+                                        onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');"
+                                        title="Xóa">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
+@endsection
 
-</x-app-web-layout>
+@section('js')
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#usersTable').DataTable({
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ mục",
+                "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                "infoEmpty": "Không có dữ liệu",
+                "search": "Tìm kiếm:",
+                "paginate": {
+                    "first": "Đầu",
+                    "last": "Cuối",
+                    "next": "Tiếp",
+                    "previous": "Trước"
+                }
+            }
+        });
+    });
+</script>
+@endsection

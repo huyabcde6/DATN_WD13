@@ -1,17 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
 class PermissionControler extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $permission = Permission::get();
+        $query = Permission::query();
+
+        // Tìm kiếm theo tên quyền
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+        $permission = $query->paginate(10); // Phân trang 10 bản ghi mỗi trang
+
         return view('role-permission.permission.index', compact('permission'));
     }
+
 
     public function create()
     {
