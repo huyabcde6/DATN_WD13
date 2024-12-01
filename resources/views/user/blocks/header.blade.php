@@ -6,6 +6,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Destry - Fashion eCommerce HTML Template</title>
+    <style>
+    .main-menu ul {
+        display: flex;
+        justify-content: space-between; /* Hoặc space-around/space-evenly */
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .main-menu ul li a {
+        text-decoration: none;
+        color: #000;
+        padding: 10px;
+      }
+      </style>
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico') }}" />
 
@@ -49,61 +64,12 @@
                         <!-- Header Menu Start -->
                         <div class="col-xl-8 d-none d-xl-block">
                             <div class="main-menu position-relative">
-                                <ul>
+                                <ul style="">
                                     <li class="has-children">
                                         <a href="#"><span>Trang Chủ</span></a>
                                     </li>
-                                    <li class="has-children position-static">
-                                        <a href="#"><span>Sản Phẩm</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="mega-menu row-cols">
-                                            <li class="col">
-                                                <h4 class="mega-menu-title">Shop Layout</h4>
-                                                <ul class="mb-n2">
-
-                                                    <li><a href="{{route('shop.index')}}">Shop</a></li>
-
-                                                    <li>
-                                                        <a href="shop-left-sidebar.html">Left Sidebar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-right-sidebar.html">Right Sidebar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-list-fullwidth.html">List Fullwidth</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-list-left-sidebar.html">List Left Sidebar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-list-right-sidebar.html">List Right Sidebar</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="col">
-                                                <h4 class="mega-menu-title">Product Layout</h4>
-                                                <ul class="mb-n2">
-                                                    <li>
-                                                        <a href="single-product.html">Single Product</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-sale.html">Single Product Sale</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-group.html">Single Product Group</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-normal.html">Single Product Normal</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-affiliate.html">Single Product
-                                                            Affiliate</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-slider.html">Single Product Slider</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                    <li class="has-children">
+                                        <a href="{{route('shop.index')}}"><span>Sản Phẩm</span>
                                     </li>
                                     <li class="has-children">
                                         <a href="#"><span>Dịch Vụ</span> <i class="fa fa-angle-down"></i></a>
