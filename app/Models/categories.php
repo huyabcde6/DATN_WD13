@@ -11,6 +11,13 @@ class categories extends Model
 
     protected $table = 'categories';
 
+    // Cột cho phép gán giá trị
+    protected $fillable = [
+        'gioi_tinh',
+        'name',
+        'slug',
+        'status',
+    ];
     public function products()
     {
         return $this->hasMany(products::class);

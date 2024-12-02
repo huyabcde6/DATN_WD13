@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\CouponsController;
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -123,6 +123,21 @@ Route::prefix('admin')
                 Route::post('/postNew', 'create')->name('postnew');
                 Route::delete('/dlNew{id}', 'destroy')->name('destroy');
                 Route::get('/edit{id}', 'show')->name('show');
+                Route::post('/update{id}', 'update')->name('update');
+            });
+    });
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::prefix('Coupons')
+            ->name('Coupons.')
+            ->controller(CouponsController::class)
+            ->group(function () {
+                Route::get('/Coupons', 'index')->name('index');
+                Route::get('/addCoupons', 'create')->name('create');
+                Route::post('/postCoupons', 'store')->name('store');
+                Route::delete('/dlCoupons{id}', 'destroy')->name('destroy');
+                Route::get('/edit{id}', 'edit')->name('edit');
                 Route::post('/update{id}', 'update')->name('update');
             });
     });
