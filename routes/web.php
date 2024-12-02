@@ -129,7 +129,13 @@ Route::prefix('admin')
 Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
 });
-Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
 
+Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
+    Route::get('/posts/comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::put('/comments/{commentId}', [CommentController::class, 'update'])->name('comments.update');
+    Route::post('/comments/{commentId}/hide', [CommentController::class, 'hide'])->name('comments.hide');
+});
+
+Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
 
 Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');

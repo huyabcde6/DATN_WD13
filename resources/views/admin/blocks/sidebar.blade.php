@@ -102,6 +102,12 @@
                          <span> Quản lý Banner </span>
                      </a>
                  </li>
+                 <li>
+                    <a class='tp-link' href="{{ route('admin.comments.index') }}">
+                        <i class="bi bi-chat"></i>
+                        <span> Quản lý Bình Luận </span>
+                    </a>
+                </li>
              </ul>
 
          </div>
