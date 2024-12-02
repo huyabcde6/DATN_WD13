@@ -93,10 +93,12 @@ Quản lý đơn hàng
                 </div>
             </div>
         </div>
-        {{ $orders->links('pagination::bootstrap-5') }}
+        <div class="m-2">
+            {{ $orders->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 </div>
-<!-- Modal sửa trạng thái đơn hàng -->
+
 <!-- Modal sửa trạng thái đơn hàng -->
 <div class="modal fade" id="orderStatusModal" tabindex="-1" aria-labelledby="orderStatusModalLabel" aria-hidden="true">
     <div class="modal-dialog">
