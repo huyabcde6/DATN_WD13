@@ -15,7 +15,14 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
-{
+{   
+    public function __construct(){
+        $this->middleware('permission:view order', ['only' => ['index']]);
+
+        $this->middleware('permission:edit order', ['only' => ['update']]);
+
+    }
+
     public function index(Request $request)
     {
         $query = Order::query();

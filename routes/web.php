@@ -62,9 +62,7 @@ Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 // Route::post('/register', [UserController::class, 'postRegister']);
 
 
-Route::get('/admin', function () {
-    return view('layouts.admin');
-});
+
 
 // Route::resource('users', UserController::class);
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
@@ -86,6 +84,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
+    
     // Các route cho quản lý sản phẩm
     Route::resource('products', AdminProductController::class);
 

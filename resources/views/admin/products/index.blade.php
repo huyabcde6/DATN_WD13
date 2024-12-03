@@ -121,11 +121,12 @@ Danh sách sản phẩm
                                         @endif
                                     </a>
                                 </th>
+                                <th>Hiện/ẩn</th>
                                 <th class="text-center">Tương tác</th>
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody class="align-middle">
                             @foreach ($products as $product)
                             <tr>
                                 <td>{{ $product->id }}</td>
@@ -138,8 +139,20 @@ Danh sách sản phẩm
                                 <td>{{ number_format($product->price, 0, '', '.') }} đ</td>
                                 <td>{{ $product->discount_price ? number_format($product->discount_price, 0, '', '.') . ' đ' : 'Không có' }}
                                 </td>
-                                <td>{{ $product->stock_quantity }}</td>
+                                <td>
+                                    {{ $product->productDetails->sum('quantity') }}
+                                    @if ($product->productDetails->sum('quantity') <= 5)
+                                        <span class="text-danger">(Sắp hết hàng!)</span>
+                                    @elseif ($product->productDetails->sum('quantity') <= 20)
+                                        <span class="text-warning">(Số lượng thấp)</span>
+                                    @endif
+                                </td>
+
                                 <td>{{ $product->created_at->format('d/m/Y') }}</td>
+                                <td class="{{ $product->iS_show ? 'text-success' : 'text-danger' }}">
+                                    {{ $product->iS_show ? 'Hiện' : 'Ẩn' }}
+                                </td>
+
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center">
                                         <a href="{{ route('admin.products.show', $product) }}"

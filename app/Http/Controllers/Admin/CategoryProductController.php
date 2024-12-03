@@ -9,7 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CategoryProductController extends Controller
-{
+{   
+    public function __construct(){
+        $this->middleware('permission:view category', ['only' => ['index']]);
+        $this->middleware('permission:create category', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit category', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete category', ['only' => ['destroy']]);
+    }
     /**
      * Hiển thị danh sách danh mục.
      */
