@@ -19,8 +19,9 @@ class ProductController extends Controller
     {
         $products = products::with('categories')->get();
         $colors = Color::all();
+        $categories = categories::all();
 
-        return view('user.sanpham.shop_sidebar', compact('products', 'colors'));
+        return view('user.sanpham.shop_sidebar', compact('products', 'colors', 'categories'));
     }
     public function show($slug)
     {
