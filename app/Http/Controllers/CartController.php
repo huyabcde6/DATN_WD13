@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\ProductDetail;
 use App\Models\products;
 use App\Models\Color;
+use App\Models\Coupon_Conditions;
+use App\Models\Coupons;
 use App\Models\Size;
 use Illuminate\Support\Facades\Session;
 
@@ -15,8 +17,8 @@ class CartController extends Controller
     public function index()
     {
 
-        $cartItems = Session::get('cart', []); 
-        
+        $cartItems = Session::get('cart', []);
+
 
         $shippingFee = 30000;
 
@@ -24,7 +26,7 @@ class CartController extends Controller
         foreach ($cartItems as $item) {
             $subTotal += $item['price'] * $item['quantity'];
         }
-       
+
         $total = $subTotal + $shippingFee;
         return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
@@ -110,20 +112,91 @@ class CartController extends Controller
         }
     }
 
- 
+
     public function removeFromCart($productDetailId)
     {
         $cart = Session::get('cart', []);
+        $couponApplied = session('discount_applied', 0); // Lấy giá trị mã giảm giá đã áp dụng
 
-        // Xóa sản phẩm khỏi giỏ hàng
+        // Kiểm tra xem sản phẩm có trong giỏ hàng không
         if (isset($cart[$productDetailId])) {
+            // Lấy thông tin chi tiết sản phẩm bị xóa
+            $productDetail = ProductDetail::find($productDetailId);
+
+            // Nếu giỏ hàng có mã giảm giá và sản phẩm bị xóa có liên quan đến mã giảm giá, xóa mã giảm giá
+            if ($couponApplied > 0 && $this->isProductInAppliedDiscount($productDetail)) {
+                // Xóa mã giảm giá đã áp dụng
+                session()->forget('discount_applied');
+            }
+
+            // Xóa sản phẩm khỏi giỏ hàng
             unset($cart[$productDetailId]);
+
+            // Cập nhật lại giỏ hàng trong session
+            Session::put('cart', $cart);
+
+            // Tính toán lại tổng giá trị giỏ hàng (không có mã giảm giá)
+            $total = 0;
+            $totalQuantity = 0;
+            foreach ($cart as $item) {
+                $total += $item['price'] * $item['quantity'];
+                $totalQuantity += $item['quantity'];
+            }
+
+            // Nếu giỏ hàng trống (số lượng sản phẩm = 0), xóa giỏ hàng khỏi session
+            if ($totalQuantity == 0) {
+                Session::forget('discount_applied');
+            }
+            // Thêm phí vận chuyển
+            $shippingFee = 30000; // Phí vận chuyển 30.000 VND
+            $totalWithShipping = $total + $shippingFee;
+
+            // Trả về JSON với thông tin cập nhật
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Product removed from cart successfully!',
+                'sub_total' => number_format($total, 0, ',', '.') . ' đ',
+                'shipping_fee' => number_format($shippingFee, 0, ',', '.') . ' đ',
+                'discount_value' => '0 đ', // Không còn mã giảm giá nữa
+                'total_after_discount' => number_format($totalWithShipping, 0, ',', '.') . ' đ', // Tổng sau khi tính phí vận chuyển và không có giảm giá
+                'discount_removed' => true, // Mã giảm giá đã bị xóa
+            ]);
         }
 
-        // Cập nhật session
-        Session::put('cart', $cart);
+        // Trả về lỗi nếu sản phẩm không tồn tại trong giỏ hàng
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Product not found in cart!',
+        ], 404);
+    }
 
-        return redirect()->back()->with('success', 'Product removed from cart successfully!');
+    // Kiểm tra sản phẩm có trong điều kiện mã giảm giá đã áp dụng hay không
+    private function isProductInAppliedDiscount($productDetail)
+    {
+        // Kiểm tra xem sản phẩm có thuộc điều kiện mã giảm giá (có thể áp dụng cho sản phẩm hoặc danh mục)
+        $coupon = Coupons::find(session('discount_applied'));
+
+        if (!$coupon) {
+            return false;
+        }
+
+        // Kiểm tra điều kiện áp dụng mã giảm giá
+        $couponConditions = Coupon_Conditions::where('coupon_id', $coupon->id)->get();
+
+        foreach ($couponConditions as $condition) {
+            if ($condition->product_id && $condition->product_id == $productDetail->products_id) {
+                return true;
+            }
+
+            if ($condition->category_id) {
+                $product = products::find($productDetail->products_id);
+                if ($product && $product->categories_id == $condition->category_id) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public function update(Request $request)
@@ -194,5 +267,77 @@ class CartController extends Controller
         $count = session('cart') ? count(session('cart')) : 0;
         return response()->json(['count' => $count]);
     }
+    public function applyVoucher(Request $request)
+    {
+        $request->validate([
+            'vocher' => 'required|string',
+            'total' => 'required|numeric'
+        ]);
 
+        // Kiểm tra mã giảm giá đã áp dụng trước đó trong session
+        if (session()->has('discount_applied')) {
+            return back()->withErrors(['vocher' => 'Đã áp dụng mã giảm giá trước đó.']);
+        }
+
+        // Kiểm tra mã giảm giá
+        $coupon = Coupons::where('code', $request->vocher)
+            ->where('status', 'active')
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->first();
+
+        if (!$coupon) {
+            return back()->withErrors(['vocher' => 'Mã giảm giá không hợp lệ hoặc đã hết hạn.']);
+        }
+
+        // Kiểm tra điều kiện của mã giảm giá (áp dụng cho sản phẩm hoặc danh mục)
+        $couponConditions = Coupon_Conditions::where('coupon_id', $coupon->id)->get();
+
+        $cartTotal = $request->total;
+        $discount = 0;
+
+        // Kiểm tra nếu mã giảm giá không có điều kiện (không áp dụng cho sản phẩm hoặc danh mục cụ thể)
+        if ($couponConditions->isEmpty()) {
+            if ($cartTotal >= $coupon->min_order_amount) {
+                $discount = $this->calculateDiscount($coupon, $cartTotal);
+            }
+        } else {
+            // Kiểm tra mã giảm giá áp dụng cho sản phẩm hoặc danh mục
+            foreach ($couponConditions as $condition) {
+                if ($condition->product_id) {
+                    $product = products::find($condition->product_id);
+                    if ($product && $cartTotal >= $coupon->min_order_amount) {
+                        $discount = $this->calculateDiscount($coupon, $cartTotal);
+                    }
+                } elseif ($condition->category_id) {
+                    // Nếu mã giảm giá áp dụng cho danh mục sản phẩm
+                    $categoryProducts = products::where('categories_id', $condition->category_id)->get();
+                    foreach ($categoryProducts as $product) {
+                        if ($cartTotal >= $coupon->min_order_amount) {
+                            $discount = $this->calculateDiscount($coupon, $cartTotal);
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($discount > 0) {
+            // Trừ số lượng mã trong database
+            $coupon->decrement('total_quantity');
+            session(['discount_applied' => $discount]);
+
+            return back()->with('vocher', 'Mã giảm giá áp dụng thành công!');
+        } else {
+            return back()->withErrors(['vocher' => 'Mã giảm giá không áp dụng cho đơn hàng này.']);
+        }
+    }
+
+    private function calculateDiscount($coupon, $total)
+    {
+        if ($coupon->discount_type == 'percentage') {
+            return ($coupon->discount_value / 100) * $total;
+        } else {
+            return min($coupon->discount_value, $total);
+        }
+    }
 }

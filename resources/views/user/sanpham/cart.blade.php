@@ -48,7 +48,7 @@
                         <!-- Table Head End -->
 
                         <!-- Table Body Start -->
-                        <tbody>
+                        <tbody id="cartItems">
                             @foreach ($cartItems as $item)
                             <tr>
                                 <td class="pro-thumbnail">
@@ -100,19 +100,21 @@
 
                     <!-- Apply Coupon Wrapper Start -->
                     <div class="apply-coupon-wrapper">
-                        <form action="#" method="post" class="d-block d-md-flex">
-                            <input type="text" placeholder="Nhập mã giảm giá của bạn" required />
+                        <form action="{{route ('vocher')}}" method="post" class="d-block d-md-flex">
+                            @csrf
+                            <input type="hidden" name="total" value="{{$total}}">
+                            <input type="text" name="vocher" placeholder="Nhập mã giảm giá của bạn" required />
                             <button class="btn btn-dark btn-hover-primary rounded-0">Áp dụng mã</button>
                         </form>
                     </div>
-                    <!-- Apply Coupon Wrapper End -->
+                    <!-- Hiển thị lỗi dưới form -->
+                    @if (session('vocher'))
+                    <p class="text-success">{{ session('vocher') }}</p>
+                    @endif
 
-                    <!-- Cart Update Start -->
-                    <div class="cart-update mt-sm-16">
-                        <a href="#" class="btn btn-dark btn-hover-primary rounded-0">Cập nhật giỏ hàng</a>
-                    </div>
-                    <!-- Cart Update End -->
-
+                    @if ($errors->has('vocher'))
+                    <p class="text-danger">{{ $errors->first('vocher') }}</p>
+                    @endif
                 </div>
                 <!-- Cart Update Option End -->
 
@@ -123,16 +125,10 @@
             <div class="col-lg-5 ms-auto col-custom">
 
                 <!-- Cart Calculation Area Start -->
+                <!-- Cart Calculation Area Start -->
                 <div class="cart-calculator-wrapper">
-
-                    <!-- Cart Calculate Items Start -->
                     <div class="cart-calculate-items">
-
-                        <!-- Cart Calculate Items Title Start -->
                         <h3 class="title">Tổng giỏ hàng</h3>
-                        <!-- Cart Calculate Items Title End -->
-
-                        <!-- Responsive Table Start -->
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
@@ -141,28 +137,29 @@
                                 </tr>
                                 <tr>
                                     <td>Phí vận chuyển</td>
-                                    <td>{{ number_format(30000, 0, ',', '.') }} đ</td> <!-- Hiển thị phí vận chuyển -->
+                                    <td class="shipping-fee">{{ number_format(30000, 0, ',', '.') }} đ</td>
                                 </tr>
+                                @if (session('discount_applied'))
+                                <tr class="discount-row">
+                                    <td>Mã giảm giá</td>
+                                    <td class="discount-value">{{ number_format(session('discount_applied'), 0, ',', '.') }} đ</td>
+                                </tr>
+                                @endif
                                 <tr class="total">
                                     <td>Tổng cộng</td>
                                     <td class="total-amount">
-                                        {{ number_format($total, 0, ',', '.') }} đ
-                                        <!-- Hiển thị tổng tiền bao gồm phí ship -->
+                                        @php
+                                        $totalAfterDiscount = $subTotal + 30000 - session('discount_applied', 0);
+                                        @endphp
+                                        {{ number_format($totalAfterDiscount, 0, ',', '.') }} đ
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        <!-- Responsive Table End -->
-
                     </div>
-                    <!-- Cart Calculate Items End -->
-
-                    <!-- Cart Checkout Button Start -->
-                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
-                        hành thanh toán</a>
-                    <!-- Cart Checkout Button End -->
-
+                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến hành thanh toán</a>
                 </div>
+
                 <!-- Cart Calculation Area End -->
 
             </div>
@@ -183,11 +180,6 @@
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-
-    var shippingFee = 30000; // Phí vận chuyển 30000 đồng
-
-    // Xử lý sự kiện tăng/giảm số lượng
     $('.qtybutton').on('click', function() {
         var productDetailId = $(this).data('id');
         var inputField = $(this).siblings('.cart-plus-minus-box');
@@ -213,21 +205,21 @@ $(document).ready(function() {
                 if (response.status === 'success') {
                     inputField.val(quantity);
 
-                    // Update the subtotal for this product
+                    // Cập nhật subtotal cho sản phẩm
                     var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
-                    var formattedSubtotal = response.item_price;  // Ensure price formatting here
+                    var formattedSubtotal = response.item_price; // Đảm bảo format giá
                     subtotalCell.text(formattedSubtotal);
 
-                    // Calculate the total for the cart
+                    // Tính toán lại tổng giỏ hàng
                     var subTotal = 0;
                     $('.pro-subtotal span').each(function() {
                         var currentSubtotal = $(this).text().replace(' đ', '').replace('.', '').trim();
                         subTotal += parseFloat(currentSubtotal);
                     });
 
-                    // Update the displayed totals
+                    // Cập nhật tổng số tiền hiển thị
                     $('.sub-total').text(subTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                    $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    $('.total-amount').text((subTotal + shippingFee - session('discount_applied', 0)).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
                 }
             },
             error: function() {
@@ -235,7 +227,36 @@ $(document).ready(function() {
             }
         });
     });
-});
 </script>
+<script>
+    $('.pro-remove form').on('submit', function(event) {
+        event.preventDefault(); // Ngừng hành động submit form mặc định
 
+        var form = $(this);
+        var productDetailId = form.find('button').data('id');
+
+        $.ajax({
+            url: form.attr('action'),
+            method: 'POST',
+            data: form.serialize(), // Gửi dữ liệu form đi
+            success: function(response) {
+                if (response.status === 'success') {
+                    // Cập nhật các giá trị trong giỏ hàng
+                    $('.sub-total').text(response.sub_total);
+                    $('.shipping-fee').text(response.shipping_fee);
+                    $('.discount-value').text(response.discount_value);
+                    $('.total-amount').text(response.total_after_discount);
+
+                    // Xóa sản phẩm khỏi giao diện
+                    form.closest('tr').remove(); // Xóa dòng sản phẩm khỏi bảng giỏ hàng
+                } else {
+                    alert(response.message); // Hiển thị thông báo lỗi nếu có
+                }
+            },
+            error: function() {
+                alert('Có lỗi xảy ra khi xóa sản phẩm. Vui lòng thử lại.');
+            }
+        });
+    });
+</script>
 @endsection

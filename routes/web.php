@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponsController;
+use App\Http\Controllers\VoucherController;
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -146,3 +147,4 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
 });
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
+Route::post('/apply-voucher', [CartController::class, 'applyVoucher'])->name('vocher');
