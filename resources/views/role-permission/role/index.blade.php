@@ -97,6 +97,7 @@ Vai trò & quyền
     <div class="modal-dialog">
         <form action="{{ url('roles') }}" method="POST">
             @csrf
+            <input type="hidden" name="id" value="{{ old('id') }}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addRoleModalLabel">Thêm Vai Trò</h5>
@@ -105,7 +106,10 @@ Vai trò & quyền
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="roleName" class="form-label">Tên Vai Trò</label>
-                        <input type="text" class="form-control" id="roleName" name="name" required>
+                        <input type="text" class="form-control" id="roleName" name="name">
+                        @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -123,6 +127,8 @@ Vai trò & quyền
         <form id="editRoleForm" method="POST">
             @csrf
             @method('PUT')
+            <input type="hidden" id="edit-id" name="id">
+            <input type="hidden" id="edit-id" name="id" value="{{ old('id') }}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editRoleModalLabel">Sửa Vai Trò</h5>
@@ -131,7 +137,7 @@ Vai trò & quyền
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editRoleName" class="form-label">Tên Vai Trò</label>
-                        <input type="text" class="form-control" id="editRoleName" name="name" required>
+                        <input type="text" class="form-control" id="editRoleName" name="name">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -168,8 +174,17 @@ Vai trò & quyền
 @endsection
 
 @section('js')
+<script>
+    $(document).ready(function() {
+        @if ($errors->has('name') && old('id') == null)
+            $('#addRoleModal').modal('show');
+        @endif
 
-
+        @if ($errors->has('name') && old('id') !== null)
+            $('#editRoleModal').modal('show');
+        @endif
+    });
+</script>
 <script>
 const editModal = document.getElementById('editRoleModal');
 const deleteModal = document.getElementById('deleteRoleModal');

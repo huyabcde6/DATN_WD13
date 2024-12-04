@@ -35,14 +35,14 @@
                                 <tr>
                                     <th>
                                         <a href="{{ route('admin.sizes.index', [
-                                            'sort' => 'size_id', 
+                                            'sort' => 'size_id',
                                             'direction' => request('direction') == 'asc' ? 'desc' : 'asc',
                                             'search' => request('search')
                                         ]) }}">ID</a>
                                     </th>
                                     <th>
                                         <a href="{{ route('admin.sizes.index', [
-                                            'sort' => 'value', 
+                                            'sort' => 'value',
                                             'direction' => request('direction') == 'asc' ? 'desc' : 'asc',
                                             'search' => request('search')
                                         ]) }}">Giá trị</a>
@@ -87,6 +87,7 @@
                                                 method="POST">
                                                 @csrf
                                                 @method('PUT')
+                                                <input type="hidden" id="edit-id" name="id">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Sửa kích thước</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -96,7 +97,10 @@
                                                     <div class="form-group">
                                                         <label for="value">Tên kích thước:</label>
                                                         <input type="text" id="value" name="value" class="form-control"
-                                                            value="{{ $size->value }}" required>
+                                                            value="{{ $size->value }}">
+                                                        @error('value')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                     <div class="form-group mt-3">
                                                         <label for="status">Trạng thái:</label>
@@ -163,6 +167,7 @@
         <div class="modal-content">
             <form action="{{ route('admin.sizes.store') }}" method="POST">
                 @csrf
+                <input type="hidden" name="id" value="{{ old('id') }}">
                 <div class="modal-header">
                     <h5 class="modal-title">Thêm kích thước mới</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -170,7 +175,10 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="value">Tên kích thước:</label>
-                        <input type="text" id="value" name="value" class="form-control" required>
+                        <input type="text" id="value" name="value" class="form-control" >
+                        @error('value')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group mt-3">
                         <label for="status">Trạng thái:</label>
@@ -186,4 +194,19 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+<script>
+    $(document).ready(function() {
+        @if ($errors->has('value') && old('id') == null)
+            $('#addSizeModal').modal('show');
+        @endif
+        @foreach ($sizes as $size)
+            @if ($errors->has('value') && old('id') !== null)
+                $('#editSizeModal{{ $size->size_id }}').modal('show');
+            @endif
+        @endforeach
+    });
+</script>
 @endsection

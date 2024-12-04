@@ -38,6 +38,10 @@ class SizeController extends Controller
     {
         $request->validate([
             'value' => 'required|string|max:255',
+        ], [
+            'value.required' => 'Kích thước không được để trống',
+            'value.string' => 'Kích thước phải là chuỗi',
+            'value.max' => 'Kích thước không vượt qua 255 ký tự',
         ]);
 
         Size::create([
@@ -55,6 +59,10 @@ class SizeController extends Controller
     {
         $request->validate([
             'value' => 'required|string|max:255',
+        ], [
+            'value.required' => 'Kích thước không được để trống',
+            'value.string' => 'Kích thước phải là chuỗi',
+            'value.max' => 'Kích thước không vượt qua 255 ký tự',
         ]);
 
         $size = Size::findOrFail($id); // Tìm kích thước theo ID

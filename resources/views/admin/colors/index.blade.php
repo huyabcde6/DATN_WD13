@@ -39,14 +39,21 @@
                             </div>
                             <form action="{{ route('admin.colors.store') }}" method="POST">
                                 @csrf
+                                <input type="hidden" name="id" value="{{ old('id') }}">
                                 <div class="modal-body">
                                     <div class="form-group mb-3">
                                         <label for="new_value">Tên Màu:</label>
-                                        <input type="text" id="new_value" name="value" class="form-control" required>
+                                        <input type="text" id="new_value" value="{{ old('value') }}" name="value" class="form-control">
+                                        @error('value')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="new_color_code">Mã Màu:</label>
                                         <input type="text" id="new_color_code" name="color_code" class="form-control">
+                                        @error('color_code')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="new_status">Kích Hoạt:</label>
@@ -120,11 +127,12 @@
                                         <form action="{{ route('admin.colors.update', $color->color_id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
+                                            <input type="hidden" name="id" value="{{ old('id', $color->color_id) }}">
                                             <div class="modal-body">
                                                 <div class="form-group mb-3">
                                                     <label for="value">Tên Màu:</label>
                                                     <input type="text" id="value" name="value" class="form-control"
-                                                        value="{{ $color->value }}" required>
+                                                        value="{{ $color->value }}">
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label for="color_code">Mã Màu:</label>
@@ -185,4 +193,20 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+            @if ($errors->any() && old('id') == null)
+                $('#createColorModal').modal('show');
+            @endif
+
+            @foreach ($colors as $color)
+                @if ($errors->any() && old('id') == "{{ $color->color_id }}")
+                    $('#editColorModal{{ $color->color_id }}').modal('show');
+                @endif
+            @endforeach
+        });
+    </script>
 @endsection

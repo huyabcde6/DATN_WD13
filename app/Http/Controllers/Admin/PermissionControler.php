@@ -35,6 +35,10 @@ class PermissionControler extends Controller
                 'string',
                 'unique:permissions,name'
             ]
+        ], [
+            'name.required' => 'Vui lòng nhập tên quyền',
+            'name.string' => 'Quyền phải là chữ',
+            'name.unique' => 'Quyền đã tồn tại'
         ]);
 
         Permission::create([
@@ -57,6 +61,10 @@ class PermissionControler extends Controller
                 'string',
                 'unique:permissions,name,' . $permission->id
             ]
+        ], [
+            'name.required' => 'Vui lòng nhập tên quyền',
+            'name.string' => 'Quyền phải là chữ',
+            'name.unique' => 'Quyền đã tồn tại'
         ]);
 
         $permission->update([

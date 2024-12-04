@@ -50,6 +50,12 @@ class ColorController extends Controller
             'value' => 'required|string|max:255',
             'color_code' => 'nullable|string|max:255',
             'status' => 'nullable|boolean',
+        ], [
+            'value.required' => 'Màu không được để trống',
+            'value.string' => 'Màu phải là chuỗi',
+            'value.max' => 'Màu không vượt qua 255 ký tự',
+            'color_code.string' => 'Màu phải là chuỗi',
+            'color_code.max' => 'Màu không vượt qua 255 ký tự',
         ]);
 
         Color::create([
@@ -75,6 +81,18 @@ class ColorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'value' => 'required|string|max:255',
+            'color_code' => 'nullable|string|max:255',
+            'status' => 'nullable|boolean',
+        ], [
+            'value.required' => 'Màu không được để trống',
+            'value.string' => 'Màu phải là chuỗi',
+            'value.max' => 'Màu không vượt qua 255 ký tự',
+            'color_code.string' => 'Màu phải là chuỗi',
+            'color_code.max' => 'Màu không vượt qua 255 ký tự',
+        ]);
+
         $color = Color::findOrFail($id);
 
         // Cập nhật các trường khác

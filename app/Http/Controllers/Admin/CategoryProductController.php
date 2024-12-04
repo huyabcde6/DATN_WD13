@@ -52,6 +52,16 @@ class CategoryProductController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'name' => 'required|string|max:255|unique:categories,name',
+            ],
+            [
+                'name.required' => 'Vui lòng nhập tên danh mục',
+                'name.unique' => 'Tên danh mục đã tồn tại',
+            ]
+        );
+
         try {
             DB::beginTransaction();
 
@@ -86,6 +96,15 @@ class CategoryProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate(
+            [
+                'name' => 'required|string|max:255|unique:categories,name,' . $id,
+            ],
+            [
+                'name.required' => 'Vui lòng nhập tên danh mục',
+                'name.unique' => 'Tên danh mục đã tồn tại',
+            ]
+        );
         try {
             DB::beginTransaction();
 
