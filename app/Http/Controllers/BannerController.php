@@ -54,9 +54,7 @@ class BannerController extends Controller
         return view('admin.banners.edit', compact('banner'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+  
     public function update(UpdateBannerRequest $request, Banner $banner)
     {
         $dataBanner = [
@@ -82,9 +80,7 @@ class BannerController extends Controller
         return redirect()->route('admin.banners.index')->with('success', 'Thao tác thành công!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Banner $banner)
     {
         if ($banner->image_path) {
