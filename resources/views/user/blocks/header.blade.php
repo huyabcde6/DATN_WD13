@@ -61,7 +61,7 @@
                                         <a href="#"><span>Dịch Vụ</span></a>
                                     </li>
                                     <li class="has-children">
-                                        <a href="{{ route('new.index') }}"><span>Tin Tức</span></a>
+                                        <a href="{{ route('news.index') }}"><span>Tin Tức</span></a>
                                     </li>
                                     <li>
                                         <a href="contact.html"> <span>Liên Hệ</span></a>
