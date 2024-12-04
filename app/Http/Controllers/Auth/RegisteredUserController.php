@@ -44,9 +44,15 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+<<<<<<< HEAD
         // Auth::login($user);
 
         return redirect()->route('login')->with('status', 'Bạn đã đăng ký thành công! Vui lòng đăng nhập.');
 
+=======
+        Auth::login($user);
+
+        return redirect(RouteServiceProvider::HOME);
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     }
 }

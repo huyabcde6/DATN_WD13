@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+<<<<<<< HEAD
 Broadcast::channel('order-updated', function ($user) {
     return auth()->check();
 });
 Broadcast::channel('order', function () {
     return true;
 });
+=======
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19

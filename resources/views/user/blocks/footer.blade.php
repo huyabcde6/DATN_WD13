@@ -343,7 +343,11 @@
  <!-- Scripts -->
  <!-- Scripts -->
  <!-- Global Vendor, plugins JS -->
+<<<<<<< HEAD
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+=======
+
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
  <!-- Vendors JS -->
 
  <script src="{{ asset('ngdung/assets/js/vendor/bootstrap.bundle.min.js')}}"></script>

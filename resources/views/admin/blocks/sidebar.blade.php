@@ -6,6 +6,7 @@
          <div id="sidebar-menu">
 
              <div class="logo-box">
+<<<<<<< HEAD
                  {{-- <a class='logo logo-light' href='index.html'>
                      <span class="logo-sm">
                          <img src="{{ asset('assets/admin/images/logo-sm.png')}}" alt="" height="22">
@@ -26,18 +27,41 @@
                      <a href="index.html"><img src="{{ asset('ngdung/assets/images/logo/logo1.png') }}"
                              alt="Site Logo" width="140xp" height="70px" /></a>
                  </div>
+=======
+                 <a class='logo logo-light' href='index.html'>
+                     <span class="logo-sm">
+                         <img src="{{ asset('assets/admin/images/logo-sm.png')}}" alt="" height="22">
+                     </span>
+                     <span class="logo-lg">
+                         <img src="{{ asset('assets/admin/images/logo-light.png')}}" alt="" height="24">
+                     </span>
+                 </a>
+                 <a class='logo logo-dark' href='index.html'>
+                     <span class="logo-sm">
+                         <img src="{{ asset('assets/admin/images/logo-sm.png')}}" alt="" height="22">
+                     </span>
+                     <span class="logo-lg">
+                         <img src="{{ asset('assets/admin/images/logo-dark.png')}}" alt="" height="24">
+                     </span>
+                 </a>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
              </div>
 
              <ul id="side-menu">
 
                  <li class="menu-title">Quản trị</li>
                  <li>
+<<<<<<< HEAD
                      <a class='tp-link' href="{{ route('admin.statistics.index') }}">
+=======
+                     <a class='tp-link' href="">
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                          <i data-feather="home"></i>
                          <span> Dashboards </span>
                      </a>
                  </li>
                  <li>
+<<<<<<< HEAD
                      <a class='tp-link' href="{{ route('users.index') }}">
                          <i data-feather="users"></i>
                          <span> Quản lý người dùng </span>
@@ -46,11 +70,22 @@
                  {{-- <li class="menu-title">Kinh doanh</li> --}}
                  <li>
                      <a class='tp-link' href="{{ route('admin.categories.index') }}">
+=======
+                    <a class='tp-link' href='{{ route('users.index') }}'>
+                        <i data-feather="users"></i>
+                        <span> Quản lý người dùng </span>
+                    </a>
+                 </li>
+                 <li class="menu-title">Kinh doanh</li>
+                 <li>
+                     <a class='tp-link' href="">
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                          <i data-feather="align-center"></i>
                          <span> Danh mục sản phẩm </span>
                      </a>
                  </li>
                  <li>
+<<<<<<< HEAD
                      <a class='tp-link' href="{{route('admin.products.index')}}">
                          <i data-feather="package"></i>
                          <span> Quản lý sản phẩm </span>
@@ -119,6 +154,21 @@
                          </ul>
                      </div>
                  </li>
+=======
+                     <a class='tp-link' href="">
+                         <i data-feather="package"></i>
+                         <span> Sản phẩm </span>
+                     </a>
+                 </li>
+                 <li>
+                    <a class='tp-link' href="{{ route('news.index') }}">
+                        <i data-feather="package"></i>
+                        <span> Tin tức </span>
+                    </a>
+                </li>
+
+
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
              </ul>
 
          </div>

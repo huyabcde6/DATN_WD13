@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class comment extends Model
 {
     use HasFactory;
+<<<<<<< HEAD
 
     protected $fillable = [
         'user_id',
@@ -22,4 +23,6 @@ class comment extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+=======
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 }

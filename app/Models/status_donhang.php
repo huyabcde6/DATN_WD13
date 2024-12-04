@@ -5,11 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-<<<<<<< HEAD
-class cart extends Model
-=======
-class cars extends Model
->>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
+class status_donhang extends Model
 {
     use HasFactory;
 }

@@ -20,19 +20,30 @@
 
     <!-- App css -->
     <link href="{{ asset('assets/admin/css/app.min.css')}}" rel="stylesheet" type="text/css" id="app-style" />
+<<<<<<< HEAD
     <!-- Quill css -->
     <link href="{{asset('assets/admin/libs/quill/quill.core.js')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/admin/libs/quill/quill.snow.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/admin/libs/quill/quill.bubble.css')}}" rel="stylesheet" type="text/css" />
+=======
+
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     <!-- Icons -->
     <link href="{{ asset('assets/admin/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
 
     <!-- Latest compiled and minified CSS -->
+<<<<<<< HEAD
 
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 
     <!-- Latest compiled JavaScript -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+=======
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -89,6 +100,7 @@
 
     <!-- Widgets Init Js -->
     @yield('js')
+<<<<<<< HEAD
     <script src="{{ asset('assets/admin/js/pages/analytics-dashboard.init.js')}}"></script>
 
     <script type="module">
@@ -105,6 +117,9 @@
         @endif
     </script>
 
+=======
+    <!-- <script src="{{ asset('assets/admin//js/pages/analytics-dashboard.init.js')}}"></script> -->
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     <!-- App js-->
     <script src="{{ asset('assets/admin/js/app.js')}}"></script>
 
@@ -112,4 +127,8 @@
 
 <!-- Mirrored from zoyothemes.com/tapeli/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Jul 2024 08:34:03 GMT -->
 
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19

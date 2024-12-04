@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductDetail extends Model
@@ -24,6 +25,15 @@ class ProductDetail extends Model
         'quantity',
     ];  
 
+=======
+
+class ProductDetail extends Model
+{
+    use HasFactory;
+
+    protected $table = 'product_details';
+
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     public function products()
     {
         return $this->belongsTo(products::class, 'products_id');
@@ -39,9 +49,12 @@ class ProductDetail extends Model
         return $this->belongsTo(Color::class, 'color_id', 'color_id');
     }
 
+<<<<<<< HEAD
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);
     }
+=======
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 
 }

@@ -6,17 +6,23 @@ use Illuminate\Http\Request;
 use App\Models\products;
 use App\Models\categories;
 use App\Models\Color;
+<<<<<<< HEAD
 use App\Models\Order;
 use App\Models\productComment;
 use App\Models\Size;
 use App\Models\ProductDetail;
 use Illuminate\Support\Facades\Auth;
+=======
+use App\Models\Size;
+
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 
 class ProductController extends Controller
 {
     public function index()
     {
         $products = products::with('categories')->get();
+<<<<<<< HEAD
         
         return view('user.sanpham.shop_sidebar', compact('products'));
     }
@@ -49,6 +55,17 @@ class ProductController extends Controller
         
         return view('user.sanpham.product_detail', compact('products', 'product', 'sizes', 'colors', 'productDetails', 'hasPurchased', 'comments'));
 
+=======
+        return view('user.sanpham.shop_sidebar', compact('products'));
+    }
+    public function show($id)
+    {
+        $product = products::with(['productDetails.color', 'productDetails.size', 'categories'])->findOrFail($id);
+        $sizes = Size::all();
+        $colors = Color::all();
+        
+        return view('user.sanpham.product_detail', compact('product', 'sizes', 'colors'));
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     }
 
 }

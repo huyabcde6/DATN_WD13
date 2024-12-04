@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Egulias\EmailValidator\Parser\Comment;
@@ -45,6 +46,15 @@ class products extends Model
         ];
     }
 
+=======
+
+class products extends Model
+{
+    use HasFactory;
+
+    protected $table = 'products';
+
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     public function categories()
     {
         return $this->belongsTo(categories::class);
@@ -55,6 +65,7 @@ class products extends Model
         return $this->hasMany(ProductDetail::class, 'products_id');
     }
 
+<<<<<<< HEAD
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);
@@ -69,4 +80,7 @@ class products extends Model
     public function productComments() {
         return $this->hasMany(productComment::class);
     }
+=======
+
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 }

@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+<<<<<<< HEAD
     <div class="row m-3">
         <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
             <div class="flex-grow-1">
@@ -185,5 +186,39 @@
             </form>
         </div>
     </div>
+=======
+    <h1>Danh Sách Kích Thước</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Giá Trị</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($sizes as $size)
+                <tr>
+                    <td>{{ $size->size_id }}</td>
+                    <td>{{ $size->value }}</td>
+                    <td>{{ $size->status ? 'Kích hoạt' : 'Không kích hoạt' }}</td>
+                    <td>
+                        <!-- Thêm các liên kết để chỉnh sửa và xóa -->
+                        <a href="{{ route('sizes.edit', $size->size_id) }}" class="btn btn-warning">Chỉnh sửa</a>
+                        <form action="{{ route('sizes.destroy', $size->size_id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <a href="{{ route('sizes.create') }}" class="btn btn-primary">Thêm Kích Thước Mới</a>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 </div>
 @endsection

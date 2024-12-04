@@ -7,11 +7,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+<<<<<<< HEAD
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
+=======
+
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 
     /**
      * The attributes that are mass assignable.
@@ -24,8 +31,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+<<<<<<< HEAD
         'number_phone',
         'address'
+=======
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     ];
 
     /**
@@ -47,8 +57,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+<<<<<<< HEAD
 
     public function order(){
         return $this->hasMany(Order::class);
     }
+=======
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 }

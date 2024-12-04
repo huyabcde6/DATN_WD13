@@ -9,6 +9,7 @@ class categories extends Model
 {
     use HasFactory;
 
+<<<<<<< HEAD
 
     protected $table = 'categories';
 
@@ -18,5 +19,12 @@ class categories extends Model
     public function products()
     {
         return $this->hasMany(products::class, 'categories_id', 'id');
+=======
+    protected $table = 'categories';
+
+    public function products()
+    {
+        return $this->hasMany(products::class);
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     }
 }

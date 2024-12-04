@@ -5,7 +5,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
     <title>POLY STORE</title>
+=======
+    <title>Destry - Fashion eCommerce HTML Template</title>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico') }}" />
 
@@ -14,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/fontawesome.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/pe-icon-7-stroke.min.css') }}" />
 
+<<<<<<< HEAD
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css')}}" />
@@ -23,11 +28,24 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css')}}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+=======
+    <!-- Plugins CSS (All Plugins Files) -->
+
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css') }}" />
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 
     <!-- Main Style CSS -->
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/style.css') }}" />
+<<<<<<< HEAD
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+=======
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 </head>
 
 <body>
@@ -58,11 +76,17 @@
                                         <a href="#"><span>Sản Phẩm</span> <i class="fa fa-angle-down"></i></a>
                                         <ul class="mega-menu row-cols">
                                             <li class="col">
+<<<<<<< HEAD
                                                 <h4 class="mega-menu-title">Sản phẩm</h4>
                                                 <ul class="mb-n2">
 
                                                     <li><a href="{{route('shop.index')}}">Shop</a></li>
 
+=======
+                                                <h4 class="mega-menu-title">Shop Layout</h4>
+                                                <ul class="mb-n2">
+                                                    <li><a href="shop-grid.html">Shop Grid</a></li>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                                     <li>
                                                         <a href="shop-left-sidebar.html">Left Sidebar</a>
                                                     </li>
@@ -148,11 +172,16 @@
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
+<<<<<<< HEAD
                                 <a href="{{ auth()->check() ? route('orders.index') : route('login') }}"
                                     class="header-action-btn d-none d-md-block">
                                     <i class="pe-7s-user"></i>
                                 </a>
 
+=======
+                                <a href="{{ route('login') }}" class="header-action-btn d-none d-md-block"><i
+                                        class="pe-7s-user"></i></a>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->
@@ -163,12 +192,19 @@
                                 <!-- Wishlist Header Action Button End -->
 
                                 <!-- Shopping Cart Header Action Button Start -->
+<<<<<<< HEAD
                                 <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
                                     <span class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
                                     </span>
                                 </a>
 
+=======
+                                <a href="javascript:void(0)" class="header-action-btn header-action-btn-cart">
+                                    <i class="pe-7s-shopbag"></i>
+                                    <span class="header-action-num">3</span>
+                                </a>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                 <!-- Shopping Cart Header Action Button End -->
 
                                 <!-- Mobile Menu Hambarger Action Button Start -->
@@ -398,4 +434,8 @@
             <!-- Cart Offcanvas Inner End -->
         </div>
         <!-- Cart Offcanvas End -->
+<<<<<<< HEAD
     </div>
+=======
+    </div>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19

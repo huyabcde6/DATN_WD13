@@ -9,6 +9,7 @@ use App\Models\Color;
 class ColorController extends Controller
 {
     /**
+<<<<<<< HEAD
      * Hiển thị danh sách các màu.
      */
     // Controller (ColorController.php)
@@ -30,11 +31,22 @@ class ColorController extends Controller
 
         $colors = $query->paginate(10);
 
+=======
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $colors = Color::all();
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
         return view('admin.colors.index', compact('colors'));
     }
 
     /**
+<<<<<<< HEAD
      * Hiển thị form tạo mới màu.
+=======
+     * Show the form for creating a new resource.
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
      */
     public function create()
     {
@@ -42,6 +54,7 @@ class ColorController extends Controller
     }
 
     /**
+<<<<<<< HEAD
      * Lưu màu mới vào cơ sở dữ liệu.
      */
     public function store(Request $request)
@@ -101,3 +114,44 @@ class ColorController extends Controller
         return redirect()->route('admin.colors.index')->with('success', 'Màu đã được xóa thành công.');
     }
 }
+=======
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19

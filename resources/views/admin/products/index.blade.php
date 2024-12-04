@@ -11,8 +11,13 @@ Danh sách sản phẩm
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
+<<<<<<< HEAD
 @endsection
 
+=======
+
+@endsection
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 @section('content')
 @if (session()->has('error'))
 <div class="alert alert-danger">
@@ -27,6 +32,7 @@ Danh sách sản phẩm
 @endif
 
 <div class="row m-3">
+<<<<<<< HEAD
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
         <div class="flex-grow-1">
             <h4 class="fs-18 fw-semibold m-0">Danh sách sản phẩm </h4>
@@ -172,6 +178,77 @@ Danh sách sản phẩm
             </div>
         </div>
         {{ $products->appends(request()->query())->links('pagination::bootstrap-5') }}
+=======
+    <div class="d-flex justify-content-center m-3">
+        <h2>Danh sách sản phẩm</h2>
+    </div>
+    <div class="d-flex m-3">
+        <form action="{{ route('products.index') }}" method="get" id="search-form">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" value="{{ request('search') }}" name="search" id="search" class="form-control"
+                    placeholder="Nhập từ khóa cần tìm..">
+                <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Hình ảnh</th>
+                    <th>Danh mục</th>
+                    <th>Giá</th>
+                    <th>Giá giảm</th>
+                    <th>Số lượng tồn kho</th>
+                    <th>Ngày tạo</th>
+                    <th class="text-center">Tương tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($products as $product)
+                <tr>
+                    <td>{{ $product->id }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td>
+                        <img src="{{ asset($product->avata) }}" alt="{{ $product->name }}" width="50" height="50"
+                            class="img-thumbnail">
+                    </td>
+                    <td>{{ $product->categories->name ?? 'Không có' }}</td>
+                    <td>{{ number_format($product->price, 2) }} VNĐ</td>
+                    <td>{{ $product->discount_price ? number_format($product->discount_price, 2) . ' VNĐ' : 'Không có' }}
+                    </td>
+                    <td>{{ $product->stock_quantity }}</td>
+                    <td>{{ $product->created_at->format('d/m/Y') }}</td>
+                    <td>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <i class="mdi mdi-eye text-muted fs-18 rounded-2 border p-1 me-1"></i>
+                            <a href="{{ route('admin.products.edit', $product) }}"
+                                class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 " data-bs-toggle="tooltip" title="Sửa">
+                                <i class="fa fa-pencil-alt"></i>
+                            </a>
+                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
+                                class="form-delete">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1" data-bs-toggle="tooltip"
+                                    title="Xóa">
+                                    <i class="fa fa-fw fa-times text-danger"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{ $products->links() }}
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     </div>
 </div>
 

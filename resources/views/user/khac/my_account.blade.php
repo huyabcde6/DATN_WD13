@@ -39,6 +39,7 @@
                                 <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
                                     Dashboard</a>
                                 <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Orders</a>
+<<<<<<< HEAD
                                 <a href="#download" data-bs-toggle="tab"><i class="fa fa-cloud-download"></i>
                                     Download</a>
                                 <a href="#payment-method" data-bs-toggle="tab"><i class="fa fa-credit-card"></i> Payment
@@ -55,6 +56,13 @@
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
+=======
+                                <a href="#download" data-bs-toggle="tab"><i class="fa fa-cloud-download"></i> Download</a>
+                                <a href="#payment-method" data-bs-toggle="tab"><i class="fa fa-credit-card"></i> Payment Method</a>
+                                <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i> address</a>
+                                <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account Details</a>
+                                <a href="login-register.html"><i class="fa fa-sign-out"></i> Logout</a>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             </div>
                         </div>
                         <!-- My Account Tab Menu End -->
@@ -67,12 +75,18 @@
                                     <div class="myaccount-content">
                                         <h3 class="title">Dashboard</h3>
                                         <div class="welcome">
+<<<<<<< HEAD
                                             <p>Hello, <strong>Alex Aya</strong> (If Not <strong>Aya !</strong><a
                                                     href="login-register.html" class="logout"> Logout</a>)</p>
                                         </div>
                                         <p class="mb-0">From your account dashboard. you can easily check & view your
                                             recent orders, manage your shipping and billing addresses and edit your
                                             password and account details.</p>
+=======
+                                            <p>Hello, <strong>Alex Aya</strong> (If Not <strong>Aya !</strong><a href="login-register.html" class="logout"> Logout</a>)</p>
+                                        </div>
+                                        <p class="mb-0">From your account dashboard. you can easily check & view your recent orders, manage your shipping and billing addresses and edit your password and account details.</p>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                     </div>
                                 </div>
                                 <!-- Single Tab Content End -->
@@ -82,6 +96,7 @@
                                     <div class="myaccount-content">
                                         <h3 class="title">Orders</h3>
                                         <div class="myaccount-table table-responsive text-center">
+<<<<<<< HEAD
                                             @foreach($orders as $order)
                                             <div class="container">
                                                 <div class="card mb-3">
@@ -177,6 +192,42 @@
                                                 </div>
                                             </div>
                                             @endforeach
+=======
+                                            <table class="table table-bordered">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Order</th>
+                                                        <th>Date</th>
+                                                        <th>Status</th>
+                                                        <th>Total</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Aug 22, 2023</td>
+                                                        <td>Pending</td>
+                                                        <td>$3000</td>
+                                                        <td><a href="cart.html" class="btn btn btn-dark btn-hover-primary btn-sm rounded-0">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>July 22, 2023</td>
+                                                        <td>Approved</td>
+                                                        <td>$200</td>
+                                                        <td><a href="cart.html" class="btn btn btn-dark btn-hover-primary btn-sm rounded-0">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td>June 12, 2019</td>
+                                                        <td>On Hold</td>
+                                                        <td>$990</td>
+                                                        <td><a href="cart.html" class="btn btn btn-dark btn-hover-primary btn-sm rounded-0">View</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         </div>
                                     </div>
                                 </div>
@@ -201,19 +252,27 @@
                                                         <td>Haven - Free Real Estate PSD Template</td>
                                                         <td>Aug 22, 2023</td>
                                                         <td>Yes</td>
+<<<<<<< HEAD
                                                         <td><a href="#"
                                                                 class="btn btn btn-dark btn-hover-primary rounded-0"><i
                                                                     class="fa fa-cloud-download me-1"></i> Download
                                                                 File</a></td>
+=======
+                                                        <td><a href="#" class="btn btn btn-dark btn-hover-primary rounded-0"><i class="fa fa-cloud-download me-1"></i> Download File</a></td>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                                     </tr>
                                                     <tr>
                                                         <td>HasTech - Profolio Business Template</td>
                                                         <td>Sep 12, 2023</td>
                                                         <td>Never</td>
+<<<<<<< HEAD
                                                         <td><a href="#"
                                                                 class="btn btn btn-dark btn-hover-primary rounded-0"><i
                                                                     class="fa fa-cloud-download me-1"></i> Download
                                                                 File</a></td>
+=======
+                                                        <td><a href="#" class="btn btn btn-dark btn-hover-primary rounded-0"><i class="fa fa-cloud-download me-1"></i> Download File</a></td>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -241,8 +300,12 @@
                                                 Lorem Ipsum, ## 12345</p>
                                             <p>Mobile: (123) 123-456789</p>
                                         </address>
+<<<<<<< HEAD
                                         <a href="#" class="btn btn btn-dark btn-hover-primary rounded-0"><i
                                                 class="fa fa-edit me-2"></i>Edit Address</a>
+=======
+                                        <a href="#" class="btn btn btn-dark btn-hover-primary rounded-0"><i class="fa fa-edit me-2"></i>Edit Address</a>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                     </div>
                                 </div>
                                 <!-- Single Tab Content End -->
@@ -256,16 +319,25 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
+<<<<<<< HEAD
                                                             <label for="first-name" class="required mb-1">First
                                                                 Name</label>
                                                             <input type="text" id="first-name"
                                                                 placeholder="First Name" />
+=======
+                                                            <label for="first-name" class="required mb-1">First Name</label>
+                                                            <input type="text" id="first-name" placeholder="First Name" />
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
+<<<<<<< HEAD
                                                             <label for="last-name" class="required mb-1">Last
                                                                 Name</label>
+=======
+                                                            <label for="last-name" class="required mb-1">Last Name</label>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                                             <input type="text" id="last-name" placeholder="Last Name" />
                                                         </div>
                                                     </div>
@@ -281,40 +353,62 @@
                                                 <fieldset>
                                                     <legend>Password change</legend>
                                                     <div class="single-input-item mb-3">
+<<<<<<< HEAD
                                                         <label for="current-pwd" class="required mb-1">Current
                                                             Password</label>
                                                         <input type="password" id="current-pwd"
                                                             placeholder="Current Password" />
+=======
+                                                        <label for="current-pwd" class="required mb-1">Current Password</label>
+                                                        <input type="password" id="current-pwd" placeholder="Current Password" />
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="single-input-item mb-3">
+<<<<<<< HEAD
                                                                 <label for="new-pwd" class="required mb-1">New
                                                                     Password</label>
                                                                 <input type="password" id="new-pwd"
                                                                     placeholder="New Password" />
+=======
+                                                                <label for="new-pwd" class="required mb-1">New Password</label>
+                                                                <input type="password" id="new-pwd" placeholder="New Password" />
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="single-input-item mb-3">
+<<<<<<< HEAD
                                                                 <label for="confirm-pwd" class="required mb-1">Confirm
                                                                     Password</label>
                                                                 <input type="password" id="confirm-pwd"
                                                                     placeholder="Confirm Password" />
+=======
+                                                                <label for="confirm-pwd" class="required mb-1">Confirm Password</label>
+                                                                <input type="password" id="confirm-pwd" placeholder="Confirm Password" />
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </fieldset>
                                                 <div class="single-input-item single-item-button">
+<<<<<<< HEAD
                                                     <button class="btn btn btn-dark btn-hover-primary rounded-0">Save
                                                         Changes</button>
+=======
+                                                    <button class="btn btn btn-dark btn-hover-primary rounded-0">Save Changes</button>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div> <!-- Single Tab Content End -->
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             </div>
                         </div> <!-- My Account Tab Content End -->
                     </div>
@@ -334,5 +428,8 @@
     <i class="arrow-bottom fa fa-long-arrow-up"></i>
 </a>
 <!-- Scroll Top End -->
+<<<<<<< HEAD
 @vite('resources/js/public.js');
+=======
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 @endsection

@@ -2,8 +2,13 @@
 
 namespace Database\Seeders;
 
+<<<<<<< HEAD
 use Illuminate\Database\Seeder;
 use App\Models\StatusDonHang;
+=======
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 
 class StatusDonhangSeeder extends Seeder
 {
@@ -12,6 +17,7 @@ class StatusDonhangSeeder extends Seeder
      */
     public function run(): void
     {
+<<<<<<< HEAD
         // Insert các trạng thái đơn hàng
         StatusDonHang::insert([
             ['type' => StatusDonHang::CHO_XAC_NHAN],
@@ -23,5 +29,8 @@ class StatusDonhangSeeder extends Seeder
             ['type' => StatusDonHang::DA_HUY],
             ['type' => StatusDonHang::CHO_HOAN],
         ]);
+=======
+        //
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     }
 }

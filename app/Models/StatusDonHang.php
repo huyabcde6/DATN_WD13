@@ -16,6 +16,7 @@ class StatusDonHang extends Model
     protected $fillable = ['type'];
 
     const CHO_XAC_NHAN = 'Chờ xác nhận';
+<<<<<<< HEAD
     const DA_XAC_NHAN = 'Đã xác nhận';    
     const DANG_VAN_CHUYEN = 'Đang vận chuyển';
     const DA_GIAO_HANG = 'Đã giao hàng';
@@ -24,11 +25,17 @@ class StatusDonHang extends Model
     const DA_HUY = 'Đã hủy';
     const CHO_HOAN = 'Chờ hoàn';
 
+=======
+    const DANG_XU_LY = 'Đang xử lý';
+    const DA_GIAO = 'Đã giao';
+    const DA_HUY = 'Đã hủy';
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 
     public function orders()
     {
         return $this->hasMany(Order::class, 'status_donhang_id');
     }
+<<<<<<< HEAD
     public static function getIdByType($type)
     {
         return self::where('type', $type)->value('id');
@@ -54,4 +61,6 @@ class StatusDonHang extends Model
 
         return $colors[$this->type] ?? 'bg-light';
     }
+=======
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 }

@@ -8,12 +8,21 @@
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
+<<<<<<< HEAD
                 <h1 class="title"></h1>
                 <ul>
                     <li>
                         <a href="index.html">Trang chủ </a>
                     </li>
                     <li class="active"> Sản phẩm</li>
+=======
+                <h1 class="title">Shop Grid Sidebar</h1>
+                <ul>
+                    <li>
+                        <a href="index.html">Home </a>
+                    </li>
+                    <li class="active"> shop</li>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                 </ul>
             </div>
         </div>
@@ -35,7 +44,11 @@
                     <!-- Shop Top Bar Left start -->
                     <div class="shop-top-bar-left mb-md-0 mb-2">
                         <div class="shop-top-show">
+<<<<<<< HEAD
                             <span>Hiển thị 1–12 trong 39 kết quả</span>
+=======
+                            <span>Showing 1–12 of 39 results</span>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                         </div>
                     </div>
                     <!-- Shop Top Bar Left end -->
@@ -44,29 +57,51 @@
                     <div class="shop-top-bar-right">
                         <div class="shop-short-by mr-4">
                             <select class="nice-select" aria-label=".form-select-sm example">
+<<<<<<< HEAD
                                 <option selected>Hiển thị 24</option>
                                 <option value="1">Hiển thị 24</option>
                                 <option value="2">Hiển thị 12</option>
                                 <option value="3">Hiển thị 15</option>
                                 <option value="3">Hiển thị 30</option>
+=======
+                                <option selected>Show 24</option>
+                                <option value="1">Show 24</option>
+                                <option value="2">Show 12</option>
+                                <option value="3">Show 15</option>
+                                <option value="3">Show 30</option>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             </select>
                         </div>
 
                         <div class="shop-short-by mr-4">
                             <select class="nice-select" aria-label=".form-select-sm example">
+<<<<<<< HEAD
                                 <option selected>Sắp xếp mặc định</option>
                                 <option value="1">Sản phẩm hot</option>
                                 <option value="2">Sắp xếp theo hạng</option>
                                 <option value="3">Sản phẩm mới nhất</option>
                                 <option value="3">Sắp xếp theo giá</option>
+=======
+                                <option selected>Short by Default</option>
+                                <option value="1">Short by Popularity</option>
+                                <option value="2">Short by Rated</option>
+                                <option value="3">Short by Latest</option>
+                                <option value="3">Short by Price</option>
+                                <option value="3">Short by Price</option>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             </select>
                         </div>
 
                         <div class="shop_toolbar_btn">
+<<<<<<< HEAD
                             <button data-role="grid_3" type="button" class="active btn-grid-4" title="Grid"><i
                                     class="fa fa-th"></i></button>
                             <button data-role="grid_list" type="button" class="btn-list" title="List"><i
                                     class="fa fa-th-list"></i></button>
+=======
+                            <button data-role="grid_3" type="button" class="active btn-grid-4" title="Grid"><i class="fa fa-th"></i></button>
+                            <button data-role="grid_list" type="button" class="btn-list" title="List"><i class="fa fa-th-list"></i></button>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                         </div>
                     </div>
                     <!-- Shopt Top Bar Right End -->
@@ -82,6 +117,7 @@
                     <div class="col-lg-4 col-md-4 col-sm-6 product" data-aos="fade-up" data-aos-delay="200">
                         <div class="product-inner">
                             <div class="thumb">
+<<<<<<< HEAD
                                 <a href="{{ route('product.show', $product->slug) }}" class="image">
                                     <img class="image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
                                         width="200" height="auto" />
@@ -100,12 +136,28 @@
                                 </h4>
                                 <h5 class="title"><a
                                         href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h5>
+=======
+                                <a href="single-product.html" class="image">
+                                    <img class="first-image" src="{{ asset('ngdung/assets/images/products/medium-size/2.jpg')}}" alt="Product" />
+                                    <img class="second-image" src="{{ asset('ngdung/assets/images/products/medium-size/3.jpg')}}" alt="Product" />
+                                </a>
+                                <div class="actions">
+                                    <a href="wishlist.html" title="Wishlist" class="action wishlist"><i class="pe-7s-like"></i></a>
+                                    <a href="#" title="Quickview" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
+                                    <a href="compare.html" title="Compare" class="action compare"><i class="pe-7s-shuffle"></i></a>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <h4 class="sub-title"><a href="single-product.html">{{ $product->categories->name }}</a></h4>
+                                <h5 class="title"><a href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a></h5>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                 <span class="ratings">
                                     <span class="rating-wrap">
                                         <span class="star" style="width: 100%"></span>
                                     </span>
                                     <span class="rating-num">(4)</span>
                                 </span>
+<<<<<<< HEAD
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae
                                     arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla
                                     tempus.</p>
@@ -127,6 +179,20 @@
                                     <a title="Compare" href="#"
                                         class="btn btn-sm btn-outline-dark btn-hover-primary compare"><i
                                             class="fa fa-random"></i></a>
+=======
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla tempus.</p>
+                                <span class="price">
+                                    @if ($product->productDetails->isNotEmpty())
+                                        <span class="old">{{ $product->productDetails->first()->price }}</span>
+                                    @else
+                                        <span class="old">Price not available</span>
+                                    @endif
+                                </span>
+                                <div class="shop-list-btn">
+                                    <a title="Wishlist" href="#" class="btn btn-sm btn-outline-dark btn-hover-primary wishlist"><i class="fa fa-heart"></i></a>
+                                    <button class="btn btn-sm btn-outline-dark btn-hover-primary" title="Add To Cart">Add To Cart</button>
+                                    <a title="Compare" href="#" class="btn btn-sm btn-outline-dark btn-hover-primary compare"><i class="fa fa-random"></i></a>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                 </div>
                             </div>
                         </div>
@@ -143,11 +209,19 @@
                     <div class="shop-top-bar-left">
                         <div class="shop-short-by mr-4">
                             <select class="nice-select rounded-0" aria-label=".form-select-sm example">
+<<<<<<< HEAD
                                 <option selected>Hiển thị 12 mỗi trang</option>
                                 <option value="1">Hiển thị 12 mỗi trang</option>
                                 <option value="2">Hiển thị 24 mỗi trang</option>
                                 <option value="3">Hiển thị 15 mỗi trang</option>
                                 <option value="3">Hiển thị 30 mỗi trang</option>
+=======
+                                <option selected>Show 12 Per Page</option>
+                                <option value="1">Show 12 Per Page</option>
+                                <option value="2">Show 24 Per Page</option>
+                                <option value="3">Show 15 Per Page</option>
+                                <option value="3">Show 30 Per Page</option>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             </select>
                         </div>
                     </div>
@@ -184,21 +258,32 @@
                 <aside class="sidebar_widget mt-10 mt-lg-0">
                     <div class="widget_inner" data-aos="fade-up" data-aos-delay="200">
                         <div class="widget-list mb-10">
+<<<<<<< HEAD
                             <h3 class="widget-title mb-4">Tìm kiếm</h3>
                             <div class="search-box">
                                 <input type="text" class="form-control" placeholder="Nhập từ khóa cần tìm"
                                     aria-label="Search Our Store">
+=======
+                            <h3 class="widget-title mb-4">Search</h3>
+                            <div class="search-box">
+                                <input type="text" class="form-control" placeholder="Search Our Store" aria-label="Search Our Store">
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                 <button class="btn btn-dark btn-hover-primary" type="button">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="widget-list mb-10">
+<<<<<<< HEAD
                             <h3 class="widget-title mb-4">Danh mục</h3>
+=======
+                            <h3 class="widget-title mb-4">Menu Categories</h3>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             <!-- Widget Menu Start -->
                             <nav>
                                 <ul class="category-menu mb-n3">
                                     <li class="menu-item-has-children pb-4">
+<<<<<<< HEAD
                                         <a href="#">Nữ <i class="fa fa-angle-down"></i></a>
                                         <ul class="dropdown">
                                             <li><a href="#">Mỹ Phẩm Thiên Nhiên</a></li>
@@ -231,6 +316,51 @@
                                             <li><a href="#">Bộ sưu tập mùa hè</a></li>
                                             <li><a href="#">Chống nắng</a></li>
                                             <li><a href="#">Chống nước</a></li>
+=======
+                                        <a href="#">Women <i class="fa fa-angle-down"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">Natural Cosmetic</a></li>
+                                            <li><a href="#">Woven Fashion Tops</a></li>
+                                            <li><a href="#">Knitted Fabrics</a></li>
+                                            <li><a href="#">Smart Watch</a></li>
+                                            <li><a href="#">Handmade Bag</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children pb-4">
+                                        <a href="#">Men <i class="fa fa-angle-down"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">Sunglasses</a></li>
+                                            <li><a href="#">Belt and Wallet</a></li>
+                                            <li><a href="#">Lather Shoe</a></li>
+                                            <li><a href="#">Corporate Pant and Shirt</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children pb-4">
+                                        <a href="#">Kids <i class="fa fa-angle-down"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">Kids Fashion</a></li>
+                                            <li><a href="#">Kids Toy</a></li>
+                                            <li><a href="#">Playground</a></li>
+                                            <li><a href="#">Video Games</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children pb-4">
+                                        <a href="#">Fashion <i class="fa fa-angle-down"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">World Famous Fashion</a></li>
+                                            <li><a href="#">Champion Beauty</a></li>
+                                            <li><a href="#">Fashion of Nation</a></li>
+                                            <li><a href="#">Classic Looks</a></li>
+                                            <li><a href="#">Eye Fashion</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children pb-4">
+                                        <a href="#">Others <i class="fa fa-angle-down"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">Winter Collection</a></li>
+                                            <li><a href="#">Sun Protection</a></li>
+                                            <li><a href="#">Water Resistant</a></li>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         </ul>
                                     </li>
                                 </ul>
@@ -238,16 +368,25 @@
                             <!-- Widget Menu End -->
                         </div>
                         <div class="widget-list mb-10">
+<<<<<<< HEAD
                             <h3 class="widget-title mb-5">Bộ lọc giá</h3>
                             <!-- Widget Menu Start -->
                             <form action="#">
                                 <div id="slider-range"></div>
                                 <button class="slider-range-submit" type="submit">Lọc</button>
+=======
+                            <h3 class="widget-title mb-5">Price Filter</h3>
+                            <!-- Widget Menu Start -->
+                            <form action="#">
+                                <div id="slider-range"></div>
+                                <button class="slider-range-submit" type="submit">Filter</button>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                 <input class="slider-range-amount" type="text" name="text" id="amount" />
                             </form>
                             <!-- Widget Menu End -->
                         </div>
                         <div class="widget-list mb-10">
+<<<<<<< HEAD
                             <h3 class="widget-title">Thể loại</h3>
                             <div class="sidebar-body">
                                 <ul class="sidebar-list">
@@ -255,47 +394,81 @@
                                     <li><a href="#">Bán chạy nhất (5)</a></li>
                                     <li><a href="#">Nổi bật (4)</a></li>
                                     <li><a href="#">Sản phẩm mới (6)</a></li>
+=======
+                            <h3 class="widget-title">Categories</h3>
+                            <div class="sidebar-body">
+                                <ul class="sidebar-list">
+                                    <li><a href="#">All Product</a></li>
+                                    <li><a href="#">Best Seller (5)</a></li>
+                                    <li><a href="#">Featured (4)</a></li>
+                                    <li><a href="#">New Products (6)</a></li>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                 </ul>
                             </div>
                         </div>
                         <div class="widget-list mb-10">
+<<<<<<< HEAD
                             <h3 class="widget-title">Màu sắc</h3>
+=======
+                            <h3 class="widget-title">Color</h3>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             <div class="sidebar-body">
                                 <ul class="checkbox-container categories-list">
                                     <li>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck12">
+<<<<<<< HEAD
                                             <label class="custom-control-label" for="customCheck12">Đen (20)</label>
+=======
+                                            <label class="custom-control-label" for="customCheck12">black (20)</label>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         </div>
                                     </li>
                                     <li>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck13">
+<<<<<<< HEAD
                                             <label class="custom-control-label" for="customCheck13">Đỏ (6)</label>
+=======
+                                            <label class="custom-control-label" for="customCheck13">red (6)</label>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         </div>
                                     </li>
                                     <li>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck14">
+<<<<<<< HEAD
                                             <label class="custom-control-label" for="customCheck14">Xanh da trời (8)</label>
+=======
+                                            <label class="custom-control-label" for="customCheck14">blue (8)</label>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         </div>
                                     </li>
                                     <li>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck11">
+<<<<<<< HEAD
                                             <label class="custom-control-label" for="customCheck11">Xanh lá cây (5)</label>
+=======
+                                            <label class="custom-control-label" for="customCheck11">green (5)</label>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         </div>
                                     </li>
                                     <li>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck15">
+<<<<<<< HEAD
                                             <label class="custom-control-label" for="customCheck15">Hồng (4)</label>
+=======
+                                            <label class="custom-control-label" for="customCheck15">pink (4)</label>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="widget-list mb-10">
+<<<<<<< HEAD
                             <h3 class="widget-title mb-4">Thẻ</h3>
                             <div class="sidebar-body">
                                 <ul class="tags mb-n2">
@@ -303,16 +476,33 @@
                                     <li><a href="#">Nữ</a></li>
                                     <li><a href="#">Thời trang</a></li>
                                     <li><a href="#">Vải</a></li>
+=======
+                            <h3 class="widget-title mb-4">Tags</h3>
+                            <div class="sidebar-body">
+                                <ul class="tags mb-n2">
+                                    <li><a href="#">Men</a></li>
+                                    <li><a href="#">Women</a></li>
+                                    <li><a href="#">Fashion</a></li>
+                                    <li><a href="#">Watch</a></li>
+                                    <li><a href="#">Handmade</a></li>
+                                    <li><a href="#">Lather</a></li>
+                                    <li><a href="#">Fabrics</a></li>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                 </ul>
                             </div>
                         </div>
                         <div class="widget-list">
+<<<<<<< HEAD
                             <h3 class="widget-title mb-4">Sản phẩm gần đây</h3>
+=======
+                            <h3 class="widget-title mb-4">Recent Products</h3>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             <div class="sidebar-body product-list-wrapper mb-n6">
                                 <!-- Single Product List Start -->
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
+<<<<<<< HEAD
                                             <img class="first-image" src="assets/images/products/small-product/1.jpg"
                                                 alt="Product" />
                                             <img class="second-image" src="assets/images/products/small-product/5.jpg"
@@ -321,6 +511,14 @@
                                     </div>
                                     <div class="content">
                                         <h5 class="title"><a href="single-product.html">Áo sơ mi</a></h5>
+=======
+                                            <img class="first-image" src="assets/images/products/small-product/1.jpg" alt="Product" />
+                                            <img class="second-image" src="assets/images/products/small-product/5.jpg" alt="Product" />
+                                        </a>
+                                    </div>
+                                    <div class="content">
+                                        <h5 class="title"><a href="single-product.html">Brother Hoddies in Grey</a></h5>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         <span class="price">
                                             <span class="new">$38.00</span>
                                             <span class="old">$42.50</span>
@@ -339,6 +537,7 @@
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
+<<<<<<< HEAD
                                             <img class="first-image" src="assets/images/products/small-product/2.jpg"
                                                 alt="Product" />
                                             <img class="second-image" src="assets/images/products/small-product/3.jpg"
@@ -347,6 +546,14 @@
                                     </div>
                                     <div class="content">
                                         <h5 class="title"><a href="single-product.html">Áo sơ mi</a></h5>
+=======
+                                            <img class="first-image" src="assets/images/products/small-product/2.jpg" alt="Product" />
+                                            <img class="second-image" src="assets/images/products/small-product/3.jpg" alt="Product" />
+                                        </a>
+                                    </div>
+                                    <div class="content">
+                                        <h5 class="title"><a href="single-product.html">Basic Jogging Shorts</a></h5>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         <span class="price">
                                             <span class="new">$21.00</span>
                                             <span class="old">$22.50</span>
@@ -365,6 +572,7 @@
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
+<<<<<<< HEAD
                                             <img class="first-image" src="assets/images/products/small-product/4.jpg"
                                                 alt="Product" />
                                             <img class="second-image" src="assets/images/products/small-product/10.jpg"
@@ -373,6 +581,14 @@
                                     </div>
                                     <div class="content">
                                         <h5 class="title"><a href="single-product.html">Áo sơ mi</a></h5>
+=======
+                                            <img class="first-image" src="assets/images/products/small-product/4.jpg" alt="Product" />
+                                            <img class="second-image" src="assets/images/products/small-product/10.jpg" alt="Product" />
+                                        </a>
+                                    </div>
+                                    <div class="content">
+                                        <h5 class="title"><a href="single-product.html">Simple Woven Fabrics</a></h5>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                                         <span class="price">
                                             <span class="new">$86.00</span>
                                             <span class="old">$90.00</span>
@@ -404,8 +620,12 @@
 <!-- Scroll Top End -->
 
 <!-- Modal Start  -->
+<<<<<<< HEAD
 <div class="modalquickview modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+=======
+<div class="modalquickview modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <button class="btn close" data-bs-dismiss="modal">×</button>
@@ -443,10 +663,15 @@
                             <!-- Swiper Pagination End -->
 
                             <!-- Next Previous Button Start -->
+<<<<<<< HEAD
                             <div class="swiper-product-button-next swiper-button-next"><i class="pe-7s-angle-right"></i>
                             </div>
                             <div class="swiper-product-button-prev swiper-button-prev"><i class="pe-7s-angle-left"></i>
                             </div>
+=======
+                            <div class="swiper-product-button-next swiper-button-next"><i class="pe-7s-angle-right"></i></div>
+                            <div class="swiper-product-button-prev swiper-button-prev"><i class="pe-7s-angle-left"></i></div>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             <!-- Next Previous Button End -->
                         </div>
                         <!-- Single Product Image End -->
@@ -489,10 +714,14 @@
                         <!-- SKU End -->
 
                         <!-- Description Start -->
+<<<<<<< HEAD
                         <p class="desc-content mb-5">I must explain to you how all this mistaken idea of denouncing
                             pleasure and praising pain was born and I will give you a complete account of the system,
                             and expound the actual teachings of the great explorer of the truth, the master-builder of
                             human happiness.</p>
+=======
+                        <p class="desc-content mb-5">I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.</p>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                         <!-- Description End -->
 
                         <!-- Product Meta Start -->
@@ -548,8 +777,12 @@
                                 <a class="btn btn-outline-dark btn-hover-primary" href="cart.html">Add to cart</a>
                             </div>
                             <div class="add-to-wishlist mb-3">
+<<<<<<< HEAD
                                 <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Add to
                                     Wishlist</a>
+=======
+                                <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Add to Wishlist</a>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                             </div>
                         </div>
                         <!-- Cart & Wishlist Button End -->
@@ -566,12 +799,18 @@
 
                         <!-- Product Delivery Policy Start -->
                         <ul class="product-delivery-policy border-top pt-4 mt-4 border-bottom pb-4">
+<<<<<<< HEAD
                             <li> <i class="fa fa-check-square"></i> <span>Security Policy (Edit With Customer
                                     Reassurance Module)</span></li>
                             <li><i class="fa fa-truck"></i><span>Delivery Policy (Edit With Customer Reassurance
                                     Module)</span></li>
                             <li><i class="fa fa-refresh"></i><span>Return Policy (Edit With Customer Reassurance
                                     Module)</span></li>
+=======
+                            <li> <i class="fa fa-check-square"></i> <span>Security Policy (Edit With Customer Reassurance Module)</span></li>
+                            <li><i class="fa fa-truck"></i><span>Delivery Policy (Edit With Customer Reassurance Module)</span></li>
+                            <li><i class="fa fa-refresh"></i><span>Return Policy (Edit With Customer Reassurance Module)</span></li>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                         </ul>
                         <!-- Product Delivery Policy End -->
 

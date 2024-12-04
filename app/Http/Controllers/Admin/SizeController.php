@@ -11,6 +11,7 @@ class SizeController extends Controller
     /**
      * Display a listing of the resource.
      */
+<<<<<<< HEAD
     public function index(Request $request)
     {
         $query = Size::query();
@@ -30,6 +31,21 @@ class SizeController extends Controller
         return view('admin.sizes.index', compact('sizes'));
     }
 
+=======
+    public function index()
+    {
+        $sizes = Size::all();
+        return view('admin.sizes.index', compact('sizes'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('admin.sizes.create');
+    }
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 
     /**
      * Store a newly created resource in storage.
@@ -39,13 +55,39 @@ class SizeController extends Controller
         $request->validate([
             'value' => 'required|string|max:255',
         ]);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
         Size::create([
             'value' => $request->value,
             'status' => $request->has('status') ? $request->status : true,
         ]);
+<<<<<<< HEAD
 
         return redirect()->route('admin.sizes.index')->with('success', 'Kích thước mới đã được thêm thành công.');
+=======
+    
+        return redirect()->route('sizes.index')->with('success', 'Kích thước mới đã được thêm thành công');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $size = Size::findOrFail($id); // Tìm kích thước theo ID
+        return view('admin.sizes.edit', compact('size'));
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     }
 
     /**
@@ -56,14 +98,24 @@ class SizeController extends Controller
         $request->validate([
             'value' => 'required|string|max:255',
         ]);
+<<<<<<< HEAD
 
         $size = Size::findOrFail($id); // Tìm kích thước theo ID
+=======
+    
+        $size = Size::findOrFail($id);
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
         $size->update([
             'value' => $request->value,
             'status' => $request->has('status') ? $request->status : true,
         ]);
+<<<<<<< HEAD
 
         return redirect()->route('admin.sizes.index')->with('success', 'Kích thước đã được cập nhật thành công.');
+=======
+    
+        return redirect()->route('sizes.index')->with('success', 'Kích thước đã được cập nhật thành công');
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     }
 
     /**
@@ -74,6 +126,10 @@ class SizeController extends Controller
         $size = Size::findOrFail($id);
         $size->delete();
 
+<<<<<<< HEAD
         return redirect()->route('admin.sizes.index')->with('success', 'Kích thước đã được xóa thành công.');
+=======
+        return redirect()->route('sizes.index')->with('success', 'Kích thước đã được xóa thành công');
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
     }
 }

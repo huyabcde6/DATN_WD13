@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
@@ -61,11 +62,40 @@ Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 // Route::get('/register', [UserController::class, 'register'])->name('register');
 // Route::post('/register', [UserController::class, 'postRegister']);
 
+=======
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('/login', [UserController::class,'login'])->name('login');
+Route::post('/login', [UserController::class,'postLogin']);
+Route::get('/register', [UserController::class,'register'])->name('register');
+Route::post('/register', [UserController::class,'postRegister']);
+
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 
 Route::get('/admin', function () {
     return view('layouts.admin');
 });
 
+<<<<<<< HEAD
 // Route::resource('users', UserController::class);
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
@@ -131,3 +161,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
 });
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
+=======
+Route::resource('users', UserController::class);
+Route::get('/home', function () {
+    return view('user.sanpham.home') ;
+});
+
+
+
+
+
+Route::resource('news', NewsController::class);
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19

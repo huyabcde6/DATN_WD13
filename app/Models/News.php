@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     use HasFactory;
+<<<<<<< HEAD
     protected $fillable = [
         'title',
         'description',
@@ -22,4 +23,8 @@ class News extends Model
     protected $casts = [
         'status' => 'boolean',
     ];
+=======
+
+    protected $fillable = ['title', 'content']; // Các trường có thể điền
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
 }

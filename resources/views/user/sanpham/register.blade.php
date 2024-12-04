@@ -7,12 +7,21 @@
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
+<<<<<<< HEAD
                 <h1 class="title">Đăng ký</h1>
                 <ul>
                     <li>
                         <a href="index.html">Trang chủ </a>
                     </li>
                     <li class="active"> Đăng ký </li>
+=======
+                <h1 class="title">My Account</h1>
+                <ul>
+                    <li>
+                        <a href="index.html">Home </a>
+                    </li>
+                    <li class="active"> My Account </li>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                 </ul>
             </div>
         </div>
@@ -31,7 +40,11 @@
 
                     <!-- Login Title & Content Start -->
                     <div class="section-content text-center mb-5 ">
+<<<<<<< HEAD
                         <h2 class="title mb-2">Tạo tài khoản</h2>
+=======
+                        <h2 class="title mb-2">Create Account</h2>
+>>>>>>> f018d289cd5108f0c53dc41cccfaf49fbd33aa19
                         <p class="desc-content">Please Register using account detail bellow.</p>
                     </div>
                     <!-- Login Title & Content End -->
