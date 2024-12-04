@@ -8,12 +8,12 @@
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">Blog</h1>
+                <h1 class="title">Tin tức</h1>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="index.html">Trang chủ </a>
                     </li>
-                    <li class="active"> Blog</li>
+                    <li class="active"> Tin tức</li>
                 </ul>
             </div>
         </div>

@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('index');
 
 
 // CRUD users
@@ -125,6 +125,8 @@ Route::prefix('admin')
                 Route::post('/update{id}', 'update')->name('update');
             });
     });
+
+    Route::get('news', [HomeController::class, 'index']);
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');

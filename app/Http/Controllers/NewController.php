@@ -32,13 +32,16 @@ class NewController extends Controller
             $param = $request->except('_token');
             $param['new_date'] = date("d/m/Y");
             $param['view'] = 0;
+
             if ($request->hasFile('avata')) {
                 $params['avata'] = $request->file('avata')->store('update', 'public');
             } else {
                 $params['avata'] = null;
             }
+
             // dd($params['avata']);
             // News::create($params);
+
             DB::table('news')->insert([
                 'title' => $param['title'],
                 'description' => $param['description'],
@@ -48,6 +51,7 @@ class NewController extends Controller
                 'new_date' => Carbon::now()->format('Y-m-d H:i:s'),
                 'view' => 0
             ]);
+            
             return redirect()->route('admin.new.index')->with('success', 'Thêm tin tức thành công!');
         }
     }
