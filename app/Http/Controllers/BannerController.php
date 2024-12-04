@@ -10,26 +10,20 @@ use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+  
     public function index()
     {
         $banners = banner::orderBy('order')->get();
         return view('admin.banners.index', compact('banners'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+   
     public function create()
     {
         return view('admin.banners.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(BannerRequest $request)
     {
         $dataBanner = [
