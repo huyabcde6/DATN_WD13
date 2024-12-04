@@ -1,21 +1,53 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryProductController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\NewController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\CommentController;
+
+
+Route::group(['middleware' => 'auth'], function () {
+
+
+
+
+    Route::resource('permission', App\Http\Controllers\Admin\PermissionControler::class);
+    Route::get('permission/{permissionId}/delete', [App\Http\Controllers\Admin\PermissionControler::class, 'destroy']);
+
+    Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
+    Route::get('roles/{roleId}/delete', [App\Http\Controllers\Admin\RoleController::class, 'destroy']);
+    Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'addPermissionToRole']);
+    Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'givePermissionToRole']);
+
+
+    Route::resource('users', UserController::class);
+    Route::get('users/{userId}/delete', [App\Http\Controllers\Admin\UserController::class, 'destroy']);
+});
+
+
 
 
 Route::get('/', [HomeController::class, 'index']);
 
+// // CRUD users
+// Route::resource('users', UserController::class);
+
+
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::delete('/cart/remove/{productDetailId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
@@ -34,8 +66,8 @@ Route::get('/admin', function () {
     return view('layouts.admin');
 });
 
-Route::resource('users', UserController::class);
-Route::prefix('orders')->middleware('auth')->as('orders.')->group(function(){
+// Route::resource('users', UserController::class);
+Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
     Route::get('/create', [OrderController::class, 'create'])->name('create');
@@ -53,34 +85,49 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('admin/orders')->middleware('auth')->group(function () {
-    Route::get('/', [AdminOrderController::class, 'index'])->name('admin.orders.index');
-    Route::get('/{id}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
-    Route::post('/{id}', [AdminOrderController::class, 'update'])->name('admin.orders.update');
+Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
+    // Các route cho quản lý sản phẩm
+    Route::resource('products', AdminProductController::class);
+
+    Route::resource('orders', AdminOrderController::class);
+    // Quản lý kích thước
+    Route::resource('sizes', SizeController::class);
+
+    // Quản lý màu sắc
+    Route::resource('colors', ColorController::class);
+
+    // Quản lý Banner
+    Route::resource('banners', BannerController::class);
+
+    Route::resource('invoices', InvoiceController::class);
+
+    Route::resource('categories', CategoryProductController::class);
+    // Route::resource('users', UserController::class);
+
+    Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::prefix('categories')
-            ->name('categories.')
-            ->controller(CategoryProductController::class)
+        Route::prefix('new')
+            ->name('new.')
+            ->controller(NewController::class)
             ->group(function () {
-                Route::get('index', 'index')->name('index');
-                Route::get('create', 'create')->name('create');
-                Route::post('store', 'store')->name('store');
-                Route::get('{id}/edit', 'edit')->name('edit');
-                Route::post('{id}/update', 'update')->name('update');
-                Route::delete('{id}/delete', 'delete')->name('delete');
+                Route::get('/admNew', 'index')->name('index');
+                Route::get('/addNew', 'store')->name('store');
+                Route::post('/postNew', 'create')->name('postnew');
+                Route::delete('/dlNew{id}', 'destroy')->name('destroy');
+                Route::get('/edit{id}', 'show')->name('show');
+                Route::post('/update{id}', 'update')->name('update');
             });
     });
 
-// Tin tức
-Route::get('/admNew', [NewController::class, 'index'])->name('new.show');
-Route::get('/addNew', [NewController::class, 'store'])->name('new.addnew');
-Route::post('/postNew', [NewController::class, 'create'])->name('new.postnew');
-
+Route::middleware(['auth'])->group(function () {
+    Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
+});
+Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');

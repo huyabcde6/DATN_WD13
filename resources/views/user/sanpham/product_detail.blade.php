@@ -27,15 +27,15 @@
 <div class="section">
 
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
+    <div class="breadcrumb-area bg-light ">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">Single Product Style 2</h1>
+                <h1 class="title">Chi tiết</h1>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="index.html">Trang chủ </a>
                     </li>
-                    <li class="active">Single Product Style 2</li>
+                    <li class="active">Chi tiết sản phẩm</li>
                 </ul>
             </div>
         </div>
@@ -59,37 +59,21 @@
                     <div
                         class="single-product-vertical-tab vertical-style-tab swiper-container gallery-top order-1 ms-0 me-2">
                         <div class="swiper-wrapper popup-gallery">
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/1.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/1.jpg')}}"
+                            <!-- Ảnh chính: Ban đầu hiển thị ảnh đại diện -->
+                            <a id="main-image-link" class="swiper-slide h-auto"
+                                href="{{ url('storage/' . $product->avata) }}">
+                                <img id="main-image" class="w-100 h-100" src="{{ url('storage/' . $product->avata) }}"
                                     alt="Product">
                             </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/2.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/2.jpg')}}"
-                                    alt="Product">
+
+                            <!-- Danh sách hình ảnh phụ từ productImages -->
+                            @foreach($product->productImages as $image)
+                            <a class="swiper-slide h-auto" href="{{ url('storage/' . $image->image_path) }}">
+                                <img class="w-100 h-100" src="{{ url('storage/' . $image->image_path) }}" alt="Product">
                             </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/3.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/3.jpg')}}"
-                                    alt="Product">
-                            </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/4.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/4.jpg')}}"
-                                    alt="Product">
-                            </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/5.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/5.jpg')}}"
-                                    alt="Product">
-                            </a>
-                            <a class="swiper-slide h-auto"
-                                href="{{ asset('ngdung/assets/images/products/large-size/6.jpg')}}">
-                                <img class="w-100" src="{{ asset('ngdung/assets/images/products/large-size/6.jpg')}}"
-                                    alt="Product">
-                            </a>
+                            @endforeach
                         </div>
+
 
                         <!-- Swiper Pagination Start -->
                         <!-- <div class="swiper-pagination d-none"></div> -->
@@ -107,30 +91,12 @@
                     <div
                         class="product-thumb-vertical vertical-style-thumb overflow-hidden swiper-container gallery-thumbs order-2">
                         <div class="swiper-wrapper">
+                            @foreach($product->productImages as $image)
                             <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/1.jpg')}}"
-                                    alt="Product">
+                            <img src="{{ url('storage/' . $image->image_path) }}" alt="Product" style="max-height: auto;">
+
                             </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/2.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/3.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/4.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/5.jpg')}}"
-                                    alt="Product">
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{ asset('ngdung/assets/images/products/small-product/6.jpg')}}"
-                                    alt="Product">
-                            </div>
+                            @endforeach
                         </div>
 
                         <!-- Swiper Pagination Start -->
@@ -162,14 +128,22 @@
 
                     <!-- Price Box Start -->
                     <div class="price-box mb-2">
-                        <span class="regular-price" id="current-price">${{ number_format($product->price, 2) }}</span>
-                        <!-- Giữ lại giá sản phẩm chính -->
-
-                        @if($product->discount_price)
-                        <span class="old-price"><del>${{ number_format($product->discount_price, 2) }}</del></span>
+                        <!-- Kiểm tra xem sản phẩm có giá khuyến mãi (discount_price) không -->
+                        @if($product->discount_price && $product->price)
+                            <span class="regular-price" id="current-price">
+                                {{ number_format($product->discount_price, 0, '', '.') }} đ
+                            </span>
+                            <span class="old-price">
+                                <del>{{ number_format($product->price, 0, '', '.') }} ₫</del>
+                            </span>
+                        @elseif($product->price) 
+                            <!-- Trường hợp không có giá khuyến mãi, chỉ hiển thị giá gốc -->
+                            <span class="regular-price" id="current-price">
+                                {{ number_format($product->price, 0, '', '.') }} đ
+                            </span>
+                            
                         @endif
                     </div>
-
                     <!-- Price Box End -->
 
                     <!-- Rating Start -->
@@ -183,14 +157,14 @@
 
                     <!-- SKU Start -->
                     <div class="sku mb-3">
-                        <span id="current-sku">SKU: {{ $product->productDetails->first()->product_code }}</span>
+                        <span id="current-sku">MÃ: {{ $product->productDetails->first()->product_code }}</span>
                     </div>
 
                     <!-- SKU End -->
 
                     <!-- Stock Quantity Start -->
                     <div class="stock-quantity mb-3">
-                        <span id="current-stock">In Stock: {{ $product->productDetails->first()->quantity }}</span>
+                        <span id="current-stock">Số lượng: {{ $product->productDetails->first()->quantity }}</span>
                     </div>
 
                     <!-- Stock Quantity End -->
@@ -202,10 +176,10 @@
                     <div class="product-meta mb-3">
                         <!-- Product Size Start -->
                         <div class="product-size">
-                            <span>Size:</span>
+                            <span class="mt-3">Size: <span id="selected-size">Chưa chọn</span> </span></br>
                             @foreach ($sizes as $size)
-                            <a href="#" class="size-option" data-value="{{ $size->size_id }}">
-                                <strong>{{ $size->value }}</strong>
+                            <a href="#" class="size-option  " data-value="{{ $size->size_id }}">
+                                <strong class=" btn btn border border-dark mt-3 mb-3 px-2 py-2">{{ $size->value }}</strong>
                             </a>
                             @endforeach
                         </div>
@@ -213,9 +187,10 @@
 
                         <!-- Product Color Start -->
                         <div class="product-color">
+                            <span>Color: <span id="selected-color-text">Chưa chọn</span></span></br>
                             @foreach ($colors as $color)
-                            <a href="#" class="color-option" data-value="{{ $color->color_id }}"
-                                style="background-color: {{ $color->value }}; display: inline-block; width: 25px; height: 25px; margin-right: 5px; margin-top: 10px; border-radius: 50%; border: 2px solid #000;">
+                            <a href="#" class="color-option mb-3" data-value="{{ $color->color_id }}" data-color-name="{{ $color->value }}"
+                            style="background-color: {{ $color->value }}; display: inline-block; width: 30px; height: 30px; margin-right: 5px; margin-top: 10px; border-radius: 50%; border: 2px solid #000;">
                             </a>
                             @endforeach
                         </div>
@@ -242,11 +217,11 @@
                                 <input type="hidden" name="color" value="" id="selected-color">
                                 <input type="hidden" name="quantity" id="product-quantity-hidden" value="1">
                                 <button type="button" class="btn btn-outline-dark btn-hover-primary"
-                                    id="add-to-cart-button">Add to cart</button>
+                                    id="add-to-cart-button">Thêm vào giỏ</button>
                             </form>
                         </div>
                         <div class="add-to-wishlist">
-                            <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Add to Wishlist</a>
+                            <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Yêu thích</a>
                         </div>
                     </div>
                     <!-- Cart & Wishlist Button End -->
@@ -263,12 +238,9 @@
 
                     <!-- Product Delivery Policy Start -->
                     <ul class="product-delivery-policy border-top pt-4 mt-4 border-bottom pb-4">
-                        <li><i class="fa fa-check-square"></i><span>Security Policy (Edit With Customer Reassurance
-                                Module)</span></li>
-                        <li><i class="fa fa-truck"></i><span>Delivery Policy (Edit With Customer Reassurance
-                                Module)</span></li>
-                        <li><i class="fa fa-refresh"></i><span>Return Policy (Edit With Customer Reassurance
-                                Module)</span></li>
+                        <li><i class="fa fa-check-square"></i><span>Chính sách bảo mật</span></li>
+                        <li><i class="fa fa-truck"></i><span>Chính sách giao hàng</span></li>
+                        <li><i class="fa fa-refresh"></i><span>Chính sách hoàn trả</span></li>
                     </ul>
                     <!-- Product Delivery Policy End -->
                 </div>
@@ -281,173 +253,119 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active text-uppercase" id="home-tab" data-bs-toggle="tab" href="#connect-1"
-                            role="tab" aria-selected="true">Description</a>
+                            role="tab" aria-selected="true">Mô tả</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" id="profile-tab" data-bs-toggle="tab" href="#connect-2"
-                            role="tab" aria-selected="false">Reviews</a>
+                            role="tab" aria-selected="false">Bình luận</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" id="contact-tab" data-bs-toggle="tab" href="#connect-3"
-                            role="tab" aria-selected="false">Shipping Policy</a>
+                            role="tab" aria-selected="false">Chính sách giao hàng</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" id="review-tab" data-bs-toggle="tab" href="#connect-4"
-                            role="tab" aria-selected="false">Size Chart</a>
+                            role="tab" aria-selected="false">Bảng size</a>
                     </li>
                 </ul>
                 <div class="tab-content mb-text" id="myTabContent">
                     <div class="tab-pane fade show active" id="connect-1" role="tabpanel" aria-labelledby="home-tab">
                         <div class="desc-content border p-3">
-                            <p class="mb-3">{{ $product->description }}</p>
+                            <p class="mb-3">{!! $product->description !!}</p>
                         </div>
                     </div>
+                    {{-- Start Comment --}}
+
                     <div class="tab-pane fade" id="connect-2" role="tabpanel" aria-labelledby="profile-tab">
-                        <!-- Start Single Content -->
-                        <div class="product_tab_content  border p-3">
-                            <!-- Start Single Review -->
-                            <div class="single-review d-flex mb-4">
-
-                                <!-- Review Thumb Start -->
-                                <div class="review_thumb">
-                                    <img alt="review images" src="{{ asset('ngdung/assets/images/review/1.jpg')}}">
-                                </div>
-                                <!-- Review Thumb End -->
-
-                                <!-- Review Details Start -->
-                                <div class="review_details">
-                                    <div class="review_info mb-2">
-
-                                        <!-- Rating Start -->
-                                        <span class="ratings justify-content-start mb-3">
-                                            <span class="rating-wrap">
-                                                <span class="star" style="width: 100%"></span>
-                                            </span>
-                                            <span class="rating-num">(1)</span>
-                                        </span>
-                                        <!-- Rating End -->
-
-                                        <!-- Review Title & Date Start -->
-                                        <div class="review-title-date d-flex">
-                                            <h5 class="title">Admin - </h5><span> January 19, 2023</span>
-                                        </div>
-                                        <!-- Review Title & Date End -->
-
+                        <div class="product_tab_content border p-3">
+                            @auth
+                            <div class="review-form mb-4">
+                                <!-- Review Form Card -->
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-header bg-dark text-white py-2">
+                                        <h6 class="mb-0" style="color: white">Đánh giá sản phẩm</h6>
                                     </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in viverra ex,
-                                        vitae vestibulum arcu. Duis sollicitudin metus sed lorem commodo, eu dapibus
-                                        libero interdum. Morbi convallis viverra erat, et aliquet orci congue vel.
-                                        Integer in odio enim. Pellentesque in dignissim leo. Vivamus varius ex sit amet
-                                        quam tincidunt iaculis.</p>
-                                </div>
-                                <!-- Review Details End -->
 
-                            </div>
-                            <!-- End Single Review -->
-
-                            <!-- Rating Wrap Start -->
-                            <div class="rating_wrap">
-                                <h5 class="rating-title mb-2">Add a review </h5>
-                                <p class="mb-2">Your email address will not be published. Required fields are marked *
-                                </p>
-                                <h6 class="rating-sub-title mb-2">Your Rating</h6>
-
-                                <!-- Rating Start -->
-                                <span class="ratings justify-content-start mb-3">
-                                    <span class="rating-wrap">
-                                        <span class="star" style="width: 100%"></span>
-                                    </span>
-                                    <span class="rating-num">(2)</span>
-                                </span>
-                                <!-- Rating End -->
-
-                            </div>
-                            <!-- Rating Wrap End -->
-
-                            <!-- Comments ans Replay Start -->
-                            <div class="comments-area comments-reply-area">
-                                <div class="row">
-                                    <div class="col-lg-12 col-custom">
-
-                                        <!-- Comment form Start -->
-                                        <form action="#" class="comment-form-area">
-                                            <div class="row comment-input">
-
-                                                <!-- Input Name Start -->
-                                                <div class="col-md-6 col-custom comment-form-author mb-3">
-                                                    <label>Name <span class="required">*</span></label>
-                                                    <input type="text" required="required" name="Name">
-                                                </div>
-                                                <!-- Input Name End -->
-
-                                                <!-- Input Email Start -->
-                                                <div class="col-md-6 col-custom comment-form-emai mb-3">
-                                                    <label>Email <span class="required">*</span></label>
-                                                    <input type="text" required="required" name="email">
-                                                </div>
-                                                <!-- Input Email End -->
-
+                                    <div class="card-body bg-light">
+                                        <form method="POST" action="{{ route('product.comment', $product->slug) }}"
+                                            class="px-2">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label for="description" class="form-label small text-muted">Nội dung
+                                                    đánh giá</label>
+                                                <textarea name="description"
+                                                    class="form-control form-control-sm border-dark" rows="3" required
+                                                    placeholder="Nhập đánh giá của bạn về sản phẩm..."></textarea>
                                             </div>
-                                            <!-- Comment Texarea Start -->
-                                            <div class="comment-form-comment mb-3">
-                                                <label>Comment</label>
-                                                <textarea class="comment-notes" required="required"></textarea>
-                                            </div>
-                                            <!-- Comment Texarea End -->
-
-                                            <!-- Comment Submit Button Start -->
-                                            <div class="comment-form-submit">
-                                                <button class="btn btn-dark btn-hover-primary">Submit</button>
-                                            </div>
-                                            <!-- Comment Submit Button End -->
-
+                                            <button type="submit" class="btn btn-dark btn-sm">
+                                                Gửi đánh giá
+                                            </button>
                                         </form>
-                                        <!-- Comment form End -->
-
                                     </div>
                                 </div>
                             </div>
-                            <!-- Comments ans Replay End -->
+                            @endauth
 
+                            <!-- Comments List -->
+                            <div class="reviews-list">
+                                <h6 class="text-muted mb-3">Các đánh giá khác</h6>
+                                @if ($comments->isNotEmpty())
+                                @foreach ($comments as $comment)
+                                <div class="card mb-2 shadow-sm border-0">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="small fw-bold text-dark">{{ $comment->user->name }}</span>
+                                            <small
+                                                class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                        </div>
+                                        <hr class="my-2">
+                                        <p class="card-text small mb-0">{{ $comment->description }}</p>
+                                    </div>
+                                </div>
+                                @endforeach
+                                <div class="d-flex justify-content-end mt-4">
+                                    {{ $comments->links() }}
+                                </div>
+                                @else
+                                <div class="alert alert-dark py-2 small">
+                                    Chưa có đánh giá nào.
+                                </div>
+                                @endif
+                            </div>
                         </div>
-                        <!-- End Single Content -->
                     </div>
+
+                    {{-- end Comment --}}
                     <div class="tab-pane fade" id="connect-3" role="tabpanel" aria-labelledby="contact-tab">
                         <!-- Shipping Policy Start -->
                         <div class="shipping-policy mb-n2">
-                            <h4 class="title-3 mb-4">Shipping policy for our store</h4>
-                            <p class="desc-content mb-2">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                                diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut
-                                wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl
-                                ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in
-                                vulputate</p>
+                            <h4 class="title-3 mb-4">Chính sách vận chuyển của chúng tôi</h4>
+                            <p class="desc-content mb-2">Tại POLLY STORE, 
+                                chúng tôi cam kết mang đến trải nghiệm mua sắm thuận tiện và nhanh chóng cho quý khách hàng. 
+                                Chính sách vận chuyển của chúng tôi được thiết kế để đảm bảo sự hài lòng và tin tưởng.
+                            </p>
+                            <p class="desc-content mb-2">Các điều khoản vận chuyển:</p>
                             <ul class="policy-list mb-2">
-                                <li>1-2 business days (Typically by end of day)</li>
-                                <li><a href="#">30 days money back guaranty</a></li>
-                                <li>24/7 live support</li>
-                                <li>odio dignissim qui blandit praesent</li>
-                                <li>luptatum zzril delenit augue duis dolore</li>
-                                <li>te feugait nulla facilisi.</li>
+                                <li>Thời gian giao hàng: 1-2 ngày làm việc (Thông thường là trước cuối ngày)</li>
+                                <li><a href="#">Đảm bảo hoàn tiền: 30 ngày kể từ ngày mua</a></li>
+                                <li>Hỗ trợ khách hàng: 24/7 qua điện thoại và email</li>
+                                <li>Miễn phí vận chuyển cho đơn hàng trên 1.000.000đ</li>
+                                <li>Theo dõi đơn hàng trực tuyến</li>
+                                <li>Đóng gói cẩn thận, chuyên nghiệp</li>
                             </ul>
-                            <p class="desc-content mb-2">Nam liber tempor cum soluta nobis eleifend option congue nihil
-                                imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem
-                                insitam; est usus legentis in iis qui facit eorum</p>
-                            <p class="desc-content mb-2">claritatem. Investigationes demonstraverunt lectores legere me
-                                lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur
-                                mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc
-                                putamus parum claram, anteposuerit litterarum formas humanitatis per</p>
-                            <p class="desc-content mb-2">seacula quarta decima et quinta decima. Eodem modo typi, qui
-                                nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
+                            <p class="desc-content mb-2">Chúng tôi luôn nỗ lực để mang đến dịch vụ tốt nhất, 
+                                đảm bảo sản phẩm đến tay khách hàng an toàn và nhanh chóng.</p>
+                            <p class="desc-content mb-2">Để biết thêm chi tiết, vui lòng liên hệ bộ phận chăm sóc khách hàng của chúng tôi.</p>
                         </div>
                         <!-- Shipping Policy End -->
                     </div>
                     <div class="tab-pane fade" id="connect-4" role="tabpanel" aria-labelledby="review-tab">
                         <div class="size-tab table-responsive-lg">
-                            <h4 class="title-3 mb-4">Size Chart</h4>
+                            <h4 class="title-3 mb-4">Bản size</h4>
                             <table class="table border mb-0">
                                 <tbody>
                                     <tr>
-                                        <td class="cun-name"><span>UK</span></td>
+                                        <td class="cun-name"><span>VN</span></td>
                                         <td>18</td>
                                         <td>20</td>
                                         <td>22</td>
@@ -501,7 +419,7 @@
             <div class="col-12">
                 <!-- Section Title Start -->
                 <div class="section-title aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                    <h2 class="title pb-3">You Might Also Like</h2>
+                    <h2 class="title pb-3">Có thể bạn sẽ thích</h2>
                     <span></span>
                     <div class="title-border-bottom"></div>
                 </div>
@@ -520,11 +438,8 @@
                                 <div class="product product-border-left" data-aos="fade-up" data-aos-delay="300">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
-                                            <img class="first-image"
-                                                src="{{ asset('ngdung/assets/images/products/medium-size/1.jpg')}}"
-                                                alt="Product" />
-                                            <img class="second-image"
-                                                src="{{ asset('ngdung/assets/images/products/medium-size/5.jpg')}}"
+                                            <img class="image w-100 h-100"
+                                                src="{{ url('storage/' . $item->avata) }}"
                                                 alt="Product" />
                                         </a>
                                         <div class="actions">
@@ -548,8 +463,7 @@
                                             <span class="new">$38.50</span>
                                             <span class="old">$42.85</span>
                                         </span>
-                                        <button class="btn btn-sm btn-outline-dark btn-hover-primary">Add To
-                                            Cart</button>
+                                        <button class="btn btn-sm btn-outline-dark btn-hover-primary">Thêm vào giỏ</button>
                                     </div>
                                 </div>
                                 <!-- Single Product End -->
@@ -603,16 +517,19 @@
 $(document).ready(function() {
     var selectedSize = null;
     var selectedColor = null;
-    var variantDetails = @json($productDetails);
+    var variantDetails = @json($productDetails); // Dữ liệu về các biến thể sản phẩm
 
     // Khi người dùng chọn kích thước
     $('.size-option').on('click', function(event) {
         event.preventDefault();
         selectedSize = $(this).data('value');
-        $('#selected-size').val(selectedSize);
+        
+        // Hiển thị size đã chọn
+        $('#selected-size').text($(this).text());
+
         $('.size-option').removeClass('active');
         $(this).addClass('active');
-        updateColorAvailability();
+        updateColorAvailability(); // Cập nhật khả dụng của màu
         updateVariantDetails();
     });
 
@@ -624,36 +541,59 @@ $(document).ready(function() {
         }
         selectedColor = $(this).data('value');
         $('#selected-color').val(selectedColor);
+        const colorName = $(this).data('color-name'); // Lấy tên màu từ data attribute
+        $('#selected-color-text').text(colorName); // Cập nhật tên màu đã chọn
         $('.color-option').removeClass('active');
         $(this).addClass('active');
+        updateSizeAvailability(); // Cập nhật khả dụng của size
         updateVariantDetails();
     });
 
+    // Cập nhật khả dụng của các tùy chọn màu dựa trên size đã chọn
     function updateColorAvailability() {
         $('.color-option').each(function() {
             var colorId = $(this).data('value');
-            var isAvailable = variantDetails.some(v => v.color_id == colorId && v.size_id ==
-                selectedSize);
+            var isAvailable = variantDetails.some(v => v.color_id == colorId && v.size_id == selectedSize && v.quantity > 0);
             if (isAvailable) {
-                $(this).removeClass('unavailable').removeAttr('disabled');
+                $(this).removeClass('unavailable').css({ opacity: 1, textDecoration: 'none' });
             } else {
-                $(this).addClass('unavailable').attr('disabled', 'disabled');
+                $(this).addClass('unavailable').css({ opacity: 0.5, textDecoration: 'line-through' });
             }
         });
     }
 
+    // Cập nhật khả dụng của các tùy chọn size dựa trên màu đã chọn
+    function updateSizeAvailability() {
+        $('.size-option').each(function() {
+            var sizeId = $(this).data('value');
+            var isAvailable = variantDetails.some(v => v.size_id == sizeId && v.color_id == selectedColor && v.quantity > 0);
+            if (isAvailable) {
+                $(this).removeClass('unavailable').css({ opacity: 1, textDecoration: 'none' });
+            } else {
+                $(this).addClass('unavailable').css({ opacity: 0.5, textDecoration: 'line-through' });
+            }
+        });
+    }
+
+    // Cập nhật thông tin chi tiết biến thể (giá, SKU, số lượng tồn kho)
     function updateVariantDetails() {
         if (selectedColor && selectedSize) {
             const variant = variantDetails.find(v => v.color_id == selectedColor && v.size_id == selectedSize);
             if (variant) {
-                $('#current-price').text(`$${variant.price.toFixed(2)}`);
+                $('#current-price').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(variant.discount_price));
                 $('#current-sku').text(`SKU: ${variant.product_code}`);
                 $('#current-stock').text(`In Stock: ${variant.quantity}`);
                 $('#product-quantity').attr('max', variant.quantity);
+
+                if (variant.image) {
+                    $('#main-image').attr('src', `/storage/${variant.image}`);
+                    $('#main-image-link').attr('href', `/storage/${variant.image}`);
+                }
             }
         }
     }
 
+    // Điều chỉnh số lượng sản phẩm
     $('.inc.qtybutton').on('click', function() {
         var currentQuantity = parseInt($('#product-quantity').val());
         var maxQuantity = parseInt($('#product-quantity').attr('max'));
@@ -680,43 +620,31 @@ $(document).ready(function() {
     });
 
     // Thêm sản phẩm vào giỏ hàng
-    // Sự kiện khi nhấn nút "Thêm vào giỏ hàng"
     $('#add-to-cart-button').on('click', function(event) {
-        event.preventDefault(); // Ngăn chặn hành động mặc định của nút
-
-        // Kiểm tra nếu chưa chọn kích thước hoặc màu sắc
+        event.preventDefault();
         if (!selectedSize || !selectedColor) {
             Swal.fire({
                 title: 'Thông báo',
                 text: 'Vui lòng chọn cả kích thước và màu sắc trước khi thêm vào giỏ hàng.',
                 icon: 'warning'
             });
-            return; // Dừng thực hiện nếu chưa chọn
+            return;
         }
-
-        // Hiển thị trạng thái tải
         $(this).prop('disabled', true).text('Đang thêm...');
-
-        // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
         $.ajax({
-            url: '{{ route("cart.add") }}', // Đường dẫn đến route thêm sản phẩm vào giỏ hàng
+            url: '{{ route("cart.add") }}',
             method: 'POST',
             data: {
                 products_id: $('input[name="products_id"]').val(),
                 quantity: $('#product-quantity').val(),
                 size: selectedSize,
                 color: selectedColor,
-                _token: '{{ csrf_token() }}' // Thêm token CSRF để bảo mật
+                _token: '{{ csrf_token() }}'
             },
             success: function(response) {
                 if (response.status === 'success') {
-                    // Cập nhật tổng số tiền trong giỏ hàng
                     $('.total-amount').text(response.total_price + ' $');
-
-                    // Cập nhật số lượng sản phẩm trong giỏ hàng
                     updateCartCount();
-
-                    // Hiển thị thông báo thành công
                     Swal.fire({
                         title: 'Thành công',
                         text: response.message,
@@ -725,9 +653,7 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr) {
-                // Xử lý lỗi
-                var errorMessage = xhr.responseJSON.message ||
-                    'Có lỗi xảy ra, vui lòng thử lại.';
+                var errorMessage = xhr.responseJSON.message || 'Có lỗi xảy ra, vui lòng thử lại.';
                 Swal.fire({
                     title: 'Lỗi',
                     text: errorMessage,
@@ -735,7 +661,6 @@ $(document).ready(function() {
                 });
             },
             complete: function() {
-                // Đặt lại nút về trạng thái ban đầu
                 $('#add-to-cart-button').prop('disabled', false).text('Thêm vào giỏ hàng');
             }
         });
@@ -744,12 +669,10 @@ $(document).ready(function() {
     // Hàm để cập nhật số lượng sản phẩm trong giỏ hàng
     function updateCartCount() {
         $.ajax({
-            url: '{{ route("cart.count") }}', // Đường dẫn đến route để lấy số lượng sản phẩm trong giỏ hàng
+            url: '{{ route("cart.count") }}',
             method: 'GET',
             success: function(data) {
-                // Cập nhật số lượng sản phẩm trong giao diện
                 $('.header-action-num').text(data.count);
-                // $('.header-action-num').css('display', data.count > 0 ? 'flex' : 'none');
             },
             error: function(xhr) {
                 console.error('Có lỗi xảy ra khi cập nhật số lượng giỏ hàng.', xhr);
@@ -758,5 +681,7 @@ $(document).ready(function() {
     }
 
 });
+
 </script>
+
 @endsection

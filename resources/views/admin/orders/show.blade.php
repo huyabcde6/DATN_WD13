@@ -1,13 +1,15 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container mt-5">
-        <div class="d-flex justify-content-end mb-4">
-            <a href="{{ route('admin.orders.index') }}" class="btn btn-primary">Quay lại</a>
-        </div>
-        <h2 class="title text-center mb-4">Thông tin đơn hàng: <span class="text-danger">{{ $order->order_code }}</span></h2>
-        
-        <div class="order-info mb-4">
+<div class="container mt-5">
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{{ route('admin.orders.index') }}" class="btn btn-primary">Quay lại</a>
+    </div>
+    <div class="card">
+        <h2 class="title text-center mb-4">Thông tin đơn hàng: <span class="text-danger">{{ $order->order_code }}</span>
+        </h2>
+
+        <div class="order-info mb-4 mx-3">
             <p><strong>Ngày đặt:</strong> {{ $order->created_at->format('d-m-Y') }}</p>
             <p><strong>Trạng thái:</strong> {{ $order->status->type ?? 'N/A' }}</p>
             <p><strong>Người nhận:</strong> {{ $order->nguoi_nhan }}</p>
@@ -15,11 +17,12 @@
             <p><strong>Số điện thoại:</strong> {{ $order->number_phone }}</p>
             <p><strong>Địa chỉ:</strong> {{ $order->address }}</p>
             <p><strong>Ghi chú:</strong> {{ $order->ghi_chu }}</p>
-            <p><strong>Tổng tiền:</strong> <span class="text-success">{{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 2) }} $</span></p>
+            <p><strong>Tổng tiền:</strong> <span
+                    class="text-danger ">{{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 0, '', ',') }}₫</span></p>
         </div>
 
         <h2 class="my-4 text-center">Sản phẩm trong đơn hàng</h2>
-        <div class="table-responsive">
+        <div class="table-responsive mx-3">
             <table class="table table-bordered table-striped">
                 <thead class="thead-light">
                     <tr>
@@ -34,20 +37,22 @@
                 </thead>
                 <tbody>
                     @foreach($order->orderDetails as $key => $detail)
-                        <tr>
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $detail->products->name }}</td>
-                            <td>
-                                <img src="{{ $detail->productDetail->image ?? '' }}" alt="{{ $detail->products->name }}" class="img-thumbnail" style="width: 70px; height: auto;">
-                            </td>
-                            <td>{{ $detail->color }}</td>
-                            <td>{{ $detail->size }}</td>
-                            <td>{{ $detail->quantity }}</td>
-                            <td>{{ number_format($detail->price, 2) }} $</td>
-                        </tr>
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $detail->products->name }}</td>
+                        <td>
+                            <img src="{{ $detail->productDetail->image ?? '' }}" alt="{{ $detail->products->name }}"
+                                class="img-thumbnail" style="width: 70px; height: auto;">
+                        </td>
+                        <td>{{ $detail->color }}</td>
+                        <td>{{ $detail->size }}</td>
+                        <td>{{ $detail->quantity }}</td>
+                        <td>{{ number_format($order->total_price, 0, ',', '.') }} đ</td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+</div>
 @endsection

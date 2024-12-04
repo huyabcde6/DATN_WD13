@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Categories;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryProductRequest extends FormRequest
+class BannerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,19 +21,19 @@ class CategoryProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('id');
         return [
-            'name' => 'required|string|max:255|unique:category_products,name,' . $id,
+            'title'         => 'required',
+            'description'   => 'nullable',
+            'image_path'    => 'required|image',
+            'order'         => 'nullable',
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Vui lòng nhập tên danh mục',
-            'name.unique' => 'Tên danh mục đã tồn tại',
-            'name.max' => 'Tên danh mục không được vượt quá 255 ký tự',
-            'name.string' => 'Tên danh mục phải là chuỗi',
+            'title.required' => 'Tiêu đề không được để trống',
+            'image_path.required' => 'Ảnh không được để trống',
         ];
     }
 }

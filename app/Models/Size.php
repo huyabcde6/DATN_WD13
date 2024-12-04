@@ -12,7 +12,7 @@ class Size extends Model
 
     protected $primaryKey = 'size_id';
 
-    protected $fillable = ['value'];
+    protected $fillable = ['value', 'status'];
     
     public function productDetails()
     {
