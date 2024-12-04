@@ -15,16 +15,7 @@ class CommentController extends Controller
     {
         $product = products::where('slug', $slug)->firstOrFail();
 
-        // $hasPurchased = Order::where('user_id', auth()->id())
-        // ->whereHas('orderDetail', function($query) use ($product) {
-        //     $query->where('product_detail_id', $product->id);
-        //     })
-        //     ->where('payment_status', 'pending')
-        //     ->exists();
-
-        // if (!$hasPurchased) {
-        //     return back()->with('error', 'Bạn cần mua sản phẩm này trước khi đánh giá');
-        // }
+       
 
         $comment = productComment::query()->create([
             'user_id' => auth()->id(),
