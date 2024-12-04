@@ -42,17 +42,13 @@ class BannerController extends Controller
         return redirect()->route('admin.banners.index')->with('success', 'Thao tác thành công!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+  
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+  
     public function edit(Banner $banner)
     {
         return view('admin.banners.edit', compact('banner'));
