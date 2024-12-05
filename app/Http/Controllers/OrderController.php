@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OderEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -58,7 +59,10 @@ class OrderController extends Controller
             $total = $subTotal + $shippingFee; // Tổng cộng bao gồm phí vận chuyển
 
             return view('user.sanpham.thanhtoan', compact(
-                'cartItems', 'subTotal', 'shippingFee', 'total', 
+                'cartItems',
+                'subTotal',
+                'shippingFee',
+                'total',
                 'user'
             ));
         }
@@ -160,12 +164,12 @@ class OrderController extends Controller
                     } else {
                         throw new \Exception('Bạn phải cung cấp lý do trả hàng.');
                     }
-                }else {
+                } else {
                     throw new \Exception('Hành động không hợp lệ.');
                 }
                 // Cập nhật trạng thái đơn hàng
                 $order->update($params);
-
+                broadcast(new OderEvent(Order::findOrFail($id)));
                 DB::commit();
                 return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
             } catch (\Exception $e) {
@@ -174,7 +178,7 @@ class OrderController extends Controller
                 return redirect()->route('orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
             }
         }
-        
+
 
 
         return redirect()->route('orders.index')->with('error', 'Phương thức không hợp lệ.');
