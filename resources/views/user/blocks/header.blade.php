@@ -64,7 +64,7 @@
                         <!-- Header Menu Start -->
                         <div class="col-xl-8 d-none d-xl-block">
                             <div class="main-menu position-relative">
-                                <ul style="">
+                                <ul>
                                     <li class="has-children">
                                         <a href="#"><span>Trang Chủ</span></a>
                                     </li>
@@ -72,29 +72,10 @@
                                         <a href="{{route('shop.index')}}"><span>Sản Phẩm</span>
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Dịch Vụ</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="faq.html">Faq</a></li>
-                                            <li><a href="404-error.html">404 Error</a></li>
-                                        </ul>
-                                    </li>
+                                        <a href="#"><span>Dịch Vụ</span>
+
                                     <li class="has-children">
-                                        <a href="#"><span>Tin Tức</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog.html">Blog</a></li>
-                                            <li>
-                                                <a href="blog-left-sidebar.html">Blog Left Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-right-sidebar.html">Blog Right Sidebar</a>
-                                            </li>
-                                            <li><a href="blog-details.html">Blog Details</a></li>
-                                            <li>
-                                                <a href="blog-details-sidebar.html">Blog Details Sidebar</a>
-                                            </li>
-                                        </ul>
+                                        <a href="#"><span>Tin Tức</span>
                                     </li>
                                     <li>
                                         <a href="contact.html"> <span>Liên Hệ</span></a>
