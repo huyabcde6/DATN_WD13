@@ -83,7 +83,7 @@
                         <div class="product-inner">
                             <div class="thumb">
                                 <a href="{{ route('product.show', $product->slug) }}" class="image">
-                                    <img class="image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
+                                    <img class="image" src="{{ url('storage/'.$product->avata) }}" alt="Product"
                                         width="200" height="auto" />
                                 </a>
                                 <div class="actions">
@@ -109,12 +109,12 @@
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae
                                     arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla
                                     tempus.</p>
-                                    <span class="price">
+                                <span class="price">
                                     @if ($product->discount_price)
-                                        <span class="new">{{ number_format($product->discount_price, 0, '', '.') }} ₫</span>&nbsp;&nbsp;
-                                        <span class="old">{{ number_format($product->price, 0, '', '.') }} ₫</span>
+                                    <span class="new">{{ number_format($product->discount_price, 0, '', '.') }} ₫</span>&nbsp;&nbsp;
+                                    <span class="old">{{ number_format($product->price, 0, '', '.') }} ₫</span>
                                     @else
-                                        <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
+                                    <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
                                     @endif
                                 </span>
 
