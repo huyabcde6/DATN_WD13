@@ -3,7 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\ProductDetail;
+use App\Models\StatusDonHang;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmationMail;
+use Illuminate\Support\Facades\Log;
 class PaymentController extends Controller
 {
     public function vnpay_payment(Request $request){
@@ -74,5 +85,65 @@ class PaymentController extends Controller
         }
         // vui lòng tham khảo thêm tại code demo
 
+
+    if ($request->isMethod('POST')) {
+        DB::beginTransaction();
+        try {
+            // Chuẩn bị dữ liệu cho đơn hàng
+            $params = $request->except('_token');
+            $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
+            $params['date_order'] = now(); // Lấy thời gian hiện tại
+            $params['status_donhang_id'] = 1; // Trạng thái đơn hàng mặc định là chờ xử lý
+
+            // Tạo đơn hàng
+            $order = Order::query()->create($params);
+            $orderId = $order->id;
+            $carts = Session::get('cart', []); // Giỏ hàng trong session
+
+            // Thêm chi tiết đơn hàng
+            foreach ($carts as $productDetailId => $value) {
+                $orderDetail = $order->orderDetails()->create([
+                    'order_id' => $orderId,
+                    'product_detail_id' => $productDetailId,
+                    'quantity' => $value['quantity'],
+                    'color' => $value['color'],
+                    'size' => $value['size'],
+                    'price' => $value['price'],
+                ]);
+
+                // Giảm số lượng sản phẩm trong kho sau khi mua
+                $productDetail = ProductDetail::find($productDetailId);
+                if ($productDetail) {
+                    $productDetail->quantity -= $value['quantity'];
+                    $productDetail->save();
+                }
+            }
+
+            DB::commit();
+
+            // Gửi email xác nhận đơn hàng
+            Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
+
+            // Xóa giỏ hàng trong session
+            Session::put('cart', []);
+            return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được tạo thành công.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Lỗi tạo đơn hàng: ' . $e->getMessage());
+            return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra trong quá trình tạo đơn hàng: ' . $e->getMessage());
+        }
     }
+
+    return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
+}
+public function generateUniqueOrderCode()
+{
+    do {
+        // Tạo mã đơn hàng bằng cách sử dụng ID người dùng và thời gian hiện tại
+        $orderCode = 'ORD-' . Auth::id() . '-' . now()->timestamp;
+    } while (Order::where('order_code', $orderCode)->exists());
+
+    return $orderCode;
+}
+
 }

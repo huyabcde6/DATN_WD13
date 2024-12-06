@@ -23,7 +23,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Auth::user()->order()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
+        $orders = Auth::user()->Str::orderedUuid()()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
 
         return view('user.khac.my_account', compact('orders'));
     }
@@ -58,7 +58,7 @@ class OrderController extends Controller
             $total = $subTotal + $shippingFee; // Tổng cộng bao gồm phí vận chuyển
 
             return view('user.sanpham.thanhtoan', compact(
-                'cartItems', 'subTotal', 'shippingFee', 'total', 
+                'cartItems', 'subTotal', 'shippingFee', 'total',
                 'user'
             ));
         }
@@ -174,7 +174,7 @@ class OrderController extends Controller
                 return redirect()->route('orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
             }
         }
-        
+
 
 
         return redirect()->route('orders.index')->with('error', 'Phương thức không hợp lệ.');
