@@ -38,7 +38,7 @@
                      </a>
                  </li>
                  <li>
-                     <a class='tp-link' href="{{ route('users.index') }}">
+                     <a class='tp-link' href="{{ route('admin.users.index') }}">
                          <i data-feather="users"></i>
                          <span> Quản lý người dùng </span>
                      </a>
@@ -115,6 +115,9 @@
                              </li>
                              <li>
                                  <a class='tp-link' href="{{ url('permission') }}">Quyền</a>
+                             </li>
+                             <li>
+                                 <a class='tp-link' href="{{ url('userAdmin') }}">Admin</a>
                              </li>
                          </ul>
                      </div>

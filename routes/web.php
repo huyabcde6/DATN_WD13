@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\NewController;
@@ -21,9 +22,6 @@ use App\Http\Controllers\CommentController;
 
 Route::group(['middleware' => 'auth'], function () {
 
-
-
-
     Route::resource('permission', App\Http\Controllers\Admin\PermissionControler::class);
     Route::get('permission/{permissionId}/delete', [App\Http\Controllers\Admin\PermissionControler::class, 'destroy']);
 
@@ -33,8 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'givePermissionToRole']);
 
 
-    Route::resource('users', UserController::class);
-    Route::get('users/{userId}/delete', [App\Http\Controllers\Admin\UserController::class, 'destroy']);
+    Route::resource('userAdmin', AdminController::class);
+    Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
 });
 
 
@@ -43,7 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/', [HomeController::class, 'index']);
 
 // // CRUD users
-// Route::resource('users', UserController::class);
+// 
 
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
@@ -101,7 +99,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     Route::resource('invoices', InvoiceController::class);
 
     Route::resource('categories', CategoryProductController::class);
-    // Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class);
 
     Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 });

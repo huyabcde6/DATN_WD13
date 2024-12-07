@@ -12,24 +12,22 @@
             <div class="col-12">
                 <div class="card">
                     <div class="d-flex m-3 justify-content-between align-items-center">
-                        <form method="GET" action="{{ route('admin.sizes.index') }}" class="d-flex">
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bi bi-search"></i>
-                                </span>
-                                <input type="text" name="search" class="form-control"
-                                    placeholder="Nhập từ khóa cần tìm..." value="{{ request('search') }}">
-                            </div>
-                            <button type="submit" class="btn btn-sm btn-dark mx-2">
-                                <i class="bi bi-search"></i> Tìm kiếm
-                            </button>
-                        </form>
+                    <form action="{{ route('admin.sizes.index') }}" class="d-flex" method="get" id="search-form">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                Tìm kiếm
+                            </span>
+                            <input type="text" value="{{ request('search') }}" name="search" id="search"
+                                class="form-control" placeholder="Nhập từ khóa cần tìm..">
+                            <button type="submit" class="btn btn-sm btn-dark"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
                         <button class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
                             data-bs-toggle="modal" data-bs-target="#addSizeModal" title="Thêm mới">
-                            <i class="mdi mdi-plus text-muted"></i>
+                            <i class="mdi mdi-plus text-muted">Thêm mới</i>
                         </button>
                     </div>
-                    <div class="col-md-12">
+                    <div class="card-body">
                         <table class="table table-striped text-center">
                             <thead>
                                 <tr>
@@ -38,7 +36,7 @@
                                             'sort' => 'size_id', 
                                             'direction' => request('direction') == 'asc' ? 'desc' : 'asc',
                                             'search' => request('search')
-                                        ]) }}">ID</a>
+                                        ]) }}">#</a>
                                     </th>
                                     <th>
                                         <a href="{{ route('admin.sizes.index', [

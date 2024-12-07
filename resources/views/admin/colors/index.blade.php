@@ -11,20 +11,19 @@
         <div class="col-12">
             <div class="card">
                 <div class="d-flex m-3 justify-content-between align-items-center">
-                    <form method="GET" action="{{ route('admin.colors.index') }}" class="d-flex">
+                    <form action="{{ route('admin.colors.index') }}" class="d-flex" method="get" id="search-form">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <i class="bi bi-search"></i>
+                                Tìm kiếm
                             </span>
-                            <input type="text" name="search" class="form-control" placeholder="Nhập từ khóa cần tìm..." value="{{ request('search') }}">
+                            <input type="text" value="{{ request('search') }}" name="search" id="search"
+                                class="form-control" placeholder="Nhập từ khóa cần tìm..">
+                            <button type="submit" class="btn btn-sm btn-dark"><i class="bi bi-search"></i></button>
                         </div>
-                        <button type="submit" class="btn btn-sm btn-dark mx-2">
-                            <i class="bi bi-search"></i> Tìm kiếm
-                        </button>
                     </form>
                     <button type="button" class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
                         data-bs-toggle="modal" data-bs-target="#createColorModal" title="Thêm mới">
-                        <i class="mdi mdi-plus text-muted"></i>
+                        <i class="mdi mdi-plus text-muted">Thêm mới</i>
                     </button>
                 </div>
 
@@ -35,7 +34,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="createColorModalLabel">Thêm mới màu sắc</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <form action="{{ route('admin.colors.store') }}" method="POST">
                                 @csrf
@@ -55,7 +55,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Đóng</button>
                                     <button type="submit" class="btn btn-primary">Thêm</button>
                                 </div>
                             </form>
@@ -64,18 +65,23 @@
                 </div>
 
                 <!-- Bảng danh sách -->
-                <div class="col-md-12">
+                <div class="card-body">
                     <table class="table table-striped text-center">
                         <thead>
                             <tr>
                                 <th>
-                                    <a href="{{ route('admin.colors.index', ['sort' => 'color_id', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}">ID</a>
+                                    <a
+                                        href="{{ route('admin.colors.index', ['sort' => 'color_id', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}">ID</a>
                                 </th>
                                 <th>
-                                    <a href="{{ route('admin.colors.index', ['sort' => 'value', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}">Màu sắc</a>
+                                    <a
+                                        href="{{ route('admin.colors.index', ['sort' => 'value', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}">Màu
+                                        sắc</a>
                                 </th>
                                 <th>
-                                    <a href="{{ route('admin.colors.index', ['sort' => 'color_code', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}">Mã Màu</a>
+                                    <a
+                                        href="{{ route('admin.colors.index', ['sort' => 'color_code', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}">Mã
+                                        Màu</a>
                                 </th>
                                 <th>Trạng thái</th>
                                 <th>Tương tác</th>
@@ -117,7 +123,8 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <form action="{{ route('admin.colors.update', $color->color_id) }}" method="POST">
+                                        <form action="{{ route('admin.colors.update', $color->color_id) }}"
+                                            method="POST">
                                             @csrf
                                             @method('PUT')
                                             <div class="modal-body">
@@ -129,7 +136,7 @@
                                                 <div class="form-group mb-3">
                                                     <label for="color_code">Mã Màu:</label>
                                                     <input type="text" id="color_code" name="color_code"
-                                                        class="form-control" value="{{ $color->color_code }}"/>
+                                                        class="form-control" value="{{ $color->color_code }}" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="status">Kích Hoạt:</label>
@@ -162,7 +169,8 @@
                                             Bạn có chắc chắn muốn xóa màu sắc này không?
                                         </div>
                                         <div class="modal-footer">
-                                            <form action="{{ route('admin.colors.destroy', $color->color_id) }}" method="POST">
+                                            <form action="{{ route('admin.colors.destroy', $color->color_id) }}"
+                                                method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-secondary"

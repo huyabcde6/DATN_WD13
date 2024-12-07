@@ -84,7 +84,7 @@
                             <div class="thumb">
                                 <a href="{{ route('product.show', $product->slug) }}" class="image">
                                     <img class="image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
-                                        width="200" height="auto" />
+                                        width="auto" height="auto" />
                                 </a>
                                 <div class="actions">
                                     <a href="wishlist.html" title="Wishlist" class="action wishlist"><i
@@ -100,12 +100,6 @@
                                 </h4>
                                 <h5 class="title"><a
                                         href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h5>
-                                <span class="ratings">
-                                    <span class="rating-wrap">
-                                        <span class="star" style="width: 100%"></span>
-                                    </span>
-                                    <span class="rating-num">(4)</span>
-                                </span>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae
                                     arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla
                                     tempus.</p>

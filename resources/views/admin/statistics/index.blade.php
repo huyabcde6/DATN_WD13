@@ -10,7 +10,7 @@
 
         <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
             <div class="flex-grow-1">
-                <h4 class="fs-18 fw-semibold m-0">Ecommerce</h4>
+                <h4 class="fs-18 fw-semibold m-0">Thống kê</h4>
             </div>
             <form method="GET" action="{{ route('admin.statistics.index') }}" class="d-flex align-items-center">
                 <select name="filter" class="form-select me-2" style="width: 200px;">

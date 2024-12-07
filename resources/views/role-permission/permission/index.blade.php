@@ -4,6 +4,11 @@
 Quản lý Vai trò & Quyền
 @endsection
 
+@section('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+@endsection
+
 @section('content')
 @if (session()->has('error'))
 <div class="alert alert-danger">
@@ -31,29 +36,47 @@ Quản lý Vai trò & Quyền
                     <form method="GET" action="{{ url('permission') }}" class="d-flex">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <i class="bi bi-search"></i>
+                            Tìm kiếm
                             </span>
                             <input type="text" name="search" class="form-control" placeholder="Nhập từ khóa cần tìm..."
                                 value="{{ request('search') }}">
-                        </div>
-                        <button type="submit" class="btn btn-sm btn-dark mx-2">
-                            <i class="bi bi-search"></i> Tìm kiếm
+                        
+                        <button type="submit" class="btn btn-sm btn-dark">
+                            <i class="bi bi-search"></i>
                         </button>
+                        </div>
                     </form>
                     <button class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
                         data-bs-toggle="modal" data-bs-target="#addPermissionModal">
                         <i class="mdi mdi-plus text-muted"></i> Thêm Quyền
                     </button>
                 </div>
-                <div class="col-md-12">
-                    <table class="table table-striped text-center">
+                <div class="card-body">
+                    <table class="table table-striped text-center" id="permissionTable">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Tên quyền</th>
-                                <th>Thao tác</th>
+                                <th>
+                                    <a href="{{ url('permission', [
+                                            'sort_by' => 'id', 
+                                            'sort_order' => request('sort_order') == 'asc' ? 'desc' : 'asc',
+                                            'search' => request('search')
+                                        ]) }}">
+                                        #
+                                    </a>
+                                </th>
+                                <th class="text-center">
+                                    <a href="{{ url('permission', [
+                                            'sort_by' => 'name', 
+                                            'sort_order' => request('sort_order') == 'asc' ? 'desc' : 'asc',
+                                            'search' => request('search')
+                                        ]) }}">
+                                        Tên quyền
+                                    </a>
+                                </th>
+                                <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             @foreach ($permission as $perm)
                             <tr>
@@ -83,7 +106,7 @@ Quản lý Vai trò & Quyền
                 </div>
             </div>
         </div>
-        {{ $permission->links('pagination::bootstrap-5') }}
+        {{ $permission->appends(request()->query())->links() }}
     </div>
 </div>
 
@@ -184,4 +207,5 @@ deleteModal.addEventListener('show.bs.modal', function(event) {
     form.action = `permission/${id}`;
 });
 </script>
+
 @endsection

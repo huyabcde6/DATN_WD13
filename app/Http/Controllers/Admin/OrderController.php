@@ -25,54 +25,68 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
+        // Khởi tạo truy vấn
         $query = Order::query();
 
+        // Tìm kiếm theo mã đơn hàng, tên người nhận hoặc email
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('order_code', 'like', "%{$searchTerm}%")
+                    ->orWhere('nguoi_nhan', 'like', "%{$searchTerm}%")
+                    ->orWhere('email', 'like', "%{$searchTerm}%");
+            });
+        }
+
         // Lọc theo ngày
-        if ($request->has('from_date') && $request->from_date) {
+        if ($request->filled('from_date')) {
             $query->whereDate('created_at', '>=', $request->from_date);
         }
 
-        if ($request->has('to_date') && $request->to_date) {
+        if ($request->filled('to_date')) {
             $query->whereDate('created_at', '<=', $request->to_date);
         }
 
         // Lọc theo trạng thái
-        if ($request->has('status_donhang_id') && $request->status_donhang_id) {
+        if ($request->filled('status_donhang_id')) {
             $query->where('status_donhang_id', $request->status_donhang_id);
         }
 
         // Lọc theo phương thức thanh toán
-        if ($request->has('method') && $request->method) {
+        if ($request->filled('method')) {
             $query->where('method', $request->method);
         }
 
         // Lọc theo trạng thái thanh toán
-        if ($request->has('payment_status') && $request->payment_status) {
+        if ($request->filled('payment_status')) {
             $query->where('payment_status', $request->payment_status);
         }
 
         // Xử lý sắp xếp
         $validSortColumns = ['created_at', 'status_donhang_id', 'method', 'payment_status']; // Danh sách cột hợp lệ để sắp xếp
         $sortBy = in_array($request->get('sort_by'), $validSortColumns) ? $request->get('sort_by') : 'created_at'; // Chọn cột sắp xếp hợp lệ
-        $sortOrder = $request->get('sort_order', 'asc') === 'desc' ? 'desc' : 'asc'; // Chỉ cho phép 'asc' hoặc 'desc'
+        $sortOrder = in_array($request->get('sort_order'), ['asc', 'desc']) ? $request->get('sort_order') : 'asc'; // Chỉ cho phép 'asc' hoặc 'desc'
 
+        // Áp dụng sắp xếp
         $query->orderBy($sortBy, $sortOrder);
 
         // Paginate kết quả
-        $orders = $query->paginate(10);
+        $orders = $query->orderBy('created_at', 'desc')->paginate(10);
 
-        // Truyền các biến cần thiết vào view
+        // Truyền các biến vào view
         return view('admin.orders.index', [
             'orders' => $orders,
             'statuses' => StatusDonhang::all(),
             'sort_by' => $sortBy,  // Truyền lại tham số sắp xếp để giữ giá trị trong view
             'sort_order' => $sortOrder, // Truyền lại thứ tự sắp xếp
+            'search' => $request->search,  // Truyền lại từ khóa tìm kiếm để hiển thị trong form
         ]);
     }
 
+
     public function show($id)
     {
-        $order = Order::with(['orderDetails.productDetail.products', 'status'])->findOrFail($id);
+        $order = Order::with(['orderDetails.productDetail.products', 'status'])->orderBy('created_at', 'desc')->findOrFail($id);
         return view('admin.orders.show', compact('order'));
     }
 
@@ -89,10 +103,14 @@ class OrderController extends Controller
                 // Chuyển trạng thái đơn hàng theo quy định
                 if ($order->status_donhang_id == 1 && in_array($statusId, [2, 7])) { // Chờ xác nhận -> Đã xác nhận, Hoàn hàng
                     $order->status_donhang_id = $statusId;
+                    if ($statusId == 7) {
+                        $order->payment_status = 'thất bại'; // Đánh dấu thanh toán thất bại khi hủy
+                    }
                 } elseif ($order->status_donhang_id == 2 && $statusId == 3) { // Đã xác nhận -> Đang vận chuyển
                     $order->status_donhang_id = $statusId;
                 } elseif ($order->status_donhang_id == 3 && $statusId == 4) { // Đang vận chuyển -> Đã giao hàng
                     $order->status_donhang_id = $statusId;
+                    $order->payment_status = 'đã thanh toán';
                 } elseif ($order->status_donhang_id == 4 && in_array($statusId, [5, 8])) { // Đã giao hàng -> Hoàn thành, Chờ
                     $order->status_donhang_id = $statusId;
                     if ($statusId == 5) {
@@ -102,6 +120,7 @@ class OrderController extends Controller
                     return redirect()->route('admin.orders.index')->with('error', 'Đơn hàng đã hoàn thành và không thể thay đổi trạng thái.');
                 }elseif ($order->status_donhang_id == 8 && $statusId == 6) { // Chờ xác nhận hoàn hàng -> Hoàn hàng
                     $order->status_donhang_id = $statusId;
+                    $order->payment_status = 'đã hoàn lại';
                 }else {
                     return redirect()->route('admin.orders.index')->with('error', 'Không thể chuyển trạng thái theo quy định.');
                 }
@@ -138,6 +157,7 @@ class OrderController extends Controller
             'status_donhang_id' => $order->status_donhang_id,
             'ghi_chu' => $order->ghi_chu,
             'method' => $order->method,
+            'payment_status' => $order->payment_status,
             'subtotal' => $order->subtotal,
             'discount' => $order->discount,
             'shipping_fee' => $order->shipping_fee,

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('ghi_chu')->nullable(); // Ghi chú (nullable)
             $table->enum('method', ['COD', 'credit_card', 'paypal', 'momo', 'bank_transfer'])->default('COD'); // Phương thức thanh toán
             $table->decimal('subtotal', 15, 2); // Tổng tạm tính
+            $table->enum('payment_status', ['chưa thanh toán', 'đã thanh toán', 'đang xử lý', 'thất bại', 'đã hoàn lại'])->default('chưa thanh toán');
             $table->decimal('discount', 15, 2)->default(0); // Giảm giá
             $table->decimal('shipping_fee', 15, 2)->default(0); // Phí vận chuyển
             $table->decimal('total_price', 15, 2); // Tổng tiền

@@ -15,7 +15,7 @@ class PermissionControler extends Controller
         $this->middleware('permission:delete permission', ['only' => ['destroy']]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $sort_by = 'id', $sort_order = 'asc')
     {
         $query = Permission::query();
 
@@ -23,12 +23,27 @@ class PermissionControler extends Controller
         if ($request->has('search') && $request->search != '') {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
-        $permission = $query->paginate(10); // Phân trang 10 bản ghi mỗi trang
 
-        return view('role-permission.permission.index', compact('permission'));
-    }
+        // Xử lý sắp xếp
+        $validSortColumns = ['id', 'name', 'created_at']; // Các cột hợp lệ để sắp xếp
+        $sortBy = in_array($sort_by, $validSortColumns) ? $sort_by : 'id'; // Chọn cột sắp xếp hợp lệ
+        $sortOrder = $sort_order === 'desc' ? 'desc' : 'asc'; // Chỉ cho phép 'asc' hoặc 'desc'
 
+        // Áp dụng sắp xếp
+        $query->orderBy($sortBy, $sortOrder);
 
+        // Phân trang kết quả
+        $permission = $query->paginate(10);
+
+        // Truyền các biến cần thiết vào view
+        return view('role-permission.permission.index', [
+            'permission' => $permission,
+            'sort_by' => $sortBy, // Truyền lại tham số sắp xếp để giữ giá trị trong view
+            'sort_order' => $sortOrder, // Truyền lại thứ tự sắp xếp
+            'search' => $request->search, // Truyền lại giá trị tìm kiếm
+        ]);
+    }   
+    
     public function create()
     {
         return view('role-permission.permission.create');

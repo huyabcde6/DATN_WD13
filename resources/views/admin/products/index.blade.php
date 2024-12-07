@@ -27,23 +27,30 @@ Danh sách sản phẩm
 @endif
 
 <div class="row m-3">
-    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column ">
         <div class="flex-grow-1">
-            <h4 class="fs-18 fw-semibold m-0">Danh sách sản phẩm </h4>
+            <h4 class="fs-18 fw-semibold ml-0">Danh sách sản phẩm </h4>
+        </div>
+        <div class="flex-grow-2 mx-2">
+        <a href="{{ route('admin.products.create') }}"
+            class="btn btn-sm btn-alt-secondary mx-2 fs-18 rounded-2 border p-1 me-1 " data-bs-toggle="tooltip"
+            title="Thêm mới">
+            <i class="mdi mdi-plus text-muted px-4 mr-4">Thêm mới</i>
+        </a>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="d-flex m-3">
-                    <form action="{{ route('admin.products.index') }}" method="get" id="search-form">
+                <div class="d-flex m-3 justify-content-between align-items-center">
+                    <form action="{{ route('admin.products.index') }}" class="d-flex" method="get" id="search-form">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <i class="bi bi-search"></i>
+                                Tìm kiếm
                             </span>
                             <input type="text" value="{{ request('search') }}" name="search" id="search"
                                 class="form-control" placeholder="Nhập từ khóa cần tìm..">
-                            <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                            <button type="submit" class="btn btn-sm btn-dark"><i class="bi bi-search"></i></button>
                         </div>
                     </form>
                     <form action="{{ route('admin.products.index') }}" method="get" class="ms-2">
@@ -61,17 +68,13 @@ Danh sách sản phẩm
                                 value="{{ request('from_date') }}" placeholder="Từ ngày">
                             <input type="date" name="to_date" class="form-control ms-2" value="{{ request('to_date') }}"
                                 placeholder="Đến ngày">
-                            <button type="submit" class="btn btn-secondary ms-2">Lọc</button>
+                            <button type="submit" class="btn btn-dark ms-2">Lọc</button>
                         </div>
                     </form>
-                    <a href="{{ route('admin.products.create') }}"
-                        class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
-                        data-bs-toggle="tooltip" title="Thêm mới">
-                        <i class="mdi mdi-plus text-muted "></i>
-                    </a>
+
                 </div>
 
-                <div class="col-md-12">
+                <div class="card-body">
                     <table class="table table-striped text-center">
                         <thead>
                             <tr>
@@ -141,11 +144,11 @@ Danh sách sản phẩm
                                 </td>
                                 <td>
                                     {{ $product->productDetails->sum('quantity') }}
-                                    @if ($product->productDetails->sum('quantity') <= 5)
-                                        <span class="text-danger">(Sắp hết hàng!)</span>
-                                    @elseif ($product->productDetails->sum('quantity') <= 20)
-                                        <span class="text-warning">(Số lượng thấp)</span>
-                                    @endif
+                                    @if ($product->productDetails->sum('quantity') <= 5) <span class="text-danger">(Sắp
+                                        hết hàng!)</span>
+                                        @elseif ($product->productDetails->sum('quantity') <= 20) <span
+                                            class="text-warning">(Số lượng thấp)</span>
+                                            @endif
                                 </td>
 
                                 <td>{{ $product->created_at->format('d/m/Y') }}</td>

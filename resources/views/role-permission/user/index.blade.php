@@ -21,7 +21,7 @@ Vai trò & Quyền
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>Danh sách người dùng và vai trò</h4>
-                    <a href="{{ url('users/create') }}" class="btn btn-primary">
+                    <a href="{{ url('userAdmin/create') }}" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Thêm vai trò
                     </a>
                 </div>
@@ -50,11 +50,11 @@ Vai trò & Quyền
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ url('users/' . $user->id . '/edit') }}" class="btn btn-sm btn-warning mx-1"
+                                    <a href="{{ url('userAdmin/' . $user->id . '/edit') }}" class="btn btn-sm btn-warning mx-1"
                                         title="Chỉnh sửa">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="{{ url('users/' . $user->id . '/delete') }}" class="btn btn-sm btn-danger mx-1"
+                                    <a href="{{ url('userAdmin/' . $user->id . '/delete') }}" class="btn btn-sm btn-danger mx-1"
                                         onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');"
                                         title="Xóa">
                                         <i class="fas fa-trash"></i>

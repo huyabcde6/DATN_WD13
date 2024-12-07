@@ -62,7 +62,7 @@
                             <!-- Ảnh chính: Ban đầu hiển thị ảnh đại diện -->
                             <a id="main-image-link" class="swiper-slide h-auto"
                                 href="{{ url('storage/' . $product->avata) }}">
-                                <img id="main-image" class="w-100 h-100" src="{{ url('storage/' . $product->avata) }}"
+                                <img id="main-image"  src="{{ url('storage/' . $product->avata) }}"
                                     alt="Product">
                             </a>
 
@@ -147,18 +147,10 @@
                     </div>
                     <!-- Price Box End -->
 
-                    <!-- Rating Start -->
-                    <span class="ratings justify-content-start">
-                        <span class="rating-wrap">
-                            <span class="star" style="width: 100%"></span>
-                        </span>
-                        <span class="rating-num">(4)</span>
-                    </span>
-                    <!-- Rating End -->
-
+                   
                     <!-- SKU Start -->
                     <div class="sku mb-3">
-                        <span id="current-sku">MÃ: {{ $product->productDetails->first()->product_code }}</span>
+                        <span id="current-sku">SKU: {{ $product->productDetails->first()->product_code }}</span>
                     </div>
 
                     <!-- SKU End -->

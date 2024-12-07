@@ -16,9 +16,7 @@ class CategoryProductController extends Controller
         $this->middleware('permission:edit category', ['only' => ['update', 'edit']]);
         $this->middleware('permission:delete category', ['only' => ['destroy']]);
     }
-    /**
-     * Hiển thị danh sách danh mục.
-     */
+    
     public function index(Request $request)
     {
         $query = categories::query();

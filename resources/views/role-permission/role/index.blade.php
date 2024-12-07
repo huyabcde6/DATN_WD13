@@ -28,26 +28,13 @@ Vai trò & quyền
         <div class="col-12">
             <div class="card">
                 <div class="d-flex m-3 justify-content-between align-items-center">
-                    <form method="GET" action="{{ url('roles') }}" class="d-flex">
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="bi bi-search"></i>
-                            </span>
-                            <input type="text" name="search" class="form-control" placeholder="Nhập từ khóa cần tìm..."
-                                value="{{ request('search') }}">
-                        </div>
-                        <button type="submit" class="btn btn-sm btn-dark mx-2">
-                            <i class="bi bi-search"></i> Tìm kiếm
-                        </button>
-                    </form>
-
                     <button class="btn btn-sm btn-alt-secondary fs-18 rounded-2 border p-1 me-1" data-bs-toggle="modal"
                         data-bs-target="#addRoleModal" title="Thêm vai trò">
                         <i class="mdi mdi-plus text-muted">Thêm vai trò</i>
                     </button>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped text-center">
+                    <table class="table table-striped text-center" id="roleTable">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -188,5 +175,27 @@ deleteModal.addEventListener('show.bs.modal', function(event) {
     const form = document.getElementById('deleteRoleForm');
     form.action = `roles/${id}`;
 });
+</script>
+
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#roleTable').DataTable({
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ mục",
+                "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                "infoEmpty": "Không có dữ liệu",
+                "search": "Tìm kiếm:",
+                "paginate": {
+                    "first": "Đầu",
+                    "last": "Cuối",
+                    "next": "Tiếp",
+                    "previous": "Trước"
+                }
+            }
+        });
+    });
 </script>
 @endsection
