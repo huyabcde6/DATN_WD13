@@ -65,13 +65,13 @@ class OrderController extends Controller
         // Xử lý sắp xếp
         $validSortColumns = ['created_at', 'status_donhang_id', 'method', 'payment_status']; // Danh sách cột hợp lệ để sắp xếp
         $sortBy = in_array($request->get('sort_by'), $validSortColumns) ? $request->get('sort_by') : 'created_at'; // Chọn cột sắp xếp hợp lệ
-        $sortOrder = in_array($request->get('sort_order'), ['asc', 'desc']) ? $request->get('sort_order') : 'asc'; // Chỉ cho phép 'asc' hoặc 'desc'
+        $sortOrder = in_array($request->get('sort_order'), ['asc', 'desc']) ? $request->get('sort_order') : 'desc'; // Đặt mặc định là sắp xếp theo đơn đặt cuối cùng (mới nhất)
 
         // Áp dụng sắp xếp
         $query->orderBy($sortBy, $sortOrder);
 
         // Paginate kết quả
-        $orders = $query->orderBy('created_at', 'desc')->paginate(10);
+        $orders = $query->paginate(5);
 
         // Truyền các biến vào view
         return view('admin.orders.index', [
@@ -82,7 +82,6 @@ class OrderController extends Controller
             'search' => $request->search,  // Truyền lại từ khóa tìm kiếm để hiển thị trong form
         ]);
     }
-
 
     public function show($id)
     {

@@ -186,9 +186,9 @@
                          </a>
 
                          <!-- item-->
-                         <a class='dropdown-item notify-item' href="#">
+                         <a class='dropdown-item notify-item' href="{{route('home.index')}}">
                              <i class="mdi mdi-lock-outline fs-16 align-middle"></i>
-                             <span>Lock Screen</span>
+                             <span>Trang người dùng</span>
                          </a>
 
                          <div class="dropdown-divider"></div>

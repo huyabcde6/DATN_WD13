@@ -1,13 +1,38 @@
 @extends('layouts.home')
 @section('css')
-<styel>
-    #loading p {
-    font-size: 14px;
-    color: #666;
-    font-style: italic;
+<style>
+    .filter-link {
+        position: relative; /* Đảm bảo dải màu đỏ sẽ hiển thị đúng dưới liên kết */
+        padding-bottom: 2px; /* Thêm một chút khoảng cách dưới để dải màu đỏ không bị dính vào chữ */
+        text-decoration: none; /* Loại bỏ gạch dưới mặc định */
     }
-</styel>
+
+    .filter-link::after {
+        content: ''; /* Không có nội dung */
+        position: absolute; /* Đặt dải màu dưới */
+        left: 0; /* Căn trái */
+        right: 0; /* Căn phải */
+        bottom: 0; /* Căn dưới */
+        height: 2px; /* Dải màu có chiều cao 2px */
+        background-color: red; /* Màu đỏ */
+        transform: scaleX(0); /* Ẩn dải màu ban đầu */
+        transform-origin: bottom right; /* Đặt điểm gốc của hiệu ứng là phía dưới bên phải */
+        transition: transform 0.3s ease; /* Hiệu ứng chuyển động mượt mà */
+    }
+
+    .filter-link:hover::after {
+        transform: scaleX(1); /* Khi hover, dải màu đỏ sẽ hiển thị */
+        transform-origin: bottom left; /* Thay đổi điểm gốc khi hover */
+    }
+
+    #loading p {
+        font-size: 14px;
+        color: #666;
+        font-style: italic;
+    }
+</style>
 @endsection
+
 @section('content')
 <!-- Breadcrumb Section Start -->
 <div class="section">
@@ -83,7 +108,7 @@
                                         <a class="mx-1 filter-link" data-status="4" href="#">Đã giao hàng</a>
                                         <a class="mx-1 filter-link" data-status="5" href="#">Hoàn thành</a>
                                         <a class="mx-1 filter-link" data-status="7" href="#">Đã hủy</a>
-                                        <a class="mx-1 filter-link" data-status="6,8" href="#">Hoàn hàng</a>
+                                        <a class="mx-1 filter-link" data-status="6,8" href="#">Chờ/Hoàn hàng</a>
                                     </div>
                                     <div class="myaccount-content" id="orders-container">
                                         @include('user.khac.partials.orders')

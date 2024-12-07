@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 // // CRUD users
 // 

@@ -24,7 +24,7 @@
             </form>
         </div>
 
-        <!-- <div class="row">
+        <div class="row">
             @foreach ($orderStatuses as $status)
             <div class="col-md-3 col-xl-3">
                 <div class="card">
@@ -47,17 +47,17 @@
 
                         <p class="d-flex align-content-center border-top mb-0 pt-3 mt-3">
                             <span class="me-2 d-flex align-content-center fw-medium text-success">
-                                +39.40%
+                                +{{ number_format($status->percentage, 2) }}%
                                 <i data-feather="trending-up" class="ms-2" style="height: 22px; width: 22px;"></i>
                             </span>
-                            <span class="fw-medium me-1 d-flex">Increased</span>
-                            Orders
+                            <span class="fw-medium me-1 d-flex">Tăng trưởng</span>
+                            đơn hàng
                         </p>
                     </div>
                 </div>
             </div>
             @endforeach
-        </div> -->
+        </div>
 
 
         <!-- Sales Chart -->
@@ -109,8 +109,8 @@
                                             $productDetail = $product->productDetail;
                                             $productImage = $productDetail->products->avata ?? 'default-image.jpg'; // Đảm bảo có ảnh mặc định nếu không có ảnh
                                         @endphp
-                                        <img class="avatar-md p-1 rounded-circle bg-primary-subtle img-fluid me-3"
-                                            src="{{ asset('storage/' . $productImage) }}" alt="product-image">
+                                        <img class="avatar-md p-1 rounded-rectangular bg-primary-subtle img-fluid me-3"
+                                            src="{{ asset('storage/' . $productImage) }}" style="object-fit:cover; width: 50px; height: 50px;" alt="product-image">
 
                                         <div class="product-body align-self-center">
                                             <h6 class="m-0 fw-semibold">{{ $productDetail->products->name }}</h6>
@@ -120,7 +120,7 @@
 
                                     <div class="product-price ">
                                         <h6 class="m-0 fw-semibold">{{ number_format($productDetail->products->price, 0, ',', '.') }} đ</h6>
-                                        <p class="mb-0 mt-1 text-muted">{{ $product->total_quantity }} Sold</p>
+                                        <p class="mb-0 mt-1 text-muted">{{ $product->total_quantity }} Đã bán</p>
                                     </div>
                                 </li>
                             @endforeach
@@ -378,7 +378,7 @@
 
         // Cấu hình biểu đồ Pie với màu sắc riêng biệt
         const orderStatusChart = new ApexCharts(document.querySelector("#orderStatusChart"), {
-            chart: { type: 'pie', height: 350 },
+            chart: { type: 'donut', height: 350 },
             series: @json($orderStatuses->pluck('percentage')),
             labels: @json($orderStatuses->pluck('type')),
             colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#D4526E', '#8D8DAA'], // Màu cho từng trạng thái
