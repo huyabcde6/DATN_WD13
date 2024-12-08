@@ -148,33 +148,19 @@
                             <div class="block-border">
                                 <p>Mọi giao dịch đều được bảo mật và mã hóa. Thông tin thẻ tín dụng sẽ không bao giờ được lưu lại.</p>
                                 <div class="checkout-payment__options">
-                                    <label class="ds_item">
-                                        <input type="radio" name="payment_method" id="">
-                                        <span class="ds_item_1">Thanh toán bằng thẻ tín dụng </span>
-                                        <span style="margin-left: 3px">
-                                            <img src="https://pubcdn.ivymoda.com/ivy2/images/1.png" alt="">
-                                        </span>
-                                    </label>
-                                    <label class="ds_item">
-                                        <input type="radio" name="payment_method" id="">
-                                        <span class="ds_item_1">Thanh toán bằng thẻ ATM</span>
-                                    </label><br>
-                                   <form action={{url("/vnpay_payment")}} method="POST">
-                                @csrf
-                                <button type="submit" name="redirect" class="primary-btn checkout-btn" style="width:100%">Thanh toán bằng VNPay</button>
-                            </form>
-                                    <label class="ds_item">
-                                        <input type="radio" name="payment_method" id="">
-                                        <span class="ds_item_1">Thanh toán sau khi nhận hàng </span>
-
-                                    </label><br>
-
+                                    <form action="{{ url('/vnpay_payment') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="total" value="{{ number_format($total, 0, '', '') }}">
+                                        <input type="hidden" name="id_donhang" id="" value="{{ 'ORD-' . Auth::id() . '-' . now()->timestamp }}">
+                                        <button type="submit" name="redirect" class="btn btn-warning btn-hover-primary rounded-0 w-100" style="width:100%">
+                                            Thanh toán bằng VNPay
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div><br>
                         <div class="order-button-payment">
-                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0 w-100">Place
-                                Order</button>
+                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0 w-100"> Thanh toán khi nhận hàng</button>
                         </div>
                     </div>
                     <!-- Payment Method End -->

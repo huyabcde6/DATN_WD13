@@ -160,14 +160,7 @@
                     <!-- Cart Checkout Button Start -->
                     <a href="{{ route('orders.create') }}" class="btn btn- btn-hover-primary rounded-0 w-100">Tiến
                         hành thanh toán</a>
-                        <form action="{{ url('/vnpay_payment') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="total" value="{{ number_format($total, 0, '', '') }}">
-                            <input type="hidden" name="id_donhang" id="" value="{{ 'ORD-' . Auth::id() . '-' . now()->timestamp }}">
-                            <button type="submit" name="redirect" class="btn btn-warning btn-hover-primary rounded-0 w-100" style="width:100%">
-                                Thanh toán bằng VNPay
-                            </button>
-                        </form>
+
                     <!-- Cart Checkout Button End -->
 
                 </div>
