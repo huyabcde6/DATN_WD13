@@ -25,7 +25,7 @@ class OrderController extends Controller
     {
         $orders = Auth::user()->Str::orderedUuid()()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
 
-        return view('user.khac.my_account', compact('orders'));
+        return view('user.khac.my_account', compact('orders')); //binhnv
     }
 
     /**
