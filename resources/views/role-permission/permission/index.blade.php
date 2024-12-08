@@ -124,7 +124,10 @@ Quản lý Vai trò & Quyền
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="name" class="form-label">Tên quyền</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name">
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -142,6 +145,7 @@ Quản lý Vai trò & Quyền
         <form id="editPermissionForm" method="POST">
             @csrf
             @method('PUT')
+            <input type="hidden" name="id" value="{{ old('id') }}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editPermissionLabel">Sửa Quyền</h5>
@@ -150,7 +154,10 @@ Quản lý Vai trò & Quyền
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editPermissionName" class="form-label">Tên Quyền </label>
-                        <input type="text" class="form-control" id="editPermissionName" name="name" required>
+                        <input type="text" class="form-control" id="editPermissionName" name="name">
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -169,6 +176,8 @@ Quản lý Vai trò & Quyền
         <form id="deletePermissionForm" method="POST">
             @csrf
             @method('DELETE')
+            <input type="hidden" id="edit-id" name="id">
+            <input type="hidden" id="edit-id" name="id" value="{{ old('id') }}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deletePermissionModalLabel">Xóa Quyền</h5>
@@ -190,6 +199,17 @@ Quản lý Vai trò & Quyền
 @endsection
 @section('js')
 <script>
+    $(document).ready(function() {
+        @if ($errors->has('name') && old('id') == null)
+            $('#addPermissionModal').modal('show');
+        @endif
+
+        @if ($errors->has('name') && old('id') !== null)
+            $('#editPermissionModal').modal('show');
+        @endif
+    });
+</script>
+<script>
 const editModal = document.getElementById('editPermissionModal');
 const deleteModal = document.getElementById('deletePermissionModal');
 editModal.addEventListener('show.bs.modal', function(event) {
@@ -209,3 +229,4 @@ deleteModal.addEventListener('show.bs.modal', function(event) {
 </script>
 
 @endsection
+

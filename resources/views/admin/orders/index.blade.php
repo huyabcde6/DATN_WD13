@@ -140,7 +140,7 @@ Quản lý đơn hàng
                                 <td>{{ $order->method }}</td>
                                 <td>{{ $order->payment_status }}</td>
                                 <td>
-                                    <span class="badge {{ $order->status->getStatusColor() }}"
+                                    <span id="order-{{$order->id}}" class="badge {{ $order->status->getStatusColor() }}"
                                         style="height: 20px; line-height: 11px; font-size: 11px;">
                                         {{ $order->status->type }}
                                     </span>
@@ -226,18 +226,22 @@ Quản lý đơn hàng
     </div>
 </div>
 
+
 @vite('resources/js/public.js');
+
+@vite('resources/js/adminoder.js');
+
 @endsection
 
 @section('js')
 <script>
-window.Echo.channel('order-updated')
-    .listen('.order.updated', (e) => {
-        const orderRow = document.querySelector(`[data-order-id="${e.order.id}"]`);
-        if (orderRow) {
-            orderRow.querySelector('select[name="status"]').value = e.order.status_donhang_id;
-        }
-    });
+    window.Echo.channel('order-updated')
+        .listen('.order.updated', (e) => {
+            const orderRow = document.querySelector(`[data-order-id="${e.order.id}"]`);
+            if (orderRow) {
+                orderRow.querySelector('select[name="status"]').value = e.order.status_donhang_id;
+            }
+        });
 </script>
 <script>
     var orderStatusModal = document.getElementById('orderStatusModal');
@@ -261,17 +265,12 @@ window.Echo.channel('order-updated')
             statusSelect.innerHTML += `<option value="2">Đã xác nhận</option>`;
             statusSelect.innerHTML += `<option value="7">Hủy đơn</option>`;
         } else if (currentStatus === 2) {
-            // Nếu trạng thái là "Đã xác nhận", chỉ hiển thị "Đang vận chuyển"
             statusSelect.innerHTML += `<option value="3">Đang vận chuyển</option>`;
         } else if (currentStatus === 3) {
-            // Nếu trạng thái là "Đang vận chuyển", chỉ hiển thị "Đã giao hàng"
             statusSelect.innerHTML += `<option value="4">Đã giao hàng</option>`;
         } else if (currentStatus === 8) {
-            // Nếu trạng thái là "Đang vận chuyển", chỉ hiển thị "Đã giao hàng"
             statusSelect.innerHTML += `<option value="6">Hoàn hàng</option>`;
-        }
-         else {
-            // Hiển thị đầy đủ các tùy chọn cho trạng thái khác
+        } else {
             var options = [
                 { value: 1, text: 'Chờ xác nhận' },
                 { value: 2, text: 'Đã xác nhận' },
@@ -290,9 +289,9 @@ window.Echo.channel('order-updated')
             });
         }
 
-        // Cập nhật textarea lý do trả hàng (nếu có)
+        // Cập nhật textarea lý do trả hàng
         var returnReasonTextarea = orderStatusModal.querySelector('#return_reason');
-        returnReasonTextarea.value = returnReason || ''; // Nếu không có lý do trả hàng thì để trống
+        returnReasonTextarea.value = returnReason || '';
 
         // Hiển thị hoặc ẩn textarea lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng"
         if (currentStatus === 8) {
@@ -302,5 +301,6 @@ window.Echo.channel('order-updated')
         }
     });
 </script>
+
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 @endsection

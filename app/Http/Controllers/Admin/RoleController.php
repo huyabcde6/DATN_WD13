@@ -49,6 +49,10 @@ class RoleController extends Controller
                 'string',
                 'unique:roles,name'
             ]
+        ], [
+            'name.required' => 'Vui lòng nhập tên vai trò',
+            'name.string' => 'Vai trò phải là chữ',
+            'name.unique' => 'Vai trò đã tồn tại'
         ]);
 
         Role::create([
@@ -71,6 +75,10 @@ class RoleController extends Controller
                 'string',
                 'unique:roles,name,' . $role->id
             ]
+        ], [
+            'name.required' => 'Vui lòng nhập tên vai trò',
+            'name.string' => 'Vai trò phải là chữ',
+            'name.unique' => 'Vai trò đã tồn tại'
         ]);
 
         $role ->update([

@@ -15,24 +15,36 @@
                                 
                             <div class="mb-3">
                                 <label for=""> Name</label>
-                                <input type="text" name="name" class="form-control" />
+                                <input type="text" name="name" value="{{ old('name') }}" class="form-control" />
+                                @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for=""> Email</label>
-                                <input type="text" name="email" class="form-control" />
+                                <input type="text" name="email" value="{{ old('email') }}" class="form-control" />
+                                @error('email')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for=""> Password</label>
-                                <input type="text" name="password" class="form-control" />
+                                <input type="text" name="password" value="{{ old('password') }}" class="form-control" />
+                                @error('password')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for=""> Roles</label>
                                 <select name="roles[]" class="form-control" multiple>
                                     <option value="">Select Roles</option>
                                     @foreach ($roles as $role )
-                                    <option value="{{ $role }}">{{ $role }}</option>
+                                    <option @selected(in_array($role, old('roles', []))) value="{{ $role }}">{{ $role }}</option>
                                     @endforeach
                                 </select>
+                                @error('roles')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Save</button>

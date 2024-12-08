@@ -124,6 +124,7 @@ Danh sách danh mục
     <div class="modal-dialog">
         <form action="{{ route('admin.categories.store') }}" method="POST">
             @csrf
+            <input type="hidden" name="id" value="{{ old('id') }}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModalLabel">Thêm danh mục mới</h5>
@@ -132,7 +133,10 @@ Danh sách danh mục
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="name" class="form-label">Tên danh mục</label>
-                        <input type="text" name="name" id="name" class="form-control" required>
+                        <input type="text" name="name" value="{{ old('name') }}" id="name" class="form-control">
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="status" class="form-label">Trạng thái</label>
@@ -157,6 +161,7 @@ Danh sách danh mục
         <form action="" method="POST" id="editForm">
             @csrf
             @method('PUT')
+            <input type="hidden" id="edit-id" name="id" value="{{ old('id') }}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalLabel">Sửa danh mục</h5>
@@ -166,7 +171,10 @@ Danh sách danh mục
                     <input type="hidden" id="edit-id" name="id">
                     <div class="mb-3">
                         <label for="edit-name" class="form-label">Tên danh mục</label>
-                        <input type="text" name="name" id="edit-name" class="form-control" required>
+                        <input type="text" name="name" value="{{ old('name') }}" id="edit-name" class="form-control">
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="edit-status" class="form-label">Trạng thái</label>
@@ -207,6 +215,20 @@ Danh sách danh mục
         </form>
     </div>
 </div>
+
+@section('js')
+<script>
+    $(document).ready(function() {
+        @if ($errors->has('name') && old('id') == null)
+            $('#addModal').modal('show');
+        @endif
+
+        @if ($errors->has('name') && old('id') !== null)
+            $('#editModal').modal('show');
+        @endif
+    });
+</script>
+@endsection
 
 <script>
 // Logic to handle Edit and Delete modals

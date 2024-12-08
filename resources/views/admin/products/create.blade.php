@@ -147,8 +147,12 @@
                             <div class="col-lg-7">
                                 <div class="mb-3">
                                     <label for="name">Tên sản phẩm</label>
-                                    <input type="text" name="name" class="form-control" placeholder="Tên sản phẩm"
-                                        id="name" required>
+                                        <input type="text" name="name" value="{{ old('name') }}"
+                                            class="form-control @error('name') is-invalid @enderror"
+                                            placeholder="Tên sản phẩm" id="name">
+                                        @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
@@ -157,24 +161,38 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="price">Giá sản phẩm</label>
-                                    <input type="number" name="price" id="price" class="form-control"
-                                        placeholder="Giá sản phẩm" required>
+                                        <input type="number" name="price" value="{{ old('price') }}" id="price"
+                                            class="form-control @error('price') is-invalid @enderror"
+                                            placeholder="Giá sản phẩm">
+                                        @error('price')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="discount_price">Giá khuyến mãi</label>
-                                    <input type="number" name="discount_price" id="discount_price" class="form-control"
-                                        placeholder="Giá khuyến mãi" required>
+                                   <label for="discount_price">Giá khuyến mãi</label>
+                                        <input type="number" name="discount_price" value="{{ old('discount_price') }}"
+                                            id="discount_price"
+                                            class="form-control @error('discount_price') is-invalid @enderror"
+                                            placeholder="Giá khuyến mãi">
+                                        @error('discount_price')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="short_description">Mô tả ngắn</label>
-                                    <textarea name="short_description" id="short_description" class="form-control"
-                                        placeholder="Mô tả ngắn của sản phẩm" required></textarea>
+                                        <textarea name="short_description" id="short_description"
+                                            class="form-control @error('short_description') is-invalid @enderror" placeholder="Mô tả ngắn của sản phẩm">{{ old('short_description') }}</textarea>
+                                        @error('short_description')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Mô tả chi tiết sản phẩm</label>
-                                    <div id="quill-editor" style="height: 400px;"></div>
-                                    <textarea name="description" id="description_content"
-                                        class="d-none">Nhập mô tả chi tiết sản phẩm</textarea>
+                                        <div id="quill-editor" style="height: 400px;">{{ old('description') }}</div>
+                                        <textarea name="description" id="description_content" class="d-none @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                                        @error('description')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                 </div>
 
                             </div>
@@ -215,9 +233,12 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="avata">Hình ảnh sản phẩm</label>
-                                    <input class="form-control" type="file" name="avata" id="avata" required>
-                                    <div id="avata-preview-container" class="mt-2"></div>
+                                    <<label for="avata">Hình ảnh sản phẩm</label>
+                                        <input class="form-control" type="file" name="avata" id="avata">
+                                        <div id="avata-preview-container" class="mt-2"></div>
+                                        @error('avata')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                 </div>
 
                                 <div class="mb-3">
@@ -264,48 +285,65 @@
 @endsection
 
 @section('js')
-<script src="{{ asset('assets/admin/libs/quill/quill.core.js')}}"></script>
-<script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/libs/quill/quill.core.js') }}"></script>
+    <script src="{{ asset('assets/admin/libs/quill/quill.min.js') }}"></script>
 
-<script>
-document.querySelectorAll('#sizes .option-button').forEach(button => {
-    button.addEventListener('click', function() {
-        this.classList.toggle('selected');
-    });
-});
+    <script>
+        document.getElementById('submit-form').addEventListener('click', function(event) {
+            const selectedSizeButtons = document.querySelectorAll('#sizes .option-button.selected');
+            const selectedColorButtons = document.querySelectorAll('#colors .option-button.selected');
 
-document.querySelectorAll('#colors .option-button').forEach(button => {
-    button.addEventListener('click', function() {
-        this.classList.toggle('selected');
-    });
-});
+            if (selectedSizeButtons.length === 0) {
+                alert('Vui lòng chọn ít nhất một kích thước.');
+                event.preventDefault();
+                return;
+            }
 
-document.getElementById('generate-variants').addEventListener('click', function() {
-    const selectedSizeButtons = document.querySelectorAll('#sizes .option-button.selected');
-    const selectedColorButtons = document.querySelectorAll('#colors .option-button.selected');
+            if (selectedColorButtons.length === 0) {
+                alert('Vui lòng chọn ít nhất một màu sắc.');
+                event.preventDefault();
+                return;
+            }
+        });
 
-    if (selectedSizeButtons.length === 0 || selectedColorButtons.length === 0) {
-        alert('Vui lòng chọn ít nhất một kích thước và một màu sắc.');
-        return;
-    }
+        document.querySelectorAll('#sizes .option-button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
 
-    const container = document.getElementById('variants-container');
-    container.innerHTML = ''; // Xóa các biến thể cũ
+        document.querySelectorAll('#colors .option-button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
 
-    selectedSizeButtons.forEach(sizeButton => {
-        const size = {
-            id: sizeButton.getAttribute('data-value'),
-            value: sizeButton.textContent
-        };
+        document.getElementById('generate-variants').addEventListener('click', function() {
+            const selectedSizeButtons = document.querySelectorAll('#sizes .option-button.selected');
+            const selectedColorButtons = document.querySelectorAll('#colors .option-button.selected');
 
-        selectedColorButtons.forEach(colorButton => {
-            const color = {
-                id: colorButton.getAttribute('data-value'),
-                value: colorButton.textContent
-            };
+            if (selectedSizeButtons.length === 0 || selectedColorButtons.length === 0) {
+                alert('Vui lòng chọn ít nhất một kích thước và một màu sắc.');
+                return;
+            }
 
-            const variantForm = document.createElement('div');
-            variantForm.innerHTML = `
+            const container = document.getElementById('variants-container');
+            container.innerHTML = ''; // Xóa các biến thể cũ
+
+            selectedSizeButtons.forEach(sizeButton => {
+                const size = {
+                    id: sizeButton.getAttribute('data-value'),
+                    value: sizeButton.textContent
+                };
+
+                selectedColorButtons.forEach(colorButton => {
+                    const color = {
+                        id: colorButton.getAttribute('data-value'),
+                        value: colorButton.textContent
+                    };
+
+                    const variantForm = document.createElement('div');
+                    variantForm.innerHTML = `
             <div class="card border">
                 <h4 class="mt-3 mx-3">Biến thể (Kích thước: ${size.value}, Màu: ${color.value})</h4>
                 <div class="card-body">
@@ -338,7 +376,34 @@ document.getElementById('generate-variants').addEventListener('click', function(
             </div>
                     <hr>
             `;
-            container.appendChild(variantForm);
+                    container.appendChild(variantForm);
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var quill = new Quill("#quill-editor", {
+                theme: "snow",
+            })
+            var old_content = `{!! old('description') !!}`;
+            quill.root.innerHTML = old_content;
+            quill.on('text-change', function() {
+                var html = quill.root.innerHTML;
+                document.getElementById('description_content').value = html;
+            })
+        })
+    </script>
+    <script>
+        document.getElementById('name').addEventListener('keyup', function() {
+            const name = this.value;
+            const slug = removeVietnameseTones(name)
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+
+            document.getElementById('slug').value = slug;
         });
     });
 });
@@ -392,7 +457,6 @@ document.getElementById('images').addEventListener('change', function(event) {
                 <img src="${e.target.result}" alt="Preview" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
                 <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" aria-label="Close" data-index="${index}"></button>
             `;
-
             previewContainer.appendChild(imageWrapper);
         };
         fileReader.readAsDataURL(file);
@@ -409,7 +473,6 @@ document.getElementById('images').addEventListener('change', function(event) {
                     dt.items.add(file); // Giữ lại các file không bị xóa
                 }
             });
-
             event.target.files = dt.files; // Cập nhật danh sách file
             e.target.parentElement.remove(); // Xóa phần tử hình ảnh khỏi preview
         }
@@ -440,15 +503,14 @@ function handleImagePreview(inputId, previewContainerId) {
                     <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" aria-label="Close"></button>
                 `;
 
-                previewContainer.appendChild(imageWrapper);
+                        previewContainer.appendChild(imageWrapper);
 
-                // Xử lý nút xóa
-                imageWrapper.querySelector('.btn-close').addEventListener('click', function() {
-                    inputElement.value = ''; // Xóa file khỏi input
-                    previewContainer.innerHTML = ''; // Xóa preview
-                });
-            };
-
+                        // Xử lý nút xóa
+                        imageWrapper.querySelector('.btn-close').addEventListener('click', function() {
+                            inputElement.value = ''; // Xóa file khỏi input
+                            previewContainer.innerHTML = ''; // Xóa preview
+                        });
+                    };
             fileReader.readAsDataURL(file);
         }
     });
@@ -482,15 +544,14 @@ document.getElementById('variants-container').addEventListener('change', functio
                     <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" aria-label="Close"></button>
                 `;
 
-                previewContainer.appendChild(imageWrapper);
+                        previewContainer.appendChild(imageWrapper);
 
-                // Xử lý nút xóa
-                imageWrapper.querySelector('.btn-close').addEventListener('click', function() {
-                    inputElement.value = ''; // Xóa file khỏi input
-                    previewContainer.innerHTML = ''; // Xóa preview
-                });
-            };
-
+                        // Xử lý nút xóa
+                        imageWrapper.querySelector('.btn-close').addEventListener('click', function() {
+                            inputElement.value = ''; // Xóa file khỏi input
+                            previewContainer.innerHTML = ''; // Xóa preview
+                        });
+                    };
             fileReader.readAsDataURL(file);
         }
     }
@@ -498,3 +559,5 @@ document.getElementById('variants-container').addEventListener('change', functio
 </script>
 
 @endsection
+
+

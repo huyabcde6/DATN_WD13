@@ -170,7 +170,7 @@
                          aria-haspopup="false" aria-expanded="false">
                          
                          <span class="pro-user-name ms-1">
-                             {{ Auth::user()->name }} <i class="mdi mdi-chevron-down"></i>
+                             {{ Auth::user()->name ?? '' }} <i class="mdi mdi-chevron-down"></i>
                          </span>
                      </a>
                      <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
