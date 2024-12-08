@@ -116,12 +116,12 @@ class OrderController extends Controller
                         $this->moveOrderToInvoice($order);
                     }
                 } elseif ($order->status_donhang_id == 5) { // Hoàn thành không thể thay đổi trạng thái
-                    return redirect()->route('admin.orders.index')->with('error', 'Đơn hàng đã hoàn thành và không thể thay đổi trạng thái.');
+                    return back()->with('error', 'Đơn hàng đã hoàn thành và không thể thay đổi trạng thái.');
                 }elseif ($order->status_donhang_id == 8 && $statusId == 6) { // Chờ xác nhận hoàn hàng -> Hoàn hàng
                     $order->status_donhang_id = $statusId;
                     $order->payment_status = 'đã hoàn lại';
                 }else {
-                    return redirect()->route('admin.orders.index')->with('error', 'Không thể chuyển trạng thái theo quy định.');
+                    return back()->with('error', 'Không thể chuyển trạng thái theo quy định.');
                 }
 
    // Lưu đơn hàng và gửi sự kiện cập nhật
@@ -130,11 +130,11 @@ class OrderController extends Controller
           Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
             }
             DB::commit();
-            return redirect()->route('admin.orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
+            return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Order update error: ' . $e->getMessage());
-            return redirect()->route('admin.orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
+            return back()->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
         }
     }    
 
