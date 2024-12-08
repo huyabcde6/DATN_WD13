@@ -7,7 +7,14 @@ use Illuminate\Http\Request;
 use App\Models\Size;
 
 class SizeController extends Controller
-{
+{   
+    public function __construct(){
+        $this->middleware('permission:view size', ['only' => ['index']]);
+        $this->middleware('permission:create size', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit size', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete size', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

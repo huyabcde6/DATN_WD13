@@ -9,10 +9,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CategoryProductController extends Controller
-{
-    /**
-     * Hiển thị danh sách danh mục.
-     */
+{   
+    public function __construct(){
+        $this->middleware('permission:view category', ['only' => ['index']]);
+        $this->middleware('permission:create category', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit category', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete category', ['only' => ['destroy']]);
+    }
+    
     public function index(Request $request)
     {
         $query = categories::query();

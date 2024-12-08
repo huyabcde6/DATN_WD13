@@ -52,7 +52,7 @@
                             @foreach ($cartItems as $item)
                             <tr>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" height="auto" width="70"
                                             alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
@@ -61,9 +61,9 @@
                                 </td>
                                 <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
                                         đ</span></td>
-                                <td class="pro-quantity">
+                                <td class="pro-quantity ">
                                     <div class="quantity">
-                                        <div class="cart-plus-minus">
+                                        <div class="cart-plus-minus" style="margin-left: 35px;">
                                             <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}"
                                                 type="text" data-id="{{ $item['product_detail_id'] }}">
                                             <div class="dec qtybutton" data-id="{{ $item['product_detail_id'] }}">-
