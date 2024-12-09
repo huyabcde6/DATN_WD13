@@ -7,12 +7,12 @@
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">My Account</h1>
+                <h1 class="title">Đăng ký</h1>
                 <ul>
                     <li>
-                        <a href="#">Home </a>
+                        <a href="#">Trang chủ </a>
                     </li>
-                    <li class="active"> My Account </li>
+                    <li class="active"> Đăng ký </li>
                 </ul>
             </div>
         </div>
@@ -31,8 +31,8 @@
 
                     <!-- Title and Description Start -->
                     <div class="section-content text-center mb-5 ">
-                        <h2 class="title mb-2">Create Account</h2>
-                        <p class="desc-content">Please Register using account details below.</p>
+                        <h2 class="title mb-2">Tạo tài khoản</h2>
+                        <p class="desc-content">Vui lòng đăng ký bằng cách sử dụng chi tiết tài khoản bên dưới.</p>
                     </div>
                     <!-- Title and Description End -->
 
@@ -42,7 +42,7 @@
 
                         <!-- Name Input Start -->
                         <div class="single-input-item mb-3">
-                            <input type="text" name="name" placeholder="Full Name" value="{{ old('name') }}" required autofocus>
+                            <input type="text" name="name" placeholder="Họ và tên" value="{{ old('name') }}" required autofocus>
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -60,7 +60,7 @@
 
                         <!-- Password Input Start -->
                         <div class="single-input-item mb-3">
-                            <input type="password" name="password" placeholder="Password" required>
+                            <input type="password" name="password" placeholder="Mật khẩu" required>
                             @error('password')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -69,7 +69,7 @@
 
                         <!-- Confirm Password Input Start -->
                         <div class="single-input-item mb-3">
-                            <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                            <input type="password" name="password_confirmation" placeholder="Xác nhận mật khẩu" required>
                             @error('password_confirmation')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -77,24 +77,23 @@
                         <!-- Confirm Password Input End -->
 
                         <!-- Newsletter Checkbox Start -->
-                        <div class="single-input-item mb-3">
+                        {{-- <div class="single-input-item mb-3">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="subscribe_newsletter" name="subscribe_newsletter">
                                 <label class="custom-control-label" for="subscribe_newsletter">Subscribe to Our Newsletter</label>
                             </div>
-                        </div>
+                        </div> --}}
                         <!-- Newsletter Checkbox End -->
 
                         <!-- Register Button Start -->
                         <div class="single-input-item mb-3">
-                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0">Register</button>
+                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0">Đăng ký</button>
                         </div>
                         <!-- Register Button End -->
-
-                        <!-- Login Link Start -->
-                        <span class="text">
-                            <a href="{{ route('login') }}">Already have an account?</a>
-                        </span>
+                        <!-- Login Link Start -->                       
+                        <div class="lost-password">
+                            <a href="{{ route('login') }}">Bạn đã có tài khoản ?</a>
+                        </div>
                         <!-- Login Link End -->
 
                     </form>

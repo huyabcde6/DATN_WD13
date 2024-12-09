@@ -7,12 +7,12 @@
         <div class="breadcrumb-area bg-light">
             <div class="container-fluid">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="title">My Account</h1>
+                    <h1 class="title">Đăng nhập</h1>
                     <ul>
                         <li>
-                            <a href="index.html">Home </a>
+                            <a href="index.html">Trang chủ </a>
                         </li>
-                        <li class="active"> My Account </li>
+                        <li class="active"> Đăng nhập </li>
                     </ul>
                 </div>
             </div>
@@ -30,8 +30,8 @@
 
                         <!-- Login Title & Content Start -->
                         <div class="section-content text-center mb-5">
-                            <h2 class="title mb-2">Login</h2>
-                            <p class="desc-content">Please login using account detail below.</p>
+                            <h2 class="title mb-2">Đăng nhập</h2>
+                            <p class="desc-content">Vui lòng đăng nhập bằng chi tiết tài khoản bên dưới.</p>
                             @if ($message = Session::get('error'))
                                 <div class="alert alert-danger alert-block">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -54,7 +54,7 @@
 
                             <!-- Input Password Start -->
                             <div class="single-input-item mb-3">
-                                <x-text-input id="password" class="block w-full" type="password" name="password" required placeholder="Enter your Password" />
+                                <x-text-input id="password" class="block w-full" type="password" name="password" required placeholder="Mật khẩu" />
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
                             <!-- Input Password End -->
@@ -65,11 +65,11 @@
                                     <div class="remember-meta mb-3">
                                         <div class="custom-control custom-checkbox">
                                             <input id="remember_me" type="checkbox" class="custom-control-input" name="remember">
-                                            <label class="custom-control-label" for="remember_me">Remember Me</label>
+                                            <label class="custom-control-label" for="remember_me">Nhớ mật khẩu</label>
                                         </div>
                                     </div>
                                     @if (Route::has('password.request'))
-                                        <a href="{{ route('password.request') }}" class="forget-pwd mb-3">Forget Password?</a>
+                                        <a href="{{ route('password.request') }}" class="forget-pwd mb-3">Quên mật khẩu ?</a>
                                     @endif
                                 </div>
                             </div>
@@ -77,13 +77,13 @@
 
                             <!-- Login Button Start -->
                             <div class="single-input-item mb-3">
-                                <button class="btn btn btn-dark btn-hover-primary">Login</button>
+                                <button class="btn btn btn-dark btn-hover-primary">Đăng nhập</button>
                             </div>
                             <!-- Login Button End -->
 
                             <!-- Lost Password & Create New Account Start -->
                             <div class="lost-password">
-                                <a href="{{ route('register') }}">Create Account</a>
+                                <a href="{{ route('register') }}">Tạo tài khoản</a>
                             </div>
                             <!-- Lost Password & Create New Account End -->
 
