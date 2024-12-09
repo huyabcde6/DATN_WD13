@@ -47,15 +47,15 @@
                             @csrf
                             <!-- Input Email Start -->
                             <div class="single-input-item mb-3">
-                                <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')" required autofocus placeholder="Email" />
-                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')" autofocus placeholder="Email" />
+                                <x-input-error :messages="$errors->get('email')" class="text-danger" />
                             </div>
                             <!-- Input Email End -->
 
                             <!-- Input Password Start -->
                             <div class="single-input-item mb-3">
-                                <x-text-input id="password" class="block w-full" type="password" name="password" required placeholder="Mật khẩu" />
-                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                <x-text-input id="password" class="block w-full" type="password" name="password" placeholder="Mật khẩu" />
+                                <x-input-error :messages="$errors->get('password')" class="text-danger" />
                             </div>
                             <!-- Input Password End -->
 
