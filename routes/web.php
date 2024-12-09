@@ -18,7 +18,8 @@ use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\CouponsController;
+use App\Http\Controllers\VoucherController;
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -69,6 +70,7 @@ Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/create', [OrderController::class, 'create'])->name('create');
     Route::post('/store', [OrderController::class, 'store'])->name('store');
     Route::post('/{id}/update', [OrderController::class, 'update'])->name('update');
+    Route::get('/vnp/return', [OrderController::class, 'handleVNPReturn'])->name('vnp.return');
 });
 
 Route::get('/dashboard', function () {
@@ -123,8 +125,24 @@ Route::prefix('admin')
                 Route::post('/update{id}', 'update')->name('update');
             });
     });
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::prefix('Coupons')
+            ->name('Coupons.')
+            ->controller(CouponsController::class)
+            ->group(function () {
+                Route::get('/Coupons', 'index')->name('index');
+                Route::get('/addCoupons', 'create')->name('create');
+                Route::post('/postCoupons', 'store')->name('store');
+                Route::delete('/dlCoupons{id}', 'destroy')->name('destroy');
+                Route::get('/edit{id}', 'edit')->name('edit');
+                Route::post('/update{id}', 'update')->name('update');
+            });
+    });
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
 });
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
+Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('vocher');
