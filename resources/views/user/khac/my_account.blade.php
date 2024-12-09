@@ -69,11 +69,10 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4">
                             <div class="myaccount-tab-menu nav" role="tablist">
-
-                                <a href="#orders" class="active" data-bs-toggle="tab"><i
+                                <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
+                                Dashboard</a>
+                                <a href="#orders"  data-bs-toggle="tab"><i
                                         class="fa fa-cart-arrow-down"></i> Orders</a>
-                                <a href="#dashboad" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
-                                    Dashboard</a>
                                 <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i>
                                     address</a>
                                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account
@@ -107,115 +106,9 @@
                                             password and account details.</p>
                                     </div>
                                 </div>
-                                <!-- Single Tab Content End -->
 
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="orders" role="tabpanel">
-                                    <div class="myaccount-content">
-                                        <h3 class="title">Orders</h3>
-                                        <div class="myaccount-table table-responsive text-center">
-                                            @foreach($orders as $order)
-                                            <div class="container">
-                                                <div class="card mb-3">
-                                                    <div class="col-lg-12 mb-5">
-                                                        <div class="row mx-3 my-3">
-                                                            <!-- Thẻ thông tin đơn hàng -->
-                                                            <div class="d-flex  justify-content-between">
-                                                                <h4 class="text-center">Mã đơn: <span
-                                                                        class="text-danger">{{ $order->order_code }}</span>
-                                                                </h4>
-                                                                <h5 id="order-status-{{ $order->id }}" class="text-center mx-3">
-                                                                    {{ $order->status->type ?? 'N/A' }}
-                                                                </h5>
-
-                                                            </div>
-                                                            <div class="d-flex  justify-content-start">
-                                                                <p><strong>Ngày đặt:</strong>
-                                                                    {{ $order->created_at->format('d-m-Y') }}
-                                                                </p>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Bảng thông tin chi tiết đơn hàng -->
-                                                        @foreach($order->orderDetails as $detail)
-                                                        <div class="card-body border my-3">
-                                                            <div
-                                                                class="container d-flex justify-content-start align-items-center">
-                                                                <!-- Hình ảnh sản phẩm -->
-                                                                <div class="me-3">
-                                                                    <img src="{{ url('storage/'. $detail->products->avata) }}"
-                                                                        alt="{{ $detail->products->name }}"
-                                                                        class="img-fluid"
-                                                                        style="max-width: 100px; height: auto;">
-                                                                </div>
-
-                                                                <!-- Thông tin sản phẩm -->
-                                                                <div class="w-75">
-                                                                    <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong>
-                                                                        {{ $detail->products->name }}
-                                                                    </h6>
-                                                                    <p class="mb-0 mx-3 text-muted text-start"><strong>Loại:</strong>
-                                                                        {{ $detail->color }} / {{ $detail->size }}
-                                                                    </p>
-
-                                                                    <p class="mb-0 mx-3 text-start"><strong>Số lượng:</strong>
-                                                                        {{ $detail->quantity }}
-                                                                    </p>
-                                                                    <p class="mb-0  mx-3 text-start"><strong>Giá:</strong>
-                                                                        {{ number_format($detail->price, 0, '', ',') }}₫
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        @endforeach
-                                                        <div class="d-flex justify-content-end mx-3 mb-5">
-                                                            <h6><strong>Tổng
-                                                                    tiền:</strong>
-                                                                {{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 0, '', ',') }}₫
-                                                            </h6>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <a href="{{ route('orders.show', $order->id) }}"
-                                                                class="btn btn-dark mx-5 padding-bottom:-20px; ">Chi
-                                                                tiết</a>
-                                                            <form action="{{ route('orders.update', $order->id) }}"
-                                                                method="POST"
-                                                                style="display:inline; padding-top: 20px; ">
-                                                                @csrf
-                                                                @method('POST')
-
-                                                                @if($order->status->type ===
-                                                                \App\Models\StatusDonHang::CHO_XAC_NHAN)
-                                                                <!-- Nếu trạng thái là 'Chờ xác nhận' -->
-                                                                <input type="hidden" name="huy_don_hang" value="1">
-                                                                <button type="submit" class="btn btn-primary mx-3"
-                                                                    onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">
-                                                                    Hủy đơn hàng
-                                                                </button>
-                                                                @elseif($order->status->type ===
-                                                                \App\Models\StatusDonHang::DANG_VAN_CHUYEN)
-                                                                <!-- Nếu trạng thái là 'Đang vận chuyển' -->
-                                                                <input type="hidden" name="da_giao_hang" value="3">
-                                                                <button type="submit" class="btn btn-success mx-3"
-                                                                    onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
-                                                                    Đã nhận hàng
-                                                                </button>
-                                                                @endif
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Single Tab Content End -->
-
-                                <!-- Single Tab Content Start -->
-                                <div class="tab-pane fade show active" id="orders" role="tabpanel">
                                     <div class="d-flex justify-content-evenly mb-3 fs-12">
                                         <a class="mx-1 filter-link active" data-status="all" href="#">Tất cả</a>
                                         <a class="mx-1 filter-link" data-status="1" href="#">Chờ xác nhận</a>

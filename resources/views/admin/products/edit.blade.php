@@ -1,66 +1,65 @@
 @extends('layouts.admin')
 
 @section('css')
-    <style>
-        .button-group {
-            margin-bottom: 20px;
-        }
+<style>
+.button-group {
+    margin-bottom: 20px;
+}
 
-        .button-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #333;
-        }
+.button-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
 
-        .options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
-        .option-button {
-            padding: 10px 15px;
-            border: 1px solid #007bff;
-            border-radius: 4px;
-            background-color: #ffffff;
-            color: #007bff;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
+.option-button {
+    padding: 10px 15px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-        .option-button:hover {
-            background-color: #007bff;
-            color: #ffffff;
-        }
+.option-button:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
 
-        .option-button.selected {
-            background-color: #007bff;
-            color: #ffffff;
-            border-color: #0056b3;
-        }
-    </style>
+.option-button.selected {
+    background-color: #007bff;
+    color: #ffffff;
+    border-color: #0056b3;
+}
+</style>
 @endsection
 
 @section('content')
-    @if (session()->has('error'))
-        <div class="alert alert-danger">
-            {{ session()->get('error') }}
-        </div>
-    @endif
+@if (session()->has('error'))
+<div class="alert alert-danger">
+    {{ session()->get('error') }}
+</div>
+@endif
 
-    @if (session()->has('success'))
-        <div class="alert alert-success">
-            {{ session()->get('success') }}
-        </div>
-    @endif
+@if (session()->has('success'))
+<div class="alert alert-success">
+    {{ session()->get('success') }}
+</div>
+@endif
 
-    <div class="row m-3">
-        <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-            <div class="flex-grow-1">
-                <h4 class="fs-18 fw-semibold m-0">Cập nhật sản phẩm</h4>
-            </div>
+<div class="row m-3">
+    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+        <div class="flex-grow-1">
+            <h4 class="fs-18 fw-semibold m-0">Cập nhật sản phẩm</h4>
         </div>
     </div>
     <div class="row">
@@ -73,13 +72,11 @@
                         @method('PATCH')
                         <div class="row">
                             <div class="col-lg-7">
-                                <label for="name">Tên sản phẩm</label>
-                                        <input type="text" name="name" value="{{ old('name', $products->name) }}"
-                                            class="form-control @error('name') is-invalid @enderror"
-                                            placeholder="Tên sản phẩm" id="name">
-                                        @error('name')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                <div class="mb-3">
+                                    <label for="name">Tên sản phẩm</label>
+                                    <input type="text" name="name" class="form-control" value="{{ $products->name }}"
+                                        placeholder="Tên sản phẩm" id="name" required>
+                                </div>
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
                                     <input type="text" name="slug" class="form-control" placeholder="Slug" id="slug"
@@ -87,38 +84,25 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="price">Giá sản phẩm</label>
-                                     <input type="number" name="price" value="{{ old('price', $products->price) }}" id="price"
-                                            class="form-control @error('price') is-invalid @enderror"
-                                            placeholder="Giá sản phẩm">
-                                        @error('price')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <input type="number" name="price" id="price" value="{{ $products->price }}"
+                                        class="form-control" placeholder="Giá sản phẩm" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="discount_price">Giá khuyến mãi</label>
-                                    <input type="number" name="discount_price" value="{{ old('discount_price', $products->discount_price) }}"
-                                            id="discount_price"
-                                            class="form-control @error('discount_price') is-invalid @enderror"
-                                            placeholder="Giá khuyến mãi">
-                                        @error('discount_price')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <input type="number" name="discount_price" value="{{ $products->discount_price }}"
+                                        id="discount_price" class="form-control" placeholder="Giá khuyến mãi" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="short_description">Mô tả ngắn</label>
-                                    <textarea name="short_description" id="short_description" class="form-control" placeholder="Mô tả ngắn của sản phẩm"
-                                            required>{{ $products->short_description }}</textarea>
-                                        @error('short_description')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <textarea name="short_description" id="short_description" class="form-control"
+                                        placeholder="Mô tả ngắn của sản phẩm"
+                                        required>{{ $products->short_description }}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Mô tả chi tiết sản phẩm</label>
                                     <div id="quill-editor" style="height: 400px;"></div>
-                                    <textarea name="description" id="description_content" class="d-none">{{ $products->description }}</textarea>
-                                        @error('description')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <textarea name="description" id="description_content"
+                                        class="d-none">{{ $products->description }}</textarea>
                                 </div>
 
 
@@ -164,12 +148,9 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="avata">Hình ảnh sản phẩm</label>
-                                        <input class="form-control mb-3" type="file" name="avata" id="avata">
-                                        <img src="{{ url('storage/' . $products->avata) }}" alt="Hình ảnh sản phẩm"
-                                            style="width: 100px; height: auto;">
-                                        @error('avata')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                    <input class="form-control mb-3" type="file" name="avata" id="avata">
+                                    <img src="{{ url('storage/'. $products->avata) }}" alt="Hình ảnh sản phẩm"
+                                        style="width: 100px; height: auto;">
                                 </div>
 
                                 <div class="mb-3">
@@ -188,35 +169,26 @@
                                             <img src="{{ url('storage/'. $image->image_path) }}" alt="Hình ảnh phụ"
                                                 style="width: 100px; height: 100px;">
                                         </div>
+                                        @endforeach
                                     </div>
+                                </div>
 
-                                    <div class="button-group">
-                                        <label for="sizes">Chọn kích thước</label>
-                                        <div class="options" id="sizes">
-                                            @foreach ($sizes as $size)
-                                                <button type="button" class="option-button"
-                                                    data-value="{{ $size->size_id }}">{{ $size->value }}</button>
-                                            @endforeach
-                                        </div>
-                                        @if ($errors->has('selected_sizes'))
-                                            <div class="text-danger">{{ $errors->first('selected_sizes') }}</div>
-                                        @endif
+                                <div class="button-group">
+                                    <label for="sizes">Chọn kích thước</label>
+                                    <div class="options" id="sizes">
+                                        @foreach($sizes as $size)
+                                        <button type="button" class="option-button"
+                                            data-value="{{ $size->size_id }}">{{ $size->value }}</button>
+                                        @endforeach
                                     </div>
-                                    <div class="button-group">
-                                        <label for="colors">Chọn màu sắc</label>
-                                        <div class="options" id="colors">
-                                            @foreach ($colors as $color)
-                                                <button type="button" class="option-button"
-                                                    data-value="{{ $color->color_id }}">{{ $color->value }}</button>
-                                            @endforeach
-                                        </div>
-                                        @if ($errors->has('selected_colors'))
-                                            <div class="text-danger">{{ $errors->first('selected_colors') }}</div>
-                                        @endif
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <button type="button" id="generate-variants" class="btn btn-primary">Tạo biến
-                                            thể</button>
+                                </div>
+                                <div class="button-group">
+                                    <label for="colors">Chọn màu sắc</label>
+                                    <div class="options" id="colors">
+                                        @foreach($colors as $color)
+                                        <button type="button" class="option-button"
+                                            data-value="{{ $color->color_id }}">{{ $color->value }}</button>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center">
@@ -270,42 +242,26 @@
                                 @endforeach
                                 </div>
                             <div id="variants-container">
-                                </div>
 
-                                <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
-                                </div>
                             </div>
-                    </div>
-                    </form>
+
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+                            </div>
+                        </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
-    </div>
+</div>
+</div>
 @endsection
 
 @section('js')
-
 <script src="{{ asset('assets/admin/libs/quill/quill.core.js')}}"></script>
 <script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
-<div class="mb-3">
-    <label for="images">Hình ảnh phụ</label>
 
-    <input class="form-control mb-3" type="file" name="images[]" id="images" multiple>
-    <h4 class="collapse-button" data-bs-toggle="collapse" data-bs-target="#additionalImages" aria-expanded="false" aria-controls="additionalImages">
-        Xem thêm
-    </h4>
-    <div class="mt-2 collapse" id="additionalImages">
-        @foreach($products->productImages as $image)
-        <div class="product-images mt-3" style="display: inline-block; position: relative; margin: 5px;">
-            <img src="{{ url('storage/'. $image->image_path) }}" alt="Hình ảnh phụ" style="width: 100px; height: 100px;">
-            <!-- Nút xóa ảnh cũ -->
-            <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" data-image-id="{{ $image->id }}" aria-label="Close"></button>
-        </div>
-        @endforeach
-    </div>
-</div>
 
 <!-- Preview container -->
 <div id="preview-container" class="mt-3"></div>
@@ -385,6 +341,8 @@ document.querySelectorAll('.btn-close').forEach(button => {
     });
 });
 </script>
+
+
 <script>
 // Quill Editor Setup
 document.addEventListener('DOMContentLoaded', function() {
@@ -409,8 +367,9 @@ document.getElementById('name').addEventListener('keyup', function() {
         .replace(/[^a-z0-9\s-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-');
-            document.getElementById('slug').value = slug;
-        });
+
+    document.getElementById('slug').value = slug;
+});
 
 function removeVietnameseTones(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -435,10 +394,10 @@ document.getElementById('generate-variants').addEventListener('click', function(
     const selectedSizeButtons = document.querySelectorAll('#sizes .option-button.selected');
     const selectedColorButtons = document.querySelectorAll('#colors .option-button.selected');
 
-            if (selectedSizeButtons.length === 0 || selectedColorButtons.length === 0) {
-                alert('Vui lòng chọn ít nhất một kích thước và một màu sắc.');
-                return;
-            }
+    if (selectedSizeButtons.length === 0 || selectedColorButtons.length === 0) {
+        alert('Vui lòng chọn ít nhất một kích thước và một màu sắc.');
+        return;
+    }
 
     const container = document.getElementById('variants-container');
     container.innerHTML = ''; // Clear existing variants
@@ -457,11 +416,11 @@ document.getElementById('generate-variants').addEventListener('click', function(
             value: sizeButton.textContent
         };
 
-                selectedColorButtons.forEach(colorButton => {
-                    const color = {
-                        id: colorButton.getAttribute('data-value'),
-                        value: colorButton.textContent
-                    };
+        selectedColorButtons.forEach(colorButton => {
+            const color = {
+                id: colorButton.getAttribute('data-value'),
+                value: colorButton.textContent
+            };
 
             const variantKey = `${size.id}_${color.id}`;
 
@@ -516,5 +475,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
 @endsection
