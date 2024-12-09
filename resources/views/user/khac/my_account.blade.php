@@ -94,9 +94,8 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4">
                             <div class="myaccount-tab-menu nav" role="tablist">
-
                                 <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
-                                    Dashboard</a>
+                                Dashboard</a>
                                 <a href="#orders"  data-bs-toggle="tab"><i
                                         class="fa fa-cart-arrow-down"></i> Orders</a>
 
@@ -133,9 +132,6 @@
                                             password and account details.</p>
                                     </div>
                                 </div>
-                                <!-- Single Tab Content End -->
-
-                                <!-- Single Tab Content End -->
 
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="orders" role="tabpanel">
