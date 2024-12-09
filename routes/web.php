@@ -74,6 +74,7 @@ Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/create', [OrderController::class, 'create'])->name('create');
     Route::post('/store', [OrderController::class, 'store'])->name('store');
     Route::post('/{id}/update', [OrderController::class, 'update'])->name('update');
+    Route::get('/vnp/return', [OrderController::class, 'handleVNPReturn'])->name('vnp.return');
 });
 
 Route::get('/dashboard', function () {

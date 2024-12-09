@@ -42,6 +42,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
@@ -67,10 +68,10 @@ class UserController extends Controller
     {
 
         $roles = Role::pluck('name', 'name')->all();
-        $userRoles = $user->roles->pluck('name','name')->all();
+        $userRoles = $user->roles->pluck('name', 'name')->all();
         return view('role-permission.user.edit', [
             'user' => $user,
-            'roles'=> $roles,
+            'roles' => $roles,
             'userRoles' => $userRoles
         ]);
     }
@@ -90,7 +91,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
         ];
-        if(!empty($request->password)){
+        if (!empty($request->password)) {
             $data += [
                 'password' => Hash::make($request->password),
             ];

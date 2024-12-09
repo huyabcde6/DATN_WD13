@@ -205,27 +205,25 @@
                         </div>
                         <!-- Your Order Area End -->
                         <!-- Payment Method Start -->
-                        <div class="payment-accordion-order-button mt-4">
-                            <div class="single-payment">
-                                <h5 class="panel-title">
-                                    <input type="radio" id="cod" name="method" value="cod" checked>
-                                    <label for="cod" class="ms-2">COD</label>
-                                </h5>
-                                <div class="card card-body rounded-0">
-                                    <p>Thanh toán khi nhận hàng</p>
-                                </div>
+                        <div class="checkout-payment">
+                            <h3 class="checkout-title">Phương thức thanh toán</h3>
+                            <div class="block-border">
+                                <p>Mọi giao dịch đều được bảo mật và mã hóa. Thông tin thẻ tín dụng sẽ không bao giờ được lưu lại.</p>
+                                <input type="radio" name="phuongthuc" value="COD">Thanh toán khi nhận hàng <br>
+                                <input type="radio" name="phuongthuc" value="momo">Thanh toán bằng VNP
                             </div>
-                            <div class="order-button-payment mt-4">
-                                <button type="submit" class="btn btn-dark btn-hover-primary rounded-0 w-100">ĐẶT HÀNG</button>
-                            </div>
+                        </div><br>
+                        <div class="order-button-payment">
+                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0 w-100">Đặt Hàng</button>
                         </div>
-                        <!-- Payment Method End -->
                     </div>
-
-
+                    <!-- Payment Method End -->
                 </div>
-            </form>
+
+
         </div>
+        </form>
+    </div>
     </div>
     <!-- Checkout Section End -->
 
@@ -238,22 +236,6 @@
     @endsection
 
     @section('js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
-            const momoDescription = document.getElementById('momo-description');
-
-            paymentRadios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    if (this.value === 'momo') {
-                        momoDescription.classList.remove('d-none');
-                    } else {
-                        momoDescription.classList.add('d-none');
-                    }
-                });
-            });
-        });
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Lấy form và nút "Áp dụng mã"
