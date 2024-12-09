@@ -25,6 +25,17 @@
 
     <!-- Checkout Section Start -->
     <div class="section section-margin">
+        @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
         <div class="container">
             <form action="{{ route('orders.store') }}" method="POST">
                 @csrf
@@ -147,20 +158,12 @@
                             <h3 class="checkout-title">Phương thức thanh toán</h3>
                             <div class="block-border">
                                 <p>Mọi giao dịch đều được bảo mật và mã hóa. Thông tin thẻ tín dụng sẽ không bao giờ được lưu lại.</p>
-                                <div class="checkout-payment__options">
-                                    <form action="{{ url('/vnpay_payment') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="total" value="{{ number_format($total, 0, '', '') }}">
-                                        <input type="hidden" name="id_donhang" id="" value="{{ 'ORD-' . Auth::id() . '-' . now()->timestamp }}">
-                                        <button type="submit" name="redirect" class="btn btn-warning btn-hover-primary rounded-0 w-100" style="width:100%">
-                                            Thanh toán bằng VNPay
-                                        </button>
-                                    </form>
-                                </div>
+                             <input type="radio" name="phuongthuc" value="COD">Thanh toán khi nhận hàng <br>
+                             <input type="radio" name="phuongthuc" value="momo">Thanh toán bằng VNP
                             </div>
                         </div><br>
                         <div class="order-button-payment">
-                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0 w-100"> Thanh toán khi nhận hàng</button>
+                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0 w-100">Đặt Hàng</button>
                         </div>
                     </div>
                     <!-- Payment Method End -->
@@ -179,23 +182,4 @@
         <i class="arrow-bottom fa fa-long-arrow-up"></i>
     </a>
     <!-- Scroll Top End -->
-@endsection
-
-@section('js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
-            const momoDescription = document.getElementById('momo-description');
-
-            paymentRadios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    if (this.value === 'momo') {
-                        momoDescription.classList.remove('d-none');
-                    } else {
-                        momoDescription.classList.add('d-none');
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

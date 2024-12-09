@@ -70,6 +70,7 @@ Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/create', [OrderController::class, 'create'])->name('create');
     Route::post('/store', [OrderController::class, 'store'])->name('store');
     Route::post('/{id}/update', [OrderController::class, 'update'])->name('update');
+    Route::get('/vnp/return', [OrderController::class, 'handleVNPReturn'])->name('vnp.return');
 });
 
 Route::get('/dashboard', function () {
@@ -139,5 +140,3 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
 
-// Thanh toán
-Route::post('/vnpay_payment',[PaymentController::class,'vnpay_payment']);
