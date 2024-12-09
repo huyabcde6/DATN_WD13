@@ -25,30 +25,11 @@ class OrderController extends Controller
     /**
      * Hiển thị danh sách các đơn hàng.
      */
-    public function index(Request $request)
+    public function index()
     {
-<<<<<<< HEAD
         $orders = Auth::user()->order()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
-=======
-        // Sử dụng quan hệ 'status' thay vì 'status_donhang_id'
-        $query = Auth::user()->order()->with(['status', 'orderDetails.products'])->orderBy('created_at', 'desc');
-
-        // Lọc theo trạng thái nếu có
-        if ($request->has('status') && $request->status !== 'all') {
-            $query->where('status_donhang_id', $request->status);
-        }
-
-        $orders = $query->paginate(3); // Mỗi lần tải 3 đơn hàng
-
-        // Nếu là request AJAX (khi cuộn hoặc lọc), trả về HTML của orders
-        if ($request->ajax()) {
-            return view('user.khac.partials.orders', compact('orders'))->render();
-        }
-
->>>>>>> 4b72ed8744930d28cd573ea23e4c9db00718596f
         return view('user.khac.my_account', compact('orders'));
     }
-
 
     /**
      * Hiển thị chi tiết của một đơn hàng cụ thể.
@@ -104,7 +85,6 @@ class OrderController extends Controller
                 $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
                 $params['date_order'] = now(); // Lấy thời gian hiện tại
                 $params['status_donhang_id'] = 1; // Trạng thái đơn hàng mặc định là chờ xử lý
-
                 // Tạo đơn hàng
                 $order = Order::query()->create($params);
                 $orderId = $order->id;
@@ -128,7 +108,7 @@ class OrderController extends Controller
                         $productDetail->save();
                     }
                 }
-                if ($request->input('phuongthuc') === "momo") {
+                if ($request->input('method') === "momo") {
                     // Lưu giao dịch và chuyển hướng đến VNP
                     DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
                     return $this->processVNP($order); // Hàm xử lý thanh toán VNP
@@ -219,7 +199,10 @@ class OrderController extends Controller
             // Thanh toán thành công
             $order = Order::where('order_code', $vnp_TxnRef)->first();
             if ($order) {
-                $order->update(['payment_status' => 'paid']);
+                $order->update([
+                    'payment_status' => 'đã thanh toán',
+                    'method' => 'momo'
+                ]);
                 return redirect()->route('orders.index')->with('success', 'Thanh toán thành công.');
             }
         }
