@@ -3,7 +3,8 @@
 use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\NewController;
@@ -22,29 +23,26 @@ use App\Http\Controllers\VoucherController;
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::resource('permission', App\Http\Controllers\Admin\PermissionControler::class);
+    Route::get('permission/{permissionId}/delete', [App\Http\Controllers\Admin\PermissionControler::class, 'destroy']);
+
+    Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
+    Route::get('roles/{roleId}/delete', [App\Http\Controllers\Admin\RoleController::class, 'destroy']);
+    Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'addPermissionToRole']);
+    Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'givePermissionToRole']);
 
 
-
-    Route::resource('permission', App\Http\Controllers\PermissionControler::class);
-    Route::get('permission/{permissionId}/delete', [App\Http\Controllers\PermissionControler::class, 'destroy']);
-
-    Route::resource('roles', App\Http\Controllers\RoleController::class);
-    Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
-    Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
-    Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
-
-
-    Route::resource('users', App\Http\Controllers\UserController::class);
-    Route::get('user/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+    Route::resource('userAdmin', AdminController::class);
+    Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
 });
 
 
 
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-// CRUD users
-Route::resource('users', UserController::class);
+// // CRUD users
+// 
 
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
@@ -63,11 +61,9 @@ Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 // Route::post('/register', [UserController::class, 'postRegister']);
 
 
-Route::get('/admin', function () {
-    return view('layouts.admin');
-});
 
-Route::resource('users', UserController::class);
+
+// Route::resource('users', UserController::class);
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
@@ -88,6 +84,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
+    
     // Các route cho quản lý sản phẩm
     Route::resource('products', AdminProductController::class);
 
@@ -104,7 +101,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     Route::resource('invoices', InvoiceController::class);
 
     Route::resource('categories', CategoryProductController::class);
-    // Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class);
 
     Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 });

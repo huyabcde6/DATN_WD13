@@ -1,35 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
-class UserController extends Controller
+class AdminController extends Controller
+
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index1(Request $request)
-    {
-        $users = User::when($request->search, function ($query) use ($request) {
-            $query->where('name', 'like', "%{$request->search}%");
-        })
-            ->latest('id')
-            ->paginate(5);
-
-        return view('admin.users.index', compact('users'));
-    }
-
     public function index()
     {
-        $users = User::get();
+        // Lọc tất cả người dùng có vai trò
+        $users = User::whereHas('roles')->get();
+    
+        // Trả về view với danh sách người dùng
         return view('role-permission.user.index', [
             'users' => $users
         ]);
     }
+    
+
+
     public function create()
     {
         $roles = Role::pluck('name', 'name')->all();
@@ -42,14 +36,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD:app/Http/Controllers/UserController.php
 
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|max:20',
             'roles' => 'required'
+=======
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|email|max:255|unique:users,email',
+        //     'password' => 'required|string|min:8|max:20',
+        //     'roles' => 'required'
+>>>>>>> 4b72ed8744930d28cd573ea23e4c9db00718596f:app/Http/Controllers/Admin/AdminController.php
 
-        ]);
+        // ]);
 
         $user = User::create([
             'name' => $request->name,
@@ -58,7 +60,7 @@ class UserController extends Controller
         ]);
         $user->syncRoles($request->roles);
 
-        return redirect('/users')->with('status', 'User đăng nhập thành công');
+        return redirect('/userAdmin')->with('status', 'Admin thêm mới thành công');
     }
 
     /**
@@ -81,12 +83,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'password' => 'nullable|string|min:8|max:20',
-            'roles' => 'required'
 
-        ]);
         $data = [
             'name' => $request->name,
             'email' => $request->email,
@@ -99,7 +96,7 @@ class UserController extends Controller
         $user->update($data);
         $user->syncRoles($request->roles);
 
-        return redirect('/users')->with('status', 'User cập nhập thành công');
+        return redirect('/userAdmin')->with('status', 'Admin cập nhập thành công');
     }
 
     /**
@@ -110,6 +107,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($userId);
         $user->delete();
-        return redirect('/users')->with('success', 'Xóa thành công!');
+        return redirect('/userAdmin')->with('success', 'Xóa thành công!');
     }
 }
