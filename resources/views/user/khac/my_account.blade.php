@@ -74,7 +74,17 @@
 <!-- My Account Section Start -->
 <div class="section mt-4 mb-5">
     <div class="container">
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
 
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
         <div class="row">
             <div class="col-lg-12">
 
