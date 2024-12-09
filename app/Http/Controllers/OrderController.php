@@ -27,9 +27,6 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-<<<<<<< HEAD
-        $orders = Auth::user()->order()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
-=======
         // Sử dụng quan hệ 'status' thay vì 'status_donhang_id'
         $query = Auth::user()->order()->with(['status', 'orderDetails.products'])->orderBy('created_at', 'desc');
 
@@ -44,8 +41,6 @@ class OrderController extends Controller
         if ($request->ajax()) {
             return view('user.khac.partials.orders', compact('orders'))->render();
         }
-
->>>>>>> 4b72ed8744930d28cd573ea23e4c9db00718596f
         return view('user.khac.my_account', compact('orders'));
     }
 
