@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
-    
+
     // Các route cho quản lý sản phẩm
     Route::resource('products', AdminProductController::class);
 
@@ -103,7 +103,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     Route::resource('categories', CategoryProductController::class);
     Route::resource('users', UserController::class);
 
-    Route::get('statistics', [StatisticsController::class, 'index'])->name('statistics.index');
+    Route::get('/', [StatisticsController::class, 'index'])->name('statistics.index');
 });
 
 

@@ -196,7 +196,7 @@
                                         <tr>
                                             <th class="text-start">Tổng cộng</th>
                                             <td class="text-end"><strong id="total-display">{{ number_format($total, 0, ',', '.') }} ₫</strong></td>
-                                            <input type="hidden" name="total_price" value="{{ $total }}">
+                                            <input type="hidden" id="total-input" name="total_price" value="{{ $total }}">
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -209,8 +209,8 @@
                             <h3 class="checkout-title">Phương thức thanh toán</h3>
                             <div class="block-border">
                                 <p>Mọi giao dịch đều được bảo mật và mã hóa. Thông tin thẻ tín dụng sẽ không bao giờ được lưu lại.</p>
-                                <input type="radio" name="phuongthuc" value="COD">Thanh toán khi nhận hàng <br>
-                                <input type="radio" name="phuongthuc" value="momo">Thanh toán bằng VNP
+                                <input type="radio" name="method" value="COD">Thanh toán khi nhận hàng <br>
+                                <input type="radio" name="method" value="momo">Thanh toán bằng VNP
                             </div>
                         </div><br>
                         <div class="order-button-payment">
@@ -246,7 +246,7 @@
             const discountDisplay = document.getElementById('discount-display');
             const totalDisplay = document.getElementById('total-display');
             const discountInput = document.getElementById('discount-input');
-
+            const totalinput = document.getElementById('total-input');
             voucherForm.addEventListener('submit', function(e) {
                 e.preventDefault(); // Ngăn chặn form submit mặc định
 
@@ -285,6 +285,7 @@
                             discountDisplay.textContent = `${data.discount} ₫`;
                             totalDisplay.textContent = `${data.total} ₫`;
                             discountInput.value = data.discount;
+                            totalinput.value = data.total;
                         }
                     })
                     .catch(error => {

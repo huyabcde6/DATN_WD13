@@ -29,13 +29,16 @@
                     <div class="w-75">
                         <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->products->name }}</h6>
                         <p class="mb-0 mx-3 text-muted text-start" style="font-size: 14px;"><strong>Loại:</strong>
-                            {{ $detail->color }} / {{ $detail->size }}</p>
+                            {{ $detail->color }} / {{ $detail->size }}
+                        </p>
                         <p class="mb-0 mx-3 text-start" style="font-size: 14px;"><strong>Số lượng:</strong>
-                            {{ $detail->quantity }}</p>
+                            {{ $detail->quantity }}
+                        </p>
                     </div>
                     <div class="w-75 d-flex justify-content-end">
                         <p class="mb-0 text-start" style="font-size: 14px;"><strong>Giá:</strong>
-                            {{ number_format($detail->price, 0, '', ',') }}₫</p>
+                            {{ number_format($detail->price, 0, '', ',') }}₫
+                        </p>
                     </div>
                 </div>
             </div>
@@ -59,13 +62,16 @@
                             <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->products->name }}
                             </h6>
                             <p class="mb-0 mx-3 text-muted text-start" style="font-size: 14px;"><strong>Loại:</strong>
-                                {{ $detail->color }} / {{ $detail->size }}</p>
+                                {{ $detail->color }} / {{ $detail->size }}
+                            </p>
                             <p class="mb-0 mx-3 text-start" style="font-size: 14px;"><strong>Số lượng:</strong>
-                                {{ $detail->quantity }}</p>
+                                {{ $detail->quantity }}
+                            </p>
                         </div>
                         <div class="w-75 d-flex justify-content-end">
                             <p class="mb-0 text-start" style="font-size: 14px;"><strong>Giá:</strong>
-                                {{ number_format($detail->price, 0, '', ',') }}₫</p>
+                                {{ number_format($detail->price, 0, '', ',') }}₫
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -88,7 +94,7 @@
             <!-- Tổng tiền -->
             <div class="d-flex justify-content-end mx-3 mb-3">
                 <h6><strong>Tổng tiền:</strong>
-                    {{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 0, '', ',') }}₫
+                    {{ $order->total_price}}₫
                 </h6>
             </div>
 
@@ -116,11 +122,11 @@
 @endforeach
 <script>
     document.querySelectorAll('.toggle-details-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const showText = button.querySelector('.show-text');
-        const hideText = button.querySelector('.hide-text');
-        showText.classList.toggle('d-none');
-        hideText.classList.toggle('d-none');
+        button.addEventListener('click', () => {
+            const showText = button.querySelector('.show-text');
+            const hideText = button.querySelector('.hide-text');
+            showText.classList.toggle('d-none');
+            hideText.classList.toggle('d-none');
+        });
     });
-});
 </script>

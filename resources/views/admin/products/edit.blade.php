@@ -74,12 +74,8 @@
                             <div class="col-lg-7">
                                 <div class="mb-3">
                                     <label for="name">Tên sản phẩm</label>
-                                    <input type="text" name="name" value="{{ old('name', $products->name) }}"
-                                            class="form-control @error('name') is-invalid @enderror"
-                                            placeholder="Tên sản phẩm" id="name" oninput="generateSlug()">
-                                        @error('name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <input type="text" name="name" class="form-control" value="{{ $products->name }}"
+                                        placeholder="Tên sản phẩm" id="name" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
@@ -88,41 +84,25 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="price">Giá sản phẩm</label>
-                                    <input type="number" name="price" value="{{ old('price', $products->price) }}"
-                                            id="price" class="form-control @error('price') is-invalid @enderror"
-                                            placeholder="Giá sản phẩm">
-                                        @error('price')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <input type="number" name="price" id="price" value="{{ $products->price }}"
+                                        class="form-control" placeholder="Giá sản phẩm" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="discount_price">Giá khuyến mãi</label>
-                                    <input type="number" name="discount_price"
-                                            value="{{ old('discount_price', $products->discount_price) }}"
-                                            id="discount_price"
-                                            class="form-control @error('discount_price') is-invalid @enderror"
-                                            placeholder="Giá khuyến mãi">
-                                        @error('discount_price')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <input type="number" name="discount_price" value="{{ $products->discount_price }}"
+                                        id="discount_price" class="form-control" placeholder="Giá khuyến mãi" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="short_description">Mô tả ngắn</label>
                                     <textarea name="short_description" id="short_description" class="form-control"
-                                            placeholder="Mô tả ngắn của sản phẩm"
-                                            required>{{ old('short_description', $products->short_description) }}</textarea>
-                                        @error('short_description')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        placeholder="Mô tả ngắn của sản phẩm"
+                                        required>{{ $products->short_description }}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Mô tả chi tiết sản phẩm</label>
                                     <div id="quill-editor" style="height: 400px;"></div>
-                                        <textarea name="description" id="description_content"
-                                            class="d-none">{{ old('description', $products->description) }}</textarea>
-                                        @error('description')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <textarea name="description" id="description_content"
+                                        class="d-none">{{ $products->description }}</textarea>
                                 </div>
 
 
@@ -281,23 +261,7 @@
 @section('js')
 <script src="{{ asset('assets/admin/libs/quill/quill.core.js')}}"></script>
 <script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
-<div class="mb-3">
-    <label for="images">Hình ảnh phụ</label>
 
-    <input class="form-control mb-3" type="file" name="images[]" id="images" multiple>
-    <h4 class="collapse-button" data-bs-toggle="collapse" data-bs-target="#additionalImages" aria-expanded="false" aria-controls="additionalImages">
-        Xem thêm
-    </h4>
-    <div class="mt-2 collapse" id="additionalImages">
-        @foreach($products->productImages as $image)
-        <div class="product-images mt-3" style="display: inline-block; position: relative; margin: 5px;">
-            <img src="{{ url('storage/'. $image->image_path) }}" alt="Hình ảnh phụ" style="width: 100px; height: 100px;">
-            <!-- Nút xóa ảnh cũ -->
-            <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" data-image-id="{{ $image->id }}" aria-label="Close"></button>
-        </div>
-        @endforeach
-    </div>
-</div>
 
 <!-- Preview container -->
 <div id="preview-container" class="mt-3"></div>
