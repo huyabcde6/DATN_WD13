@@ -35,6 +35,17 @@ class NewController extends Controller
     }
     public function create(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'avata' => 'required',
+        ],
+        [
+            'title.required' => 'Tiêu đề không được để trống',
+            'description.required' => 'Mô tả không được để trống',
+            'avata.required' => 'Ảnh không được để trống',
+        ]);
+
         if ($request->isMethod('POST')) {
             $param = $request->except('_token');
             $param['new_date'] = date("d/m/Y");
@@ -77,6 +88,16 @@ class NewController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'avata' => 'required',
+        ],
+        [
+            'title.required' => 'Tiêu đề không được để trống',
+            'description.required' => 'Mô tả không được để trống',
+            'avata.required' => 'Ảnh không được để trống',
+        ]);
         if ($request->isMethod('POST')) {
             $db = DB::table('news')->where('id', $id)->first();
             $param = $request->except('_token');

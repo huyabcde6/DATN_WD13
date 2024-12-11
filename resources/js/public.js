@@ -7,43 +7,46 @@ var pusher = new Pusher("957ee470fe95bd43edc6", {
 
 var channel = pusher.subscribe("order");
 channel.bind("OderEvent", function (data) {
-    const orderRow = document.querySelector(`#order-row-${data.id}`);
+    // Tìm thẻ <h5> hiển thị trạng thái của đơn hàng dựa vào ID
+    const statusHeader = document.querySelector(`#order-status-${data.id}`);
 
-    if (orderRow) {
-        // Tìm cột Status trong hàng (cột thứ 4)
-        const statusCell = orderRow.querySelector("td:nth-child(4)");
+    if (statusHeader) {
+        // Ánh xạ ID trạng thái thành tên trạng thái
+        let statusText = "";
 
-        if (statusCell) {
-            // Ánh xạ ID trạng thái thành tên trạng thái
-            let statusText = "";
-
-            switch (data.status) {
-                case 1: // ID trạng thái CHO_XAC_NHAN
-                    statusText = "Chờ xác nhận";
-                    break;
-                case 2: // ID trạng thái CHO_XAC_NHAN
-                    statusText = "Đã xác nhận";
-                    break;
-                case 3: // ID trạng thái DANG_VAN_CHUYEN
-                    statusText = "Đang vận chuyển";
-                    break;
-                case 4: // ID trạng thái DA_GIAO
-                    statusText = "Đã giao hàng";
-                    break;
-                case 5: // ID trạng thái DA_GIAO
-                    statusText = "Đã hủy";
-                    break;
-                default:
-                    statusText = "Không xác định";
-                    break;
-            }
-
-            // Cập nhật nội dung của cột Status
-            statusCell.textContent = statusText;
-        } else {
-            console.log("Cột Status không tìm thấy.");
+        switch (data.status) {
+            case 1: // ID trạng thái CHO_XAC_NHAN
+                statusText = "Chờ xác nhận";
+                break;
+            case 2: // ID trạng thái DA_XAC_NHAN
+                statusText = "Đã xác nhận";
+                break;
+            case 3: // ID trạng thái DANG_VAN_CHUYEN
+                statusText = "Đang vận chuyển";
+                break;
+            case 4: // ID trạng thái DA_GIAO
+                statusText = "Đã giao hàng";
+                break;
+            case 5: // ID trạng thái DA_HUY
+                statusText = "Hoàn thành";
+                break;
+            case 6: // ID trạng thái DA_HUY
+                statusText = "Đã hủy";
+                break;
+            case 7: // ID trạng thái DA_HUY
+                statusText = "Hoàn hàng";
+                break;
+            case 8: // ID trạng thái DA_HUY
+                statusText = "Chờ hoàn";
+                break;
+            default:
+                statusText = "Không xác định";
+                break;
         }
+
+        // Cập nhật nội dung của thẻ <h5>
+        statusHeader.textContent = statusText;
     } else {
-        console.log("Hàng đơn hàng không tìm thấy.");
+        console.log("Không tìm thấy thẻ <h5> trạng thái của đơn hàng.");
     }
 });

@@ -2,122 +2,122 @@
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
-.custom-container {
-    margin: 0 auto;
-    padding: 0 15px;
-    max-width: 90%;
-}
+    .custom-container {
+        margin: 0 auto;
+        padding: 0 15px;
+        max-width: 90%;
+    }
 
-/* Tổng thể thẻ card */
-.card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    background-color: #fff;
-    transition: all 0.3s ease;
-}
+    /* Tổng thể thẻ card */
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        background-color: #fff;
+        transition: all 0.3s ease;
+    }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
 
-/* Nội dung bên trong card */
-.card .col-md-10 {
-    font-size: 16px;
-    line-height: 1.6;
-}
+    /* Nội dung bên trong card */
+    .card .col-md-10 {
+        font-size: 16px;
+        line-height: 1.6;
+    }
 
-.card .col-md-10 p {
-    margin-bottom: 10px;
-}
+    .card .col-md-10 p {
+        margin-bottom: 10px;
+    }
 
-.card .col-md-10 strong {
-    color: #333;
-}
+    .card .col-md-10 strong {
+        color: #333;
+    }
 
-/* Nút hành động */
-.card .col-md-2 .btn {
-    font-size: 14px;
-    padding: 8px 15px;
-    width: 100%;
-    text-align: center;
-    transition: background-color 0.3s, border-color 0.3s;
-}
+    /* Nút hành động */
+    .card .col-md-2 .btn {
+        font-size: 14px;
+        padding: 8px 15px;
+        width: 100%;
+        text-align: center;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
 
-.card .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-}
+    .card .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
 
-.card .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
+    .card .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
 
-.card .btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-}
+    .card .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
 
-.card .btn:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
+    .card .btn:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
 
-.card .btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
+    .card .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
 
-.card .btn-success:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-}
+    .card .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
 
-/* Canh lề */
-.d-flex.m-3.justify-content-between {
-    margin: 20px 0;
-}
+    /* Canh lề */
+    .d-flex.m-3.justify-content-between {
+        margin: 20px 0;
+    }
 
-/* Khoảng cách tổng thể */
-.card p {
-    margin-bottom: 8px;
-}
+    /* Khoảng cách tổng thể */
+    .card p {
+        margin-bottom: 8px;
+    }
 
-/* Căn chỉnh khoảng cách form */
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
+    /* Căn chỉnh khoảng cách form */
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-/* Căn giữa nút */
-.text-center a {
-    display: inline-block;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
+    /* Căn giữa nút */
+    .text-center a {
+        display: inline-block;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
 
-/* Hiệu ứng hover cho các dòng trong bảng */
-.table tbody tr:hover {
-    background-color: #f7f7f7;
-    cursor: pointer;
-}
+    /* Hiệu ứng hover cho các dòng trong bảng */
+    .table tbody tr:hover {
+        background-color: #f7f7f7;
+        cursor: pointer;
+    }
 
-/* Định dạng cho bảng */
-.table {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-}
+    /* Định dạng cho bảng */
+    .table {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+    }
 
-.table th,
-.table td {
-    padding: 12px 15px;
-}
+    .table th,
+    .table td {
+        padding: 12px 15px;
+    }
 </style>
 @endsection
 
@@ -144,7 +144,7 @@ form {
                         <div class="d-flex m-3 justify-content-between">
                             <div class="col-md-12">
                                 <p><strong>Ngày đặt:</strong> {{ $order->created_at->format('d-m-Y') }}</p>
-                                <p><strong>Trạng thái:</strong> {{ $order->status->type ?? 'N/A' }}</p>
+                                <p id="order-status-{{ $order->id }}"><strong>Trạng thái:</strong> {{ $order->status->type ?? 'N/A' }}</p>
                                 <p><strong>Người nhận:</strong> {{ $order->nguoi_nhan }}</p>
                                 <p><strong>Email:</strong> {{ $order->email }}</p>
                                 <p><strong>Số điện thoại:</strong> {{ $order->number_phone }}</p>
@@ -252,7 +252,7 @@ form {
         </div>
     </div>
 </div>
-
+@vite('resources/js/sttoder.js');
 @endsection
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

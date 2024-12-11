@@ -14,15 +14,6 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    @if ($errors->any())
-                        <div class="alert alert-danger mt-3 mb-3">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
                     <form class="m-4" action="{{ route('admin.banners.update', $banner->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
@@ -30,6 +21,9 @@
                         <div class="form-group">
                             <label>Tiêu Đề</label>
                             <input type="text" name="title" class="form-control" value="{{ old('title', $banner->title) }}">
+                            @error('title')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div><br>
 
                         <div class="form-group">
@@ -40,6 +34,9 @@
                         <div class="form-group">
                             <label>Ảnh Banner</label>
                             <input type="file" name="image_path" class="form-control">
+                            @error('image_path')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div><br>
 
                         <div class="form-group">

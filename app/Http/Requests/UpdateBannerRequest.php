@@ -28,4 +28,12 @@ class UpdateBannerRequest extends FormRequest
             'order'         => 'nullable',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'title.required' => 'Tiêu đề không được để trống',
+            'image_path.required' => 'Ảnh không được để trống',
+        ];
+    }
 }

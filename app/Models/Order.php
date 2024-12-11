@@ -65,6 +65,7 @@ class Order extends Model
             'status_donhang_id' => $this->status_donhang_id,
             'ghi_chu'        => $this->ghi_chu,
             'method'         => $this->method,
+            'payment_status' => $this->payment_status,
             'subtotal'       => $this->subtotal,
             'discount'       => $this->discount,
             'shipping_fee'   => $this->shipping_fee,

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -10,9 +11,29 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    public function index()
+    public function __construct(){
+        $this->middleware('permission:view role', ['only' => ['index']]);
+        $this->middleware('permission:create role', ['only' => ['create', 'store', 'addPermissionToRole', 'givePermissionToRole']]);
+        $this->middleware('permission:edit role', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete role', ['only' => ['destroy']]);
+    }
+
+    public function index(Request $request)
     {
-        $roles = Role::get();
+        $query = Role::query();
+
+        // Tìm kiếm theo tên vai trò
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Sắp xếp theo cột
+        if ($request->has('sort') && $request->has('direction')) {
+            $query->orderBy($request->sort, $request->direction);
+        }
+
+        $roles = $query->paginate(10); // Phân trang 10 bản ghi mỗi trang
+
         return view('role-permission.role.index', compact('roles'));
     }
 
@@ -29,6 +50,10 @@ class RoleController extends Controller
                 'string',
                 'unique:roles,name'
             ]
+        ], [
+            'name.required' => 'Vui lòng nhập tên vai trò',
+            'name.string' => 'Vai trò phải là chữ',
+            'name.unique' => 'Vai trò đã tồn tại'
         ]);
 
         Role::create([
@@ -51,6 +76,10 @@ class RoleController extends Controller
                 'string',
                 'unique:roles,name,' . $role->id
             ]
+        ], [
+            'name.required' => 'Vui lòng nhập tên vai trò',
+            'name.string' => 'Vai trò phải là chữ',
+            'name.unique' => 'Vai trò đã tồn tại'
         ]);
 
         $role ->update([

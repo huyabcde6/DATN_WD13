@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
 
 
     <!-- Main Style CSS -->
@@ -52,10 +53,11 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="{{ route('index') }}"><span>Trang Chủ</span></a>
+                                        <a href="{{route('home.index')}}"><span>Trang Chủ</span></a>
                                     </li>
                                     <li class="has-children position-static">
-                                        <a href="{{ route('shop.index') }}"><span>Sản Phẩm</span></a>
+                                        <a href="{{route('shop.index')}}"><span>Cửa hàng</span></a>
+
                                     </li>
                                     <li class="has-children">
                                         <a href="#"><span>Dịch Vụ</span></a>

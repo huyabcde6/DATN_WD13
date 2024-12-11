@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\ProductDetail;
 use App\Models\products;
 use App\Models\Color;
+use App\Models\Coupon_Conditions;
+use App\Models\Coupons;
 use App\Models\Size;
 use Illuminate\Support\Facades\Session;
 
@@ -15,8 +17,8 @@ class CartController extends Controller
     public function index()
     {
 
-        $cartItems = Session::get('cart', []); 
-        
+        $cartItems = Session::get('cart', []);
+
 
         $shippingFee = 30000;
 
@@ -24,7 +26,7 @@ class CartController extends Controller
         foreach ($cartItems as $item) {
             $subTotal += $item['price'] * $item['quantity'];
         }
-       
+
         $total = $subTotal + $shippingFee;
         return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
@@ -110,7 +112,7 @@ class CartController extends Controller
         }
     }
 
- 
+
     public function removeFromCart($productDetailId)
     {
         $cart = Session::get('cart', []);
@@ -194,5 +196,4 @@ class CartController extends Controller
         $count = session('cart') ? count(session('cart')) : 0;
         return response()->json(['count' => $count]);
     }
-
 }

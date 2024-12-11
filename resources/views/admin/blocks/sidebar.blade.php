@@ -38,7 +38,7 @@
                      </a>
                  </li>
                  <li>
-                     <a class='tp-link' href="{{ route('users.index') }}">
+                     <a class='tp-link' href="{{ route('admin.users.index') }}">
                          <i data-feather="users"></i>
                          <span> Quản lý người dùng </span>
                      </a>
@@ -97,9 +97,35 @@
                      </a>
                  </li>
                  <li>
-                     <a class='tp-link' href="{{ route('admin.banners.index') }}">
+                    <a class='tp-link' href="{{ route('admin.banners.index') }}">
+                        <i data-feather="file-text"></i>
+                        <span> Quản lý Banner </span>
+                    </a>
+                </li>
+                <li>
+                     <a href="#sideRole" data-bs-toggle="collapse">
+                         <i data-feather="clipboard"></i>
+                         <span>Vai trò & quyền</span>
+                         <span class="menu-arrow"></span>
+                     </a>
+                     <div class="collapse" id="sideRole">
+                         <ul class="nav-second-level">
+                             <li>
+                                 <a class='tp-link' href="{{ url('roles') }}">Vai trò</a>
+                             </li>
+                             <li>
+                                 <a class='tp-link' href="{{ url('permission') }}">Quyền</a>
+                             </li>
+                             <li>
+                                 <a class='tp-link' href="{{ url('userAdmin') }}">Admin</a>
+                             </li>
+                         </ul>
+                     </div>
+                 </li>
+                 <li>
+                     <a class='tp-link' href="{{ route('admin.Coupons.index') }}">
                          <i data-feather="file-text"></i>
-                         <span> Quản lý Banner </span>
+                         <span> Quản lý Mã Giảm Giá </span>
                      </a>
                  </li>
                  <li>
