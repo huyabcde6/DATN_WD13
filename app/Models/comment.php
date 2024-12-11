@@ -14,6 +14,7 @@ class comment extends Model
         'products_id',
         'description',
         'image',
+        'is_hidden',
     ];  
 
     public function product() {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -21,8 +22,6 @@ class AdminController extends Controller
             'users' => $users
         ]);
     }
-
-
 
     public function create()
     {
@@ -66,7 +65,6 @@ class AdminController extends Controller
      */
     public function update(Request $request, User $user)
     {
-
         $data = [
             'name' => $request->name,
             'email' => $request->email,

@@ -15,12 +15,12 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/pe-icon-7-stroke.min.css') }}" />
 
 
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
 
@@ -57,34 +57,16 @@
                                     </li>
                                     <li class="has-children position-static">
                                         <a href="{{route('shop.index')}}"><span>Cửa hàng</span></a>
+
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Dịch Vụ</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="faq.html">Faq</a></li>
-                                            <li><a href="404-error.html">404 Error</a></li>
-                                        </ul>
+                                        <a href="#"><span>Dịch Vụ</span></a>
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Tin Tức</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog.html">Blog</a></li>
-                                            <li>
-                                                <a href="blog-left-sidebar.html">Blog Left Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-right-sidebar.html">Blog Right Sidebar</a>
-                                            </li>
-                                            <li><a href="blog-details.html">Blog Details</a></li>
-                                            <li>
-                                                <a href="blog-details-sidebar.html">Blog Details Sidebar</a>
-                                            </li>
-                                        </ul>
+                                        <a href="{{ route('news.index') }}"><span>Tin Tức</span></a>
                                     </li>
                                     <li>
-                                        <a href="contact.html"> <span>Liên Hệ</span></a>
+                                        <a href="{{ route('contact') }}"> <span>Liên Hệ</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -100,11 +82,13 @@
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
-                                <a href="{{ auth()->check() ? route('orders.index') : route('login') }}"
-                                    class="header-action-btn d-none d-md-block">
+
+                                
+                                <a href="{{ Auth::check() ? route ('orders.index') : route ('login') }}" class="header-action-btn d-none d-md-block">
                                     <i class="pe-7s-user"></i>
                                 </a>
 
+                                
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->

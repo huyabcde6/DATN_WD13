@@ -166,7 +166,9 @@ Quản lý đơn hàng
                 </div>
             </div>
         </div>
-        {{ $orders->links('pagination::bootstrap-5') }}
+        <div class="m-2">
+            {{ $orders->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 </div>
 
