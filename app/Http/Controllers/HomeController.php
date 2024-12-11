@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function index()
     {
         $banners = banner::orderBy('order')->get();
-
+        $news = News::get();
         // Sản phẩm mới
         $newProducts = products::where('iS_new', 1)
             ->where('iS_show', 1)
@@ -34,7 +34,7 @@ class HomeController extends Controller
             ->where('is_show', true)
             ->limit(8)->get();
 
-        return view('user.sanpham.home', compact('banners', 'newProducts', 'bestSellingProducts', 'saleProducts'));
+        return view('user.sanpham.home', compact('banners', 'news', 'newProducts', 'bestSellingProducts', 'saleProducts'));
 
     }
 
