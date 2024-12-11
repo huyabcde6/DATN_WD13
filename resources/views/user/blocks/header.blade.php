@@ -28,6 +28,7 @@
     <!-- Main Style CSS -->
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/loading.css') }}" />
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
 
