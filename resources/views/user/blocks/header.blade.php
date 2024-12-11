@@ -33,8 +33,8 @@
 </head>
 
 <body>
+    <div class="loader" style="display: none;"></div>
     <div class="header section">
-
         <!-- Header Bottom Start -->
         <div class="header-bottom">
             <div class="header-sticky">

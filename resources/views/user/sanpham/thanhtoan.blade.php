@@ -295,4 +295,21 @@
             });
         });
     </script>
+    <script>
+        $.ajax({
+            type: "POST",
+            url: "/place-order",
+            data: data,
+            beforeSend: function() {
+                $('#loading').show(); // Hiển thị loader
+            },
+            success: function(response) {
+                $('#loading').hide(); // Ẩn loader
+                // Xử lý phản hồi từ server
+            },
+            error: function() {
+                $('#loading').hide(); // Ẩn loader nếu có lỗi
+            }
+        });
+    </script>
     @endsection

@@ -96,7 +96,7 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <h4 class="sub-title"><a href="single-product.html">{{ $product->categories->name }}</a>
+                                <h4 class="sub-title">{{ $product->categories->name }}
                                 </h4>
                                 <h5 class="title"><a
                                         href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h5>
@@ -224,10 +224,10 @@
                                     @foreach ($colors as $color)
                                     <li>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" 
+                                            <input type="checkbox"
                                                 class="custom-control-input"
-                                                id="color_{{ $color->color_id }}" 
-                                                value="{{ $color->color_id }}" 
+                                                id="color_{{ $color->color_id }}"
+                                                value="{{ $color->color_id }}"
                                                 {{ in_array($color->color_id, (array) request('colors', [])) ? 'checked' : '' }}
 
                                                 onchange="updateFilters()">
@@ -469,26 +469,25 @@
 
 @section('js')
 <script>
-function updateFilters() {
-    const selectedColors = [];
-    const checkboxes = document.querySelectorAll('.custom-control-input:checked');
+    function updateFilters() {
+        const selectedColors = [];
+        const checkboxes = document.querySelectorAll('.custom-control-input:checked');
 
-    checkboxes.forEach(checkbox => {
-        selectedColors.push(checkbox.value);
-    });
+        checkboxes.forEach(checkbox => {
+            selectedColors.push(checkbox.value);
+        });
 
-    // Lấy URL hiện tại
-    const url = new URL(window.location.href);
-    // Cập nhật giá trị "colors" trong query string
-    if (selectedColors.length > 0) {
-        url.searchParams.set('colors', selectedColors.join(','));
-    } else {
-        url.searchParams.delete('colors');
+        // Lấy URL hiện tại
+        const url = new URL(window.location.href);
+        // Cập nhật giá trị "colors" trong query string
+        if (selectedColors.length > 0) {
+            url.searchParams.set('colors', selectedColors.join(','));
+        } else {
+            url.searchParams.delete('colors');
+        }
+
+        // Điều hướng đến URL mới
+        window.location.href = url.toString();
     }
-
-    // Điều hướng đến URL mới
-    window.location.href = url.toString();
-}
-
 </script>
 @endsection
