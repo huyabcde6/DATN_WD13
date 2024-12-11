@@ -27,7 +27,9 @@ class OrderController extends Controller
      */
     public function index()
     {
+
         $orders = Auth::user()->order()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
+
         return view('user.khac.my_account', compact('orders'));
     }
 
