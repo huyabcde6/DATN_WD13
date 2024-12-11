@@ -14,30 +14,16 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // public function index1(Request $request)
-    // {
-    //     $users = User::when($request->search, function ($query) use ($request) {
-    //         $query->where('name', 'like', "%{$request->search}%");
-    //     })
-    //         ->latest('id')
-    //         ->paginate(5);
-
-    //     return view('admin.users.index', compact('users'));
-    // }
-
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::get();
-        return view('role-permission.user.index', [
-            'users' => $users
-        ]);
-    }
-    public function create()
-    {
-        $roles = Role::pluck('name', 'name')->all();
-        return view('role-permission.user.create', [
-            'roles' => $roles
-        ]);
+        $users = User::when($request->search, function ($query) use ($request) {
+            $query->where('name', 'like', "%{$request->search}%");
+        })
+            ->latest('id')
+            ->whereDoesntHave('roles')
+            ->paginate(5);
+
+        return view('admin.users.index', compact('users'));
     }
     /**
      * Store a newly created resource in storage.
@@ -140,4 +126,5 @@ class UserController extends Controller
         $user->delete();
         return redirect('/users')->with('success', 'Xóa thành công!');
     }
+
 }

@@ -26,89 +26,72 @@ Quản lý đơn hàng
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="d-flex m-3">
-                    <form action="" method="get" class="mb-3">
+                <div class="d-flex m-3 justify-content-between align-items-center">
+                    <form action="{{ route('admin.orders.index') }}" class="d-flex" method="get" id="search-form">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <i class="bi bi-search"></i>
+                                Tìm kiếm
                             </span>
-                            <input type="text" value="{{ request('search') }}" name="search" class="form-control"
-                                placeholder="Nhập từ khóa cần tìm..">
+                            <input type="text" value="{{ request('search') }}" name="search" id="search"
+                                class="form-control" placeholder="Nhập từ khóa cần tìm..">
+                            <button type="submit" class="btn btn-sm btn-dark"><i class="bi bi-search"></i></button>
                         </div>
-
-                        <div class="row mt-3">
+                    </form>
+                    <form action="{{ route('admin.orders.index') }}" method="get" class="ms-2">
+                        <div class="d-flex justify-content-between">
                             <!-- Lọc theo ngày -->
-                            <div class="col-md-4">
-                                <label for="from_date">Từ ngày</label>
-                                <input type="date" name="from_date" id="from_date" class="form-control"
-                                    value="{{ request('from_date') }}">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="to_date">Đến ngày</label>
-                                <input type="date" name="to_date" id="to_date" class="form-control"
-                                    value="{{ request('to_date') }}">
-                            </div>
 
-                            <!-- Lọc theo trạng thái đơn hàng -->
-                            <div class="col-md-4">
-                                <label for="status_donhang_id">Trạng thái đơn hàng</label>
-                                <select name="status_donhang_id" id="status_donhang_id" class="form-select">
-                                    <option value="">Chọn trạng thái</option>
-                                    @foreach($statuses as $status)
-                                    <option value="{{ $status->id }}"
-                                        {{ request('status_donhang_id') == $status->id ? 'selected' : '' }}>
-                                        {{ $status->type }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <input type="date" name="from_date" id="from_date" class="form-control"
+                                value="{{ request('from_date') }}">
 
-                            <!-- Lọc theo phương thức thanh toán -->
-                            <div class="col-md-4">
-                                <label for="method">Phương thức thanh toán</label>
-                                <select name="method" id="method" class="form-select">
-                                    <option value="">Chọn phương thức</option>
-                                    <option value="COD" {{ request('method') == 'COD' ? 'selected' : '' }}>COD</option>
-                                    <option value="credit_card"
-                                        {{ request('method') == 'credit_card' ? 'selected' : '' }}>Thẻ tín dụng</option>
-                                    <option value="paypal" {{ request('method') == 'paypal' ? 'selected' : '' }}>PayPal
-                                    </option>
-                                    <option value="momo" {{ request('method') == 'momo' ? 'selected' : '' }}>Momo
-                                    </option>
-                                </select>
-                            </div>
+                            <input type="date" name="to_date" id="to_date" class="form-control"
+                                value="{{ request('to_date') }}">
 
-                            <!-- Lọc theo trạng thái thanh toán -->
-                            <div class="col-md-4">
-                                <label for="payment_status">Trạng thái thanh toán</label>
-                                <select name="payment_status" id="payment_status" class="form-select">
-                                    <option value="">Chọn trạng thái thanh toán</option>
-                                    <option value="chưa thanh toán"
-                                        {{ request('payment_status') == 'chưa thanh toán' ? 'selected' : '' }}>Chưa
-                                        thanh toán</option>
-                                    <option value="đã thanh toán"
-                                        {{ request('payment_status') == 'đã thanh toán' ? 'selected' : '' }}>Đã thanh
-                                        toán</option>
-                                    <option value="đang xử lý"
-                                        {{ request('payment_status') == 'đang xử lý' ? 'selected' : '' }}>Đang xử lý
-                                    </option>
-                                    <option value="thất bại"
-                                        {{ request('payment_status') == 'thất bại' ? 'selected' : '' }}>Thất bại
-                                    </option>
-                                    <option value="đã hoàn lại"
-                                        {{ request('payment_status') == 'đã hoàn lại' ? 'selected' : '' }}>Đã hoàn lại
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
+                            <select name="status_donhang_id" id="status_donhang_id" class="form-select">
+                                <option value="">Chọn trạng thái</option>
+                                @foreach($statuses as $status)
+                                <option value="{{ $status->id }}"
+                                    {{ request('status_donhang_id') == $status->id ? 'selected' : '' }}>
+                                    {{ $status->type }}
+                                </option>
+                                @endforeach
+                            </select>
 
-                        <div class="mt-3 text-center">
+                            <select name="method" id="method" class="form-select">
+                                <option value="">Chọn phương thức</option>
+                                <option value="COD" {{ request('method') == 'COD' ? 'selected' : '' }}>COD</option>
+                                <option value="credit_card" {{ request('method') == 'credit_card' ? 'selected' : '' }}>
+                                    Thẻ tín dụng</option>
+                                <option value="paypal" {{ request('method') == 'paypal' ? 'selected' : '' }}>PayPal
+                                </option>
+                                <option value="momo" {{ request('method') == 'momo' ? 'selected' : '' }}>Momo
+                                </option>
+                            </select>
+
+                            <select name="payment_status" id="payment_status" class="form-select">
+                                <option value="">Chọn trạng thái thanh toán</option>
+                                <option value="chưa thanh toán"
+                                    {{ request('payment_status') == 'chưa thanh toán' ? 'selected' : '' }}>Chưa
+                                    thanh toán</option>
+                                <option value="đã thanh toán"
+                                    {{ request('payment_status') == 'đã thanh toán' ? 'selected' : '' }}>Đã thanh
+                                    toán</option>
+                                <option value="đang xử lý"
+                                    {{ request('payment_status') == 'đang xử lý' ? 'selected' : '' }}>Đang xử lý
+                                </option>
+                                <option value="thất bại"
+                                    {{ request('payment_status') == 'thất bại' ? 'selected' : '' }}>Thất bại
+                                </option>
+                                <option value="đã hoàn lại"
+                                    {{ request('payment_status') == 'đã hoàn lại' ? 'selected' : '' }}>Đã hoàn lại
+                                </option>
+                            </select>
                             <button type="submit" class="btn btn-dark">Lọc</button>
                         </div>
                     </form>
                 </div>
 
-                <div class="col-md-12">
+                <div class="card-body">
                     <table class="table table-striped text-center">
                         <thead>
                             <tr>
@@ -196,32 +179,36 @@ Quản lý đơn hàng
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.orders.update', $order->id) }}" method="post" class="order-status-form">
+                <form action="{{ route('admin.orders.update', $order->id) }}" method="post" class="order-status-form" data-ajax="true">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
                         <label for="status">Trạng thái</label>
                         <select class="form-select" name="status" id="status" required>
-                            <option value="1" {{ $order->status_donhang_id === 1 ? 'selected' : '' }}>Chờ xác nhận
-                            </option>
-                            <option value="2" {{ $order->status_donhang_id === 2 ? 'selected' : '' }}>Đã xác nhận
-                            </option>
-                            <option value="3" {{ $order->status_donhang_id === 3 ? 'selected' : '' }}>Đang vận chuyển
-                            </option>
-                            <option value="4" {{ $order->status_donhang_id === 4 ? 'selected' : '' }}>Đã giao hàng
-                            </option>
-                            <option value="5" {{ $order->status_donhang_id === 5 ? 'selected' : '' }}>Hoàn thành
-                            </option>
-                            <option value="6" {{ $order->status_donhang_id === 6 ? 'selected' : '' }}>Hoàn hàng</option>
-                            <option value="8" {{ $order->status_donhang_id === 8 ? 'selected' : '' }}>Chờ xác nhận hoàn
-                                hàng</option>
-                            <option value="7" {{ $order->status_donhang_id === 7 ? 'selected' : '' }}>Đã hủy</option>
+                            @if($order->status_donhang_id === 1) <!-- Chờ xác nhận -->
+                                <option value="2">Đã xác nhận</option>
+                                <option value="7">Hủy đơn</option>
+                            @elseif($order->status_donhang_id === 2) <!-- Đã xác nhận -->
+                                <option value="3">Đang vận chuyển</option>
+                            @elseif($order->status_donhang_id === 3) <!-- Đang vận chuyển -->
+                                <option value="4">Đã giao hàng</option>
+                            @elseif($order->status_donhang_id === 8) <!-- Chờ xác nhận hoàn hàng -->
+                                <option value="6">Hoàn hàng</option>
+                            @else
+                                <option value="1" {{ $order->status_donhang_id === 1 ? 'selected' : '' }}>Chờ xác nhận</option>
+                                <option value="2" {{ $order->status_donhang_id === 2 ? 'selected' : '' }}>Đã xác nhận</option>
+                                <option value="3" {{ $order->status_donhang_id === 3 ? 'selected' : '' }}>Đang vận chuyển</option>
+                                <option value="4" {{ $order->status_donhang_id === 4 ? 'selected' : '' }}>Đã giao hàng</option>
+                                <option value="5" {{ $order->status_donhang_id === 5 ? 'selected' : '' }}>Hoàn thành</option>
+                                <option value="6" {{ $order->status_donhang_id === 6 ? 'selected' : '' }}>Hoàn hàng</option>
+                                <option value="8" {{ $order->status_donhang_id === 8 ? 'selected' : '' }}>Chờ xác nhận hoàn hàng</option>
+                                <option value="7" {{ $order->status_donhang_id === 7 ? 'selected' : '' }}>Hủy đơn</option>
+                            @endif
                         </select>
                     </div>
 
                     <!-- Phần lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng" -->
-                    @if($order->status_donhang_id == 8)
-                    <!-- Kiểm tra trạng thái Chờ xác nhận hoàn hàng -->
+                    @if($order->status_donhang_id === 8)
                     <div class="mt-2">
                         <label for="return_reason">Lý do trả hàng</label>
                         <textarea name="return_reason" id="return_reason"
@@ -238,7 +225,12 @@ Quản lý đơn hàng
         </div>
     </div>
 </div>
+
+
+@vite('resources/js/public.js');
+
 @vite('resources/js/adminoder.js');
+
 @endsection
 
 @section('js')
@@ -256,28 +248,59 @@ Quản lý đơn hàng
     orderStatusModal.addEventListener('show.bs.modal', function(event) {
         var button = event.relatedTarget; // Nút bấm "Sửa" được nhấn
         var orderId = button.getAttribute('data-order-id'); // Lấy ID của đơn hàng
-        var currentStatus = button.getAttribute('data-current-status'); // Lấy trạng thái hiện tại
+        var currentStatus = parseInt(button.getAttribute('data-current-status')); // Lấy trạng thái hiện tại
         var returnReason = button.getAttribute('data-return-reason'); // Lấy lý do trả hàng (nếu có)
 
         // Cập nhật lại action của form trong modal
         var form = orderStatusModal.querySelector('form');
         form.action = `/admin/orders/${orderId}`; // Đảm bảo action chứa đúng ID của đơn hàng
 
-        // Cập nhật trạng thái đơn hàng trong select
+        // Lấy dropdown trạng thái và làm sạch các tùy chọn cũ
         var statusSelect = orderStatusModal.querySelector('#status');
-        statusSelect.value = currentStatus;
+        statusSelect.innerHTML = ''; // Xóa toàn bộ các tùy chọn
 
-        // Cập nhật lý do trả hàng (nếu có) vào textarea
+        // Tùy chọn trạng thái dựa trên trạng thái hiện tại
+        if (currentStatus === 1) {
+            // Nếu trạng thái là "Chờ xác nhận", chỉ hiển thị 2 tùy chọn
+            statusSelect.innerHTML += `<option value="2">Đã xác nhận</option>`;
+            statusSelect.innerHTML += `<option value="7">Hủy đơn</option>`;
+        } else if (currentStatus === 2) {
+            statusSelect.innerHTML += `<option value="3">Đang vận chuyển</option>`;
+        } else if (currentStatus === 3) {
+            statusSelect.innerHTML += `<option value="4">Đã giao hàng</option>`;
+        } else if (currentStatus === 8) {
+            statusSelect.innerHTML += `<option value="6">Hoàn hàng</option>`;
+        } else {
+            var options = [
+                { value: 1, text: 'Chờ xác nhận' },
+                { value: 2, text: 'Đã xác nhận' },
+                { value: 3, text: 'Đang vận chuyển' },
+                { value: 4, text: 'Đã giao hàng' },
+                { value: 5, text: 'Hoàn thành' },
+                { value: 6, text: 'Hoàn hàng' },
+                { value: 8, text: 'Chờ xác nhận hoàn hàng' },
+                { value: 7, text: 'Hủy đơn' }
+            ];
+
+            options.forEach(function(option) {
+                statusSelect.innerHTML += `<option value="${option.value}" ${
+                    option.value === currentStatus ? 'selected' : ''
+                }>${option.text}</option>`;
+            });
+        }
+
+        // Cập nhật textarea lý do trả hàng
         var returnReasonTextarea = orderStatusModal.querySelector('#return_reason');
-        returnReasonTextarea.value = returnReason || ''; // Nếu không có lý do trả hàng thì để trống
+        returnReasonTextarea.value = returnReason || '';
 
         // Hiển thị hoặc ẩn textarea lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng"
-        if (currentStatus == 8) {
+        if (currentStatus === 8) {
             returnReasonTextarea.closest('.form-group').style.display = 'block';
         } else {
             returnReasonTextarea.closest('.form-group').style.display = 'none';
         }
     });
 </script>
+
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 @endsection

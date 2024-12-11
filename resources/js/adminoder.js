@@ -37,11 +37,11 @@ channel.bind("OderEvent", function (data) {
                 statusColor = "badge-danger"; // Thay bằng class màu tương ứng
                 break;
             case 6: // ID trạng thái DA_HUY
-                statusText = "Đã hủy";
+                statusText = "Hoàn hàng";
                 statusColor = "badge-danger"; // Thay bằng class màu tương ứng
                 break;
             case 7: // ID trạng thái DA_HUY
-                statusText = "Hoàn hàng";
+                statusText = "Đã hủy";
                 statusColor = "badge-danger"; // Thay bằng class màu tương ứng
                 break;
             case 8: // ID trạng thái DA_HUY

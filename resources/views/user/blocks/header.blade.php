@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css')}}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
 
 
     <!-- Main Style CSS -->
@@ -52,59 +53,10 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="#"><span>Trang Chủ</span></a>
+                                        <a href="{{route('home.index')}}"><span>Trang Chủ</span></a>
                                     </li>
                                     <li class="has-children position-static">
-                                        <a href="#"><span>Sản Phẩm</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="mega-menu row-cols">
-                                            <li class="col">
-                                                <h4 class="mega-menu-title">Sản phẩm</h4>
-                                                <ul class="mb-n2">
-
-                                                    <li><a href="{{route('shop.index')}}">Shop</a></li>
-
-                                                    <li>
-                                                        <a href="shop-left-sidebar.html">Left Sidebar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-right-sidebar.html">Right Sidebar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-list-fullwidth.html">List Fullwidth</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-list-left-sidebar.html">List Left Sidebar</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="shop-list-right-sidebar.html">List Right Sidebar</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="col">
-                                                <h4 class="mega-menu-title">Product Layout</h4>
-                                                <ul class="mb-n2">
-                                                    <li>
-                                                        <a href="single-product.html">Single Product</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-sale.html">Single Product Sale</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-group.html">Single Product Group</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-normal.html">Single Product Normal</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-affiliate.html">Single Product
-                                                            Affiliate</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="single-product-slider.html">Single Product Slider</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                        <a href="{{route('shop.index')}}"><span>Cửa hàng</span></a>
                                     </li>
                                     <li class="has-children">
                                         <a href="#"><span>Dịch Vụ</span> <i class="fa fa-angle-down"></i></a>

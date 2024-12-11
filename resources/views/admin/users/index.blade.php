@@ -27,7 +27,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="d-flex m-3">
-                        <form action="{{ route('users.index') }}" method="get" class="">
+                        <form action="{{ route('admin.users.index') }}" method="get" class="">
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="bi bi-search"></i>
@@ -45,7 +45,6 @@
                                     <th>ID</th>
                                     <th>Họ Tên</th>
                                     <th>Email</th>
-                                    <th>Mật khẩu</th>
                                     <th>Ngày tạo</th>
                                     <th>Tương tác</th>
                                 </tr>
@@ -57,10 +56,9 @@
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ $user->password }}</td>
                                         <td>{{ $user->created_at }}</td>
                                         <td>
-                                            <form action="{{ route('users.destroy', $user) }}" method="post">
+                                            <form action="{{ route('admin.users.destroy', $user) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
 

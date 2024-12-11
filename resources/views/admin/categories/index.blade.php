@@ -22,11 +22,10 @@ Danh sách danh mục
         <div class="flex-grow-1">
             <h4 class="fs-18 fw-semibold m-0">Danh sách danh mục</h4>
         </div>
-        <div class="text-end">
-            <ol class="breadcrumb m-0 py-0">
-                <li class="breadcrumb-item"><a href="{{ route('admin.categories.index') }}">Danh mục</a></li>
-                <li class="breadcrumb-item active">Danh sách danh mục</li>
-            </ol>
+        <div class="flex-grow-2 mx-2">
+        <button class="btn btn-sm btn-alt-secondary mx-2 fs-18 rounded-2 border p-1 me-2" data-bs-toggle="modal" data-bs-target="#addModal">
+            <i class="mdi mdi-plus text-muted"></i> Thêm mới
+        </button>
         </div>
     </div>
 
@@ -37,26 +36,27 @@ Danh sách danh mục
                     <form method="GET" action="{{ route('admin.categories.index') }}" class="d-flex">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <i class="bi bi-search"></i>
+                                Tìm kiếm
                             </span>
-                            <input type="text" name="search" class="form-control" placeholder="Nhập từ khóa cần tìm..." value="{{ request('search') }}">
+                            <input type="text" name="search" class="form-control" placeholder="Nhập từ khóa cần tìm..."
+                                value="{{ request('search') }}">
+
+                            <button type="submit" class="btn btn-sm btn-dark">
+                                <i class="bi bi-search"></i>
+                            </button>
                         </div>
-                        <button type="submit" class="btn btn-sm btn-dark mx-2">
-                            <i class="bi bi-search"></i> Tìm kiếm
-                        </button>
                     </form>
-                    <button class="btn btn-sm btn-dark mx-1" data-bs-toggle="modal" data-bs-target="#addModal">
-                        <i class="mdi mdi-plus text-muted"></i> Thêm mới
-                    </button>
+
                 </div>
 
-                <div class="col-md-12">
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped text-center">
                             <thead>
                                 <tr>
                                     <th>
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}">
+                                        <a
+                                            href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}">
                                             #
                                             @if (request('sort') === 'id')
                                             <i class="bi bi-arrow-{{ request('order') === 'asc' ? 'down' : 'up' }}"></i>
@@ -64,7 +64,8 @@ Danh sách danh mục
                                         </a>
                                     </th>
                                     <th>
-                                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}">
+                                        <a
+                                            href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}">
                                             Tên danh mục
                                             @if (request('sort') === 'name')
                                             <i class="bi bi-arrow-{{ request('order') === 'asc' ? 'down' : 'up' }}"></i>
@@ -75,7 +76,7 @@ Danh sách danh mục
                                         Trạng thái
                                     </th>
                                     <th class="text-center">
-                                        Hành động
+                                        Tương tác
                                     </th>
                                 </tr>
                             </thead>
@@ -88,13 +89,17 @@ Danh sách danh mục
                                     <td>{{ $item->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center align-items-center">
-                                            <button class="btn btn-sm btn-alt-secondary mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#editModal" data-id="{{ $item->id }}"
-                                                data-name="{{ $item->name }}" data-status="{{ $item->status }}">
+                                            <button
+                                                class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
+                                                data-bs-toggle="modal" data-bs-target="#editModal"
+                                                data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                                data-status="{{ $item->status }}">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-alt-secondary mx-1" data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal" data-id="{{ $item->id }}">
+                                            <button
+                                                class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 text-danger"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                data-id="{{ $item->id }}">
                                                 <i class="fa fa-fw fa-times text-danger"></i>
                                             </button>
                                         </div>

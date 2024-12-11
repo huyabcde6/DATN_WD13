@@ -21,6 +21,7 @@ class Invoice extends Model
         'status_donhang_id',
         'ghi_chu',
         'method',
+        'payment_status',
         'subtotal',
         'discount',
         'shipping_fee',

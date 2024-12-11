@@ -168,8 +168,7 @@
                  <li class="dropdown notification-list topbar-dropdown">
                      <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button"
                          aria-haspopup="false" aria-expanded="false">
-                         <img src="{{ asset('assets/admin/images/users/user-11.jpg')}}" alt="user-image"
-                             class="rounded-circle">
+                         
                          <span class="pro-user-name ms-1">
                              {{ Auth::user()->name ?? '' }} <i class="mdi mdi-chevron-down"></i>
                          </span>
@@ -187,9 +186,9 @@
                          </a>
 
                          <!-- item-->
-                         <a class='dropdown-item notify-item' href="#">
+                         <a class='dropdown-item notify-item' href="{{route('home.index')}}">
                              <i class="mdi mdi-lock-outline fs-16 align-middle"></i>
-                             <span>Lock Screen</span>
+                             <span>Trang người dùng</span>
                          </a>
 
                          <div class="dropdown-divider"></div>

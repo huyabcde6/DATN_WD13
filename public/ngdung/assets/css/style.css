@@ -18412,7 +18412,7 @@ input[type=checkbox]:checked + label:after {
     6.6 Breadcrumb CSS 
 ====================*/
 .breadcrumb-area {
-  padding: 25px 0;
+  padding: 10px 0;
 }
 @media only screen and (max-width: 767px) {
   .breadcrumb-area {
