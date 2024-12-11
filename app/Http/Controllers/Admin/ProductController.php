@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('permission:view product', ['only' => ['index']]);
         $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
         $this->middleware('permission:edit product', ['only' => ['index']]);
@@ -73,60 +74,6 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255',
-            'categories_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric|min:0',
-            'discount_price' => 'nullable|numeric|min:0|lte:price',
-            'stock_quantity' => 'required|integer|min:0',
-            'short_description' => 'nullable|string|max:500',
-            'description' => 'nullable|string',
-            'avata' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'variant_quantity.*.*' => 'required|integer|min:0',
-            'variant_price.*.*' => 'nullable|numeric|min:0',
-            'variant_discount_price.*.*' => 'nullable|numeric|min:0|lte:variant_price.*.*',
-            'variant_image.*.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ],
-    [
-        'name.required' => 'Tên không được để trống',
-        'name.string' => 'Tên phải là chuỗi',
-        'name.max' => 'Tên không vượt qua 255 ký tự',
-        'slug.string' => 'Slug phải là chuỗi',
-        'slug.max' => 'Slug không vượt qua 255 ký tự',
-        'categories_id.required' => 'Danh mục không được để trống',
-        'categories_id.exists' => 'Danh mục không tồn tại',
-        'price.required' => 'Giá không được để trống',
-        'price.numeric' => 'Giá phải là số',
-        'price.min' => 'Giá phải lớn hơn hoặc bằng 0',
-        'discount_price.numeric' => 'Giá khuyến mãi phải là số',
-        'discount_price.min' => 'Giá khuyến mãi phải lớn hơn hoặc bằng 0',
-        'discount_price.lte' => 'Giá khuyến mãi phải nhỏ hơn hoặc bằng giá gốc',
-        'stock_quantity.required' => 'Số lượng không được để trống',
-        'stock_quantity.integer' => 'Số lượng phải là số nguyên',
-        'stock_quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 0',
-        'short_description.string' => 'Mô tả ngắn phải là chuỗi',
-        'short_description.max' => 'Mô tả ngắn không vượt qua 500 ký tự',
-        'description.string' => 'Mô tả phải là chuỗi',
-        'avata.required' => 'Hình ảnh không được để trống',
-        'avata.image' => 'Ảnh đại diện phải là hình ảnh',
-        'avata.mimes' => 'Ảnh đại diện phải có định dạng jpeg, png, jpg, gif',
-        'avata.max' => 'Ảnh đại diện không vượt quá 2MB',
-        'images.*.image' => 'Hình ảnh phải là hình ảnh',
-        'images.*.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif',
-        'images.*.max' => 'Hình ảnh không vượt quá 2MB',
-        'variant_quantity.*.*.required' => 'Số lượng không được để trống',
-        'variant_quantity.*.*.integer' => 'Số lượng phải là số nguyên',
-        'variant_quantity.*.*.min' => 'Số lượng phải lớn hơn hoặc bằng 0',
-        'variant_price.*.*.numeric' => 'Giá phải là số',
-        'variant_price.*.*.min' => 'Giá phải lớn hơn hoặc bằng 0',
-        'variant_discount_price.*.*.lte' => 'Giá khuyến mãi phải nhỏ hơn hoặc bằng giá gốc',
-        'variant_discount_price.*.*.min' => 'Giá khuyến mãi phải lớn hơn hoặc bằng 0',
-        'variant_image.*.*.image' => 'Hình ảnh phải là hình ảnh',
-        'variant_image.*.*.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif',
-        'variant_image.*.*.max' => 'Hình ảnh không vượt quá 2MB',
-    ]);
         try {
             // Tìm sản phẩm theo ID
             $product = new products();
@@ -141,8 +88,8 @@ class ProductController extends Controller
             $product->description = $request->description;
             $product->is_show = $request->is_show ?? 1; // Hiển thị mặc định nếu không chọn
             $product->is_new = $request->has('is_new'); // True nếu checkbox được chọn
-            $product->is_hot = $request->has('is_hot'); 
-            
+            $product->is_hot = $request->has('is_hot');
+
             // Xử lý ảnh đại diện
             if ($request->hasFile('avata')) {
                 $product->avata = $request->file('avata')->store('products', 'public');
@@ -184,7 +131,7 @@ class ProductController extends Controller
                     }
                 }
             }
-            
+
             return redirect()->route('admin.products.index')->with('success', 'Thêm mới sản phẩm thành công!');
         } catch (\Exception $e) {
             Log::error('Error adding product: ' . $e->getMessage(), [
