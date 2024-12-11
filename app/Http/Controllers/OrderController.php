@@ -77,7 +77,7 @@ class OrderController extends Controller
             ));
         }
 
-        return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
+        return redirect()->route('checkout.thankyou')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
     }
 
     /**
@@ -93,7 +93,7 @@ class OrderController extends Controller
                 $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
                 $params['date_order'] = now(); // Lấy thời gian hiện tại
                 $params['status_donhang_id'] = 1; // Trạng thái đơn hàng mặc định là chờ xử lý
-
+                
                 // Tạo đơn hàng
                 $order = Order::query()->create($params);
                 $orderId = $order->id;

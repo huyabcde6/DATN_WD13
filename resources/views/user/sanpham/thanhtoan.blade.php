@@ -163,7 +163,11 @@
     </div>
 </div>
 <!-- Checkout Section End -->
-
+<div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9999; text-align: center; justify-content: center; align-items: center;">
+    <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
 <!-- Scroll Top Start -->
 <a href="#" class="scroll-top" id="scroll-top">
     <i class="arrow-top fa fa-long-arrow-up"></i>
@@ -174,19 +178,28 @@
 
 @section('js')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
-    const momoDescription = document.getElementById('momo-description');
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form');
+        const loadingOverlay = document.getElementById('loading-overlay');
 
-    paymentRadios.forEach(radio => {
-        radio.addEventListener('change', function () {
-            if (this.value === 'momo') {
-                momoDescription.classList.remove('d-none');
-            } else {
-                momoDescription.classList.add('d-none');
-            }
+        // Hiển thị loading overlay khi form submit
+        form.addEventListener('submit', function (e) {
+            loadingOverlay.style.display = 'flex';
+        });
+
+        const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+        const momoDescription = document.getElementById('momo-description');
+
+        paymentRadios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                if (this.value === 'momo') {
+                    momoDescription.classList.remove('d-none');
+                } else {
+                    momoDescription.classList.add('d-none');
+                }
+            });
         });
     });
-});
 </script>
 @endsection
+

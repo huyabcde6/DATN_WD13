@@ -107,12 +107,6 @@
                     </div>
                     <!-- Apply Coupon Wrapper End -->
 
-                    <!-- Cart Update Start -->
-                    <div class="cart-update mt-sm-16">
-                        <a href="#" class="btn btn-dark btn-hover-primary rounded-0">Cập nhật giỏ hàng</a>
-                    </div>
-                    <!-- Cart Update End -->
-
                 </div>
                 <!-- Cart Update Option End -->
 
