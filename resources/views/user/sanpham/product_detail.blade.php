@@ -62,7 +62,7 @@
                             <!-- Ảnh chính: Ban đầu hiển thị ảnh đại diện -->
                             <a id="main-image-link" class="swiper-slide h-auto"
                                 href="{{ url('storage/' . $product->avata) }}">
-                                <img id="main-image" class="w-100 h-100" src="{{ url('storage/' . $product->avata) }}"
+                                <img id="main-image"  src="{{ url('storage/' . $product->avata) }}"
                                     alt="Product">
                             </a>
 
@@ -93,7 +93,8 @@
                         <div class="swiper-wrapper">
                             @foreach($product->productImages as $image)
                             <div class="swiper-slide">
-                            <img src="{{ url('storage/' . $image->image_path) }}" alt="Product" style="max-height: auto;">
+                                <img src="{{ url('storage/' . $image->image_path) }}" alt="Product"
+                                    style="max-height: auto;">
 
                             </div>
                             @endforeach
@@ -130,41 +131,35 @@
                     <div class="price-box mb-2">
                         <!-- Kiểm tra xem sản phẩm có giá khuyến mãi (discount_price) không -->
                         @if($product->discount_price && $product->price)
-                            <span class="regular-price" id="current-price">
-                                {{ number_format($product->discount_price, 0, '', '.') }} đ
-                            </span>
-                            <span class="old-price">
-                                <del>{{ number_format($product->price, 0, '', '.') }} ₫</del>
-                            </span>
-                        @elseif($product->price) 
-                            <!-- Trường hợp không có giá khuyến mãi, chỉ hiển thị giá gốc -->
-                            <span class="regular-price" id="current-price">
-                                {{ number_format($product->price, 0, '', '.') }} đ
-                            </span>
-                            
+                        <span class="regular-price" id="current-price">
+                            {{ number_format($product->discount_price, 0, '', '.') }} đ
+                        </span>
+                        <span class="old-price">
+                            <del>{{ number_format($product->price, 0, '', '.') }} ₫</del>
+                        </span>
+                        @elseif($product->price)
+                        <!-- Trường hợp không có giá khuyến mãi, chỉ hiển thị giá gốc -->
+                        <span class="regular-price" id="current-price">
+                            {{ number_format($product->price, 0, '', '.') }} đ
+                        </span>
+
                         @endif
                     </div>
                     <!-- Price Box End -->
 
-                    <!-- Rating Start -->
-                    <span class="ratings justify-content-start">
-                        <span class="rating-wrap">
-                            <span class="star" style="width: 100%"></span>
-                        </span>
-                        <span class="rating-num">(4)</span>
-                    </span>
-                    <!-- Rating End -->
-
+                   
                     <!-- SKU Start -->
                     <div class="sku mb-3">
-                        <span id="current-sku">MÃ: {{ $product->productDetails->first()->product_code }}</span>
+                        <span id="current-sku">SKU: {{ $product->productDetails->first()->product_code }}</span>
                     </div>
 
                     <!-- SKU End -->
 
                     <!-- Stock Quantity Start -->
                     <div class="stock-quantity mb-3">
-                        <span id="current-stock">Số lượng: {{ $product->productDetails->first()->quantity }}</span>
+                        <span id="current-stock">
+                            Số lượng: <span id="stock-value">{{ $product->productDetails->sum('quantity') }}</span>
+                        </span>
                     </div>
 
                     <!-- Stock Quantity End -->
@@ -179,7 +174,8 @@
                             <span class="mt-3">Size: <span id="selected-size">Chưa chọn</span> </span></br>
                             @foreach ($sizes as $size)
                             <a href="#" class="size-option  " data-value="{{ $size->size_id }}">
-                                <strong class=" btn btn border border-dark mt-3 mb-3 px-2 py-2">{{ $size->value }}</strong>
+                                <strong
+                                    class=" btn btn border border-dark mt-3 mb-3 px-2 py-2">{{ $size->value }}</strong>
                             </a>
                             @endforeach
                         </div>
@@ -189,8 +185,9 @@
                         <div class="product-color">
                             <span>Color: <span id="selected-color-text">Chưa chọn</span></span></br>
                             @foreach ($colors as $color)
-                            <a href="#" class="color-option mb-3" data-value="{{ $color->color_id }}" data-color-name="{{ $color->value }}"
-                            style="background-color: {{ $color->value }}; display: inline-block; width: 30px; height: 30px; margin-right: 5px; margin-top: 10px; border-radius: 50%; border: 2px solid #000;">
+                            <a href="#" class="color-option mb-3" data-value="{{ $color->color_id }}"
+                                data-color-name="{{ $color->value }}"
+                                style="background-color: {{ $color->value }}; display: inline-block; width: 30px; height: 30px; margin-right: 5px; margin-top: 10px; border-radius: 50%; border: 2px solid #000;">
                             </a>
                             @endforeach
                         </div>
@@ -339,8 +336,9 @@
                         <!-- Shipping Policy Start -->
                         <div class="shipping-policy mb-n2">
                             <h4 class="title-3 mb-4">Chính sách vận chuyển của chúng tôi</h4>
-                            <p class="desc-content mb-2">Tại POLLY STORE, 
-                                chúng tôi cam kết mang đến trải nghiệm mua sắm thuận tiện và nhanh chóng cho quý khách hàng. 
+                            <p class="desc-content mb-2">Tại POLLY STORE,
+                                chúng tôi cam kết mang đến trải nghiệm mua sắm thuận tiện và nhanh chóng cho quý khách
+                                hàng.
                                 Chính sách vận chuyển của chúng tôi được thiết kế để đảm bảo sự hài lòng và tin tưởng.
                             </p>
                             <p class="desc-content mb-2">Các điều khoản vận chuyển:</p>
@@ -352,9 +350,10 @@
                                 <li>Theo dõi đơn hàng trực tuyến</li>
                                 <li>Đóng gói cẩn thận, chuyên nghiệp</li>
                             </ul>
-                            <p class="desc-content mb-2">Chúng tôi luôn nỗ lực để mang đến dịch vụ tốt nhất, 
+                            <p class="desc-content mb-2">Chúng tôi luôn nỗ lực để mang đến dịch vụ tốt nhất,
                                 đảm bảo sản phẩm đến tay khách hàng an toàn và nhanh chóng.</p>
-                            <p class="desc-content mb-2">Để biết thêm chi tiết, vui lòng liên hệ bộ phận chăm sóc khách hàng của chúng tôi.</p>
+                            <p class="desc-content mb-2">Để biết thêm chi tiết, vui lòng liên hệ bộ phận chăm sóc khách
+                                hàng của chúng tôi.</p>
                         </div>
                         <!-- Shipping Policy End -->
                     </div>
@@ -437,8 +436,7 @@
                                 <div class="product product-border-left" data-aos="fade-up" data-aos-delay="300">
                                     <div class="thumb">
                                         <a href="single-product.html" class="image">
-                                            <img class="image w-100 h-100"
-                                                src="{{ url('storage/' . $item->avata) }}"
+                                            <img class="image w-100 h-100" src="{{ url('storage/' . $item->avata) }}"
                                                 alt="Product" />
                                         </a>
                                         <div class="actions">
@@ -462,7 +460,8 @@
                                             <span class="new">$38.50</span>
                                             <span class="old">$42.85</span>
                                         </span>
-                                        <button class="btn btn-sm btn-outline-dark btn-hover-primary">Thêm vào giỏ</button>
+                                        <button class="btn btn-sm btn-outline-dark btn-hover-primary">Thêm vào
+                                            giỏ</button>
                                     </div>
                                 </div>
                                 <!-- Single Product End -->
@@ -513,173 +512,188 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-$(document).ready(function() {
-    var selectedSize = null;
-    var selectedColor = null;
-    var variantDetails = @json($productDetails); // Dữ liệu về các biến thể sản phẩm
+    $(document).ready(function() {
+        var selectedSize = null;
+        var selectedColor = null;
+        var variantDetails = @json($productDetails); // Dữ liệu về các biến thể sản phẩm
 
-    // Khi người dùng chọn kích thước
-    $('.size-option').on('click', function(event) {
-        event.preventDefault();
-        selectedSize = $(this).data('value');
-        
-        // Hiển thị size đã chọn
-        $('#selected-size').text($(this).text());
+        // Hiển thị tổng số lượng ban đầu
+        const totalStock = variantDetails.reduce((sum, variant) => sum + variant.quantity, 0);
+        $('#current-stock').text(`Số lượng: ${totalStock}`);
 
-        $('.size-option').removeClass('active');
-        $(this).addClass('active');
-        updateColorAvailability(); // Cập nhật khả dụng của màu
-        updateVariantDetails();
-    });
+        // Khi người dùng chọn kích thước
+        $('.size-option').on('click', function(event) {
+            event.preventDefault();
+            selectedSize = $(this).data('value');
 
-    // Khi người dùng chọn màu sắc
-    $('.color-option').on('click', function(event) {
-        event.preventDefault();
-        if ($(this).hasClass('unavailable')) {
-            return; // Không cho phép chọn màu không khả dụng
-        }
-        selectedColor = $(this).data('value');
-        $('#selected-color').val(selectedColor);
-        const colorName = $(this).data('color-name'); // Lấy tên màu từ data attribute
-        $('#selected-color-text').text(colorName); // Cập nhật tên màu đã chọn
-        $('.color-option').removeClass('active');
-        $(this).addClass('active');
-        updateSizeAvailability(); // Cập nhật khả dụng của size
-        updateVariantDetails();
-    });
+            // Hiển thị size đã chọn
+            $('#selected-size').text($(this).text());
 
-    // Cập nhật khả dụng của các tùy chọn màu dựa trên size đã chọn
-    function updateColorAvailability() {
-        $('.color-option').each(function() {
-            var colorId = $(this).data('value');
-            var isAvailable = variantDetails.some(v => v.color_id == colorId && v.size_id == selectedSize && v.quantity > 0);
-            if (isAvailable) {
-                $(this).removeClass('unavailable').css({ opacity: 1, textDecoration: 'none' });
-            } else {
-                $(this).addClass('unavailable').css({ opacity: 0.5, textDecoration: 'line-through' });
-            }
+            $('.size-option').removeClass('active');
+            $(this).addClass('active');
+            updateAvailability(); // Cập nhật khả dụng của màu và size
+            updateVariantDetails(); // Cập nhật thông tin biến thể
         });
-    }
 
-    // Cập nhật khả dụng của các tùy chọn size dựa trên màu đã chọn
-    function updateSizeAvailability() {
-        $('.size-option').each(function() {
-            var sizeId = $(this).data('value');
-            var isAvailable = variantDetails.some(v => v.size_id == sizeId && v.color_id == selectedColor && v.quantity > 0);
-            if (isAvailable) {
-                $(this).removeClass('unavailable').css({ opacity: 1, textDecoration: 'none' });
-            } else {
-                $(this).addClass('unavailable').css({ opacity: 0.5, textDecoration: 'line-through' });
+        // Khi người dùng chọn màu sắc
+        $('.color-option').on('click', function(event) {
+            event.preventDefault();
+            if ($(this).hasClass('unavailable')) {
+                return; // Không cho phép chọn màu không khả dụng
             }
+            selectedColor = $(this).data('value');
+            $('#selected-color').val(selectedColor);
+            const colorName = $(this).data('color-name'); // Lấy tên màu từ data attribute
+            $('#selected-color-text').text(colorName); // Cập nhật tên màu đã chọn
+            $('.color-option').removeClass('active');
+            $(this).addClass('active');
+            updateAvailability(); // Cập nhật khả dụng của màu và size
+            updateVariantDetails(); // Cập nhật thông tin biến thể
         });
-    }
 
-    // Cập nhật thông tin chi tiết biến thể (giá, SKU, số lượng tồn kho)
-    function updateVariantDetails() {
-        if (selectedColor && selectedSize) {
-            const variant = variantDetails.find(v => v.color_id == selectedColor && v.size_id == selectedSize);
-            if (variant) {
-                $('#current-price').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(variant.discount_price));
-                $('#current-sku').text(`SKU: ${variant.product_code}`);
-                $('#current-stock').text(`In Stock: ${variant.quantity}`);
-                $('#product-quantity').attr('max', variant.quantity);
-
-                if (variant.image) {
-                    $('#main-image').attr('src', `/storage/${variant.image}`);
-                    $('#main-image-link').attr('href', `/storage/${variant.image}`);
-                }
-            }
+        // Hàm kiểm tra khả dụng của một biến thể
+        function isVariantAvailable(sizeId, colorId) {
+            return variantDetails.some(v => v.size_id == sizeId && v.color_id == colorId && v.quantity > 0);
         }
-    }
 
-    // Điều chỉnh số lượng sản phẩm
-    $('.inc.qtybutton').on('click', function() {
-        var currentQuantity = parseInt($('#product-quantity').val());
-        var maxQuantity = parseInt($('#product-quantity').attr('max'));
-        if (currentQuantity < maxQuantity) {
-            $('#product-quantity').val(currentQuantity + 1);
-        }
-    });
-
-    $('.dec.qtybutton').on('click', function() {
-        var currentQuantity = parseInt($('#product-quantity').val());
-        if (currentQuantity > 1) {
-            $('#product-quantity').val(currentQuantity - 1);
-        }
-    });
-
-    $('#product-quantity').on('input', function() {
-        this.value = this.value.replace(/[^0-9]/g, '');
-        var maxQuantity = parseInt($(this).attr('max'));
-        if (this.value > maxQuantity) {
-            this.value = maxQuantity;
-        } else if (this.value < 1) {
-            this.value = 1;
-        }
-    });
-
-    // Thêm sản phẩm vào giỏ hàng
-    $('#add-to-cart-button').on('click', function(event) {
-        event.preventDefault();
-        if (!selectedSize || !selectedColor) {
-            Swal.fire({
-                title: 'Thông báo',
-                text: 'Vui lòng chọn cả kích thước và màu sắc trước khi thêm vào giỏ hàng.',
-                icon: 'warning'
+        // Cập nhật khả dụng của các tùy chọn
+        function updateAvailability() {
+            // Cập nhật khả dụng của màu
+            $('.color-option').each(function() {
+                const colorId = $(this).data('value');
+                const isAvailable = variantDetails.some(v => v.color_id == colorId && (!selectedSize || v.size_id == selectedSize) && v.quantity > 0);
+                toggleAvailability($(this), isAvailable);
             });
-            return;
+
+            // Cập nhật khả dụng của size
+            $('.size-option').each(function() {
+                const sizeId = $(this).data('value');
+                const isAvailable = variantDetails.some(v => v.size_id == sizeId && (!selectedColor || v.color_id == selectedColor) && v.quantity > 0);
+                toggleAvailability($(this), isAvailable);
+            });
         }
-        $(this).prop('disabled', true).text('Đang thêm...');
-        $.ajax({
-            url: '{{ route("cart.add") }}',
-            method: 'POST',
-            data: {
-                products_id: $('input[name="products_id"]').val(),
-                quantity: $('#product-quantity').val(),
-                size: selectedSize,
-                color: selectedColor,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    $('.total-amount').text(response.total_price + ' $');
-                    updateCartCount();
-                    Swal.fire({
-                        title: 'Thành công',
-                        text: response.message,
-                        icon: 'success'
-                    });
+
+        // Hàm thay đổi trạng thái khả dụng
+        function toggleAvailability(element, isAvailable) {
+            if (isAvailable) {
+                element.removeClass('unavailable').css({ opacity: 1, textDecoration: 'none' });
+            } else {
+                element.addClass('unavailable').css({ opacity: 0.5, textDecoration: 'line-through' });
+            }
+        }
+
+        // Cập nhật thông tin chi tiết biến thể (giá, SKU, số lượng tồn kho)
+        function updateVariantDetails() {
+            if (selectedColor && selectedSize) {
+                // Nếu đã chọn cả màu và size
+                const variant = variantDetails.find(v => v.color_id == selectedColor && v.size_id == selectedSize);
+                if (variant) {
+                    $('#current-price').text(new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    }).format(variant.discount_price));
+                    $('#current-sku').text(`SKU: ${variant.product_code}`);
+                    $('#current-stock').text(`Số lượng: ${variant.quantity}`);
+                    $('#product-quantity').attr('max', variant.quantity);
+
+                    if (variant.image) {
+                        $('#main-image').attr('src', `/storage/${variant.image}`);
+                        $('#main-image-link').attr('href', `/storage/${variant.image}`);
+                    }
+                } else {
+                    // Nếu không tìm thấy biến thể
+                    $('#current-stock').text('Không khả dụng');
                 }
-            },
-            error: function(xhr) {
-                var errorMessage = xhr.responseJSON.message || 'Có lỗi xảy ra, vui lòng thử lại.';
+            } else {
+                // Nếu chưa chọn đủ biến thể, hiển thị tổng số lượng
+                const totalStock = variantDetails.reduce((sum, variant) => sum + variant.quantity, 0);
+                $('#current-stock').text(`Số lượng: ${totalStock}`);
+            }
+        }
+
+        // Điều chỉnh số lượng sản phẩm
+        $('.inc.qtybutton').on('click', function() {
+            var currentQuantity = parseInt($('#product-quantity').val());
+            var maxQuantity = parseInt($('#product-quantity').attr('max'));
+            if (currentQuantity < maxQuantity) {
+                $('#product-quantity').val(currentQuantity + 1);
+            }
+        });
+
+        $('.dec.qtybutton').on('click', function() {
+            var currentQuantity = parseInt($('#product-quantity').val());
+            if (currentQuantity > 1) {
+                $('#product-quantity').val(currentQuantity - 1);
+            }
+        });
+
+        $('#product-quantity').on('input', function() {
+            let quantity = parseInt(this.value) || 1;
+            const maxQuantity = parseInt($(this).attr('max'));
+            this.value = Math.min(Math.max(quantity, 1), maxQuantity);
+        });
+
+        // Thêm sản phẩm vào giỏ hàng
+        $('#add-to-cart-button').on('click', function(event) {
+            event.preventDefault();
+            if (!selectedSize || !selectedColor) {
                 Swal.fire({
-                    title: 'Lỗi',
-                    text: errorMessage,
-                    icon: 'error'
+                    title: 'Thông báo',
+                    text: 'Vui lòng chọn cả kích thước và màu sắc trước khi thêm vào giỏ hàng.',
+                    icon: 'warning'
                 });
-            },
-            complete: function() {
-                $('#add-to-cart-button').prop('disabled', false).text('Thêm vào giỏ hàng');
+                return;
             }
+            $(this).prop('disabled', true).text('Đang thêm...');
+            $.ajax({
+                url: '{{ route("cart.add") }}',
+                method: 'POST',
+                data: {
+                    products_id: $('input[name="products_id"]').val(),
+                    quantity: $('#product-quantity').val(),
+                    size: selectedSize,
+                    color: selectedColor,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        $('.total-amount').text(response.total_price + ' $');
+                        updateCartCount();
+                        Swal.fire({
+                            title: 'Thành công',
+                            text: response.message,
+                            icon: 'success'
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    var errorMessage = xhr.responseJSON.message || 'Có lỗi xảy ra, vui lòng thử lại.';
+                    Swal.fire({
+                        title: 'Lỗi',
+                        text: errorMessage,
+                        icon: 'error'
+                    });
+                },
+                complete: function() {
+                    $('#add-to-cart-button').prop('disabled', false).text('Thêm vào giỏ hàng');
+                }
+            });
         });
+
+        // Hàm để cập nhật số lượng sản phẩm trong giỏ hàng
+        function updateCartCount() {
+            $.ajax({
+                url: '{{ route("cart.count") }}',
+                method: 'GET',
+                success: function(data) {
+                    $('.header-action-num').text(data.count);
+                },
+                error: function(xhr) {
+                    console.error('Có lỗi xảy ra khi cập nhật số lượng giỏ hàng.', xhr);
+                }
+            });
+        }
     });
-
-    // Hàm để cập nhật số lượng sản phẩm trong giỏ hàng
-    function updateCartCount() {
-        $.ajax({
-            url: '{{ route("cart.count") }}',
-            method: 'GET',
-            success: function(data) {
-                $('.header-action-num').text(data.count);
-            },
-            error: function(xhr) {
-                console.error('Có lỗi xảy ra khi cập nhật số lượng giỏ hàng.', xhr);
-            }
-        });
-    }
-
-});
 
 </script>
 

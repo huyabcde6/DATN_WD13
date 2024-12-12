@@ -35,12 +35,12 @@ class BannerController extends Controller
         $dataBanner = [
             "title"         => $request->title,
             "image_path"    => $request->image_path,
-            "description"   => $request->description,  
-            "order"         => $request->order,      
+            "description"   => $request->description,
+            "order"         => $request->order,
         ];
 
         if($request->hasFile('image_path')) {
-            $dataBanner['image_path'] = Storage::put('banners', $request->file('image_path'));    
+            $dataBanner['image_path'] = Storage::put('banners', $request->file('image_path'));
         }
 
         $banner = banner::query()->create($dataBanner);
@@ -72,18 +72,18 @@ class BannerController extends Controller
         $dataBanner = [
             "title"         => $request->title,
             "image_path"    => $request->image_path,
-            "description"   => $request->description,  
-            "order"         => $request->order,      
+            "description"   => $request->description,
+            "order"         => $request->order,
         ];
 
         if($request->hasFile('image_path')) {
-            $dataBanner['image_path'] = Storage::put('banners', $request->file('image_path'));    
+            $dataBanner['image_path'] = Storage::put('banners', $request->file('image_path'));
         }
 
             $currentPathImage = $banner->image_path;
-            
+
             $banner->update($dataBanner);
-        
+
 
         if($request->hasFile('image_path') && Storage::exists($currentPathImage)) {
             Storage::delete($currentPathImage);

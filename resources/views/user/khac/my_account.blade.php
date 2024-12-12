@@ -1,4 +1,52 @@
 @extends('layouts.home')
+@section('css')
+<style>
+.filter-link {
+    position: relative;
+    /* Đảm bảo dải màu đỏ sẽ hiển thị đúng dưới liên kết */
+    padding-bottom: 2px;
+    /* Thêm một chút khoảng cách dưới để dải màu đỏ không bị dính vào chữ */
+    text-decoration: none;
+    /* Loại bỏ gạch dưới mặc định */
+}
+
+.filter-link::after {
+    content: '';
+    /* Không có nội dung */
+    position: absolute;
+    /* Đặt dải màu dưới */
+    left: 0;
+    /* Căn trái */
+    right: 0;
+    /* Căn phải */
+    bottom: 0;
+    /* Căn dưới */
+    height: 2px;
+    /* Dải màu có chiều cao 2px */
+    background-color: red;
+    /* Màu đỏ */
+    transform: scaleX(0);
+    /* Ẩn dải màu ban đầu */
+    transform-origin: bottom right;
+    /* Đặt điểm gốc của hiệu ứng là phía dưới bên phải */
+    transition: transform 0.3s ease;
+    /* Hiệu ứng chuyển động mượt mà */
+}
+
+.filter-link:hover::after {
+    transform: scaleX(1);
+    /* Khi hover, dải màu đỏ sẽ hiển thị */
+    transform-origin: bottom left;
+    /* Thay đổi điểm gốc khi hover */
+}
+
+#loading p {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+}
+</style>
+@endsection
 
 @section('content')
 <!-- Breadcrumb Section Start -->
@@ -24,9 +72,19 @@
 <!-- Breadcrumb Section End -->
 
 <!-- My Account Section Start -->
-<div class="section section-margin">
+<div class="section mt-4 mb-5">
     <div class="container">
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
 
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
         <div class="row">
             <div class="col-lg-12">
 
@@ -37,7 +95,7 @@
                         <div class="col-lg-3 col-md-4">
                             <div class="myaccount-tab-menu nav" role="tablist">
                                 <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
-                                    Trang chủ</a>
+                                Trang chủ</a>
                                 <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Đơn hàng</a>
                                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i>Chi tiết tài khoản </a>
                                 <a class='dropdown-item notify-item' href="{{ route('logout') }}"
@@ -45,7 +103,8 @@
                                     <i class="mdi mdi-location-exit fs-16 align-middle"></i>
                                     <span>Đăng xuất</span>
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
                                     @csrf
                                 </form>
                             </div>
@@ -68,109 +127,54 @@
                                         </p>
                                     </div>
                                 </div>
-                                <!-- Single Tab Content End -->
 
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="orders" role="tabpanel">
+                                    <div class="d-flex justify-content-evenly mb-3 fs-12">
+                                        <a class="mx-1 filter-link active" data-status="all" href="#">Tất cả</a>
+                                        <a class="mx-1 filter-link" data-status="1" href="#">Chờ xác nhận</a>
+                                        <a class="mx-1 filter-link" data-status="2" href="#">Đã xác nhận</a>
+                                        <a class="mx-1 filter-link" data-status="3" href="#">Vận chuyển</a>
+                                        <a class="mx-1 filter-link" data-status="4" href="#">Đã giao hàng</a>
+                                        <a class="mx-1 filter-link" data-status="5" href="#">Hoàn thành</a>
+                                        <a class="mx-1 filter-link" data-status="7" href="#">Đã hủy</a>
+                                        <a class="mx-1 filter-link" data-status="6,8" href="#">Chờ/Hoàn hàng</a>
+                                    </div>
+                                    <div class="myaccount-content" id="orders-container">
+                                        @include('user.khac.partials.orders')
+                                        <!-- Hiển thị danh sách đơn hàng ban đầu -->
+                                    </div>
+                                    <div id="loading" class="text-center my-3" style="display: none;">
+                                        <p>Đang tải...</p>
+                                    </div>
+                                </div>
+                                <!-- Single Tab Content Start -->
+                                <div class="tab-pane fade" id="address-edit" role="tabpanel">
                                     <div class="myaccount-content">
-                                        <h3 class="title">Orders</h3>
-                                        <div class="myaccount-table table-responsive text-center">
-                                            @foreach($orders as $order)
-                                            <div class="container">
-                                                <div class="card mb-3">
-                                                    <div class="col-lg-12 mb-5">
-                                                        <div class="row mx-3 my-3">
-                                                            <!-- Thẻ thông tin đơn hàng -->
-                                                            <div class="d-flex  justify-content-between">
-                                                                <h4 class="text-center">Mã đơn: <span
-                                                                        class="text-danger">{{ $order->order_code }}</span>
-                                                                </h4>
-                                                                <h5 class="text-center mx-3">
-                                                                    {{ $order->status->type ?? 'N/A' }}
-                                                                </h5>
-
-                                                            </div>
-                                                            <div class="d-flex  justify-content-start">
-                                                                <p><strong>Ngày đặt:</strong>
-                                                                    {{ $order->created_at->format('d-m-Y') }}</p>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Bảng thông tin chi tiết đơn hàng -->
-                                                        @foreach($order->orderDetails as $detail)
-                                                        <div class="card-body border my-3">
-                                                            <div
-                                                                class="container d-flex justify-content-start align-items-center">
-                                                                <!-- Hình ảnh sản phẩm -->
-                                                                <div class="me-3">
-                                                                    <img src="{{ url('storage/'. $detail->products->avata) }}"
-                                                                        alt="{{ $detail->products->name }}"
-                                                                        class="img-fluid"
-                                                                        style="max-width: 100px; height: auto;">
-                                                                </div>
-
-                                                                <!-- Thông tin sản phẩm -->
-                                                                <div class="w-75">
-                                                                    <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong>
-                                                                        {{ $detail->products->name }}</h6>
-                                                                    <p class="mb-0 mx-3 text-muted text-start"><strong>Loại:</strong>
-                                                                        {{ $detail->color }} / {{ $detail->size }}</p>
-
-                                                                        <p class="mb-0 mx-3 text-start"><strong>Số lượng:</strong>
-                                                                            {{ $detail->quantity }}</p>
-                                                                        <p class="mb-0  mx-3 text-start"><strong>Giá:</strong>
-                                                                            {{ number_format($detail->price, 0, '', ',') }}₫
-                                                                        </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        @endforeach
-                                                        <div class="d-flex justify-content-end mx-3 mb-5">
-                                                            <h6><strong>Tổng
-                                                                    tiền:</strong>
-                                                                {{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 0, '', ',') }}₫
-                                                            </h6>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <a href="{{ route('orders.show', $order->id) }}"
-                                                                class="btn btn-dark mx-5 padding-bottom:-20px; ">Chi
-                                                                tiết</a>
-                                                            <form action="{{ route('orders.update', $order->id) }}"
-                                                                method="POST"
-                                                                style="display:inline; padding-top: 20px; ">
-                                                                @csrf
-                                                                @method('POST')
-
-                                                                @if($order->status->type ===
-                                                                \App\Models\StatusDonHang::CHO_XAC_NHAN)
-                                                                <!-- Nếu trạng thái là 'Chờ xác nhận' -->
-                                                                <input type="hidden" name="huy_don_hang" value="1">
-                                                                <button type="submit" class="btn btn-primary mx-3"
-                                                                    onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">
-                                                                    Hủy đơn hàng
-                                                                </button>
-                                                                @elseif($order->status->type ===
-                                                                \App\Models\StatusDonHang::DANG_VAN_CHUYEN)
-                                                                <!-- Nếu trạng thái là 'Đang vận chuyển' -->
-                                                                <input type="hidden" name="da_giao_hang" value="3">
-                                                                <button type="submit" class="btn btn-success mx-3"
-                                                                    onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
-                                                                    Đã nhận hàng
-                                                                </button>
-                                                                @endif
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endforeach
-                                        </div>
+                                        <h3 class="title">Billing Address</h3>
+                                        <address>
+                                            <p><strong>Alex Aya</strong></p>
+                                            <p>1234 Market ##, Suite 900 <br>
+                                                Lorem Ipsum, ## 12345</p>
+                                            <p>Mobile: (123) 123-456789</p>
+                                        </address>
+                                        <a href="#" class="btn btn btn-dark btn-hover-primary rounded-0"><i
+                                                class="fa fa-edit me-2"></i>Edit Address</a>
                                     </div>
                                 </div>
                                 <!-- Single Tab Content End -->
-
+                                <div class="tab-pane fade " id="dashboad" role="tabpanel">
+                                    <div class="myaccount-content">
+                                        <h3 class="title">Dashboard</h3>
+                                        <div class="welcome">
+                                            <p>Hello, <strong>Alex Aya</strong> (If Not <strong>Aya !</strong><a
+                                                    href="login-register.html" class="logout"> Logout</a>)</p>
+                                        </div>
+                                        <p class="mb-0">From your account dashboard. you can easily check & view your
+                                            recent orders, manage your shipping and billing addresses and edit your
+                                            password and account details.</p>
+                                    </div>
+                                </div>
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="account-info" role="tabpanel">
                                     <div class="myaccount-content">
@@ -223,6 +227,67 @@
     <i class="arrow-top fa fa-long-arrow-up"></i>
     <i class="arrow-bottom fa fa-long-arrow-up"></i>
 </a>
+
 <!-- Scroll Top End -->
 @vite('resources/js/public.js');
+@endsection
+@section('js')
+<script>
+let page = 1;
+let isLoading = false;
+let currentStatus = 'all'; // Trạng thái mặc định là "Tất cả"
+
+window.addEventListener('scroll', function() {
+    if (isLoading) return;
+
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = window.scrollY;
+    if (scrollable - scrolled <= 100) {
+        loadMoreOrders();
+    }
+});
+
+document.querySelectorAll('.filter-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Đặt lại trạng thái lọc
+        document.querySelectorAll('.filter-link').forEach(link => link.classList.remove('active'));
+        this.classList.add('active');
+
+        // Cập nhật trạng thái hiện tại
+        currentStatus = this.getAttribute('data-status');
+        page = 1; // Reset về trang đầu tiên
+
+        // Xóa danh sách hiện tại và tải lại
+        document.getElementById('orders-container').innerHTML = '';
+        loadMoreOrders();
+    });
+});
+
+function loadMoreOrders() {
+    isLoading = true;
+    document.getElementById('loading').style.display = 'block';
+
+    fetch(`{{ route('orders.index') }}?page=${page}&status=${currentStatus}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            const container = document.getElementById('orders-container');
+            if (page === 1) container.innerHTML = ''; // Xóa nội dung cũ nếu là trang đầu
+            container.insertAdjacentHTML('beforeend', html); // Chèn thêm dữ liệu vào container
+            page++; // Tăng số trang
+            isLoading = false;
+            document.getElementById('loading').style.display = 'none';
+        })
+        .catch(error => {
+            console.error(error);
+            isLoading = false;
+            document.getElementById('loading').style.display = 'none';
+        });
+}
+</script>
 @endsection
