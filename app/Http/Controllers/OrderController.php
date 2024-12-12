@@ -199,9 +199,10 @@ class OrderController extends Controller
         $vnp_ResponseCode = $request->input('vnp_ResponseCode');
         $vnp_TxnRef = $request->input('vnp_TxnRef');
 
+        $order = Order::where('order_code', $vnp_TxnRef)->first();
+
         if ($vnp_ResponseCode == '00') {
             // Thanh toán thành công
-            $order = Order::where('order_code', $vnp_TxnRef)->first();
             if ($order) {
                 $order->update([
                     'payment_status' => 'đã thanh toán',
@@ -209,9 +210,16 @@ class OrderController extends Controller
                 ]);
                 return redirect()->route('orders.index')->with('success', 'Thanh toán thành công.');
             }
+        } else {
+            // Thanh toán thất bại hoặc bị hủy
+            if ($order) {
+                $order->update([
+                    'payment_status' => 'thất bại',
+                    'method' => 'momo'
+                ]);
+            }
+            return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
         }
-
-        return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
     }
 
     /**

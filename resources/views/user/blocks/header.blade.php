@@ -28,12 +28,13 @@
     <!-- Main Style CSS -->
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/loading.css') }}" />
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
 
 <body>
+    <div class="loader" style="display: none;"></div>
     <div class="header section">
-
         <!-- Header Bottom Start -->
         <div class="header-bottom">
             <div class="header-sticky">
