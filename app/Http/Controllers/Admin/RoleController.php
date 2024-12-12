@@ -1,17 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\RoleRequet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
+
 class RoleController extends Controller
 {
-    public function index()
+    public function __construct(){
+        $this->middleware('permission:view role', ['only' => ['index']]);
+        $this->middleware('permission:create role', ['only' => ['create', 'store', 'addPermissionToRole', 'givePermissionToRole']]);
+        $this->middleware('permission:edit role', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete role', ['only' => ['destroy']]);
+    }
+
+    public function index(Request $request)
     {
-        $roles = Role::get();
+        $query = Role::query();
+
+        // Tìm kiếm theo tên vai trò
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Sắp xếp theo cột
+        if ($request->has('sort') && $request->has('direction')) {
+            $query->orderBy($request->sort, $request->direction);
+        }
+
+        $roles = $query->paginate(10); // Phân trang 10 bản ghi mỗi trang
+
         return view('role-permission.role.index', compact('roles'));
     }
 
@@ -20,15 +43,8 @@ class RoleController extends Controller
         return view('role-permission.role.create');
     }
 
-    public function store(Request $request)
+    public function store(RoleRequet $request)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:roles,name'
-            ]
-        ]);
 
         Role::create([
             'name' => $request->name
@@ -42,16 +58,8 @@ class RoleController extends Controller
         return view('role-permission.role.edit', compact('role'));
     }
 
-    public function update(Request $request, Role $role)
+    public function update(RoleRequet $request, Role $role)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:roles,name,' . $role->id
-            ]
-        ]);
-
         $role ->update([
             'name' => $request->name
         ]);

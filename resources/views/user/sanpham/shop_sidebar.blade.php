@@ -37,7 +37,7 @@
                     <!-- Shop Top Bar Left start -->
                     <div class="shop-top-bar-left mb-md-0 mb-2">
                         <div class="shop-top-show">
-                            <span>Showing 1–12 of 39 results</span>
+                            <span>Hiển thị 1–12 trong 39 kết quả</span>
                         </div>
                     </div>
                     <!-- Shop Top Bar Left end -->
@@ -46,22 +46,21 @@
                     <div class="shop-top-bar-right">
                         <div class="shop-short-by mr-4">
                             <select class="nice-select" aria-label=".form-select-sm example">
-                                <option selected>Show 24</option>
-                                <option value="1">Show 24</option>
-                                <option value="2">Show 12</option>
-                                <option value="3">Show 15</option>
-                                <option value="3">Show 30</option>
+                                <option selected>Hiển thị 24</option>
+                                <option value="1">Hiển thị 24</option>
+                                <option value="2">Hiển thị 12</option>
+                                <option value="3">Hiển thị 15</option>
+                                <option value="3">Hiển thị 30</option>
                             </select>
                         </div>
 
                         <div class="shop-short-by mr-4">
                             <select class="nice-select" aria-label=".form-select-sm example">
-                                <option selected>Short by Default</option>
-                                <option value="1">Short by Popularity</option>
-                                <option value="2">Short by Rated</option>
-                                <option value="3">Short by Latest</option>
-                                <option value="3">Short by Price</option>
-                                <option value="3">Short by Price</option>
+                                <option selected>Sắp xếp mặc định</option>
+                                <option value="1">Sản phẩm hot</option>
+                                <option value="2">Sắp xếp theo hạng</option>
+                                <option value="3">Sản phẩm mới nhất</option>
+                                <option value="3">Sắp xếp theo giá</option>
                             </select>
                         </div>
 
@@ -87,7 +86,7 @@
                             <div class="thumb">
                                 <a href="{{ route('product.show', $product->slug) }}" class="image">
                                     <img class="image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
-                                        width="200" height="auto" />
+                                        width="auto" height="auto" />
                                 </a>
                                 <div class="actions">
                                     <a href="wishlist.html" title="Wishlist" class="action wishlist"><i
@@ -99,25 +98,20 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <h4 class="sub-title"><a href="single-product.html">{{ $product->categories->name }}</a>
+                                <h4 class="sub-title">{{ $product->categories->name }}
                                 </h4>
                                 <h5 class="title"><a
                                         href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h5>
-                                <span class="ratings">
-                                    <span class="rating-wrap">
-                                        <span class="star" style="width: 100%"></span>
-                                    </span>
-                                    <span class="rating-num">(4)</span>
-                                </span>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae
                                     arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla
                                     tempus.</p>
-                                    <span class="price">
+                                <span class="price">
                                     @if ($product->discount_price)
-                                        <span class="new">{{ number_format($product->discount_price, 0, '', '.') }} ₫</span>&nbsp;&nbsp;
-                                        <span class="old">{{ number_format($product->price, 0, '', '.') }} ₫</span>
+                                    <span class="new">{{ number_format($product->discount_price, 0, '', '.') }}
+                                        ₫</span>&nbsp;&nbsp;
+                                    <span class="old">{{ number_format($product->price, 0, '', '.') }} ₫</span>
                                     @else
-                                        <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
+                                    <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
                                     @endif
                                 </span>
 
@@ -125,8 +119,8 @@
                                     <a title="Wishlist" href="#"
                                         class="btn btn-sm btn-outline-dark btn-hover-primary wishlist"><i
                                             class="fa fa-heart"></i></a>
-                                    <button class="btn btn-sm btn-outline-dark btn-hover-primary"
-                                        title="Add To Cart">Add To Cart</button>
+                                    <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"
+                                        title="Add To Cart"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
                                     <a title="Compare" href="#"
                                         class="btn btn-sm btn-outline-dark btn-hover-primary compare"><i
                                             class="fa fa-random"></i></a>
@@ -146,11 +140,11 @@
                     <div class="shop-top-bar-left">
                         <div class="shop-short-by mr-4">
                             <select class="nice-select rounded-0" aria-label=".form-select-sm example">
-                                <option selected>Show 12 Per Page</option>
-                                <option value="1">Show 12 Per Page</option>
-                                <option value="2">Show 24 Per Page</option>
-                                <option value="3">Show 15 Per Page</option>
-                                <option value="3">Show 30 Per Page</option>
+                                <option selected>Hiển thị 12 mỗi trang</option>
+                                <option value="1">Hiển thị 12 mỗi trang</option>
+                                <option value="2">Hiển thị 24 mỗi trang</option>
+                                <option value="3">Hiển thị 15 mỗi trang</option>
+                                <option value="3">Hiển thị 30 mỗi trang</option>
                             </select>
                         </div>
                     </div>
@@ -187,224 +181,96 @@
                 <aside class="sidebar_widget mt-10 mt-lg-0">
                     <div class="widget_inner" data-aos="fade-up" data-aos-delay="200">
                         <div class="widget-list mb-10">
-                            <h3 class="widget-title mb-4">Search</h3>
-                            <div class="search-box">
-                                <input type="text" class="form-control" placeholder="Search Our Store"
-                                    aria-label="Search Our Store">
-                                <button class="btn btn-dark btn-hover-primary" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
+                            <h3 class="widget-title mb-4">Tìm kiếm</h3>
+
+                            <form action="{{ route('shop.index') }}" method="GET">
+                                <div class="search-box">
+                                    <input type="text" name="keyword" class="form-control"
+                                        placeholder="Nhập từ khóa cần tìm">
+                                    <button class="btn btn-dark btn-hover-primary" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+
                         </div>
                         <div class="widget-list mb-10">
-                            <h3 class="widget-title mb-4">Menu Categories</h3>
-                            <!-- Widget Menu Start -->
+                            <h3 class="widget-title mb-4">Danh mục</h3>
                             <nav>
                                 <ul class="category-menu mb-n3">
+                                    @foreach ($categories as $category)
                                     <li class="menu-item-has-children pb-4">
-                                        <a href="#">Women <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">Natural Cosmetic</a></li>
-                                            <li><a href="#">Woven Fashion Tops</a></li>
-                                            <li><a href="#">Knitted Fabrics</a></li>
-                                            <li><a href="#">Smart Watch</a></li>
-                                            <li><a href="#">Handmade Bag</a></li>
-                                        </ul>
+                                        <a href="{{ route('shop.index', ['category' => $category->id]) }}">
+                                            {{ $category->name }}
+                                        </a>
                                     </li>
-                                    <li class="menu-item-has-children pb-4">
-                                        <a href="#">Men <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">Sunglasses</a></li>
-                                            <li><a href="#">Belt and Wallet</a></li>
-                                            <li><a href="#">Lather Shoe</a></li>
-                                            <li><a href="#">Corporate Pant and Shirt</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children pb-4">
-                                        <a href="#">Kids <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">Kids Fashion</a></li>
-                                            <li><a href="#">Kids Toy</a></li>
-                                            <li><a href="#">Playground</a></li>
-                                            <li><a href="#">Video Games</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children pb-4">
-                                        <a href="#">Fashion <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">World Famous Fashion</a></li>
-                                            <li><a href="#">Champion Beauty</a></li>
-                                            <li><a href="#">Fashion of Nation</a></li>
-                                            <li><a href="#">Classic Looks</a></li>
-                                            <li><a href="#">Eye Fashion</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children pb-4">
-                                        <a href="#">Others <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">Winter Collection</a></li>
-                                            <li><a href="#">Sun Protection</a></li>
-                                            <li><a href="#">Water Resistant</a></li>
-                                        </ul>
-                                    </li>
+                                    @endforeach
                                 </ul>
                             </nav>
-                            <!-- Widget Menu End -->
                         </div>
+
                         <div class="widget-list mb-10">
-                            <h3 class="widget-title mb-5">Price Filter</h3>
-                            <!-- Widget Menu Start -->
-                            <form action="#">
+                            <h3 class="widget-title mb-5">Bộ lọc giá</h3>
+                            <form action="{{ route('shop.index') }}" method="GET">
                                 <div id="slider-range"></div>
-                                <button class="slider-range-submit" type="submit">Filter</button>
-                                <input class="slider-range-amount" type="text" name="text" id="amount" />
+                                <input type="hidden" name="min_price" id="min_price" value="{{ $priceRange['min'] }}">
+                                <input type="hidden" name="max_price" id="max_price" value="{{ $priceRange['max'] }}">
+                                <button class="slider-range-submit" type="submit">Lọc</button>
+
                             </form>
-                            <!-- Widget Menu End -->
                         </div>
                         <div class="widget-list mb-10">
-                            <h3 class="widget-title">Categories</h3>
-                            <div class="sidebar-body">
-                                <ul class="sidebar-list">
-                                    <li><a href="#">All Product</a></li>
-                                    <li><a href="#">Best Seller (5)</a></li>
-                                    <li><a href="#">Featured (4)</a></li>
-                                    <li><a href="#">New Products (6)</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="widget-list mb-10">
-                            <h3 class="widget-title">Color</h3>
+                            <h3 class="widget-title">Màu sắc</h3>
                             <div class="sidebar-body">
                                 <ul class="checkbox-container categories-list">
+                                    @foreach ($colors as $color)
                                     <li>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                            <label class="custom-control-label" for="customCheck12">black (20)</label>
+                                            <input type="checkbox"
+                                                class="custom-control-input"
+                                                id="color_{{ $color->color_id }}"
+                                                value="{{ $color->color_id }}"
+                                                {{ in_array($color->color_id, (array) request('colors', [])) ? 'checked' : '' }}
+
+                                                onchange="updateFilters()">
+                                            <label class="custom-control-label" for="color_{{ $color->color_id }}">
+                                                {{ $color->value }} ({{ $color->productDetails->count() }})
+                                            </label>
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                            <label class="custom-control-label" for="customCheck13">red (6)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck14">
-                                            <label class="custom-control-label" for="customCheck14">blue (8)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                            <label class="custom-control-label" for="customCheck11">green (5)</label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck15">
-                                            <label class="custom-control-label" for="customCheck15">pink (4)</label>
-                                        </div>
-                                    </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
-                        <div class="widget-list mb-10">
-                            <h3 class="widget-title mb-4">Tags</h3>
-                            <div class="sidebar-body">
-                                <ul class="tags mb-n2">
-                                    <li><a href="#">Men</a></li>
-                                    <li><a href="#">Women</a></li>
-                                    <li><a href="#">Fashion</a></li>
-                                    <li><a href="#">Watch</a></li>
-                                    <li><a href="#">Handmade</a></li>
-                                    <li><a href="#">Lather</a></li>
-                                    <li><a href="#">Fabrics</a></li>
-                                </ul>
-                            </div>
-                        </div>
+
                         <div class="widget-list">
-                            <h3 class="widget-title mb-4">Recent Products</h3>
+                            <h3 class="widget-title mb-4">Sản phẩm gần đây</h3>
                             <div class="sidebar-body product-list-wrapper mb-n6">
-                                <!-- Single Product List Start -->
+                                @foreach ($recentProducts as $product)
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
-                                        <a href="single-product.html" class="image">
-                                            <img class="first-image" src="assets/images/products/small-product/1.jpg"
-                                                alt="Product" />
-                                            <img class="second-image" src="assets/images/products/small-product/5.jpg"
-                                                alt="Product" />
+                                        <a href="{{ route('product.show', $product->slug) }}" class="image">
+                                            <img class="image" src="{{ url('storage/'. $product->avata) }}"
+                                                alt="{{ $product->name }}">
                                         </a>
                                     </div>
                                     <div class="content">
-                                        <h5 class="title"><a href="single-product.html">Brother Hoddies in Grey</a></h5>
+                                        <h5 class="title"><a
+                                                href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
+                                        </h5>
                                         <span class="price">
-                                            <span class="new">$38.00</span>
-                                            <span class="old">$42.50</span>
-                                        </span>
-                                        <span class="ratings">
-                                            <span class="rating-wrap">
-                                                <span class="star" style="width: 100%"></span>
-                                            </span>
-                                            <span class="rating-num">(4)</span>
+                                            <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
+                                            @if ($product->discount_price)
+                                            <span class="old">{{ number_format($product->discount_price , 0, '', '.') }}
+                                                ₫</span>
+                                            @endif
                                         </span>
                                     </div>
                                 </div>
-                                <!-- Single Product List End -->
-
-                                <!-- Single Product List Start -->
-                                <div class="single-product-list product-hover mb-6">
-                                    <div class="thumb">
-                                        <a href="single-product.html" class="image">
-                                            <img class="first-image" src="assets/images/products/small-product/2.jpg"
-                                                alt="Product" />
-                                            <img class="second-image" src="assets/images/products/small-product/3.jpg"
-                                                alt="Product" />
-                                        </a>
-                                    </div>
-                                    <div class="content">
-                                        <h5 class="title"><a href="single-product.html">Basic Jogging Shorts</a></h5>
-                                        <span class="price">
-                                            <span class="new">$21.00</span>
-                                            <span class="old">$22.50</span>
-                                        </span>
-                                        <span class="ratings">
-                                            <span class="rating-wrap">
-                                                <span class="star" style="width: 60%"></span>
-                                            </span>
-                                            <span class="rating-num">(4)</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- Single Product List End -->
-
-                                <!-- Single Product List Start -->
-                                <div class="single-product-list product-hover mb-6">
-                                    <div class="thumb">
-                                        <a href="single-product.html" class="image">
-                                            <img class="first-image" src="assets/images/products/small-product/4.jpg"
-                                                alt="Product" />
-                                            <img class="second-image" src="assets/images/products/small-product/10.jpg"
-                                                alt="Product" />
-                                        </a>
-                                    </div>
-                                    <div class="content">
-                                        <h5 class="title"><a href="single-product.html">Simple Woven Fabrics</a></h5>
-                                        <span class="price">
-                                            <span class="new">$86.00</span>
-                                            <span class="old">$90.00</span>
-                                        </span>
-                                        <span class="ratings">
-                                            <span class="rating-wrap">
-                                                <span class="star" style="width: 80%"></span>
-                                            </span>
-                                            <span class="rating-num">(1)</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- Single Product List End -->
+                                @endforeach
                             </div>
                         </div>
+
                     </div>
                 </aside>
                 <!-- Sidebar Widget End -->
@@ -601,4 +467,28 @@
     </div>
 </div>
 <!-- Modal End  -->
+@endsection
+@section('js')
+<script>
+    function updateFilters() {
+        const selectedColors = [];
+        const checkboxes = document.querySelectorAll('.custom-control-input:checked');
+
+        checkboxes.forEach(checkbox => {
+            selectedColors.push(checkbox.value);
+        });
+
+        // Lấy URL hiện tại
+        const url = new URL(window.location.href);
+        // Cập nhật giá trị "colors" trong query string
+        if (selectedColors.length > 0) {
+            url.searchParams.set('colors', selectedColors.join(','));
+        } else {
+            url.searchParams.delete('colors');
+        }
+
+        // Điều hướng đến URL mới
+        window.location.href = url.toString();
+    }
+</script>
 @endsection

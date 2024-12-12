@@ -3,22 +3,45 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ColorRequest;
 use Illuminate\Http\Request;
 use App\Models\Color;
 
 class ColorController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Hiển thị danh sách các màu.
      */
-    public function index()
+    // Controller (ColorController.php)
+    public function __construct(){
+        $this->middleware('permission:view color', ['only' => ['index']]);
+        $this->middleware('permission:create color', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit color', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete color', ['only' => ['destroy']]);
+    }
+
+    public function index(Request $request)
     {
-        $colors = Color::all();
+        $query = Color::query();
+
+        // Xử lý tìm kiếm
+        if ($request->has('search') && $request->search) {
+            $query->where('value', 'like', '%' . $request->search . '%');
+        }
+
+        // Xử lý sắp xếp
+        if ($request->has('sort') && in_array($request->sort, ['color_id', 'value', 'color_code'])) {
+            $direction = $request->get('direction', 'asc');
+            $query->orderBy($request->sort, $direction);
+        }
+
+        $colors = $query->paginate(10);
+
         return view('admin.colors.index', compact('colors'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Hiển thị form tạo mới màu.
      */
     public function create()
     {
@@ -26,65 +49,56 @@ class ColorController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Lưu màu mới vào cơ sở dữ liệu.
      */
-    public function store(Request $request)
+    public function store(ColorRequest $request)
     {
-        $request->validate([
-            'value' => 'required|string|max:255',
-        ]);
-    
         Color::create([
             'value' => $request->value,
-            'status' => $request->has('status') ? $request->status : true,
+            'color_code' => $request->color_code,
+            'status' => $request->status ?? true,
         ]);
-    
-        return redirect()->route('admin.colors.index')->with('success', 'Kích thước mới đã được thêm thành công');
+
+        return redirect()->route('admin.colors.index')->with('success', 'Màu mới đã được thêm thành công.');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Hiển thị form chỉnh sửa màu.
      */
     public function edit(string $id)
     {
-        $color = Color::findOrFail($id); // Tìm kích thước theo ID
+        $color = Color::findOrFail($id);
         return view('admin.colors.edit', compact('color'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Cập nhật thông tin màu trong cơ sở dữ liệu.
      */
-    public function update(Request $request, string $id)
+    public function update(ColorRequest $request, $id)
     {
-        $request->validate([
-            'value' => 'required|string|max:255',
-        ]);
-    
         $color = Color::findOrFail($id);
-        $color->update([
-            'value' => $request->value,
-            'status' => $request->has('status') ? $request->status : true,
-        ]);
-    
-        return redirect()->route('admin.colors.index')->with('success', 'Kích thước đã được cập nhật thành công');
+
+        // Cập nhật các trường khác
+        $color->value = $request->input('value');
+        $color->color_code = $request->input('color_code');
+
+        // Xử lý trạng thái
+        $color->status = $request->input('status'); // Sẽ nhận 0 hoặc 1 từ form
+
+        $color->save();
+
+        return redirect()->route('admin.colors.index')->with('success', 'Cập nhật màu sắc thành công.');
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Xóa màu khỏi cơ sở dữ liệu.
      */
     public function destroy(string $id)
     {
         $color = Color::findOrFail($id);
         $color->delete();
 
-        return redirect()->route('admin.colors.index')->with('success', 'Kích thước đã được xóa thành công');
+        return redirect()->route('admin.colors.index')->with('success', 'Màu đã được xóa thành công.');
     }
 }

@@ -11,8 +11,8 @@ Danh sách sản phẩm
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
-
 @endsection
+
 @section('content')
 @if (session()->has('error'))
 <div class="alert alert-danger">
@@ -27,64 +27,135 @@ Danh sách sản phẩm
 @endif
 
 <div class="row m-3">
-    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column ">
         <div class="flex-grow-1">
-            <h4 class="fs-18 fw-semibold m-0">Danh sách sản phẩm </h4>
+            <h4 class="fs-18 fw-semibold ml-0">Danh sách sản phẩm </h4>
+        </div>
+        <div class="flex-grow-2 mx-2">
+        <a href="{{ route('admin.products.create') }}"
+            class="btn btn-sm btn-alt-secondary mx-2 fs-18 rounded-2 border p-1 me-1 " data-bs-toggle="tooltip"
+            title="Thêm mới">
+            <i class="mdi mdi-plus text-muted px-4 mr-4">Thêm mới</i>
+        </a>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="d-flex m-3">
-                    <form action="{{ route('admin.products.index') }}" method="get" id="search-form">
+                <div class="d-flex m-3 justify-content-between align-items-center">
+                    <form action="{{ route('admin.products.index') }}" class="d-flex" method="get" id="search-form">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <i class="bi bi-search"></i>
+                                Tìm kiếm
                             </span>
                             <input type="text" value="{{ request('search') }}" name="search" id="search"
                                 class="form-control" placeholder="Nhập từ khóa cần tìm..">
-                            <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                            <button type="submit" class="btn btn-sm btn-dark"><i class="bi bi-search"></i></button>
                         </div>
                     </form>
-                    <a href="{{ route('admin.products.create') }}"
-                        class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
-                        data-bs-toggle="tooltip" title="Thêm mới">
-                        <i class="mdi mdi-plus text-muted "></i>
-                    </a>
+                    <form action="{{ route('admin.products.index') }}" method="get" class="ms-2">
+                        <div class="d-flex">
+                            <select name="categories_id" class="form-control" id="categories_id">
+                                <option value="">Chọn danh mục</option>
+                                @foreach($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ request('categories_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                            <input type="date" name="from_date" class="form-control ms-2"
+                                value="{{ request('from_date') }}" placeholder="Từ ngày">
+                            <input type="date" name="to_date" class="form-control ms-2" value="{{ request('to_date') }}"
+                                placeholder="Đến ngày">
+                            <button type="submit" class="btn btn-dark ms-2">Lọc</button>
+                        </div>
+                    </form>
 
                 </div>
 
-                <div class="col-md-12">
+                <div class="card-body">
                     <table class="table table-striped text-center">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tên sản phẩm</th>
+                                <th>
+                                    <a
+                                        href="{{ route('admin.products.index', array_merge(request()->query(), ['sort' => 'name', 'order' => request('order') === 'asc' ? 'desc' : 'asc'])) }}">
+                                        Tên sản phẩm
+                                        @if (request('sort') == 'name')
+                                        @if (request('order') == 'asc')
+                                        ↑
+                                        @else
+                                        ↓
+                                        @endif
+                                        @endif
+                                    </a>
+                                </th>
                                 <th>Hình ảnh</th>
-                                <th>Danh mục</th>
-                                <th>Giá</th>
+                                <th>
+                                    Danh mục
+                                </th>
+                                <th>
+                                    <a
+                                        href="{{ route('admin.products.index', array_merge(request()->query(), ['sort' => 'price', 'order' => request('order') === 'asc' ? 'desc' : 'asc'])) }}">
+                                        Giá
+                                        @if (request('sort') == 'price')
+                                        @if (request('order') == 'asc')
+                                        ↑
+                                        @else
+                                        ↓
+                                        @endif
+                                        @endif
+                                    </a>
+                                </th>
                                 <th>Giá giảm</th>
                                 <th>Số lượng tồn kho</th>
-                                <th>Ngày tạo</th>
-                                <th class="text-center">Hành động</th>
+                                <th>
+                                    <a
+                                        href="{{ route('admin.products.index', array_merge(request()->query(), ['sort' => 'created_at', 'order' => request('order') === 'asc' ? 'desc' : 'asc'])) }}">
+                                        Ngày tạo
+                                        @if (request('sort') == 'created_at')
+                                        @if (request('order') == 'asc')
+                                        ↑
+                                        @else
+                                        ↓
+                                        @endif
+                                        @endif
+                                    </a>
+                                </th>
+                                <th>Hiện/ẩn</th>
+                                <th class="text-center">Tương tác</th>
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody class="align-middle">
                             @foreach ($products as $product)
                             <tr>
                                 <td>{{ $product->id }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>
-                                    <img src="{{ url('storage/'. $product->avata) }}" alt="{{ $product->name }}"
+                                    <img src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}"
                                         width="50" height="50" class="img-thumbnail">
                                 </td>
                                 <td>{{ $product->categories->name ?? 'Không có' }}</td>
-                                <td>{{ number_format($product->price, 2) }} VNĐ</td>
-                                <td>{{ $product->discount_price ? number_format($product->discount_price, 2) . ' VNĐ' : 'Không có' }}
+                                <td>{{ number_format($product->price, 0, '', '.') }} đ</td>
+                                <td>{{ $product->discount_price ? number_format($product->discount_price, 0, '', '.') . ' đ' : 'Không có' }}
                                 </td>
-                                <td>{{ $product->stock_quantity }}</td>
+                                <td>
+                                    {{ $product->productDetails->sum('quantity') }}
+                                    @if ($product->productDetails->sum('quantity') <= 5) <span class="text-danger">(Sắp
+                                        hết hàng!)</span>
+                                        @elseif ($product->productDetails->sum('quantity') <= 20) <span
+                                            class="text-warning">(Số lượng thấp)</span>
+                                            @endif
+                                </td>
+
                                 <td>{{ $product->created_at->format('d/m/Y') }}</td>
+                                <td class="{{ $product->iS_show ? 'text-success' : 'text-danger' }}">
+                                    {{ $product->iS_show ? 'Hiện' : 'Ẩn' }}
+                                </td>
+
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center">
                                         <a href="{{ route('admin.products.show', $product) }}"
@@ -116,7 +187,7 @@ Danh sách sản phẩm
                 </div>
             </div>
         </div>
-        {{ $products->links('pagination::bootstrap-5') }}
+        {{ $products->appends(request()->query())->links('pagination::bootstrap-5') }}
     </div>
 </div>
 

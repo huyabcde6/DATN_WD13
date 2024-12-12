@@ -5,22 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Destry - Fashion eCommerce HTML Template</title>
-    <style>
-    .main-menu ul {
-        display: flex;
-        justify-content: space-between; /* Hoặc space-around/space-evenly */
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .main-menu ul li a {
-        text-decoration: none;
-        color: #000;
-        padding: 10px;
-      }
-      </style>
+    <title>POLY STORE</title>
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico') }}" />
 
@@ -30,23 +15,26 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/pe-icon-7-stroke.min.css') }}" />
 
 
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
 
 
     <!-- Main Style CSS -->
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/loading.css') }}" />
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
 
 <body>
+    <div class="loader" style="display: none;"></div>
     <div class="header section">
-
         <!-- Header Bottom Start -->
         <div class="header-bottom">
             <div class="header-sticky">
@@ -66,19 +54,20 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="#"><span>Trang Chủ</span></a>
+                                        <a href="{{route('home.index')}}"><span>Trang Chủ</span></a>
                                     </li>
-                                    <li class="has-children">
-                                        <a href="{{route('shop.index')}}"><span>Sản Phẩm</span>
-                                    </li>
-                                    <li class="has-children">
-                                        <a href="#"><span>Dịch Vụ</span>
+                                    <li class="has-children position-static">
+                                        <a href="{{route('shop.index')}}"><span>Cửa hàng</span></a>
 
+                                    </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Tin Tức</span>
+                                        <a href="#"><span>Dịch Vụ</span></a>
+                                    </li>
+                                    <li class="has-children">
+                                        <a href="{{ route('news.index') }}"><span>Tin Tức</span></a>
                                     </li>
                                     <li>
-                                        <a href="contact.html"> <span>Liên Hệ</span></a>
+                                        <a href="{{ route('contact') }}"> <span>Liên Hệ</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -94,8 +83,13 @@
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
-                                <a href="{{ route('login') }}" class="header-action-btn d-none d-md-block"><i
-                                        class="pe-7s-user"></i></a>
+
+                                
+                                <a href="{{ Auth::check() ? route ('orders.index') : route ('login') }}" class="header-action-btn d-none d-md-block">
+                                    <i class="pe-7s-user"></i>
+                                </a>
+
+                                
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->
@@ -108,8 +102,7 @@
                                 <!-- Shopping Cart Header Action Button Start -->
                                 <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span
-                                        class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
+                                    <span class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
                                     </span>
                                 </a>
 

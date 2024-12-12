@@ -364,6 +364,7 @@
 
  <!--Main JS-->
  <script src="{{ asset('ngdung/assets/js/main.js')}}"></script>
+ <script src="{{ asset('ngdung/assets/js/loading.js')}}"></script>
  </body>
 
  <!-- Mirrored from htmldemo.net/destry/destry/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 08 Oct 2024 15:50:01 GMT -->

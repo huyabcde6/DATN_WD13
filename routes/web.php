@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryProductController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\NewController;
@@ -12,36 +14,37 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CouponsController;
+use App\Http\Controllers\VoucherController;
+
 
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::resource('permission', App\Http\Controllers\Admin\PermissionControler::class);
+    Route::get('permission/{permissionId}/delete', [App\Http\Controllers\Admin\PermissionControler::class, 'destroy']);
+
+    Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
+    Route::get('roles/{roleId}/delete', [App\Http\Controllers\Admin\RoleController::class, 'destroy']);
+    Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'addPermissionToRole']);
+    Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'givePermissionToRole']);
 
 
+    Route::resource('userAdmin', AdminController::class);
+    Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
 
-    Route::resource('permission', App\Http\Controllers\PermissionControler::class);
-    Route::get('permission/{permissionId}/delete', [App\Http\Controllers\PermissionControler::class, 'destroy']);
-
-    Route::resource('roles', App\Http\Controllers\RoleController::class);
-    Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
-    Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
-    Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
-
-
-    Route::resource('users', App\Http\Controllers\UserController::class);
-    Route::get('user/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 });
 
 
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 
-Route::get('/', [HomeController::class, 'index']);
 
-
-Route::resource('users', UserController::class);
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
@@ -59,11 +62,6 @@ Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 // Route::post('/register', [UserController::class, 'postRegister']);
 
 
-Route::get('/admin', function () {
-    return view('layouts.admin');
-});
-
-Route::resource('users', UserController::class);
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
@@ -84,6 +82,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
+
     // Các route cho quản lý sản phẩm
     Route::resource('products', AdminProductController::class);
 
@@ -94,31 +93,22 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     // Quản lý màu sắc
     Route::resource('colors', ColorController::class);
 
+    // Quản lý Banner
+    Route::resource('banners', BannerController::class);
 
-    // Route::resource('users', UserController::class);
+    Route::resource('invoices', InvoiceController::class);
+
+    // Quản lý danh mục
+    Route::resource('categories', CategoryProductController::class);
+    Route::resource('users', UserController::class);
+
+    Route::get('/', [StatisticsController::class, 'index'])->name('statistics.index');
 });
 
 
 require __DIR__ . '/auth.php';
 
 
-Route::prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::prefix('categories')
-            ->name('categories.')
-            ->controller(CategoryProductController::class)
-            ->group(function () {
-                Route::get('index', 'index')->name('index');
-                Route::get('create', 'create')->name('create');
-                Route::post('store', 'store')->name('store');
-                Route::get('{id}/edit', 'edit')->name('edit');
-                Route::post('{id}/update', 'update')->name('update');
-                Route::delete('{id}/delete', 'delete')->name('delete');
-            });
-    });
-
-// Tin tức
 Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
@@ -134,9 +124,45 @@ Route::prefix('admin')
                 Route::post('/update{id}', 'update')->name('update');
             });
     });
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::prefix('Coupons')
+            ->name('Coupons.')
+            ->controller(CouponsController::class)
+            ->group(function () {
+                Route::get('/Coupons', 'index')->name('index');
+                Route::get('/addCoupons', 'create')->name('create');
+                Route::post('/postCoupons', 'store')->name('store');
+                Route::delete('/dlCoupons{id}', 'destroy')->name('destroy');
+                Route::get('/edit{id}', 'edit')->name('edit');
+                Route::post('/update{id}', 'update')->name('update');
+            });
+    });
+
+Route::get('news', [HomeController::class, 'index']);
+
+Route::get('/tin_tuc', [NewController::class, 'index2'])->name('news.index');
+
+Route::get('/lienhe', function () {
+    return view('user.khac.lienhe');
+})->name('contact');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
 });
+
+Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
+    Route::get('/posts/comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::put('/comments/{commentId}', [CommentController::class, 'update'])->name('comments.update');
+    Route::post('/comments/{commentId}/hide', [CommentController::class, 'hide'])->name('comments.hide');
+});
+
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
+
+Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('vocher');
+
+
+Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');
 

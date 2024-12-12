@@ -27,16 +27,16 @@
 <div class="section section-margin">
     <div class="container">
         @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
 
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
         <div class="row">
             <div class="col-12">
 
@@ -58,11 +58,11 @@
                         <!-- Table Head End -->
 
                         <!-- Table Body Start -->
-                        <tbody>
+                        <tbody id="cartItems">
                             @foreach ($cartItems as $item)
                             <tr>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" height="auto" width="70"
                                             alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
@@ -71,9 +71,9 @@
                                 </td>
                                 <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
                                         đ</span></td>
-                                <td class="pro-quantity">
+                                <td class="pro-quantity ">
                                     <div class="quantity">
-                                        <div class="cart-plus-minus">
+                                        <div class="cart-plus-minus" style="margin-left: 35px;">
                                             <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}"
                                                 type="text" data-id="{{ $item['product_detail_id'] }}">
                                             <div class="dec qtybutton" data-id="{{ $item['product_detail_id'] }}">-
@@ -103,29 +103,6 @@
 
                     </table>
                 </div>
-                <!-- Cart Table End -->
-
-                <!-- Cart Update Option Start -->
-                <div class="cart-update-option d-block d-md-flex justify-content-between">
-
-                    <!-- Apply Coupon Wrapper Start -->
-                    <div class="apply-coupon-wrapper">
-                        <form action="#" method="post" class="d-block d-md-flex">
-                            <input type="text" placeholder="Nhập mã giảm giá của bạn" required />
-                            <button class="btn btn-dark btn-hover-primary rounded-0">Áp dụng mã</button>
-                        </form>
-                    </div>
-                    <!-- Apply Coupon Wrapper End -->
-
-                    <!-- Cart Update Start -->
-                    <div class="cart-update mt-sm-16">
-                        <a href="#" class="btn btn-dark btn-hover-primary rounded-0">Cập nhật giỏ hàng</a>
-                    </div>
-                    <!-- Cart Update End -->
-
-                </div>
-                <!-- Cart Update Option End -->
-
             </div>
         </div>
 
@@ -133,9 +110,8 @@
             <div class="col-lg-5 ms-auto col-custom">
 
                 <!-- Cart Calculation Area Start -->
+                <!-- Cart Calculation Area Start -->
                 <div class="cart-calculator-wrapper">
-
-                    <!-- Cart Calculate Items Start -->
                     <div class="cart-calculate-items">
 
                         <!-- Cart Calculate Items Title Start -->
@@ -165,15 +141,10 @@
                         <!-- Responsive Table End -->
 
                     </div>
-                    <!-- Cart Calculate Items End -->
-
-                    <!-- Cart Checkout Button Start -->
-                    <a href="{{ route('orders.create') }}" class="btn btn- btn-hover-primary rounded-0 w-100">Tiến
-                        hành thanh toán</a>
-
-                    <!-- Cart Checkout Button End -->
+                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến hành thanh toán</a>
 
                 </div>
+
                 <!-- Cart Calculation Area End -->
 
             </div>
@@ -194,59 +165,59 @@
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    var shippingFee = 30000; // Phí vận chuyển 30000 đồng
+        var shippingFee = 30000; // Phí vận chuyển 30000 đồng
 
-    // Xử lý sự kiện tăng/giảm số lượng
-    $('.qtybutton').on('click', function() {
-        var productDetailId = $(this).data('id');
-        var inputField = $(this).siblings('.cart-plus-minus-box');
-        var quantity = parseInt(inputField.val());
+        // Xử lý sự kiện tăng/giảm số lượng
+        $('.qtybutton').on('click', function() {
+            var productDetailId = $(this).data('id');
+            var inputField = $(this).siblings('.cart-plus-minus-box');
+            var quantity = parseInt(inputField.val());
 
-        // Tăng hoặc giảm số lượng
-        if ($(this).hasClass('inc')) {
-            quantity++;
-        } else if ($(this).hasClass('dec') && quantity > 1) {
-            quantity--;
-        }
-
-        // Gửi AJAX để cập nhật số lượng
-        $.ajax({
-            url: '{{ route("cart.update") }}',
-            method: 'POST',
-            data: {
-                product_detail_id: productDetailId,
-                quantity: quantity,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    inputField.val(quantity);
-
-                    // Update the subtotal for this product
-                    var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
-                    var formattedSubtotal = response.item_price;  // Ensure price formatting here
-                    subtotalCell.text(formattedSubtotal);
-
-                    // Calculate the total for the cart
-                    var subTotal = 0;
-                    $('.pro-subtotal span').each(function() {
-                        var currentSubtotal = $(this).text().replace(' đ', '').replace('.', '').trim();
-                        subTotal += parseFloat(currentSubtotal);
-                    });
-
-                    // Update the displayed totals
-                    $('.sub-total').text(subTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                    $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                }
-            },
-            error: function() {
-                alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
+            // Tăng hoặc giảm số lượng
+            if ($(this).hasClass('inc')) {
+                quantity++;
+            } else if ($(this).hasClass('dec') && quantity > 1) {
+                quantity--;
             }
+
+            // Gửi AJAX để cập nhật số lượng
+            $.ajax({
+                url: '{{ route("cart.update") }}',
+                method: 'POST',
+                data: {
+                    product_detail_id: productDetailId,
+                    quantity: quantity,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        inputField.val(quantity);
+
+                        // Update the subtotal for this product
+                        var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
+                        var formattedSubtotal = response.item_price; // Ensure price formatting here
+                        subtotalCell.text(formattedSubtotal);
+
+                        // Calculate the total for the cart
+                        var subTotal = 0;
+                        $('.pro-subtotal span').each(function() {
+                            var currentSubtotal = $(this).text().replace(' đ', '').replace('.', '').trim();
+                            subTotal += parseFloat(currentSubtotal);
+                        });
+
+                        // Update the displayed totals
+                        $('.sub-total').text(subTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                        $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
+                }
+            });
         });
     });
-});
 </script>
-
 @endsection
+

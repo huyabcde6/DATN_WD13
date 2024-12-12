@@ -1,18 +1,18 @@
 @extends('layouts.home')
 
 @section('content')
-<div class="section">
 
+<div class="section">
     <!-- Breadcrumb Area Start -->
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">My Account</h1>
+                <h1 class="title">Đăng ký</h1>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="index.html">Trang chủ </a>
                     </li>
-                    <li class="active"> My Account </li>
+                    <li class="active"> Đăng ký </li>
                 </ul>
             </div>
         </div>
@@ -31,8 +31,8 @@
 
                     <!-- Login Title & Content Start -->
                     <div class="section-content text-center mb-5 ">
-                        <h2 class="title mb-2">Create Account</h2>
-                        <p class="desc-content">Please Register using account detail bellow.</p>
+                        <h2 class="title mb-2">Tạo tài khoản</h2>
+                        <p class="desc-content">Vui lòng đăng ký bằng cách sử dụng chi tiết tài khoản bên dưới.</p>
                     </div>
                     <!-- Login Title & Content End -->
 
@@ -82,15 +82,11 @@
                             <button class="btn btn btn-dark btn-hover-primary rounded-0">Register</button>
                         </div>
                         <span class="text">
-                            <a href="{{route('login')}}" >Đã có tài khoản</a>
+                            <a href="{{ route('login') }}" >Đã có tài khoản</a>
                         </span>
-
-
                         <!-- Register Button End -->
-
                     </form>
                     <!-- Form Action End -->
-
                 </div>
                 <!-- Register Wrapper End -->
             </div>

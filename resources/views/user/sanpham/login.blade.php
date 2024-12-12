@@ -7,12 +7,12 @@
         <div class="breadcrumb-area bg-light">
             <div class="container-fluid">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="title">My Account</h1>
+                    <h1 class="title">Đăng nhập</h1>
                     <ul>
                         <li>
-                            <a href="index.html">Home </a>
+                            <a href="index.html">Trang chủ </a>
                         </li>
-                        <li class="active"> My Account </li>
+                        <li class="active"> Đăng nhập </li>
                     </ul>
                 </div>
             </div>
@@ -30,8 +30,8 @@
 
                         <!-- Login Title & Content Start -->
                         <div class="section-content text-center mb-5">
-                            <h2 class="title mb-2">Login</h2>
-                            <p class="desc-content">Please login using account detail bellow.</p>
+                            <h2 class="title mb-2">Đăng nhập</h2>
+                            <p class="desc-content">Vui lòng đăng nhập bằng chi tiết tài khoản bên dưới.</p>
                             @if ($message = Session::get('error'))
                                 <div class="alert alert-danger alert-block">
 
@@ -55,7 +55,7 @@
 
                             <!-- Input Password Start -->
                             <div class="single-input-item mb-3">
-                                <input type="password" name="password" placeholder="Enter your Password">
+                                <input type="password" name="password" placeholder="Nhập mật khẩu">
                             </div>
                             <!-- Input Password End -->
 
@@ -65,23 +65,23 @@
                                     <div class="remember-meta mb-3">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="rememberMe">
-                                            <label class="custom-control-label" for="rememberMe">Remember Me</label>
+                                            <label class="custom-control-label" for="rememberMe">Ghi nhớ</label>
                                         </div>
                                     </div>
-                                    <a href="#" class="forget-pwd mb-3">Forget Password?</a>
+                                    <a href="#" class="forget-pwd mb-3">Quên mật khẩu?</a>
                                 </div>
                             </div>
                             <!-- Checkbox/Forget Password End -->
 
                             <!-- Login Button Start -->
                             <div class="single-input-item mb-3">
-                                <button class="btn btn btn-dark btn-hover-primary">Login</button>
+                                <button class="btn btn btn-dark btn-hover-primary">Đăng nhập</button>
                             </div>
                             <!-- Login Button End -->
 
                             <!-- Lost Password & Creat New Account Start -->
                             <div class="lost-password">
-                                <a href="{{ route('register') }}">Create Account</a>
+                                <a href="{{ route('register') }}">Đăng ký</a>
                             </div>
                             <!-- Lost Password & Creat New Account End -->
 

@@ -47,13 +47,14 @@
                             @csrf
                             <!-- Input Email Start -->
                             <div class="single-input-item mb-3">
-                                <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')" required autofocus placeholder="Email" />
-                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')" autofocus placeholder="Email" />
+                                <x-input-error :messages="$errors->get('email')" class="text-danger" />
                             </div>
                             <!-- Input Email End -->
 
                             <!-- Input Password Start -->
                             <div class="single-input-item mb-3">
+
                                 <x-text-input id="password" class="block w-full" type="password" name="password" required placeholder="Nhập mật khẩu của bạn" />
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
@@ -65,7 +66,7 @@
                                     <div class="remember-meta mb-3">
                                         <div class="custom-control custom-checkbox">
                                             <input id="remember_me" type="checkbox" class="custom-control-input" name="remember">
-                                            <label class="custom-control-label" for="remember_me">Nhớ tôi</label>
+                                            <label class="custom-control-label" for="remember_me">Nhớ mật khẩu</label>
                                         </div>
                                     </div>
                                     @if (Route::has('password.request'))

@@ -6,11 +6,11 @@
                     <div class="card-header">
                         <h4>
                             Edit Users
-                            <a href="{{ url('users') }}" class="btn btn-danger float-end">Back</a>
+                            <a href="{{ url('userAdmin') }}" class="btn btn-danger float-end">Back</a>
                         </h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ url('users/' . $user->id) }}" method="POST">
+                        <form action="{{ url('userAdmin/' . $user->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
