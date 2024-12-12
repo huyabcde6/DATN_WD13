@@ -53,7 +53,7 @@
                                                 <a href="{{ route('admin.banners.edit', $banner) }}"
                                                     class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
                                                     title="Sửa">
-                                                    <i class="mdi mdi-eye text-muted "></i>
+                                                    <i class="fa fa-pencil-alt"></i>
                                                 </a>
                                                 <form action="{{ route('admin.banners.destroy', $banner->id) }}"
                                                     method="post">

@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
+    public function index()
+    {
+        $comments = productComment::with('user', 'product')
+            ->latest()
+            
+            ->paginate(7);
+
+        return view('admin.comments.index', compact('comments'));
+    }
     public function store(Request $request, $slug)
     {
         $product = products::where('slug', $slug)->firstOrFail();
@@ -27,12 +36,24 @@ class CommentController extends Controller
         // }
 
         $comment = productComment::query()->create([
-            'user_id' => auth()->id(),
-            'products_id' => $product->id,
-            'description' => $request->description,
+            'user_id'       => auth()->id(),
+            'products_id'   => $product->id,
+            'description'   => $request->description,
+            'is_hidden'     => false,
         ]);
 
         return back()->with('success', 'Cảm ơn bạn đã đánh giá sản phẩm!');
+    }
+
+    public function hide($commentId)
+    {
+        $comment = productComment::findOrFail($commentId);
+        
+        $comment->is_hidden = !$comment->is_hidden;
+
+        $comment->save();
+    
+        return back()->with('success', 'Đã cập nhật trạng thái bình luận!');
     }
 
 }

@@ -72,6 +72,7 @@ class CategoryProductController extends Controller
             categories::create([
                 'name' => $request->name,
                 'status' => $request->boolean('status') // Dùng phương thức boolean để xử lý đúng kiểu boolean
+
             ]);
 
             DB::commit();

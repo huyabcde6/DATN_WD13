@@ -19,6 +19,13 @@ class NewController extends Controller
         return view('admin.tintuc.New', compact('db'));
     }
 
+    public function index2()
+    {
+        $news = News::all();
+
+        return view('user.khac.tintuc', compact('news'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -58,7 +65,6 @@ class NewController extends Controller
                 $param['avata'] = null;
             }
 
-            // Insert into the database
             DB::table('news')->insert([
                 'title' => $param['title'],
                 'description' => $param['description'],

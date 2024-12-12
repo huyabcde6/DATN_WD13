@@ -29,8 +29,9 @@ class OrderController extends Controller
     {
 
         $orders = Auth::user()->order()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
+        $user = Auth::user();
 
-        return view('user.khac.my_account', compact('orders'));
+        return view('user.khac.my_account', compact('orders', 'user'));
     }
 
     /**
@@ -39,6 +40,7 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::with(['orderDetails.productDetail.products', 'status'])->findOrFail($id);
+
         return view('user.khac.order_detail', compact('order'));
     }
 

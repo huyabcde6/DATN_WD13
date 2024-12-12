@@ -21,6 +21,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\VoucherController;
 
+
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('permission', App\Http\Controllers\Admin\PermissionControler::class);
@@ -34,15 +36,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('userAdmin', AdminController::class);
     Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
+
 });
-
-
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-// // CRUD users
-// 
+
 
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
@@ -61,9 +61,6 @@ Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 // Route::post('/register', [UserController::class, 'postRegister']);
 
 
-
-
-// Route::resource('users', UserController::class);
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
@@ -100,6 +97,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     Route::resource('invoices', InvoiceController::class);
 
+    // Quản lý danh mục
     Route::resource('categories', CategoryProductController::class);
     Route::resource('users', UserController::class);
 
@@ -141,8 +139,29 @@ Route::prefix('admin')
             });
     });
 
+Route::get('news', [HomeController::class, 'index']);
+
+Route::get('/tin_tuc', [NewController::class, 'index2'])->name('news.index');
+
+Route::get('/lienhe', function () {
+    return view('user.khac.lienhe');
+})->name('contact');
+
+
 Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
 });
+
+Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
+    Route::get('/posts/comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::put('/comments/{commentId}', [CommentController::class, 'update'])->name('comments.update');
+    Route::post('/comments/{commentId}/hide', [CommentController::class, 'hide'])->name('comments.hide');
+});
+
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
+
 Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('vocher');
+
+
+Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');
+
