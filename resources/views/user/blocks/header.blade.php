@@ -69,6 +69,9 @@
                                     <li>
                                         <a href="{{ route('contact') }}"> <span>Liên Hệ</span></a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('introduction') }}"> <span>Giới Thiệu</span></a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

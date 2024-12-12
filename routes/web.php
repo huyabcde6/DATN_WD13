@@ -146,7 +146,9 @@ Route::get('/tin_tuc', [NewController::class, 'index2'])->name('news.index');
 Route::get('/lienhe', function () {
     return view('user.khac.lienhe');
 })->name('contact');
-
+Route::get('/gioithieu', function () {
+    return view('user.khac.gioithieu');
+})->name('introduction');
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');

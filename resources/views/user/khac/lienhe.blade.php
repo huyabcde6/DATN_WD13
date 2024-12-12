@@ -21,7 +21,7 @@
         </div>
         <!-- Breadcrumb Area End -->
 
-    </div>
+    </div>  
     <!-- Breadcrumb Section End -->
 
     <!-- Contact Us Section Start -->
