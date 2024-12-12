@@ -3,16 +3,16 @@
 @section('content')
     <div class="section">
 
-        <!-- Breadcrumb Area Start -->
-        <div class="breadcrumb-area bg-light">
+        <div class="breadcrumb-area bg-light ">
             <div class="container-fluid">
-                <div class="breadcrumb-content text-center">
-                    <h1 class="title">Đăng nhập</h1>
-                    <ul>
+                <div class="breadcrumb-content">
+                    <ul class="breadcrumb-list">
                         <li>
-                            <a href="index.html">Trang chủ </a>
+                            <a href="http://datn_wd13.test">Trang chủ</a>
                         </li>
-                        <li class="active"> Đăng nhập </li>
+                        <li class="active">
+                            <a href="http://datn_wd13.test/login">Đăng nhập</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                         <!-- Login Title & Content Start -->
                         <div class="section-content text-center mb-5">
                             <h2 class="title mb-2">Đăng nhập</h2>
-                            <p class="desc-content">Vui lòng đăng nhập bằng chi tiết tài khoản bên dưới.</p>
+                            <p class="desc-content">Vui lòng đăng nhập tài khoản dưới đây .</p>
                             @if ($message = Session::get('error'))
                                 <div class="alert alert-danger alert-block">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -54,8 +54,9 @@
 
                             <!-- Input Password Start -->
                             <div class="single-input-item mb-3">
-                                <x-text-input id="password" class="block w-full" type="password" name="password" placeholder="Mật khẩu" />
-                                <x-input-error :messages="$errors->get('password')" class="text-danger" />
+
+                                <x-text-input id="password" class="block w-full" type="password" name="password" required placeholder="Nhập mật khẩu của bạn" />
+                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
                             <!-- Input Password End -->
 
