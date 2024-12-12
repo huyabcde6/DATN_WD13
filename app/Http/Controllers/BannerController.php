@@ -35,7 +35,6 @@ class BannerController extends Controller
      */
     public function store(BannerRequest $request)
     {
-        // Lấy dữ liệu từ request
         $dataBanner = [
             "title"         => $request->title,
             "image_path"    => $request->image_path,
@@ -52,7 +51,7 @@ class BannerController extends Controller
         }
 
         // Tạo mới banner và lưu vào cơ sở dữ liệu
-        $banner = Banner::query()->create($dataBanner);
+        Banner::query()->create($dataBanner);
 
         // Quay lại trang danh sách banner với thông báo thành công
         return redirect()->route('admin.banners.index')->with('success', 'Thao tác thành công!');

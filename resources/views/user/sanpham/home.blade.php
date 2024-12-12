@@ -22,7 +22,7 @@
                                 <p>
                                     {{ $banner->description }}
                                 </p>
-                                <a href="{{ route('shop.index', $banner->category_id ) }}" class="btn btn-lg btn-primary btn-hover-dark">
+                                <a href="{{ route('shop.index',['category' => $banner->category_id]) }}" class="btn btn-lg btn-primary btn-hover-dark">
                                     Mua ngay
                                 </a>
                             </div>

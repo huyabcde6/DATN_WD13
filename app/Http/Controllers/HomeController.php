@@ -16,7 +16,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $banners = Banner::where('status', 1)->orderBy('order')->get();
+        $banners = Banner::where('status', 1)->get();
+        $news = News::where('status', 1)->get();
 
         // Sản phẩm mới
         $newProducts = products::where('iS_new', 1)
@@ -34,7 +35,6 @@ class HomeController extends Controller
             ->where('is_show', true)
             ->limit(8)->get();
 
-        return view('user.sanpham.home', compact('banners', 'newProducts', 'bestSellingProducts', 'saleProducts'));
-
+        return view('user.sanpham.home', compact('banners', 'newProducts', 'bestSellingProducts', 'saleProducts', 'news'));
     }
 }
