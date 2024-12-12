@@ -16,9 +16,17 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with('status')->paginate(7);
+        $query = Order::with('status');
+        
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->where('order_code', 'like', '%' . $searchTerm . '%');
+        }
+
+        $orders = $query->paginate(7);
+        
         return view('admin.orders.index', compact('orders'));
     }
 

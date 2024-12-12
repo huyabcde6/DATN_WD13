@@ -87,7 +87,9 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     // Các route cho quản lý sản phẩm
     Route::resource('products', AdminProductController::class);
 
+    // Quản lý đơn hàng
     Route::resource('orders', AdminOrderController::class);
+    
     // Quản lý kích thước
     Route::resource('sizes', SizeController::class);
 

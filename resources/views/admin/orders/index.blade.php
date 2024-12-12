@@ -27,13 +27,13 @@ Quản lý đơn hàng
         <div class="col-12">
             <div class="card">
                 <div class="d-flex m-3">
-                    <form action="{{ route('users.index') }}" method="get" class="">
+                    <form action="{{ route('admin.orders.index') }}" method="get" class="">
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="bi bi-search"></i>
                             </span>
                             <input type="text" value="{{ request('search') }}" name="search" id="search"
-                                class="form-control" placeholder="Nhập từ khóa cần tìm..">
+                                class="form-control" placeholder="Nhập mã đơn hàng..">
                             <button type="submit" class="btn btn-dark">Tìm kiếm</button>
                         </div>
                     </form>
