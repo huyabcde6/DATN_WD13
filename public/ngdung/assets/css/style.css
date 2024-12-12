@@ -16003,7 +16003,7 @@ input[type=checkbox]:checked + label:after {
 /*----------------------------------------*/
 /*  03. Header CSS
 /*----------------------------------------*/
-/*====================  
+/*====================
     3.1 Header Top CSS
 ====================*/
 /* Header Top Links */
@@ -16175,7 +16175,7 @@ input[type=checkbox]:checked + label:after {
   }
 }
 
-/*====================  
+/*====================
     3.2 Header Bottom CSS
 ====================*/
 .header-bottom {
@@ -16424,7 +16424,7 @@ input[type=checkbox]:checked + label:after {
           animation: fadeInDown 0.5s ease-in-out;
 }
 
-/*====================  
+/*====================
     3.3 Header Mobile CSS
 ====================*/
 /*  Mobile Menu */
@@ -16606,7 +16606,7 @@ input[type=checkbox]:checked + label:after {
   display: none;
 }
 
-/*====================  
+/*====================
     3.4 Header Cart CSS
 ====================*/
 /*  Cart Offcanvas Wrapper */
@@ -16785,7 +16785,7 @@ input[type=checkbox]:checked + label:after {
   color: #212121;
 }
 
-/*====================  
+/*====================
     3.5 Header Offcanvas CSS
 ====================*/
 /* Offcanvas Overlay */
@@ -17110,7 +17110,7 @@ input[type=checkbox]:checked + label:after {
 /*----------------------------------------*/
 /*  05. Footer CSS
 /*----------------------------------------*/
-/*====================  
+/*====================
     5.1 Footer Top CSS
 ====================*/
 .footer-top {
@@ -17190,7 +17190,7 @@ input[type=checkbox]:checked + label:after {
   width: 160px;
 }
 
-/*====================  
+/*====================
     5.2 Footer Bottom CSS
 ====================*/
 .footer-bottom {
@@ -17213,8 +17213,8 @@ input[type=checkbox]:checked + label:after {
 /*----------------------------------------*/
 /*  06. Component CSS
 /*----------------------------------------*/
-/*====================  
-    6.1 Button CSS  
+/*====================
+    6.1 Button CSS
 ====================*/
 .btn {
   font-size: 16px;
@@ -17547,8 +17547,8 @@ input[type=checkbox]:checked + label:after {
   background-color: transparent;
 }
 
-/*====================  
-    6.2 Feature CSS  
+/*====================
+    6.2 Feature CSS
 ====================*/
 .feature {
   display: -webkit-box;
@@ -17600,8 +17600,8 @@ input[type=checkbox]:checked + label:after {
   color: #2e2e2e;
 }
 
-/*====================  
-    6.3 Banner CSS  
+/*====================
+    6.3 Banner CSS
 ====================*/
 .banner {
   position: relative;
@@ -17679,8 +17679,8 @@ input[type=checkbox]:checked + label:after {
   }
 }
 
-/*====================  
-    6.4 Products CSS  
+/*====================
+    6.4 Products CSS
 ====================*/
 /* Product Tab Nav */
 .product-tab-nav .nav-item {
@@ -18373,8 +18373,8 @@ input[type=checkbox]:checked + label:after {
   right: 15px;
 }
 
-/*====================  
-    6.5 Brand Logo CSS 
+/*====================
+    6.5 Brand Logo CSS
 ====================*/
 .single-brand-logo {
   display: -webkit-box;
@@ -18408,8 +18408,8 @@ input[type=checkbox]:checked + label:after {
   padding: 60px 0;
 }
 
-/*====================  
-    6.6 Breadcrumb CSS 
+/*====================
+    6.6 Breadcrumb CSS
 ====================*/
 .breadcrumb-area {
   padding: 10px 0;
@@ -18469,8 +18469,8 @@ input[type=checkbox]:checked + label:after {
   color: #ff4545;
 }
 
-/*====================  
-    6.7 Pagination CSS 
+/*====================
+    6.7 Pagination CSS
 ====================*/
 .pagination .page-item .page-link {
   background: #fff;
@@ -18498,8 +18498,8 @@ input[type=checkbox]:checked + label:after {
   }
 }
 
-/*====================  
-    6.8 Sidebar CSS 
+/*====================
+    6.8 Sidebar CSS
 ====================*/
 /*-- Shop Sidebar Area Start --*/
 .sidebar_widget .widget_inner .widget-title {
@@ -18784,7 +18784,7 @@ input[type=checkbox]:checked + label:after {
   transition: 0.3s;
 }
 
-/*====================  
+/*====================
     6.9 Modal CSS
 ====================*/
 .modalquickview .modal-dialog {
@@ -18892,7 +18892,7 @@ input[type=checkbox]:checked + label:after {
 /*----------------------------------------*/
 /*  07. Pages CSS
 /*----------------------------------------*/
-/*====================  
+/*====================
     7.1 Blog Page CSS
 ====================*/
 .blog-content .post-meta {
@@ -19168,7 +19168,7 @@ input[type=checkbox]:checked + label:after {
           box-shadow: none;
 }
 
-/*====================  
+/*====================
     7.2 Shop Page CSS
 ====================*/
 /*-- Shop Toolbar Area Start Here --*/
@@ -19489,7 +19489,7 @@ input[type=checkbox]:checked + label:after {
 }
 
 /* Shop Wrapper End */
-/*====================  
+/*====================
     7.3 Single Product Page CSS
 ====================*/
 .single-product-tab .nav-tabs {
@@ -20092,7 +20092,7 @@ input[type=checkbox]:checked + label:after {
   color: #212121;
 }
 
-/*====================  
+/*====================
     7.4 My Account Page CSS
 ====================*/
 .myaccount-tab-menu {
@@ -20241,7 +20241,7 @@ input[type=checkbox]:checked + label:after {
   padding: 20px;
 }
 
-/*====================  
+/*====================
     7.5 Login Register Page CSS
 ====================*/
 .login-wrapper, .register-wrapper {
@@ -20308,7 +20308,7 @@ input[type=checkbox]:checked + label:after {
   text-decoration: underline;
 }
 
-/*====================  
+/*====================
     7.6 Wishlist Page CSS
 ====================*/
 .wishlist-table .table {
@@ -20362,7 +20362,7 @@ input[type=checkbox]:checked + label:after {
   font-size: 24px;
 }
 
-/*====================  
+/*====================
     7.8 Cart Page CSS
 ====================*/
 /*-- Cart Table Style --*/
@@ -20515,7 +20515,7 @@ input[type=checkbox]:checked + label:after {
   font-weight: 700;
 }
 
-/*====================  
+/*====================
     7.9 Compare Page CSS
 ====================*/
 .compare-table .table tbody tr {
@@ -20601,7 +20601,7 @@ input[type=checkbox]:checked + label:after {
   color: #ff4545;
 }
 
-/*====================  
+/*====================
     7.10 Checkout Page CSS
 ====================*/
 .coupon-accordion .title {
@@ -20953,7 +20953,7 @@ input[type=checkbox]:checked + label:after {
   font-size: 14px;
 }
 
-/*====================  
+/*====================
     7.11 Contact Page CSS
 ====================*/
 .contact-form-wrapper .input-item input[type=text],
@@ -21009,7 +21009,7 @@ input[type=checkbox]:checked + label:after {
   color: #ff4545;
 }
 
-/*====================  
+/*====================
     7.12 About Page CSS
 ====================*/
 .about-feature-bg {
@@ -21103,7 +21103,7 @@ input[type=checkbox]:checked + label:after {
   }
 }
 
-/*====================  
+/*====================
     7.13 404 Error Page CSS
 ====================*/
 .error_form {
@@ -21194,7 +21194,7 @@ input[type=checkbox]:checked + label:after {
   color: #ff4545;
 }
 
-/*====================  
+/*====================
     7.14 FAQ Page CSS
 ====================*/
 .faq_content_area {

@@ -30,6 +30,7 @@ class OrderController extends Controller
 
         $orders = Auth::user()->order()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
         $user = Auth::user();
+
         return view('user.khac.my_account', compact('orders', 'user'));
     }
 
@@ -133,6 +134,9 @@ class OrderController extends Controller
 
         return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
     }
+    /**
+     * Xử lý thanh toán qua VNP
+     */
     private function processVNP($order)
     {
         // Tạo URL thanh toán VNP
@@ -217,28 +221,6 @@ class OrderController extends Controller
         }
     }
 
-    return redirect($vnp_Url);
-}
-
-/**
- * Xử lý callback từ VNP
- */
-public function handleVNPReturn(Request $request)
-{
-    $vnp_ResponseCode = $request->input('vnp_ResponseCode');
-    $vnp_TxnRef = $request->input('vnp_TxnRef');
-
-    if ($vnp_ResponseCode == '00') {
-        // Thanh toán thành công
-        $order = Order::where('order_code', $vnp_TxnRef)->first();
-        if ($order) {
-            $order->update(['payment_status' => 'paid']);
-            return redirect()->route('orders.index')->with('success', 'Thanh toán thành công.');
-        }
-    }
-
-    return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
-}
     /**
      * Tạo mã đơn hàng duy nhất.
      */
