@@ -376,18 +376,12 @@
     <div class="container">
         <div class="row">
             <div class="section-title" data-aos="fade-up" data-aos-delay="300">
-                <h2 class="title pb-3">Tin tức mới nhất</h2>
+                <h2 class="title pb-3">Blog mới nhất</h2>
                 <div class="title-border-bottom"></div>
             </div>
         </div>
         <div class="row mb-n6">
-
-            @foreach($news as $new)
-            <div
-                class="col-lg-4 col-md-6 col-12 mb-6"
-                data-aos="fade-up"
-                data-aos-delay="300">
-
+            <div class="col-lg-4 col-md-6 col-12 mb-6" data-aos="fade-up" data-aos-delay="300">
                 <!-- Blog Single Post Start -->
                 <div class="blog-single-post-wrapper">
                     <div class="blog-thumb">
@@ -398,20 +392,75 @@
                     </div>
                     <div class="blog-content">
                         <div class="post-meta">
-                            <span>{{ $new->created_at }}</span>
+                            <span>By : <a href="#">Admin</a></span>
+                            <span>14 Jul 2023</span>
                         </div>
                         <h3 class="title">
-                            <a href="blog-details.html">{{ $new->title }}</a>
+                            <a href="blog-details.html">Some Winter Collections</a>
                         </h3>
                         <p>
-                            {{ $new->description }}
+                            Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do
+                            eiusmod tempo
                         </p>
                         <a href="blog-details.html" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
                     </div>
                 </div>
                 <!-- Blog Single Post End -->
             </div>
-            @endforeach
+
+            <div class="col-lg-4 col-md-6 col-12 mb-6" data-aos="fade-up" data-aos-delay="500">
+                <!-- Blog Single Post Start -->
+                <div class="blog-single-post-wrapper">
+                    <div class="blog-thumb">
+                        <a class="blog-overlay" href="blog-details.html">
+                            <img class="fit-image" src="{{ asset('ngdung/assets/images/blog/blog-post/2.jpg')}}"
+                                alt="Blog Post" />
+                        </a>
+                    </div>
+                    <div class="blog-content">
+                        <div class="post-meta">
+                            <span>By : <a href="#">Admin</a></span>
+                            <span>14 Jul 2023</span>
+                        </div>
+                        <h3 class="title">
+                            <a href="blog-details.html">My Perty Fashion</a>
+                        </h3>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do
+                            eiusmod tempo
+                        </p>
+                        <a href="blog-details.html" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
+                    </div>
+                </div>
+                <!-- Blog Single Post End -->
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12 mb-6" data-aos="fade-up" data-aos-delay="700">
+                <!-- Blog Single Post Start -->
+                <div class="blog-single-post-wrapper">
+                    <div class="blog-thumb">
+                        <a class="blog-overlay" href="blog-details.html">
+                            <img class="fit-image" src="{{ asset('ngdung/assets/images/blog/blog-post/3.jpg')}}"
+                                alt="Blog Post" />
+                        </a>
+                    </div>
+                    <div class="blog-content">
+                        <div class="post-meta">
+                            <span>By : <a href="#">Admin</a></span>
+                            <span>14 Jul 2023</span>
+                        </div>
+                        <h3 class="title">
+                            <a href="blog-details.html">Perfect Fashion House</a>
+                        </h3>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do
+                            eiusmod tempo
+                        </p>
+                        <a href="blog-details.html" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
+                    </div>
+                </div>
+                <!-- Blog Single Post End -->
+            </div>
         </div>
     </div>
 </div>
