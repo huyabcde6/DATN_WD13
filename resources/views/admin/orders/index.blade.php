@@ -3,20 +3,10 @@
 @section('title')
 Quản lý đơn hàng
 @endsection
-
+@section('css')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+@endsection
 @section('content')
-@if (session()->has('error'))
-<div class="alert alert-danger">
-    {{ session()->get('error') }}
-</div>
-@endif
-
-@if (session()->has('success'))
-<div class="alert alert-success">
-    {{ session()->get('success') }}
-</div>
-@endif
-
 <div class="row m-3">
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
         <div class="flex-grow-1">
@@ -234,6 +224,8 @@ Quản lý đơn hàng
 @endsection
 
 @section('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
     window.Echo.channel('order-updated')
         .listen('.order.updated', (e) => {
@@ -301,6 +293,20 @@ Quản lý đơn hàng
         }
     });
 </script>
+@if (session('error'))
+    <script>
+        $(document).ready(function() {
+            toastr.error("{{ session('error') }}", "Thất bại", { timeOut: 5000 });
+        });
+    </script>
+    @endif
 
+    @if (session('success'))
+    <script>
+        $(document).ready(function() {
+            toastr.success("{{ session('success') }}", "Thành công", { timeOut: 5000 });
+        });
+    </script>
+    @endif
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 @endsection

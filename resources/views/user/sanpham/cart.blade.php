@@ -26,7 +26,17 @@
 <!-- Shopping Cart Section Start -->
 <div class="section section-margin">
     <div class="container">
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
 
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
         <div class="row">
             <div class="col-12">
 
@@ -48,12 +58,12 @@
                         <!-- Table Head End -->
 
                         <!-- Table Body Start -->
-                        <tbody>
+                        <tbody id="cartItems">
                             @foreach ($cartItems as $item)
                             <tr>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" height="auto" width="70"
-                                            alt="Product" /></a>
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
+                                            height="auto" width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
                                     <a href="#">{{ $item['product_name'] }} <br> {{ $item['size'] }} /
@@ -93,6 +103,7 @@
 
                     </table>
                 </div>
+
                 <!-- Cart Table End -->
 
                 <!-- Cart Update Option Start -->
@@ -110,6 +121,7 @@
                 </div>
                 <!-- Cart Update Option End -->
 
+
             </div>
         </div>
 
@@ -117,9 +129,8 @@
             <div class="col-lg-5 ms-auto col-custom">
 
                 <!-- Cart Calculation Area Start -->
+                <!-- Cart Calculation Area Start -->
                 <div class="cart-calculator-wrapper">
-
-                    <!-- Cart Calculate Items Start -->
                     <div class="cart-calculate-items">
 
                         <!-- Cart Calculate Items Title Start -->
@@ -149,14 +160,10 @@
                         <!-- Responsive Table End -->
 
                     </div>
-                    <!-- Cart Calculate Items End -->
-
-                    <!-- Cart Checkout Button Start -->
                     <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
                         hành thanh toán</a>
-                    <!-- Cart Checkout Button End -->
-
                 </div>
+
                 <!-- Cart Calculation Area End -->
 
             </div>
@@ -208,20 +215,25 @@ $(document).ready(function() {
                     inputField.val(quantity);
 
                     // Update the subtotal for this product
-                    var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
-                    var formattedSubtotal = response.item_price;  // Ensure price formatting here
+                    var subtotalCell = inputField.closest('tr').find('.subtotal-' +
+                        productDetailId);
+                    var formattedSubtotal = response
+                    .item_price; // Ensure price formatting here
                     subtotalCell.text(formattedSubtotal);
 
                     // Calculate the total for the cart
                     var subTotal = 0;
                     $('.pro-subtotal span').each(function() {
-                        var currentSubtotal = $(this).text().replace(' đ', '').replace('.', '').trim();
+                        var currentSubtotal = $(this).text().replace(' đ', '')
+                            .replace('.', '').trim();
                         subTotal += parseFloat(currentSubtotal);
                     });
 
                     // Update the displayed totals
-                    $('.sub-total').text(subTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                    $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    $('.sub-total').text(subTotal.toFixed(0).replace(
+                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(
+                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
                 }
             },
             error: function() {
@@ -231,5 +243,4 @@ $(document).ready(function() {
     });
 });
 </script>
-
 @endsection

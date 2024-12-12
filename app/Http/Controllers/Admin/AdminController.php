@@ -36,11 +36,20 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD:app/Http/Controllers/UserController.php
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|max:20',
+            'roles' => 'required'
+=======
         // $request->validate([
         //     'name' => 'required|string|max:255',
         //     'email' => 'required|email|max:255|unique:users,email',
         //     'password' => 'required|string|min:8|max:20',
         //     'roles' => 'required'
+>>>>>>> 4b72ed8744930d28cd573ea23e4c9db00718596f:app/Http/Controllers/Admin/AdminController.php
 
         // ]);
 
@@ -61,10 +70,10 @@ class AdminController extends Controller
     {
 
         $roles = Role::pluck('name', 'name')->all();
-        $userRoles = $user->roles->pluck('name','name')->all();
+        $userRoles = $user->roles->pluck('name', 'name')->all();
         return view('role-permission.user.edit', [
             'user' => $user,
-            'roles'=> $roles,
+            'roles' => $roles,
             'userRoles' => $userRoles
         ]);
     }
@@ -79,7 +88,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
         ];
-        if(!empty($request->password)){
+        if (!empty($request->password)) {
             $data += [
                 'password' => Hash::make($request->password),
             ];

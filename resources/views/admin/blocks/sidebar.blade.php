@@ -122,6 +122,12 @@
                          </ul>
                      </div>
                  </li>
+                 <li>
+                     <a class='tp-link' href="{{ route('admin.Coupons.index') }}">
+                         <i data-feather="file-text"></i>
+                         <span> Quản lý Mã Giảm Giá </span>
+                     </a>
+                 </li>
              </ul>
 
          </div>

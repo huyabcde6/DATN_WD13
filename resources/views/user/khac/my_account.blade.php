@@ -1,35 +1,50 @@
 @extends('layouts.home')
 @section('css')
 <style>
-    .filter-link {
-        position: relative; /* Đảm bảo dải màu đỏ sẽ hiển thị đúng dưới liên kết */
-        padding-bottom: 2px; /* Thêm một chút khoảng cách dưới để dải màu đỏ không bị dính vào chữ */
-        text-decoration: none; /* Loại bỏ gạch dưới mặc định */
-    }
+.filter-link {
+    position: relative;
+    /* Đảm bảo dải màu đỏ sẽ hiển thị đúng dưới liên kết */
+    padding-bottom: 2px;
+    /* Thêm một chút khoảng cách dưới để dải màu đỏ không bị dính vào chữ */
+    text-decoration: none;
+    /* Loại bỏ gạch dưới mặc định */
+}
 
-    .filter-link::after {
-        content: ''; /* Không có nội dung */
-        position: absolute; /* Đặt dải màu dưới */
-        left: 0; /* Căn trái */
-        right: 0; /* Căn phải */
-        bottom: 0; /* Căn dưới */
-        height: 2px; /* Dải màu có chiều cao 2px */
-        background-color: red; /* Màu đỏ */
-        transform: scaleX(0); /* Ẩn dải màu ban đầu */
-        transform-origin: bottom right; /* Đặt điểm gốc của hiệu ứng là phía dưới bên phải */
-        transition: transform 0.3s ease; /* Hiệu ứng chuyển động mượt mà */
-    }
+.filter-link::after {
+    content: '';
+    /* Không có nội dung */
+    position: absolute;
+    /* Đặt dải màu dưới */
+    left: 0;
+    /* Căn trái */
+    right: 0;
+    /* Căn phải */
+    bottom: 0;
+    /* Căn dưới */
+    height: 2px;
+    /* Dải màu có chiều cao 2px */
+    background-color: red;
+    /* Màu đỏ */
+    transform: scaleX(0);
+    /* Ẩn dải màu ban đầu */
+    transform-origin: bottom right;
+    /* Đặt điểm gốc của hiệu ứng là phía dưới bên phải */
+    transition: transform 0.3s ease;
+    /* Hiệu ứng chuyển động mượt mà */
+}
 
-    .filter-link:hover::after {
-        transform: scaleX(1); /* Khi hover, dải màu đỏ sẽ hiển thị */
-        transform-origin: bottom left; /* Thay đổi điểm gốc khi hover */
-    }
+.filter-link:hover::after {
+    transform: scaleX(1);
+    /* Khi hover, dải màu đỏ sẽ hiển thị */
+    transform-origin: bottom left;
+    /* Thay đổi điểm gốc khi hover */
+}
 
-    #loading p {
-        font-size: 14px;
-        color: #666;
-        font-style: italic;
-    }
+#loading p {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+}
 </style>
 @endsection
 
@@ -59,7 +74,17 @@
 <!-- My Account Section Start -->
 <div class="section mt-4 mb-5">
     <div class="container">
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
 
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
         <div class="row">
             <div class="col-lg-12">
 
@@ -73,6 +98,7 @@
                                 Dashboard</a>
                                 <a href="#orders"  data-bs-toggle="tab"><i
                                         class="fa fa-cart-arrow-down"></i> Orders</a>
+
                                 <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i>
                                     address</a>
                                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account

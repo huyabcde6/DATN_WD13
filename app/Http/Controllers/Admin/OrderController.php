@@ -90,53 +90,62 @@ class OrderController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        DB::beginTransaction();
-        try {
-            $order = Order::findOrFail($id);
-            
-            // Lấy trạng thái mới từ request
-            $statusId = $request->input('status');
-            
-            if ($statusId && is_numeric($statusId)) {
-                // Chuyển trạng thái đơn hàng theo quy định
-                if ($order->status_donhang_id == 1 && in_array($statusId, [2, 7])) { // Chờ xác nhận -> Đã xác nhận, Hoàn hàng
-                    $order->status_donhang_id = $statusId;
-                    if ($statusId == 7) {
-                        $order->payment_status = 'thất bại'; // Đánh dấu thanh toán thất bại khi hủy
-                    }
-                } elseif ($order->status_donhang_id == 2 && $statusId == 3) { // Đã xác nhận -> Đang vận chuyển
-                    $order->status_donhang_id = $statusId;
-                } elseif ($order->status_donhang_id == 3 && $statusId == 4) { // Đang vận chuyển -> Đã giao hàng
-                    $order->status_donhang_id = $statusId;
-                    $order->payment_status = 'đã thanh toán';
-                } elseif ($order->status_donhang_id == 4 && in_array($statusId, [5, 8])) { // Đã giao hàng -> Hoàn thành, Chờ
-                    $order->status_donhang_id = $statusId;
-                    if ($statusId == 5) {
-                        $this->moveOrderToInvoice($order);
-                    }
-                } elseif ($order->status_donhang_id == 5) { // Hoàn thành không thể thay đổi trạng thái
-                    return back()->with('error', 'Đơn hàng đã hoàn thành và không thể thay đổi trạng thái.');
-                }elseif ($order->status_donhang_id == 8 && $statusId == 6) { // Chờ xác nhận hoàn hàng -> Hoàn hàng
-                    $order->status_donhang_id = $statusId;
-                    $order->payment_status = 'đã hoàn lại';
-                }else {
-                    return back()->with('error', 'Không thể chuyển trạng thái theo quy định.');
-                }
+{
+    DB::beginTransaction();
+    try {
+        $order = Order::findOrFail($id);
 
-   // Lưu đơn hàng và gửi sự kiện cập nhật
-                $order->update();
-                broadcast(new OderEvent(Order::findOrFail($id)));
-          Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
-            }
-            DB::commit();
-            return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::error('Order update error: ' . $e->getMessage());
-            return back()->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
+        // Lấy trạng thái mới từ request
+        $statusId = $request->input('status');
+
+        // Xác minh trạng thái
+        if (!$statusId || !is_numeric($statusId)) {
+            return back()->with('error', 'Trạng thái không hợp lệ.');
         }
-    }    
+
+        // Chuyển đổi trạng thái đơn hàng theo quy định
+        if ($order->status_donhang_id == 1 && in_array($statusId, [2, 7])) { // Chờ xác nhận -> Đã xác nhận, Hoàn hàng
+            $order->status_donhang_id = $statusId;
+            if ($statusId == 7) {
+                $order->payment_status = 'thất bại'; // Đánh dấu thanh toán thất bại khi hủy
+            }
+        } elseif ($order->status_donhang_id == 2 && $statusId == 3) { // Đã xác nhận -> Đang vận chuyển
+            $order->status_donhang_id = $statusId;
+        } elseif ($order->status_donhang_id == 3 && $statusId == 4) { // Đang vận chuyển -> Đã giao hàng
+            $order->status_donhang_id = $statusId;
+            $order->payment_status = 'đã thanh toán';
+        } elseif ($order->status_donhang_id == 4 && in_array($statusId, [5, 8])) { // Đã giao hàng -> Hoàn thành, Chờ
+            $order->status_donhang_id = $statusId;
+            if ($statusId == 5) {
+                $this->moveOrderToInvoice($order);
+            }
+        } elseif ($order->status_donhang_id == 5) { // Hoàn thành không thể thay đổi trạng thái
+            return back()->with('error', 'Đơn hàng đã hoàn thành và không thể thay đổi trạng thái.');
+        } elseif ($order->status_donhang_id == 8 && $statusId == 6) { // Chờ xác nhận hoàn hàng -> Hoàn hàng
+            $order->status_donhang_id = $statusId;
+            $order->payment_status = 'đã hoàn lại';
+        } else {
+            return back()->with('error', 'Không thể chuyển trạng thái theo quy định.');
+        }
+
+        // Lưu thay đổi đơn hàng
+        $order->update();
+
+        // Phát sự kiện cập nhật đơn hàng
+        broadcast(new OderEvent($order));
+
+        // Gửi email thông báo
+        Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
+
+        DB::commit();
+        return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        \Log::error('Order update error: ' . $e->getMessage());
+        return back()->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
+    }
+}
+  
 
     protected function moveOrderToInvoice(Order $order)
     {
