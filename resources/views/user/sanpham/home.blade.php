@@ -395,7 +395,7 @@
                 <div class="blog-single-post-wrapper">
                     <div class="blog-thumb">
                         <a class="blog-overlay" href="blog-details.html">
-                            <img class="fit-image" src="{{ asset('ngdung/assets/images/blog/blog-post/1.jpg')}}"
+                            <img class="fit-image" src="{{ url('storage/'. $new->avata) }}"
                                 alt="Blog Post" />
                         </a>
                     </div>
