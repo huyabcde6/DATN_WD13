@@ -288,8 +288,7 @@
                                             class="px-2">
                                             @csrf
                                             <div class="mb-3">
-                                                <label for="description" class="form-label small text-muted">Nội dung
-                                                    đánh giá</label>
+                                                <label for="description" class="form-label small text-muted">Nội dung đánh giá</label>
                                                 <textarea name="description"
                                                     class="form-control form-control-sm border-dark" rows="3" required
                                                     placeholder="Nhập đánh giá của bạn về sản phẩm..."></textarea>
@@ -307,7 +306,7 @@
                             <div class="reviews-list">
                                 <h6 class="text-muted mb-3">Các đánh giá khác</h6>
                                 @if ($comments->isNotEmpty())
-                                @foreach ($comments as $comment)
+                                @foreach ($comments->where('is_hidden', false) as $comment)
                                 <div class="card mb-2 shadow-sm border-0">
                                     <div class="card-body p-3">
                                         <div class="d-flex justify-content-between align-items-center">

@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\banner;
-use Illuminate\Http\Request;
-use App\Models\Order;
+use App\Models\News;
 use App\Models\products;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
+
+use App\Models\Order;
+
 
 class HomeController extends Controller
 {
@@ -30,5 +35,6 @@ class HomeController extends Controller
             ->limit(8)->get();
 
         return view('user.sanpham.home', compact('banners', 'newProducts', 'bestSellingProducts', 'saleProducts'));
+
     }
 }
