@@ -81,7 +81,7 @@
                         <div class="col-xl-2 col-6">
                             <div class="header-actions">
                                 <!-- Search Header Action Button Start -->
-                                <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
+                                <a href="javascript:void(0)" method="get" name="key" class="header-action-btn header-action-btn-search"><i
                                         class="pe-7s-search"></i></a>
                                 <!-- Search Header Action Button End -->
 

@@ -167,3 +167,7 @@ Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('v
 
 Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');
 
+Route::get('search',[
+    'as'=>'search',
+    'user'=>'ProductController@getSearch'
+]);

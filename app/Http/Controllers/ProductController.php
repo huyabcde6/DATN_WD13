@@ -121,4 +121,12 @@ class ProductController extends Controller
 
             return view('user.sanpham.shop_sidebar', compact( 'products', 'colors'));
     }
+
+
+    public function getSearch(Request $req){
+        $product = products::where('name','like','%'.$req->key.'%')
+                                     ->orwhere('price',$req->key)
+                                     ->get();
+                                     return view('user.khac.search',compact('product'));
+    }
 }
