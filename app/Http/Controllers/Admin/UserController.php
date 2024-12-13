@@ -35,6 +35,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             "password" => Hash::make($request->password),
+            'status' => $request->status,
         ]);
         $user->syncRoles($request->roles);
 
@@ -64,6 +65,7 @@ class UserController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
+            'status' => $request->status,
         ];
         if(!empty($request->password)){
             $data += [

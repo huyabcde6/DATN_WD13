@@ -101,6 +101,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý danh mục
     Route::resource('categories', CategoryProductController::class);
+    
     Route::resource('users', UserController::class);
 
     Route::get('/', [StatisticsController::class, 'index'])->name('statistics.index');
