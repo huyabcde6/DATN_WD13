@@ -33,7 +33,7 @@
 </head>
 
 <body>
-    <div class="loader" style="display: none;"></div>
+    {{-- <div class="loader" style="display: none;"></div> --}}
     <div class="header section">
         <!-- Header Bottom Start -->
         <div class="header-bottom">
@@ -215,7 +215,7 @@
             <div class="offcanvas-overlay"></div>
 
             <!-- Cart Offcanvas Inner Start -->
-            <div class="cart-offcanvas-inner">
+            {{-- <div class="cart-offcanvas-inner">
                 <!-- Button Close Start -->
                 <div class="offcanvas-btn-close">
                     <i class="pe-7s-close"></i>
@@ -225,7 +225,7 @@
                 <!-- Offcanvas Cart Content Start -->
 
                 <!-- Offcanvas Cart Content End -->
-            </div>
+            </div> --}}
             <!-- Cart Offcanvas Inner End -->
         </div>
         <!-- Cart Offcanvas End -->

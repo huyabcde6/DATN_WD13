@@ -147,7 +147,7 @@
                     </div>
                     <!-- Price Box End -->
 
-                   
+
                     <!-- SKU Start -->
                     <div class="sku mb-3">
                         <span id="current-sku">SKU: {{ $product->productDetails->first()->product_code }}</span>
@@ -218,7 +218,11 @@
                             </form>
                         </div>
                         <div class="add-to-wishlist">
-                            <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Yêu thích</a>
+                            <input type="hidden" name="products_id" value="{{ $product->id }}">
+                                <input type="hidden" name="size" value="" id="selected-size">
+                                <input type="hidden" name="color" value="" id="selected-color">
+                                <input type="hidden" name="quantity" id="product-quantity-hidden" value="1">
+                            <a class="btn btn-outline-dark btn-hover-primary" href="{{ route('orders.create') }}">Mua ngay</a>
                         </div>
                     </div>
                     <!-- Cart & Wishlist Button End -->

@@ -89,13 +89,18 @@
                                         đ</span>
                                 </td>
                                 <td class="pro-remove">
-                                    <form action="{{ route('cart.remove', $item['product_detail_id']) }}" method="POST">
+                                    <form id="delete-form-{{ $item['product_detail_id'] }}"
+                                          action="{{ route('cart.remove', $item['product_detail_id']) }}"
+                                          method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"><i
-                                                class="pe-7s-trash"></i></button>
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="confirmDelete({{ $item['product_detail_id'] }})">
+                                            <i class="pe-7s-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
+
                             </tr>
                             @endforeach
                         </tbody>
@@ -218,6 +223,12 @@
             });
         });
     });
+    function confirmDelete(productDetailId) {
+        if (confirm('Bạn có chắc chắn muốn xóa mục này?')) {
+            // Tìm biểu mẫu và gửi đi nếu người dùng xác nhận
+            document.getElementById(`delete-form-${productDetailId}`).submit();
+        }
+    }
 </script>
 @endsection
 
