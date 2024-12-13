@@ -56,12 +56,12 @@
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">Tài khoản của tôi</h1>
+                <h1 class="title">My Account</h1>
                 <ul>
                     <li>
-                        <a href="index.html">Trang chủ </a>
+                        <a href="index.html">Home </a>
                     </li>
-                    <li class="active"> Tài khoản</li>
+                    <li class="active"> My Account</li>
                 </ul>
             </div>
         </div>
@@ -74,7 +74,17 @@
 <!-- My Account Section Start -->
 <div class="section mt-4 mb-5">
     <div class="container">
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
 
+        @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
         <div class="row">
             <div class="col-lg-12">
 
@@ -88,13 +98,11 @@
                                     Dashboard</a>
                                 <a href="#orders" data-bs-toggle="tab"><i
                                         class="fa fa-cart-arrow-down"></i> Orders</a>
+
                                 <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i>
                                     address</a>
                                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account
                                     Details</a>
-                                    Trang chủ</a>
-                                <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Đơn hàng</a>
-                                <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i>Chi tiết tài khoản </a>
                                 <a class='dropdown-item notify-item' href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="mdi mdi-location-exit fs-16 align-middle"></i>
@@ -114,14 +122,14 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
                                     <div class="myaccount-content">
-                                        <h3 class="title">Trang chủ</h3>
+                                        <h3 class="title">Dashboard</h3>
                                         <div class="welcome">
-                                            <p>Xin chào, <strong>{{ $user->name }}</strong></p>
+                                            <p>Hello, <strong>Alex Aya</strong> (If Not <strong>Aya !</strong><a
+                                                    href="login-register.html" class="logout"> Logout</a>)</p>
                                         </div>
-                                        <p class="mb-0">Từ bảng điều khiển tài khoản của bạn.
-                                             bạn có thể dễ dàng kiểm tra và xem các đơn đặt hàng gần đây của mình, 
-                                             quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi tiết mật khẩu và tài khoản của mình.
-                                        </p>
+                                        <p class="mb-0">From your account dashboard. you can easily check & view your
+                                            recent orders, manage your shipping and billing addresses and edit your
+                                            password and account details.</p>
                                     </div>
                                 </div>
 
@@ -175,30 +183,64 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="account-info" role="tabpanel">
                                     <div class="myaccount-content">
-                                        <h3 class="title">Chi tiết tài khoản</h3>
+                                        <h3 class="title">Account Details</h3>
                                         <div class="account-details-form">
                                             <form action="#">
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
-                                                            <label for="name" class="required mb-1">Họ tên</label>
-                                                            <input type="text" id="name" value="{{ $user->name }}"/>
+                                                            <label for="first-name" class="required mb-1">First
+                                                                Name</label>
+                                                            <input type="text" id="first-name"
+                                                                placeholder="First Name" />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
-                                                            <label for="email" class="required mb-1">Email</label>
-                                                            <input type="text" id="email" value="{{ $user->email }}"/>
+                                                            <label for="last-name" class="required mb-1">Last
+                                                                Name</label>
+                                                            <input type="text" id="last-name" placeholder="Last Name" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="single-input-item mb-3">
-                                                    <label for="address" class="required mb-1">Địa chỉ</label>
-                                                    <input type="text" id="address" value="{{ $user->address }}"/>
+                                                    <label for="display-name" class="required mb-1">Display Name</label>
+                                                    <input type="text" id="display-name" placeholder="Display Name" />
                                                 </div>
                                                 <div class="single-input-item mb-3">
-                                                    <label for="number_phone" class="required mb-1">Số điện thoại</label>
-                                                    <input type="number" id="number_phone" value="{{ $user->number_phone }}"/>
+                                                    <label for="email" class="required mb-1">Email Addres</label>
+                                                    <input type="email" id="email" placeholder="Email Address" />
+                                                </div>
+                                                <fieldset>
+                                                    <legend>Password change</legend>
+                                                    <div class="single-input-item mb-3">
+                                                        <label for="current-pwd" class="required mb-1">Current
+                                                            Password</label>
+                                                        <input type="password" id="current-pwd"
+                                                            placeholder="Current Password" />
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item mb-3">
+                                                                <label for="new-pwd" class="required mb-1">New
+                                                                    Password</label>
+                                                                <input type="password" id="new-pwd"
+                                                                    placeholder="New Password" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item mb-3">
+                                                                <label for="confirm-pwd" class="required mb-1">Confirm
+                                                                    Password</label>
+                                                                <input type="password" id="confirm-pwd"
+                                                                    placeholder="Confirm Password" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                <div class="single-input-item single-item-button">
+                                                    <button class="btn btn btn-dark btn-hover-primary rounded-0">Save
+                                                        Changes</button>
                                                 </div>
                                             </form>
                                         </div>

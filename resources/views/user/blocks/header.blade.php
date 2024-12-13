@@ -33,7 +33,6 @@
 </head>
 
 <body>
-    <div class="loader" style="display: none;"></div>
     <div class="header section">
         <!-- Header Bottom Start -->
         <div class="header-bottom">
@@ -84,12 +83,12 @@
 
                                 <!-- User Account Header Action Button Start -->
 
-                                
+
                                 <a href="{{ Auth::check() ? route ('orders.index') : route ('login') }}" class="header-action-btn d-none d-md-block">
                                     <i class="pe-7s-user"></i>
                                 </a>
 
-                                
+
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->

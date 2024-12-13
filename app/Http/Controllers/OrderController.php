@@ -25,13 +25,24 @@ class OrderController extends Controller
     /**
      * Hiển thị danh sách các đơn hàng.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Sử dụng quan hệ 'status' thay vì 'status_donhang_id'
+        $query = Auth::user()->order()->with(['status', 'orderDetails.products'])->orderBy('created_at', 'desc');
 
-        $orders = Auth::user()->order()->with('status')->get(); // Lấy đơn hàng của người dùng kèm theo trạng thái
-        $user = Auth::user();
+        // Lọc theo trạng thái nếu có
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status_donhang_id', $request->status);
+        }
 
-        return view('user.khac.my_account', compact('orders', 'user'));
+        $orders = $query->paginate(3); // Mỗi lần tải 3 đơn hàng
+
+        // Nếu là request AJAX (khi cuộn hoặc lọc), trả về HTML của orders
+        if ($request->ajax()) {
+            return view('user.khac.partials.orders', compact('orders'))->render();
+        }
+
+        return view('user.khac.my_account', compact('orders'));
     }
 
     /**
