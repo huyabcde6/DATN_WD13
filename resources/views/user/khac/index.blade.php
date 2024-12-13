@@ -1,6 +1,20 @@
 @extends('layouts.home')
 
 @section('content')
+<div class="breadcrumb-area bg-light">
+    <div class="container-fluid">
+        <div class="breadcrumb-content text-center">
+            <h1 class="title">Tìm Kiếm</h1>
+            <ul>
+                <li>
+                    <a href="index.html">Trang chủ </a>
+                </li>
+                <li class="active">Tìm Kiếm</li>
+            </ul>
+            
+        </div>
+    </div>
+</div>
 @if($products->isEmpty())
     <p>No products found.</p>
 @else
