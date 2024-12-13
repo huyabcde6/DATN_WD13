@@ -121,12 +121,24 @@ class ProductController extends Controller
 
             return view('user.sanpham.shop_sidebar', compact( 'products', 'colors'));
     }
+    public function search(Request $request)
+    {
+        $query = products::query();
 
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
 
-    public function getSearch(Request $req){
-        $product = products::where('name','like','%'.$req->key.'%')
-                                     ->orwhere('price',$req->key)
-                                     ->get();
-                                     return view('user.khac.search',compact('product'));
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->input('min_price'));
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->input('max_price'));
+        }
+
+        $products = $query->get();
+
+        return view('user.khac.index', compact('products'));
     }
 }

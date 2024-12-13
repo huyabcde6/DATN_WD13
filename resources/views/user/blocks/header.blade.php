@@ -81,8 +81,24 @@
                         <div class="col-xl-2 col-6">
                             <div class="header-actions">
                                 <!-- Search Header Action Button Start -->
-                                <a href="javascript:void(0)" method="get" name="key" class="header-action-btn header-action-btn-search"><i
-                                        class="pe-7s-search"></i></a>
+                                {{-- <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
+                                        class="pe-7s-search"></i></a> --}}
+
+                                        <form action="{{ route('products.search') }}" method="GET">
+                                            <div>
+                                                <label for="name">Product Name:</label>
+                                                <input type="text" name="name" id="name" value="{{ request('name') }}">
+                                            </div>
+                                            <div>
+                                                <label for="min_price">Min Price:</label>
+                                                <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}">
+                                            </div>
+                                            <div>
+                                                <label for="max_price">Max Price:</label>
+                                                <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}">
+                                            </div>
+                                            <button type="submit">Search</button>
+                                        </form>
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
