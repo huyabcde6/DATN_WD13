@@ -130,7 +130,7 @@
                                             <p>Xin chào, <strong>{{ $user->name }}</strong></p>
                                         </div>
                                         <p class="mb-0">Từ bảng điều khiển tài khoản của bạn.
-                                             bạn có thể dễ dàng kiểm tra và xem các đơn đặt hàng gần đây của mình, 
+                                             bạn có thể dễ dàng kiểm tra và xem các đơn đặt hàng gần đây của mình,
                                              quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi tiết mật khẩu và tài khoản của mình.
                                         </p>
                                     </div>
@@ -188,28 +188,32 @@
                                     <div class="myaccount-content">
                                         <h3 class="title">Chi tiết tài khoản</h3>
                                         <div class="account-details-form">
-                                            <form action="#">
+                                            <form method="POST" action="{{ route('profile.updateAccount') }}">
+                                                @csrf
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
                                                             <label for="name" class="required mb-1">Họ tên</label>
-                                                            <input type="text" id="name" value="{{ $user->name }}"/>
+                                                            <input type="text" name="name" id="name" value="{{ $user->name }}"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
                                                             <label for="email" class="required mb-1">Email</label>
-                                                            <input type="text" id="email" value="{{ $user->email }}"/>
+                                                            <input type="text" name="email" id="email" value="{{ $user->email }}"/>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="single-input-item mb-3">
                                                     <label for="address" class="required mb-1">Địa chỉ</label>
-                                                    <input type="text" id="address" value="{{ $user->address }}"/>
+                                                    <input type="text" name="address" id="address" value="{{ $user->address }}"/>
                                                 </div>
                                                 <div class="single-input-item mb-3">
                                                     <label for="number_phone" class="required mb-1">Số điện thoại</label>
-                                                    <input type="number" id="number_phone" value="{{ $user->number_phone }}"/>
+                                                    <input type="number" name="number_phone" id="number_phone" value="{{ $user->number_phone }}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-success">Lưu</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -240,6 +244,17 @@
 @vite('resources/js/public.js');
 @endsection
 @section('js')
+@if (session('success'))
+    <script>
+        alert('Cập nhật tài khoản thành công');
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        alert('Đã xảy ra lỗi khi cập nhật tài khoản');
+    </script>
+@endif
 <script>
 let page = 1;
 let isLoading = false;
