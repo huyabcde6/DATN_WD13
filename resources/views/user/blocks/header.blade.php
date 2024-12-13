@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>POLY STORE</title>
     <!-- Favicons -->
-    <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico') }}" />
+    <link rel="shortcut icon" href="http://datn_wd13.test/ngdung/assets/images/logo/logo1.png" />
 
     <!-- Vendor CSS (Icon Font) -->
 

@@ -73,17 +73,6 @@
                             </a>
                             @endforeach
                         </div>
-
-
-                        <!-- Swiper Pagination Start -->
-                        <!-- <div class="swiper-pagination d-none"></div> -->
-                        <!-- Swiper Pagination End -->
-
-                        <!-- Next Previous Button Start -->
-                        <!-- <div class="swiper-product-tab-next swiper-button-next"><i class="pe-7s-angle-right"></i></div>
-                        <div class="swiper-product-tab-prev swiper-button-prev"><i class="pe-7s-angle-left"></i></div> -->
-                        <!-- Next Previous Button End -->
-
                     </div>
                     <!-- Single Product Image End -->
 
@@ -99,12 +88,6 @@
                             </div>
                             @endforeach
                         </div>
-
-                        <!-- Swiper Pagination Start -->
-                        <!-- <div class="swiper-pagination d-none"></div> -->
-                        <!-- Swiper Pagination End -->
-
-                        <!-- Next Previous Button Start -->
                         <div class="swiper-button-vertical-next  swiper-button-next"><i class="pe-7s-angle-right"></i>
                         </div>
                         <div class="swiper-button-vertical-prev swiper-button-prev"><i class="pe-7s-angle-left"></i>
@@ -218,10 +201,6 @@
                             </form>
                         </div>
                         <div class="add-to-wishlist">
-                            <input type="hidden" name="products_id" value="{{ $product->id }}">
-                                <input type="hidden" name="size" value="" id="selected-size">
-                                <input type="hidden" name="color" value="" id="selected-color">
-                                <input type="hidden" name="quantity" id="product-quantity-hidden" value="1">
                             <a class="btn btn-outline-dark btn-hover-primary" href="{{ route('orders.create') }}">Mua ngay</a>
                         </div>
                     </div>
