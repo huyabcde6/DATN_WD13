@@ -1,3 +1,6 @@
+@extends('layouts.home')
+
+@section('content')
 @if($products->isEmpty())
     <p>No products found.</p>
 @else
@@ -39,3 +42,4 @@
         @endforeach
     </div>
 @endif
+@endsection
