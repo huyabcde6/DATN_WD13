@@ -37,7 +37,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('userAdmin', AdminController::class);
     Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
-
 });
 
 
@@ -145,6 +144,7 @@ Route::prefix('admin')
 Route::get('news', [HomeController::class, 'index']);
 
 Route::get('/tin_tuc', [NewController::class, 'index2'])->name('news.index');
+Route::get('tintuc/{id}', [NewController::class, 'tintucdetail'])->name('tintucdetail');
 
 Route::get('/lienhe', function () {
     return view('user.khac.lienhe');
@@ -167,4 +167,3 @@ Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('v
 
 
 Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');
-

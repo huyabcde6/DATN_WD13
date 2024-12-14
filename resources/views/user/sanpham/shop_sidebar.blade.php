@@ -19,7 +19,6 @@
             </div>
         </div>
     </div>
-
     <!-- Breadcrumb Area End -->
 
 </div>
