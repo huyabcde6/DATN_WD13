@@ -9,19 +9,21 @@ class AddressController extends Controller
 {
     public function updateAddress(Request $request)
     {
-        // Xác thực đầu vào
+        // Xác thực dữ liệu đầu vào
         $request->validate([
-            'address' => 'required|string|max:255',
+            'address' => 'required|string|max:255', // Đảm bảo địa chỉ hợp lệ
+            'number_phone' => 'required|numeric|digits_between:10,15', // Đảm bảo số điện thoại hợp lệ
         ]);
 
-        // Lấy người dùng hiện tại
+        // Lấy thông tin người dùng hiện tại
         $user = Auth::user();
 
-        // Cập nhật địa chỉ
+        // Cập nhật thông tin
         $user->address = $request->input('address');
+        $user->number_phone = $request->input('number_phone');
         $user->save();
 
-        // Redirect về trang trước với thông báo thành công
-        return redirect()->back()->with('success', 'Địa chỉ của bạn đã được cập nhật thành công.');
+        // Quay lại trang trước với thông báo thành công
+        return redirect()->back()->with('success', 'Thông tin của bạn đã được cập nhật thành công.');
     }
 }

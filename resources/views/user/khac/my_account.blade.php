@@ -154,7 +154,9 @@
                                             @csrf
                                             <div class="checkout-form-list">
                                                 <label>Địa chỉ <span class="required">*</span></label>
-                                                <input placeholder="Street address" name="address" type="text" value="{{ Auth::user()->address }}">
+                                                <input placeholder="Street address" name="address" type="text" value="{{ Auth::user()->address }}"><br>
+                                                <label>Số điện thoại <span class="required">*</span></label>
+                                                <input type="text" placeholder="number phone" name="number_phone" value="{{ Auth::user()->number_phone }}">
                                             </div>
                                             <button type="submit" class="btn btn-dark btn-hover-primary rounded-0">
                                                 <i class="fa fa-edit me-2"></i>Cập nhật địa chỉ
