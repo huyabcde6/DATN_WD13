@@ -54,10 +54,10 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="{{route('home.index')}}"><span>Trang Chủ</span></a>
+                                        <a href="{{ route('home.index') }}"><span>Trang Chủ</span></a>
                                     </li>
                                     <li class="has-children position-static">
-                                        <a href="{{route('shop.index')}}"><span>Cửa hàng</span></a>
+                                        <a href="{{ route('shop.index') }}"><span>Cửa hàng</span></a>
 
                                     </li>
                                     <li class="has-children">
@@ -84,50 +84,55 @@
                                 {{-- <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
                                         class="pe-7s-search"></i></a> --}}
 
-                                        <form action="{{ route('products.search') }}" method="GET" onsubmit="return validateSearch()">
-                                            <div>
-                                                <label for="name">Tên sản phẩm:</label>
-                                                <input type="text" name="name" id="name" value="{{ request('name') }}">
-                                            </div>
-                                            <div>
-                                                <label for="min_price">Giá tối thiểu:</label>
-                                                <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}" min="0" step="0.01">
-                                            </div>
-                                            <div>
-                                                <label for="max_price">Giá tối đa:</label>
-                                                <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}" min="0" step="0.01">
-                                            </div>
-                                            <button type="submit">Tìm kiếm</button>
-                                        </form>
-                                        
-                                        <script>
-                                            function validateSearch() {
-                                                // Lấy giá trị từ các trường nhập liệu
-                                                let name = document.getElementById('name').value;
-                                                let minPrice = document.getElementById('min_price').value;
-                                                let maxPrice = document.getElementById('max_price').value;
-                                        
-                                                // Kiểm tra nếu không có trường nào được điền
-                                                if (name.trim() === '' && minPrice === '' && maxPrice === '') {
-                                                    alert('Vui lòng nhập ít nhất một điều kiện tìm kiếm!');
-                                                    return false; // Ngừng gửi form
-                                                }
-                                        
-                                                return true; // Gửi form nếu hợp lệ
-                                            }
-                                        </script>
-                                        
-                                        
+                                <form action="{{ route('products.search') }}" method="GET"
+                                    onsubmit="return validateSearch()">
+                                    <div>
+                                        <label for="name">Tên sản phẩm:</label>
+                                        <input type="text" name="name" id="name"
+                                            value="{{ request('name') }}">
+                                    </div>
+                                    <div>
+                                        <label for="min_price">Giá tối thiểu:</label>
+                                        <input type="number" name="min_price" id="min_price"
+                                            value="{{ request('min_price') }}" min="0" step="0.01">
+                                    </div>
+                                    <div>
+                                        <label for="max_price">Giá tối đa:</label>
+                                        <input type="number" name="max_price" id="max_price"
+                                            value="{{ request('max_price') }}" min="0" step="0.01">
+                                    </div>
+                                    <button type="submit">Tìm kiếm</button>
+                                </form>
+
+                                <script>
+                                    function validateSearch() {
+                                        // Lấy giá trị từ các trường nhập liệu
+                                        let name = document.getElementById('name').value;
+                                        let minPrice = document.getElementById('min_price').value;
+                                        let maxPrice = document.getElementById('max_price').value;
+
+                                        // Kiểm tra nếu không có trường nào được điền
+                                        if (name.trim() === '' && minPrice === '' && maxPrice === '') {
+                                            alert('Vui lòng nhập ít nhất một điều kiện tìm kiếm!');
+                                            return false; // Ngừng gửi form
+                                        }
+
+                                        return true; // Gửi form nếu hợp lệ
+                                    }
+                                </script>
+
+
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
 
-                                
-                                <a href="{{ Auth::check() ? route ('orders.index') : route ('login') }}" class="header-action-btn d-none d-md-block">
+
+                                <a href="{{ Auth::check() ? route('orders.index') : route('login') }}"
+                                    class="header-action-btn d-none d-md-block">
                                     <i class="pe-7s-user"></i>
                                 </a>
 
-                                
+
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->
@@ -140,7 +145,8 @@
                                 <!-- Shopping Cart Header Action Button Start -->
                                 <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
+                                    <span
+                                        class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
                                     </span>
                                 </a>
 
