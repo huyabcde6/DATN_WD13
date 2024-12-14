@@ -53,10 +53,10 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="{{route('home.index')}}"><span>Trang Chủ</span></a>
+                                        <a href="{{ route('home.index') }}"><span>Trang Chủ</span></a>
                                     </li>
                                     <li class="has-children position-static">
-                                        <a href="{{route('shop.index')}}"><span>Cửa hàng</span></a>
+                                        <a href="{{ route('shop.index') }}"><span>Cửa hàng</span></a>
 
                                     </li>
                                     <li class="has-children">
@@ -68,6 +68,9 @@
                                     <li>
                                         <a href="{{ route('contact') }}"> <span>Liên Hệ</span></a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('introduction') }}"> <span>Giới Thiệu</span></a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -77,13 +80,30 @@
                         <div class="col-xl-2 col-6">
                             <div class="header-actions">
                                 <!-- Search Header Action Button Start -->
-                                <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
-                                        class="pe-7s-search"></i></a>
+                                {{-- <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
+                                        class="pe-7s-search"></i></a> --}}
+
+                                <!-- Thêm liên kết đến Bootstrap CSS -->
+                                {{-- <link rel="stylesheet"
+                                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Thêm Font Awesome -->
+                            
+                            <form action="{{ route('products.search') }}" method="GET" onsubmit="return validateSearch()" class="search-form">
+                                <div class="input-group">
+                                    <input type="text" name="name" id="name" value="{{ request('name') }}" class="form-control" placeholder="Nhập từ khóa...">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search"></i> <!-- Icon tìm kiếm -->
+                                        </button>
+                                    </div>
+                                </div>
+                            </form> --}}
+
+
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
-
-
                                 <a href="{{ Auth::check() ? route ('orders.index') : route ('login') }}" class="header-action-btn d-none d-md-block">
                                     <i class="pe-7s-user"></i>
                                 </a>
@@ -101,7 +121,8 @@
                                 <!-- Shopping Cart Header Action Button Start -->
                                 <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
+                                    <span
+                                        class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
                                     </span>
                                 </a>
 
@@ -114,9 +135,32 @@
                                 </a>
                                 <!-- Mobile Menu Hambarger Action Button End -->
                             </div>
+                            <link rel="stylesheet"
+                                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+                            <!-- Thêm Font Awesome -->
+
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+                            <!-- Thêm Font Awesome -->
+
+                            <form action="{{ route('shop.index') }}" method="GET">
+                                <div class="search-box d-flex align-items-center">
+                                    <input type="text" name="keyword" class="form-control"
+                                        placeholder="" required>
+                                    <button class="btn btn-dark btn-hover-primary ml-2" type="submit">
+                                        <i class="fa fa-search"></i> <!-- Icon tìm kiếm -->
+                                    </button>
+                                </div>
+                            </form>
+
+
                         </div>
+
                         <!-- Header Action End -->
                     </div>
+
                 </div>
             </div>
         </div>
