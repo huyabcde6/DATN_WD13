@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewRequest;
 use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -40,21 +41,8 @@ class NewController extends Controller
     {
         return view('admin.tintuc.addNew');
     }
-    public function create(Request $request)
+    public function create(NewRequest $request)
     {
-        // Validate incoming request
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'avata' => 'required',
-            'detail' => 'required', // Add validation for 'detail'
-        ], [
-            'title.required' => 'Tiêu đề không được để trống',
-            'description.required' => 'Mô tả không được để trống',
-            'avata.required' => 'Ảnh không được để trống',
-            'detail.required' => 'Mô tả chi tiết không được để trống', // Error message for 'detail'
-        ]);
-
         if ($request->isMethod('POST')) {
             $param = $request->except('_token');
             $param['new_date'] = date("d/m/Y");
@@ -99,20 +87,8 @@ class NewController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(NewRequest $request, string $id)
     {
-        $request->validate(
-            [
-                'title' => 'required',
-                'description' => 'required',
-                'avata' => 'required',
-            ],
-            [
-                'title.required' => 'Tiêu đề không được để trống',
-                'description.required' => 'Mô tả không được để trống',
-                'avata.required' => 'Ảnh không được để trống',
-            ]
-        );
         if ($request->isMethod('POST')) {
             $db = DB::table('news')->where('id', $id)->first();
             $param = $request->except('_token');

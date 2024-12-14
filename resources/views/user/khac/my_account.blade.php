@@ -127,9 +127,10 @@
                                             <p>Hello, <strong>Alex Aya</strong> (If Not <strong>Aya !</strong><a
                                                     href="login-register.html" class="logout"> Logout</a>)</p>
                                         </div>
-                                        <p class="mb-0">From your account dashboard. you can easily check & view your
-                                            recent orders, manage your shipping and billing addresses and edit your
-                                            password and account details.</p>
+                                        <p class="mb-0">Từ bảng điều khiển tài khoản của bạn.
+                                             bạn có thể dễ dàng kiểm tra và xem các đơn đặt hàng gần đây của mình,
+                                             quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi tiết mật khẩu và tài khoản của mình.
+                                        </p>
                                     </div>
                                 </div>
 
@@ -185,69 +186,37 @@
                                     <div class="myaccount-content">
                                         <h3 class="title">Account Details</h3>
                                         <div class="account-details-form">
-                                            <form action="#">
+                                            <form method="POST" action="{{ route('profile.updateAccount') }}">
+                                                @csrf
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
-                                                            <label for="first-name" class="required mb-1">First
-                                                                Name</label>
-                                                            <input type="text" id="first-name"
-                                                                placeholder="First Name" />
+                                                            <label for="name" class="required mb-1">Họ tên</label>
+                                                            <input type="text" name="name" id="name" value="{{ $user->name }}"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
-                                                            <label for="last-name" class="required mb-1">Last
-                                                                Name</label>
-                                                            <input type="text" id="last-name" placeholder="Last Name" />
+                                                            <label for="email" class="required mb-1">Email</label>
+                                                            <input type="text" name="email" id="email" value="{{ $user->email }}"/>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="single-input-item mb-3">
-                                                    <label for="display-name" class="required mb-1">Display Name</label>
-                                                    <input type="text" id="display-name" placeholder="Display Name" />
+                                                    <label for="address" class="required mb-1">Địa chỉ</label>
+                                                    <input type="text" name="address" id="address" value="{{ $user->address }}"/>
                                                 </div>
                                                 <div class="single-input-item mb-3">
-                                                    <label for="email" class="required mb-1">Email Addres</label>
-                                                    <input type="email" id="email" placeholder="Email Address" />
+                                                    <label for="number_phone" class="required mb-1">Số điện thoại</label>
+                                                    <input type="number" name="number_phone" id="number_phone" value="{{ $user->number_phone }}"/>
                                                 </div>
-                                                <fieldset>
-                                                    <legend>Password change</legend>
-                                                    <div class="single-input-item mb-3">
-                                                        <label for="current-pwd" class="required mb-1">Current
-                                                            Password</label>
-                                                        <input type="password" id="current-pwd"
-                                                            placeholder="Current Password" />
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="single-input-item mb-3">
-                                                                <label for="new-pwd" class="required mb-1">New
-                                                                    Password</label>
-                                                                <input type="password" id="new-pwd"
-                                                                    placeholder="New Password" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="single-input-item mb-3">
-                                                                <label for="confirm-pwd" class="required mb-1">Confirm
-                                                                    Password</label>
-                                                                <input type="password" id="confirm-pwd"
-                                                                    placeholder="Confirm Password" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                                <div class="single-input-item single-item-button">
-                                                    <button class="btn btn btn-dark btn-hover-primary rounded-0">Save
-                                                        Changes</button>
+                                                <div class="form-group">
+                                                    <button class="btn btn-success">Lưu</button>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div> <!-- Single Tab Content End -->
-
-
                             </div>
                         </div> <!-- My Account Tab Content End -->
                     </div>
@@ -271,6 +240,17 @@
 @vite('resources/js/public.js');
 @endsection
 @section('js')
+@if (session('success'))
+    <script>
+        alert('Cập nhật tài khoản thành công');
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        alert('Đã xảy ra lỗi khi cập nhật tài khoản');
+    </script>
+@endif
 <script>
     let page = 1;
     let isLoading = false;

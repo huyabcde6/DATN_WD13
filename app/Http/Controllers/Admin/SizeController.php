@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SizeRequet;
 use Illuminate\Http\Request;
 use App\Models\Size;
 
 class SizeController extends Controller
-{   
+{
     public function __construct(){
         $this->middleware('permission:view size', ['only' => ['index']]);
         $this->middleware('permission:create size', ['only' => ['create', 'store']]);
@@ -41,16 +42,8 @@ class SizeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SizeRequet $request)
     {
-        $request->validate([
-            'value' => 'required|string|max:255',
-        ], [
-            'value.required' => 'Kích thước không được để trống',
-            'value.string' => 'Kích thước phải là chuỗi',
-            'value.max' => 'Kích thước không vượt qua 255 ký tự',
-        ]);
-
         Size::create([
             'value' => $request->value,
             'status' => $request->has('status') ? $request->status : true,
@@ -62,16 +55,8 @@ class SizeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SizeRequet $request, string $id)
     {
-        $request->validate([
-            'value' => 'required|string|max:255',
-        ], [
-            'value.required' => 'Kích thước không được để trống',
-            'value.string' => 'Kích thước phải là chuỗi',
-            'value.max' => 'Kích thước không vượt qua 255 ký tự',
-        ]);
-
         $size = Size::findOrFail($id); // Tìm kích thước theo ID
         $size->update([
             'value' => $request->value,

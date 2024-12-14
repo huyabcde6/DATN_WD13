@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
@@ -76,6 +77,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/updateAccount', [ProfileController::class, 'updateAccount'])->name('profile.updateAccount');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
@@ -98,6 +100,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý danh mục
     Route::resource('categories', CategoryProductController::class);
+    
     Route::resource('users', UserController::class);
 
     Route::get('/', [StatisticsController::class, 'index'])->name('statistics.index');

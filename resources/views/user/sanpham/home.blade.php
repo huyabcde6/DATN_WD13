@@ -384,7 +384,7 @@
             </div>
         </div>
         <div class="row mb-n6">
-
+            @if (!empty($news))
             @foreach($news as $new)
             <div
                 class="col-lg-4 col-md-6 col-12 mb-6"
@@ -415,9 +415,11 @@
                 <!-- Blog Single Post End -->
             </div>
             @endforeach
+            @endif
         </div>
     </div>
 </div>
 <!-- Blog Section End -->
 
 @endsection
+
