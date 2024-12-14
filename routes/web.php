@@ -52,6 +52,7 @@ Route::delete('/cart/remove/{productDetailId}', [CartController::class, 'removeF
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+Route::post('/muangay', [OrderController::class, 'muangay'])->name('muangay');
 
 
 // Route::get('/login', [UserController::class, 'login'])->name('login');

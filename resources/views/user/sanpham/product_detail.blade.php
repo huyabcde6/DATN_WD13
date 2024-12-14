@@ -1,24 +1,24 @@
 @extends('layouts.home')
 @section('css')
 <style>
-.unavailable {
-    opacity: 0.5;
-    /* Làm mờ màu không khả dụng */
-    pointer-events: none;
-    /* Ngăn chặn nhấp chuột vào các tùy chọn không khả dụng */
-    text-decoration: line-through;
+    .unavailable {
+        opacity: 0.5;
+        /* Làm mờ màu không khả dụng */
+        pointer-events: none;
+        /* Ngăn chặn nhấp chuột vào các tùy chọn không khả dụng */
+        text-decoration: line-through;
 
-    /* Gạch chéo */
-    .size-option.active {
-        border: 2px solid #000;
-        /* Đường viền đậm cho tùy chọn kích thước đã chọn */
-    }
+        /* Gạch chéo */
+        .size-option.active {
+            border: 2px solid #000;
+            /* Đường viền đậm cho tùy chọn kích thước đã chọn */
+        }
 
-    .color-option.active {
-        border: 2px solid #000;
-        /* Đường viền đậm cho tùy chọn màu sắc đã chọn */
+        .color-option.active {
+            border: 2px solid #000;
+            /* Đường viền đậm cho tùy chọn màu sắc đã chọn */
+        }
     }
-}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 @endsection
@@ -62,7 +62,7 @@
                             <!-- Ảnh chính: Ban đầu hiển thị ảnh đại diện -->
                             <a id="main-image-link" class="swiper-slide h-auto"
                                 href="{{ url('storage/' . $product->avata) }}">
-                                <img id="main-image"  src="{{ url('storage/' . $product->avata) }}"
+                                <img id="main-image" src="{{ url('storage/' . $product->avata) }}"
                                     alt="Product">
                             </a>
 
@@ -147,7 +147,7 @@
                     </div>
                     <!-- Price Box End -->
 
-                   
+
                     <!-- SKU Start -->
                     <div class="sku mb-3">
                         <span id="current-sku">SKU: {{ $product->productDetails->first()->product_code }}</span>
@@ -218,7 +218,15 @@
                             </form>
                         </div>
                         <div class="add-to-wishlist">
-                            <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Yêu thích</a>
+                            <form method="POST" action="{{ route('muangay') }}" id="muangay-form">
+                                @csrf
+                                <input type="hidden" name="products_id" value="{{ $product->id }}">
+                                <input type="hidden" name="size" value="" id="muangay-size">
+                                <input type="hidden" name="color" value="" id="mungay-color">
+                                <input type="hidden" name="quantity" id="muangay-quantity" value="">
+                                <button type="submit" class="btn btn-outline-dark btn-hover-primary"
+                                    id="add-to-cart-button">Mua Ngay</button>
+                            </form>
                         </div>
                     </div>
                     <!-- Cart & Wishlist Button End -->
@@ -576,9 +584,15 @@
         // Hàm thay đổi trạng thái khả dụng
         function toggleAvailability(element, isAvailable) {
             if (isAvailable) {
-                element.removeClass('unavailable').css({ opacity: 1, textDecoration: 'none' });
+                element.removeClass('unavailable').css({
+                    opacity: 1,
+                    textDecoration: 'none'
+                });
             } else {
-                element.addClass('unavailable').css({ opacity: 0.5, textDecoration: 'line-through' });
+                element.addClass('unavailable').css({
+                    opacity: 0.5,
+                    textDecoration: 'line-through'
+                });
             }
         }
 
@@ -631,6 +645,26 @@
             let quantity = parseInt(this.value) || 1;
             const maxQuantity = parseInt($(this).attr('max'));
             this.value = Math.min(Math.max(quantity, 1), maxQuantity);
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            const quantityInput = document.getElementById("product-quantity");
+            const maxQuantity = parseInt(quantityInput.getAttribute("max")) || Infinity;
+            const minQuantity = parseInt(quantityInput.getAttribute("min")) || 1;
+            const muangayQuantityInput = document.getElementById("muangay-quantity");
+
+            // Đồng bộ số lượng nhập vào form "Mua Ngay"
+            function updateQuantity(newQuantity) {
+                // Đảm bảo giá trị nằm trong khoảng min và max
+                if (newQuantity >= minQuantity && newQuantity <= maxQuantity) {
+                    quantityInput.value = newQuantity;
+                    muangayQuantityInput.value = newQuantity;
+                }
+            }
+            // Lắng nghe sự kiện thay đổi từ ô nhập liệu số lượng
+            quantityInput.addEventListener("input", function() {
+                const currentQuantity = parseInt(quantityInput.value) || minQuantity;
+                updateQuantity(currentQuantity);
+            });
         });
 
         // Thêm sản phẩm vào giỏ hàng
@@ -694,7 +728,33 @@
             });
         }
     });
+</script>
+<script>
+    // Lắng nghe sự kiện submit của form "Mua Ngay"
+    document.addEventListener("DOMContentLoaded", function() {
+        // Xử lý sự kiện chọn size
+        document.querySelectorAll(".size-option").forEach((sizeOption) => {
+            sizeOption.addEventListener("click", function(event) {
+                event.preventDefault();
+                const sizeValue = this.getAttribute("data-value");
+                document.getElementById("muangay-size").value = sizeValue;
+                document.getElementById("selected-size").innerText = this.innerText;
+            });
+        });
+
+        // Xử lý sự kiện chọn màu sắc
+        document.querySelectorAll(".color-option").forEach((colorOption) => {
+            colorOption.addEventListener("click", function(event) {
+                event.preventDefault();
+                const colorValue = this.getAttribute("data-value");
+                const colorName = this.getAttribute("data-color-name");
+                document.getElementById("mungay-color").value = colorValue;
+                document.getElementById("selected-color-text").innerText = colorName;
+            });
+        });
+    });
+</script>
+<script>
 
 </script>
-
 @endsection

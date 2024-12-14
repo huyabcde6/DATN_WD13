@@ -61,7 +61,6 @@ class OrderController extends Controller
     public function create()
     {
         $user = Auth::user();
-
         // Lấy các sản phẩm trong giỏ hàng từ session
         $cartItems = Session::get('cart', []);
         if (!empty($cartItems)) {
@@ -378,5 +377,51 @@ class OrderController extends Controller
             // Giảm giá cố định
             return min($coupon->discount_value, $total);
         }
+    }
+    public function muangay(Request $request)
+    {
+        dd($request->all());
+        $user = Auth::user();
+        $productId = $request->input('product_id');
+        $size = $request->input('size');
+        $color = $request->input('color');
+        $quantity = $request->input('quantity');
+
+        // Lấy thông tin sản phẩm
+        $product = products::with('productDetails')->find($productId);
+        if (!$product) {
+            return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
+        }
+
+        // Kiểm tra size, color và số lượng
+        $stock = $product->productDetails
+            ->where('size_id', $size)
+            ->where('color_id', $color)
+            ->first();
+
+        if (!$stock || $stock->quantity < $quantity) {
+            return redirect()->back()->with('error', 'Sản phẩm không đủ số lượng.');
+        }
+
+        // Tính giá tiền
+        $price = $product->discount_price ?? $product->price;
+        $total = $price * $quantity;
+
+        // Phí vận chuyển
+        $shippingFee = 30000; // 30,000 VND
+        $grandTotal = $total + $shippingFee;
+
+        // Điều hướng đến trang thanh toán
+        return view('user.sanpham.thanhtoan', [
+            'user' => $user,
+            'product' => $product,
+            'size' => $size,
+            'color' => $color,
+            'quantity' => $quantity,
+            'price' => $price,
+            'total' => $total,
+            'shippingFee' => $shippingFee,
+            'grandTotal' => $grandTotal,
+        ]);
     }
 }
