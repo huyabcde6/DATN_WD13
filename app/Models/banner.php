@@ -13,7 +13,7 @@ class banner extends Model
         'title',
         'description',
         'image_path',
-        'order',
-        'category_id'
+        'category_id',
+        'status'
     ];
 }
