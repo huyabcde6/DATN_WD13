@@ -62,8 +62,8 @@
                             @foreach ($cartItems as $item)
                             <tr>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" height="auto" width="70"
-                                            alt="Product" /></a>
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
+                                            height="auto" width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
                                     <a href="#">{{ $item['product_name'] }} <br> {{ $item['size'] }} /
@@ -103,6 +103,7 @@
 
                     </table>
                 </div>
+
             </div>
         </div>
 
@@ -141,8 +142,8 @@
                         <!-- Responsive Table End -->
 
                     </div>
-                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến hành thanh toán</a>
-
+                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
+                        hành thanh toán</a>
                 </div>
 
                 <!-- Cart Calculation Area End -->
@@ -165,59 +166,64 @@
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        var shippingFee = 30000; // Phí vận chuyển 30000 đồng
+    var shippingFee = 30000; // Phí vận chuyển 30000 đồng
 
-        // Xử lý sự kiện tăng/giảm số lượng
-        $('.qtybutton').on('click', function() {
-            var productDetailId = $(this).data('id');
-            var inputField = $(this).siblings('.cart-plus-minus-box');
-            var quantity = parseInt(inputField.val());
+    // Xử lý sự kiện tăng/giảm số lượng
+    $('.qtybutton').on('click', function() {
+        var productDetailId = $(this).data('id');
+        var inputField = $(this).siblings('.cart-plus-minus-box');
+        var quantity = parseInt(inputField.val());
 
-            // Tăng hoặc giảm số lượng
-            if ($(this).hasClass('inc')) {
-                quantity++;
-            } else if ($(this).hasClass('dec') && quantity > 1) {
-                quantity--;
-            }
+        // Tăng hoặc giảm số lượng
+        if ($(this).hasClass('inc')) {
+            quantity++;
+        } else if ($(this).hasClass('dec') && quantity > 1) {
+            quantity--;
+        }
 
-            // Gửi AJAX để cập nhật số lượng
-            $.ajax({
-                url: '{{ route("cart.update") }}',
-                method: 'POST',
-                data: {
-                    product_detail_id: productDetailId,
-                    quantity: quantity,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.status === 'success') {
-                        inputField.val(quantity);
+        // Gửi AJAX để cập nhật số lượng
+        $.ajax({
+            url: '{{ route("cart.update") }}',
+            method: 'POST',
+            data: {
+                product_detail_id: productDetailId,
+                quantity: quantity,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    inputField.val(quantity);
 
-                        // Update the subtotal for this product
-                        var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
-                        var formattedSubtotal = response.item_price; // Ensure price formatting here
-                        subtotalCell.text(formattedSubtotal);
+                    // Update the subtotal for this product
+                    var subtotalCell = inputField.closest('tr').find('.subtotal-' +
+                        productDetailId);
+                    var formattedSubtotal = response
+                    .item_price; // Ensure price formatting here
+                    subtotalCell.text(formattedSubtotal);
 
-                        // Calculate the total for the cart
-                        var subTotal = 0;
-                        $('.pro-subtotal span').each(function() {
-                            var currentSubtotal = $(this).text().replace(' đ', '').replace('.', '').trim();
-                            subTotal += parseFloat(currentSubtotal);
-                        });
+                    // Calculate the total for the cart
+                    var subTotal = 0;
+                    $('.pro-subtotal span').each(function() {
+                        var currentSubtotal = $(this).text().replace(' đ', '')
+                            .replace('.', '').trim();
+                        subTotal += parseFloat(currentSubtotal);
+                    });
 
-                        // Update the displayed totals
-                        $('.sub-total').text(subTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                        $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                    }
-                },
-                error: function() {
-                    alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
+                    // Update the displayed totals
+                    $('.sub-total').text(subTotal.toFixed(0).replace(
+                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(
+                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
                 }
-            });
+            },
+            error: function() {
+                alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
+            }
         });
     });
+});
 </script>
 @endsection
 

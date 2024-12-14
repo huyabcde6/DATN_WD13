@@ -53,6 +53,10 @@ Route::delete('/cart/remove/{productDetailId}', [CartController::class, 'removeF
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+// Route
+Route::get('/checkout/thankyou', function () {
+    return view('checkout.thankyou');
+})->name('checkout.thankyou');
 
 
 // Route::get('/login', [UserController::class, 'login'])->name('login');
