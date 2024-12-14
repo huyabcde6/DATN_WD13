@@ -11,7 +11,7 @@
                 <div class="hero-slide-item-two swiper-slide">
                     <div class="hero-slide-bg">
                         <!-- Sử dụng đường dẫn từ cơ sở dữ liệu để hiển thị ảnh -->
-                        <img src="{{ url('storage/'. $banner->image_path) }}" alt="{{ $banner->title }}" />
+                        <img src="{{ url('storage/'.$banner->image_path) }}" alt="{{ $banner->title }}" />
                     </div>
                     <div class="container">
                         <div class="row">
@@ -404,12 +404,12 @@
                             <span>{{ $new->created_at }}</span>
                         </div>
                         <h3 class="title">
-                            <a href="blog-details.html">{{ $new->title }}</a>
+                            <a href="{{ route('tintucdetail', ['id' => $new->id]) }}">{{ $new->title }}</a>
                         </h3>
                         <p>
                             {{ $new->description }}
                         </p>
-                        <a href="blog-details.html" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
+                        <a href="{{ route('tintucdetail', ['id' => $new->id]) }}" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
                     </div>
                 </div>
                 <!-- Blog Single Post End -->

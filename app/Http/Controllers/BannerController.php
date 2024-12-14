@@ -17,7 +17,7 @@ class BannerController extends Controller
      */
     public function index()
     {
-        $banners = banner::orderBy('order')->get();
+        $banners = banner::all();
         return view('admin.banners.index', compact('banners'));
     }
 
@@ -39,7 +39,6 @@ class BannerController extends Controller
             "title"         => $request->title,
             "image_path"    => $request->image_path,
             "description"   => $request->description,
-            "order"         => $request->order,
             "status"        => $request->status,  // Lấy giá trị status (1: Hiển thị, 0: Ẩn)
             "category_id"   => $request->category,  // Lấy id của danh mục sản phẩm
         ];

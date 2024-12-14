@@ -8,7 +8,7 @@
                     <h5 class="text-center">Mã đơn:
                         <span class="text-danger">{{ $order->order_code }}</span>
                     </h5>
-                    <p class="text-center mx-3">{{ $order->status->type ?? 'N/A' }}</p>
+                    <p id="order-status-{{ $order->id }}" class="text-center mx-3">{{ $order->status->type ?? 'N/A' }}</p>
                 </div>
                 <div class="d-flex justify-content-start">
                     <p style="font-size: 14px;"><strong>Ngày đặt:</strong> {{ $order->created_at->format('d-m-Y') }}</p>
