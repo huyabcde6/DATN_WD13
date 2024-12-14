@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\PaymentController;
@@ -165,4 +166,6 @@ Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('v
 
 
 Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');
+Route::post('/update-address', [AddressController::class, 'updateAddress'])->name('user.updateAddress');
+
 

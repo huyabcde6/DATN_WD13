@@ -23,7 +23,7 @@
                  </span>
                  </a> --}}
                  <div class="header-logo">
-                     <a href="index.html"><img src="http://datn_wd13.test/ngdung/assets/images/logo/logo1.png"
+                     <a href="http://datn_wd13.test/admin"><img src="http://datn_wd13.test/ngdung/assets/images/logo/logo1.png"
                              alt="Site Logo" width="140xp" height="70px" /></a>
                  </div>
              </div>
