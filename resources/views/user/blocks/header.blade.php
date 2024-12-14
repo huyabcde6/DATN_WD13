@@ -85,31 +85,22 @@
                                         class="pe-7s-search"></i></a> --}}
 
                                 <!-- Thêm liên kết đến Bootstrap CSS -->
-                                <link rel="stylesheet"
-                                    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-                                <form action="{{ route('products.search') }}" method="GET"
-                                    onsubmit="return validateSearch()" class="search-form">
-                                    <div class="form-group">
-
-                                        <input type="text" name="name" id="name"
-                                            value="{{ request('name') }}" class="form-control" required>
+                                {{-- <link rel="stylesheet"
+                                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Thêm Font Awesome -->
+                            
+                            <form action="{{ route('products.search') }}" method="GET" onsubmit="return validateSearch()" class="search-form">
+                                <div class="input-group">
+                                    <input type="text" name="name" id="name" value="{{ request('name') }}" class="form-control" placeholder="Nhập từ khóa...">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search"></i> <!-- Icon tìm kiếm -->
+                                        </button>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                                </form>
+                                </div>
+                            </form> --}}
 
-                                <script>
-                                    function validateSearch() {
-                                        let name = document.getElementById('name').value;
-
-                                        if (name.trim() === '') {
-                                            alert('Vui lòng nhập tên sản phẩm!');
-                                            return false; // Ngừng gửi form
-                                        }
-
-                                        return true; // Gửi form nếu hợp lệ
-                                    }
-                                </script>
 
                                 <!-- Search Header Action Button End -->
 
@@ -148,9 +139,32 @@
                                 </a>
                                 <!-- Mobile Menu Hambarger Action Button End -->
                             </div>
+                            <link rel="stylesheet"
+                                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+                            <!-- Thêm Font Awesome -->
+
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+                            <!-- Thêm Font Awesome -->
+
+                            <form action="{{ route('shop.index') }}" method="GET">
+                                <div class="search-box d-flex align-items-center">
+                                    <input type="text" name="keyword" class="form-control"
+                                        placeholder="" required>
+                                    <button class="btn btn-dark btn-hover-primary ml-2" type="submit">
+                                        <i class="fa fa-search"></i> <!-- Icon tìm kiếm -->
+                                    </button>
+                                </div>
+                            </form>
+
+
                         </div>
+
                         <!-- Header Action End -->
                     </div>
+
                 </div>
             </div>
         </div>

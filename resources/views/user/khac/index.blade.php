@@ -1,4 +1,4 @@
-@extends('layouts.home')
+{{-- @extends('layouts.home')
 
 @section('content')
 <div class="breadcrumb-area bg-light">
@@ -56,4 +56,4 @@
         @endforeach
     </div>
 @endif
-@endsection
+@endsection --}}
