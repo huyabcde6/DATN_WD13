@@ -352,6 +352,7 @@
                 @auth
                 <br><br><br><div class="review-form mb-4">
                     <!-- Review Form Card -->
+                    <h4>BÌNH LUẬN</h4>
                     <div class="card shadow-sm border-0">
                         <div class="card-header bg-dark text-white py-2">
                             <h6 class="mb-0" style="color: white">Đánh giá sản phẩm</h6>
