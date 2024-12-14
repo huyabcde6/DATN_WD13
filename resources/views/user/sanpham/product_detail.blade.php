@@ -363,7 +363,7 @@
                             <form method="POST" action="{{ route('product.comment', $product->slug) }}" class="px-2">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="description" class="form-label small text-muted">Nội dung muốn đánh giá</label>
+                                    <label for="description" class="form-label small text-muted">Nội dung đánh giá</label>
                                     <textarea name="description" class="form-control form-control-sm border-dark" rows="3" required placeholder="Nhập đánh giá của bạn về sản phẩm..."></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-dark btn-sm">
