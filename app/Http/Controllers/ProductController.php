@@ -129,13 +129,7 @@ class ProductController extends Controller
             $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
 
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->input('min_price'));
-        }
-
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->input('max_price'));
-        }
+        
 
         $products = $query->get();
 
