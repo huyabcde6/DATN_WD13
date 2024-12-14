@@ -198,13 +198,18 @@ Quản lý đơn hàng
                     </div>
 
                     <!-- Phần lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng" -->
-                    @if($order->status_donhang_id === 8)
-                    <div class="mt-2">
-                        <label for="return_reason">Lý do trả hàng</label>
-                        <textarea name="return_reason" id="return_reason"
-                            class="form-control">{{ old('return_reason', $order->return_reason) }}</textarea>
-                    </div>
+                    @if($order->status_donhang_id == 8)
+                        <div class="mt-2 return-reason-div" style="display: block;">
+                            <label for="return_reason">Lý do trả hàng</label>
+                            <textarea name="return_reason" id="return_reason" class="form-control">{{ old('return_reason', $order->return_reason) }}</textarea>
+                        </div>
+                    @else
+                        <div class="mt-2 return-reason-div" style="display: none;">
+                            <label for="return_reason">Lý do trả hàng</label>
+                            <textarea name="return_reason" readonly id="return_reason" class="form-control"></textarea>
+                        </div>
                     @endif
+
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -237,61 +242,65 @@ Quản lý đơn hàng
 </script>
 <script>
     var orderStatusModal = document.getElementById('orderStatusModal');
-    orderStatusModal.addEventListener('show.bs.modal', function(event) {
-        var button = event.relatedTarget; // Nút bấm "Sửa" được nhấn
-        var orderId = button.getAttribute('data-order-id'); // Lấy ID của đơn hàng
-        var currentStatus = parseInt(button.getAttribute('data-current-status')); // Lấy trạng thái hiện tại
-        var returnReason = button.getAttribute('data-return-reason'); // Lấy lý do trả hàng (nếu có)
+orderStatusModal.addEventListener('show.bs.modal', function(event) {
+    var button = event.relatedTarget; // Nút bấm "Sửa" được nhấn
+    var orderId = button.getAttribute('data-order-id'); // Lấy ID của đơn hàng
+    var currentStatus = parseInt(button.getAttribute('data-current-status')); // Lấy trạng thái hiện tại
+    var returnReason = button.getAttribute('data-return-reason'); // Lấy lý do trả hàng (nếu có)
 
-        // Cập nhật lại action của form trong modal
-        var form = orderStatusModal.querySelector('form');
-        form.action = `/admin/orders/${orderId}`; // Đảm bảo action chứa đúng ID của đơn hàng
+    // Cập nhật lại action của form trong modal
+    var form = orderStatusModal.querySelector('form');
+    form.action = `/admin/orders/${orderId}`; // Đảm bảo action chứa đúng ID của đơn hàng
 
-        // Lấy dropdown trạng thái và làm sạch các tùy chọn cũ
-        var statusSelect = orderStatusModal.querySelector('#status');
-        statusSelect.innerHTML = ''; // Xóa toàn bộ các tùy chọn
+    // Lấy dropdown trạng thái và làm sạch các tùy chọn cũ
+    var statusSelect = orderStatusModal.querySelector('#status');
+    statusSelect.innerHTML = ''; // Xóa toàn bộ các tùy chọn
 
-        // Tùy chọn trạng thái dựa trên trạng thái hiện tại
-        if (currentStatus === 1) {
-            // Nếu trạng thái là "Chờ xác nhận", chỉ hiển thị 2 tùy chọn
-            statusSelect.innerHTML += `<option value="2">Đã xác nhận</option>`;
-            statusSelect.innerHTML += `<option value="7">Hủy đơn</option>`;
-        } else if (currentStatus === 2) {
-            statusSelect.innerHTML += `<option value="3">Đang vận chuyển</option>`;
-        } else if (currentStatus === 3) {
-            statusSelect.innerHTML += `<option value="4">Đã giao hàng</option>`;
-        } else if (currentStatus === 8) {
-            statusSelect.innerHTML += `<option value="6">Hoàn hàng</option>`;
-        } else {
-            var options = [
-                { value: 1, text: 'Chờ xác nhận' },
-                { value: 2, text: 'Đã xác nhận' },
-                { value: 3, text: 'Đang vận chuyển' },
-                { value: 4, text: 'Đã giao hàng' },
-                { value: 5, text: 'Hoàn thành' },
-                { value: 6, text: 'Hoàn hàng' },
-                { value: 8, text: 'Chờ xác nhận hoàn hàng' },
-                { value: 7, text: 'Hủy đơn' }
-            ];
+    // Tùy chọn trạng thái dựa trên trạng thái hiện tại
+    if (currentStatus === 1) {
+        // Nếu trạng thái là "Chờ xác nhận", chỉ hiển thị 2 tùy chọn
+        statusSelect.innerHTML += `<option value="2">Đã xác nhận</option>`;
+        statusSelect.innerHTML += `<option value="7">Hủy đơn</option>`;
+    } else if (currentStatus === 2) {
+        statusSelect.innerHTML += `<option value="3">Đang vận chuyển</option>`;
+    } else if (currentStatus === 3) {
+        statusSelect.innerHTML += `<option value="4">Đã giao hàng</option>`;
+    } else if (currentStatus === 8) {
+        statusSelect.innerHTML += `<option value="6">Hoàn hàng</option>`;
+    } else {
+        var options = [
+            { value: 1, text: 'Chờ xác nhận' },
+            { value: 2, text: 'Đã xác nhận' },
+            { value: 3, text: 'Đang vận chuyển' },
+            { value: 4, text: 'Đã giao hàng' },
+            { value: 5, text: 'Hoàn thành' },
+            { value: 6, text: 'Hoàn hàng' },
+            { value: 8, text: 'Chờ xác nhận hoàn hàng' },
+            { value: 7, text: 'Hủy đơn' }
+        ];
 
-            options.forEach(function(option) {
-                statusSelect.innerHTML += `<option value="${option.value}" ${
-                    option.value === currentStatus ? 'selected' : ''
-                }>${option.text}</option>`;
-            });
-        }
+        options.forEach(function(option) {
+            statusSelect.innerHTML += `<option value="${option.value}" ${
+                option.value === currentStatus ? 'selected' : ''
+            }>${option.text}</option>`;
+        });
+    }
 
-        // Cập nhật textarea lý do trả hàng
-        var returnReasonTextarea = orderStatusModal.querySelector('#return_reason');
-        returnReasonTextarea.value = returnReason || '';
+    // Cập nhật textarea lý do trả hàng
+    var returnReasonTextarea = orderStatusModal.querySelector('#return_reason');
+    returnReasonTextarea.value = returnReason || '';
 
-        // Hiển thị hoặc ẩn textarea lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng"
-        if (currentStatus === 8) {
-            returnReasonTextarea.closest('.form-group').style.display = 'block';
-        } else {
-            returnReasonTextarea.closest('.form-group').style.display = 'none';
-        }
-    });
+    // Hiển thị hoặc ẩn textarea lý do trả hàng nếu trạng thái là "Chờ xác nhận hoàn hàng"
+    var returnReasonDiv = orderStatusModal.querySelector('.return-reason-div');
+    if (currentStatus === 8) {
+        returnReasonDiv.style.display = 'block'; // Hiển thị phần lý do trả hàng
+        returnReasonTextarea.closest('.form-group').style.display = 'block'; // Hiển thị textarea
+    } else {
+        returnReasonDiv.style.display = 'none'; // Ẩn phần lý do trả hàng
+        returnReasonTextarea.closest('.form-group').style.display = 'none'; // Ẩn textarea
+    }
+});
+
 </script>
 @if (session('error'))
     <script>

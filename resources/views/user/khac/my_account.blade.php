@@ -136,8 +136,8 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="orders" role="tabpanel">
                                     <div class="d-flex justify-content-evenly mb-3 fs-12">
-                                        <a class="mx-1 filter-link active" data-status="all" href="#">Tất cả</a>
-                                        <a class="mx-1 filter-link" data-status="1" href="#">Chờ xác nhận</a>
+                                        <a class="mx-1 filter-link active" data-status="all" >Tất cả</a>
+                                        <a class="mx-1 filter-link" data-status="1" >Chờ xác nhận</a>
                                         <a class="mx-1 filter-link" data-status="2" href="#">Đã xác nhận</a>
                                         <a class="mx-1 filter-link" data-status="3" href="#">Vận chuyển</a>
                                         <a class="mx-1 filter-link" data-status="4" href="#">Đã giao hàng</a>
@@ -167,20 +167,6 @@
                                                 class="fa fa-edit me-2"></i>Edit Address</a>
                                     </div>
                                 </div>
-                                <!-- Single Tab Content End -->
-                                <div class="tab-pane fade " id="dashboad" role="tabpanel">
-                                    <div class="myaccount-content">
-                                        <h3 class="title">Dashboard</h3>
-                                        <div class="welcome">
-                                            <p>Hello, <strong>Alex Aya</strong> (If Not <strong>Aya !</strong><a
-                                                    href="login-register.html" class="logout"> Logout</a>)</p>
-                                        </div>
-                                        <p class="mb-0">From your account dashboard. you can easily check & view your
-                                            recent orders, manage your shipping and billing addresses and edit your
-                                            password and account details.</p>
-                                    </div>
-                                </div>
-                                <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="account-info" role="tabpanel">
                                     <div class="myaccount-content">
                                         <h3 class="title">Account Details</h3>

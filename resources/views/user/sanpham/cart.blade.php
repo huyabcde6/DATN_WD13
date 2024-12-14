@@ -104,24 +104,6 @@
                     </table>
                 </div>
 
-                <!-- Cart Table End -->
-
-                <!-- Cart Update Option Start -->
-                <div class="cart-update-option d-block d-md-flex justify-content-between">
-
-                    <!-- Apply Coupon Wrapper Start -->
-                    <div class="apply-coupon-wrapper">
-                        <form action="#" method="post" class="d-block d-md-flex">
-                            <input type="text" placeholder="Nhập mã giảm giá của bạn" required />
-                            <button class="btn btn-dark btn-hover-primary rounded-0">Áp dụng mã</button>
-                        </form>
-                    </div>
-                    <!-- Apply Coupon Wrapper End -->
-
-                </div>
-                <!-- Cart Update Option End -->
-
-
             </div>
         </div>
 

@@ -222,27 +222,31 @@ class ProductController extends Controller
                 $product->avata = $request->file('avata')->store('products', 'public');
             }
 
-            $product->save();
+            
 
             // Xử lý xóa hình ảnh phụ
-            if ($request->has('remove_images')) {
-                foreach ($request->remove_images as $imageId) {
-                    $image = ProductImage::findOrFail($imageId);
-                    if (Storage::disk('public')->exists($image->image_path)) {
-                        Storage::disk('public')->delete($image->image_path); // Xóa ảnh cũ
-                    }
-                    $image->delete();
-                }
-            }
-
-            // Thêm hình ảnh phụ mới
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $imagePath = $image->store('product_images', 'public');
-                    $product->productImages()->create(['image_path' => $imagePath]);
+                    // Lưu hình ảnh mới
+                    $path = $image->store('product_images', 'public');
+                    $product->productImages()->create(['image_path' => $path]);
                 }
             }
-
+        
+            // Xử lý các hình ảnh bị xóa
+            if ($request->has('deleted_images') && !empty($request->deleted_images)) {
+                $deletedImages = explode(',', $request->deleted_images);
+                foreach ($deletedImages as $imageId) {
+                    $image = ProductImage::find($imageId);
+                    if ($image) {
+                        // Xóa hình ảnh khỏi storage
+                        Storage::disk('public')->delete($image->image_path);
+                        // Xóa hình ảnh khỏi cơ sở dữ liệu
+                        $image->delete();
+                    }
+                }
+            }
+            $product->update($request->except('images', 'deleted_images'));
             // Cập nhật biến thể đã có
             if ($request->has('variant_ids')) {
                 foreach ($request->variant_ids as $index => $variantId) {

@@ -496,5 +496,4 @@ document.getElementById('variants-container').addEventListener('change', functio
     }
 });
 </script>
-
 @endsection

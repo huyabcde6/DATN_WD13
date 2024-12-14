@@ -44,14 +44,13 @@ class OrderController extends Controller
 
         return view('user.khac.my_account', compact('orders'));
     }
-
-
-    /**
+/**
      * Hiển thị chi tiết của một đơn hàng cụ thể.
      */
     public function show($id)
     {
         $order = Order::with(['orderDetails.productDetail.products', 'status'])->findOrFail($id);
+
         return view('user.khac.order_detail', compact('order'));
     }
 
@@ -84,14 +83,15 @@ class OrderController extends Controller
             ));
         }
 
-        return redirect()->route('checkout.thankyou')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
+        return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
     }
 
     /**
      * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
     public function store(Request $request)
-    {
+    {   
+
         if ($request->isMethod('POST')) {
             DB::beginTransaction();
             try {
@@ -100,7 +100,6 @@ class OrderController extends Controller
                 $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
                 $params['date_order'] = now(); // Lấy thời gian hiện tại
                 $params['status_donhang_id'] = 1; // Trạng thái đơn hàng mặc định là chờ xử lý
-                
                 // Tạo đơn hàng
                 $order = Order::query()->create($params);
                 $orderId = $order->id;
@@ -124,7 +123,8 @@ class OrderController extends Controller
                         $productDetail->save();
                     }
                 }
-                if ($request->input('phuongthuc') === "momo") {
+                if ($request->input('method') === "VNPAY") {
+                    
                     // Lưu giao dịch và chuyển hướng đến VNP
                     DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
                     return $this->processVNP($order); // Hàm xử lý thanh toán VNP
@@ -211,16 +211,29 @@ class OrderController extends Controller
         $vnp_ResponseCode = $request->input('vnp_ResponseCode');
         $vnp_TxnRef = $request->input('vnp_TxnRef');
 
+        $order = Order::where('order_code', $vnp_TxnRef)->first();
+        
         if ($vnp_ResponseCode == '00') {
             // Thanh toán thành công
-            $order = Order::where('order_code', $vnp_TxnRef)->first();
             if ($order) {
-                $order->update(['payment_status' => 'paid']);
+                $order->update([
+                    'payment_status' => 'đã thanh toán',
+                    'method' => 'VNPAY'
+                ]);
+                Session::forget('cart');
                 return redirect()->route('orders.index')->with('success', 'Thanh toán thành công.');
             }
+        } else {
+            // Thanh toán thất bại hoặc bị hủy
+            if ($order) {
+                $order->update([
+                    'payment_status' => 'thất bại',
+                    'method' => 'VNPAY',
+                    'status_donhang_id' => StatusDonHang::getIdByType(StatusDonHang::DA_HUY),
+                ]);
+            }
+            return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
         }
-
-        return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
     }
 
     /**
@@ -253,6 +266,14 @@ class OrderController extends Controller
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_HUY);
                 } elseif ($request->has('da_giao_hang')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_GIAO_HANG);
+                    $params['payment_status'] = 'đã thanh toán';
+                } elseif ($request->has('cho_xac_nhan')) {
+                    $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::CHO_HOAN);
+                    if ($request->filled('return_reason')) {
+                        $params['return_reason'] = $request->input('return_reason');
+                    } else {
+                        throw new \Exception('Bạn phải cung cấp lý do trả hàng.');
+                    }
                 } else {
                     throw new \Exception('Hành động không hợp lệ.');
                 }
