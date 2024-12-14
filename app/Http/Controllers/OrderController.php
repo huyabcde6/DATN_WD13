@@ -44,7 +44,6 @@ class OrderController extends Controller
 
         return view('user.khac.my_account', compact('orders'));
     }
-/**
      * Hiển thị chi tiết của một đơn hàng cụ thể.
      */
     public function show($id)
@@ -124,12 +123,10 @@ class OrderController extends Controller
                     }
                 }
                 if ($request->input('method') === "VNPAY") {
-                    
                     // Lưu giao dịch và chuyển hướng đến VNP
                     DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
                     return $this->processVNP($order); // Hàm xử lý thanh toán VNP
                 }
-
                 DB::commit();
 
                 // Gửi email xác nhận đơn hàng
@@ -147,9 +144,6 @@ class OrderController extends Controller
 
         return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
     }
-    /**
-     * Xử lý thanh toán qua VNP
-     */
     private function processVNP($order)
     {
         // Tạo URL thanh toán VNP
@@ -212,7 +206,6 @@ class OrderController extends Controller
         $vnp_TxnRef = $request->input('vnp_TxnRef');
 
         $order = Order::where('order_code', $vnp_TxnRef)->first();
-        
         if ($vnp_ResponseCode == '00') {
             // Thanh toán thành công
             if ($order) {
@@ -236,6 +229,28 @@ class OrderController extends Controller
         }
     }
 
+    return redirect($vnp_Url);
+}
+
+/**
+ * Xử lý callback từ VNP
+ */
+public function handleVNPReturn(Request $request)
+{
+    $vnp_ResponseCode = $request->input('vnp_ResponseCode');
+    $vnp_TxnRef = $request->input('vnp_TxnRef');
+
+    if ($vnp_ResponseCode == '00') {
+        // Thanh toán thành công
+        $order = Order::where('order_code', $vnp_TxnRef)->first();
+        if ($order) {
+            $order->update(['payment_status' => 'paid']);
+            return redirect()->route('orders.index')->with('success', 'Thanh toán thành công.');
+        }
+    }
+
+    return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
+}
     /**
      * Tạo mã đơn hàng duy nhất.
      */

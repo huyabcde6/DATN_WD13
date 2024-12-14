@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -15,14 +16,12 @@ class AdminController extends Controller
     {
         // Lọc tất cả người dùng có vai trò
         $users = User::whereHas('roles')->get();
-    
+
         // Trả về view với danh sách người dùng
         return view('role-permission.user.index', [
             'users' => $users
         ]);
     }
-    
-
 
     public function create()
     {
@@ -36,27 +35,11 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< HEAD:app/Http/Controllers/UserController.php
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|max:20',
-            'roles' => 'required'
-=======
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|email|max:255|unique:users,email',
-        //     'password' => 'required|string|min:8|max:20',
-        //     'roles' => 'required'
->>>>>>> 4b72ed8744930d28cd573ea23e4c9db00718596f:app/Http/Controllers/Admin/AdminController.php
-
-        // ]);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             "password" => Hash::make($request->password),
+            'status' => $request->status,
         ]);
         $user->syncRoles($request->roles);
 
@@ -68,7 +51,6 @@ class AdminController extends Controller
      */
     public function edit(User $user)
     {
-
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
         return view('role-permission.user.edit', [
@@ -83,10 +65,10 @@ class AdminController extends Controller
      */
     public function update(Request $request, User $user)
     {
-
         $data = [
             'name' => $request->name,
             'email' => $request->email,
+            'status' => $request->status,
         ];
         if (!empty($request->password)) {
             $data += [
