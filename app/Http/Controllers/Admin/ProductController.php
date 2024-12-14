@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProductImage;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\categories;
@@ -10,7 +11,6 @@ use App\Models\products;
 use App\Models\Size;
 use App\Models\Color;
 use App\Models\ProductDetail;
-use App\Models\ProductImage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:view product', ['only' => ['index']]);
-        $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
-        $this->middleware('permission:edit product', ['only' => ['index']]);
-        $this->middleware('permission:delete product', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view product', ['only' => ['index']]);
+    //     $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
+    //     $this->middleware('permission:edit product', ['only' => ['index']]);
+    //     $this->middleware('permission:delete product', ['only' => ['destroy']]);
+    // }
 
     public function index(Request $request)
     {

@@ -95,14 +95,9 @@
                         <div class="col-lg-3 col-md-4">
                             <div class="myaccount-tab-menu nav" role="tablist">
                                 <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
-                                    Dashboard</a>
-                                <a href="#orders" data-bs-toggle="tab"><i
-                                        class="fa fa-cart-arrow-down"></i> Orders</a>
-
-                                <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i>
-                                    address</a>
-                                <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account
-                                    Details</a>
+                                Trang chủ</a>
+                                <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Đơn hàng</a>
+                                <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i>Chi tiết tài khoản </a>
                                 <a class='dropdown-item notify-item' href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="mdi mdi-location-exit fs-16 align-middle"></i>
