@@ -350,23 +350,21 @@
             <!-- Start Comment Section (Moved) -->
             <div class="col-lg-12 col-custom single-product-comment">
                 @auth
-                <br><br><br><div class="review-form mb-4">
+                <br><br><br>
+                <div class="review-form mb-4">
                     <!-- Review Form Card -->
                     <h4>BÌNH LUẬN</h4>
                     <div class="card shadow-sm border-0">
                         <div class="card-header bg-dark text-white py-2">
                             <h6 class="mb-0" style="color: white">Đánh giá sản phẩm</h6>
                         </div>
-        
+            
                         <div class="card-body bg-light">
-                            <form method="POST" action="{{ route('product.comment', $product->slug) }}"
-                                class="px-2">
+                            <form method="POST" action="{{ route('product.comment', $product->slug) }}" class="px-2">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="description" class="form-label small text-muted">Nội dung đánh giá</label>
-                                    <textarea name="description"
-                                        class="form-control form-control-sm border-dark" rows="3" required
-                                        placeholder="Nhập đánh giá của bạn về sản phẩm..."></textarea>
+                                    <textarea name="description" class="form-control form-control-sm border-dark" rows="3" required placeholder="Nhập đánh giá của bạn về sản phẩm..."></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-dark btn-sm">
                                     Gửi đánh giá
@@ -376,12 +374,12 @@
                     </div>
                 </div>
                 @endauth
-        
+            
                 <!-- Comments List -->
                 <div class="reviews-list">
                     <h6 class="text-muted mb-3">Các đánh giá khác</h6>
                     @if ($comments->isNotEmpty())
-                    @foreach ($comments->where('is_hidden', false) as $comment)
+                    @foreach ($comments as $comment)
                     <div class="card mb-2 shadow-sm border-0">
                         <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-center">
@@ -393,6 +391,7 @@
                         </div>
                     </div>
                     @endforeach
+                    <!-- Pagination -->
                     <div class="d-flex justify-content-end mt-4">
                         {{ $comments->links() }}
                     </div>
@@ -403,6 +402,7 @@
                     @endif
                 </div>
             </div>
+            
             <!-- End Comment Section -->
         </div>
         
