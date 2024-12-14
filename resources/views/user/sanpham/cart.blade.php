@@ -142,6 +142,7 @@
 
                     </div>
                     <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến hành thanh toán</a>
+
                 </div>
 
                 <!-- Cart Calculation Area End -->
@@ -219,3 +220,4 @@
     });
 </script>
 @endsection
+

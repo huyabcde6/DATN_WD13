@@ -61,7 +61,6 @@
                                             <form action="{{ route('admin.users.destroy', $user) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
-
                                                 <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa?')"
                                                     class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
                                                     title="Xóa">

@@ -39,6 +39,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             "password" => Hash::make($request->password),
+            'status' => $request->status,
         ]);
         $user->syncRoles($request->roles);
 
@@ -50,7 +51,6 @@ class AdminController extends Controller
      */
     public function edit(User $user)
     {
-
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
         return view('role-permission.user.edit', [
@@ -68,6 +68,7 @@ class AdminController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
+            'status' => $request->status,
         ];
         if (!empty($request->password)) {
             $data += [
