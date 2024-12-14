@@ -121,18 +121,18 @@ class ProductController extends Controller
 
             return view('user.sanpham.shop_sidebar', compact( 'products', 'colors'));
     }
-    public function search(Request $request)
-    {
-        $query = products::query();
+    // public function search(Request $request)
+    // {
+    //     $query = products::query();
 
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->input('name') . '%');
-        }
+    //     if ($request->filled('name')) {
+    //         $query->where('name', 'like', '%' . $request->input('name') . '%');
+    //     }
 
         
 
-        $products = $query->get();
+    //     $products = $query->get();
 
-        return view('user.khac.index', compact('products'));
-    }
+    //     return view('user.khac.index', compact('products'));
+    // }
 }
