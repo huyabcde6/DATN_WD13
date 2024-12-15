@@ -262,14 +262,10 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-uppercase" id="profile-tab" data-bs-toggle="tab" href="#connect-2"
-                            role="tab" aria-selected="false">Bình luận</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-uppercase" id="contact-tab" data-bs-toggle="tab" href="#connect-3"
                             role="tab" aria-selected="false">Chính sách giao hàng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-uppercase" id="review-tab" data-bs-toggle="tab" href="#connect-4"
+                        <a class="nav-link text-uppercase" id="review-tab" data-bs-toggle="tab" href="#connect-3"
                             role="tab" aria-selected="false">Bảng size</a>
                     </li>
                 </ul>
@@ -279,68 +275,8 @@
                             <p class="mb-3">{!! $product->description !!}</p>
                         </div>
                     </div>
-                    {{-- Start Comment --}}
 
                     <div class="tab-pane fade" id="connect-2" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="product_tab_content border p-3">
-                            @auth
-                            <div class="review-form mb-4">
-                                <!-- Review Form Card -->
-                                <div class="card shadow-sm border-0">
-                                    <div class="card-header bg-dark text-white py-2">
-                                        <h6 class="mb-0" style="color: white">Đánh giá sản phẩm</h6>
-                                    </div>
-
-                                    <div class="card-body bg-light">
-                                        <form method="POST" action="{{ route('product.comment', $product->slug) }}"
-                                            class="px-2">
-                                            @csrf
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label small text-muted">Nội dung đánh giá</label>
-                                                <textarea name="description"
-                                                    class="form-control form-control-sm border-dark" rows="3" required
-                                                    placeholder="Nhập đánh giá của bạn về sản phẩm..."></textarea>
-                                            </div>
-                                            <button type="submit" class="btn btn-dark btn-sm">
-                                                Gửi đánh giá
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            @endauth
-
-                            <!-- Comments List -->
-                            <div class="reviews-list">
-                                <h6 class="text-muted mb-3">Các đánh giá khác</h6>
-                                @if ($comments->isNotEmpty())
-                                @foreach ($comments->where('is_hidden', false) as $comment)
-                                <div class="card mb-2 shadow-sm border-0">
-                                    <div class="card-body p-3">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="small fw-bold text-dark">{{ $comment->user->name }}</span>
-                                            <small
-                                                class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
-                                        </div>
-                                        <hr class="my-2">
-                                        <p class="card-text small mb-0">{{ $comment->description }}</p>
-                                    </div>
-                                </div>
-                                @endforeach
-                                <div class="d-flex justify-content-end mt-4">
-                                    {{ $comments->links() }}
-                                </div>
-                                @else
-                                <div class="alert alert-dark py-2 small">
-                                    Chưa có đánh giá nào.
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- end Comment --}}
-                    <div class="tab-pane fade" id="connect-3" role="tabpanel" aria-labelledby="contact-tab">
                         <!-- Shipping Policy Start -->
                         <div class="shipping-policy mb-n2">
                             <h4 class="title-3 mb-4">Chính sách vận chuyển của chúng tôi</h4>
@@ -365,7 +301,8 @@
                         </div>
                         <!-- Shipping Policy End -->
                     </div>
-                    <div class="tab-pane fade" id="connect-4" role="tabpanel" aria-labelledby="review-tab">
+
+                    <div class="tab-pane fade" id="connect-3" role="tabpanel" aria-labelledby="review-tab">
                         <div class="size-tab table-responsive-lg">
                             <h4 class="title-3 mb-4">Bản size</h4>
                             <table class="table border mb-0">
@@ -415,9 +352,68 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div><br><br><br>
             <!-- Single Product Tab End -->
+
+            <!-- Start Comment Section (Moved) -->
+            <div class="col-lg-12 col-custom single-product-comment">
+                @auth
+                <br><br><br>
+                <div class="review-form mb-4">
+                    <!-- Review Form Card -->
+                    <h4>BÌNH LUẬN</h4>
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-dark text-white py-2">
+                            <h6 class="mb-0" style="color: white">Đánh giá sản phẩm</h6>
+                        </div>
+
+                        <div class="card-body bg-light">
+                            <form method="POST" action="{{ route('product.comment', $product->slug) }}" class="px-2">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="description" class="form-label small text-muted">Nội dung đánh giá</label>
+                                    <textarea name="description" class="form-control form-control-sm border-dark" rows="3" required placeholder="Nhập đánh giá của bạn về sản phẩm..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-dark btn-sm">
+                                    Gửi đánh giá
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endauth
+
+                <!-- Comments List -->
+                <div class="reviews-list">
+                    <h6 class="text-muted mb-3">Các đánh giá khác</h6>
+                    @if ($comments->isNotEmpty())
+                    @foreach ($comments as $comment)
+                    <div class="card mb-2 shadow-sm border-0">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="small fw-bold text-dark">{{ $comment->user->name }}</span>
+                                <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                            </div>
+                            <hr class="my-2">
+                            <p class="card-text small mb-0">{{ $comment->description }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-end mt-4">
+                        {{ $comments->links() }}
+                    </div>
+                    @else
+                    <div class="alert alert-dark py-2 small">
+                        Chưa có đánh giá nào.
+                    </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- End Comment Section -->
         </div>
+
 
         <!-- Products Start -->
         <div class="row">
@@ -443,7 +439,7 @@
                                 <!-- Single Product Start -->
                                 <div class="product product-border-left" data-aos="fade-up" data-aos-delay="300">
                                     <div class="thumb">
-                                        <a href="single-product.html" class="image">
+                                        <a href="{{ route('product.show', $item->slug) }}" class="image">
                                             <img class="image w-100 h-100" src="{{ url('storage/' . $item->avata) }}"
                                                 alt="Product" />
                                         </a>
@@ -455,9 +451,8 @@
                                         </div>
                                     </div>
                                     <div class="content">
-                                        <h4 class="sub-title"><a
-                                                href="single-product.html">{{ $item->categories->name }}</a></h4>
-                                        <h5 class="title"><a href="single-product.html">{{ $item->name }}</a></h5>
+                                        <h4 class="sub-title">{{ $item->categories->name }}</h4>
+                                        <h5 class="title"><a href="{{ route('product.show', $item->slug) }}">{{ $item->name }}</a></h5>
                                         <span class="ratings">
                                             <span class="rating-wrap">
                                                 <span class="star" style="width: 100%"></span>
@@ -465,8 +460,13 @@
                                             <span class="rating-num">(4)</span>
                                         </span>
                                         <span class="price">
-                                            <span class="new">$38.50</span>
-                                            <span class="old">$42.85</span>
+                                            @if ($item->discount_price)
+                                            <span class="new">{{ number_format($item->discount_price, 0, '', '.') }}
+                                                ₫</span>&nbsp;&nbsp;
+                                            <span class="old">{{ number_format($item->price, 0, '', '.') }} ₫</span>
+                                            @else
+                                            <span class="new">{{ number_format($item->price, 0, '', '.') }} ₫</span>
+                                            @endif
                                         </span>
                                         <button class="btn btn-sm btn-outline-dark btn-hover-primary">Thêm vào
                                             giỏ</button>

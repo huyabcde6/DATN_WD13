@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ColorRequest;
 use Illuminate\Http\Request;
 use App\Models\Color;
 
@@ -50,20 +51,8 @@ class ColorController extends Controller
     /**
      * Lưu màu mới vào cơ sở dữ liệu.
      */
-    public function store(Request $request)
+    public function store(ColorRequest $request)
     {
-        $request->validate([
-            'value' => 'required|string|max:255',
-            'color_code' => 'nullable|string|max:255',
-            'status' => 'nullable|boolean',
-        ], [
-            'value.required' => 'Màu không được để trống',
-            'value.string' => 'Màu phải là chuỗi',
-            'value.max' => 'Màu không vượt qua 255 ký tự',
-            'color_code.string' => 'Màu phải là chuỗi',
-            'color_code.max' => 'Màu không vượt qua 255 ký tự',
-        ]);
-
         Color::create([
             'value' => $request->value,
             'color_code' => $request->color_code,
@@ -85,20 +74,8 @@ class ColorController extends Controller
     /**
      * Cập nhật thông tin màu trong cơ sở dữ liệu.
      */
-    public function update(Request $request, $id)
+    public function update(ColorRequest $request, $id)
     {
-        $request->validate([
-            'value' => 'required|string|max:255',
-            'color_code' => 'nullable|string|max:255',
-            'status' => 'nullable|boolean',
-        ], [
-            'value.required' => 'Màu không được để trống',
-            'value.string' => 'Màu phải là chuỗi',
-            'value.max' => 'Màu không vượt qua 255 ký tự',
-            'color_code.string' => 'Màu phải là chuỗi',
-            'color_code.max' => 'Màu không vượt qua 255 ký tự',
-        ]);
-
         $color = Color::findOrFail($id);
 
         // Cập nhật các trường khác

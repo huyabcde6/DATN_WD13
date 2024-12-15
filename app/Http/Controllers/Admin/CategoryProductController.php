@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryProductRequest;
 use App\Http\Requests\CategoryRequest;
 use App\Models\categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CategoryProductController extends Controller
-{   
-    public function __construct(){
-        $this->middleware('permission:view category', ['only' => ['index']]);
-        $this->middleware('permission:create category', ['only' => ['create', 'store']]);
-        $this->middleware('permission:edit category', ['only' => ['update', 'edit']]);
-        $this->middleware('permission:delete category', ['only' => ['destroy']]);
-    }
-    
+{
+    // public function __construct(){
+    //     $this->middleware('permission:view category', ['only' => ['index']]);
+    //     $this->middleware('permission:create category', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:edit category', ['only' => ['update', 'edit']]);
+    //     $this->middleware('permission:delete category', ['only' => ['destroy']]);
+    // }
+
     public function index(Request $request)
     {
         $query = categories::query();
@@ -54,18 +55,8 @@ class CategoryProductController extends Controller
     /**
      * Lưu danh mục mới vào cơ sở dữ liệu.
      */
-    public function store(Request $request)
+    public function store(CategoryProductRequest $request)
     {
-        $request->validate(
-            [
-                'name' => 'required|string|max:255|unique:categories,name',
-            ],
-            [
-                'name.required' => 'Vui lòng nhập tên danh mục',
-                'name.unique' => 'Tên danh mục đã tồn tại',
-            ]
-        );
-
         try {
             DB::beginTransaction();
 
@@ -99,17 +90,8 @@ class CategoryProductController extends Controller
     /**
      * Cập nhật thông tin danh mục.
      */
-    public function update(Request $request, $id)
+    public function update(CategoryProductRequest $request, $id)
     {
-        $request->validate(
-            [
-                'name' => 'required|string|max:255|unique:categories,name,' . $id,
-            ],
-            [
-                'name.required' => 'Vui lòng nhập tên danh mục',
-                'name.unique' => 'Tên danh mục đã tồn tại',
-            ]
-        );
         try {
             DB::beginTransaction();
 

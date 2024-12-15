@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PermissionRequest;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
@@ -42,27 +43,15 @@ class PermissionControler extends Controller
             'sort_order' => $sortOrder, // Truyền lại thứ tự sắp xếp
             'search' => $request->search, // Truyền lại giá trị tìm kiếm
         ]);
-    }   
-    
+    }
+
     public function create()
     {
         return view('role-permission.permission.create');
     }
 
-    public function store(Request $request)
+    public function store(PermissionRequest $request)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:permissions,name'
-            ]
-        ], [
-            'name.required' => 'Vui lòng nhập tên quyền',
-            'name.string' => 'Quyền phải là chữ',
-            'name.unique' => 'Quyền đã tồn tại'
-        ]);
-
         Permission::create([
             'name' => $request->name
         ]);
@@ -75,20 +64,8 @@ class PermissionControler extends Controller
         return view('role-permission.permission.edit', compact('permission'));
     }
 
-    public function update(Request $request, Permission $permission)
+    public function update(PermissionRequest $request, Permission $permission)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:permissions,name,' . $permission->id
-            ]
-        ], [
-            'name.required' => 'Vui lòng nhập tên quyền',
-            'name.string' => 'Quyền phải là chữ',
-            'name.unique' => 'Quyền đã tồn tại'
-        ]);
-
         $permission->update([
             'name' => $request->name
         ]);

@@ -94,7 +94,7 @@
             <!-- Tổng tiền -->
             <div class="d-flex justify-content-end mx-3 mb-3">
                 <h6><strong>Tổng tiền:</strong>
-                    {{ $order->total_price}}₫
+                    {{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 0, '', ',') }}₫
                 </h6>
             </div>
 
