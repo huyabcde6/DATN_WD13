@@ -40,6 +40,15 @@
         <div class="row">
             <div class="col-12">
 
+                <!-- Kiểm tra giỏ hàng trống -->
+                @if (empty($cartItems) || count($cartItems) === 0)
+                <div class=" text-center">
+                    <img src="{{ asset('ngdung/assets/images/cart/empty-cart1.png')}}" alt="Giỏ hàng trống"
+                        style="max-width: 400px; margin-bottom: 20px;">
+                    <p>Giỏ hàng của bạn đang trống. <a href="{{ route('home.index') }}">Tiếp tục mua sắm</a>.</p>
+                </div>
+                @else
+
                 <!-- Cart Table Start -->
                 <div class="cart-table table-responsive">
                     <table class="table table-bordered">
@@ -71,11 +80,12 @@
                                 </td>
                                 <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
                                         đ</span></td>
-                                <td class="pro-quantity ">
+                                <td class="pro-quantity">
                                     <div class="quantity">
                                         <div class="cart-plus-minus" style="margin-left: 35px;">
                                             <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}"
-                                                type="text" data-id="{{ $item['product_detail_id'] }}">
+                                                type="text" data-id="{{ $item['product_detail_id'] }}"
+                                                data-available-quantity="{{ $item['available_quantity'] }}">
                                             <div class="dec qtybutton" data-id="{{ $item['product_detail_id'] }}">-
                                             </div>
                                             <div class="inc qtybutton" data-id="{{ $item['product_detail_id'] }}">+
@@ -103,14 +113,15 @@
 
                     </table>
                 </div>
+                @endif
 
             </div>
         </div>
 
+        @if (!empty($cartItems) && count($cartItems) > 0)
         <div class="row">
             <div class="col-lg-5 ms-auto col-custom">
 
-                <!-- Cart Calculation Area Start -->
                 <!-- Cart Calculation Area Start -->
                 <div class="cart-calculator-wrapper">
                     <div class="cart-calculate-items">
@@ -150,9 +161,11 @@
 
             </div>
         </div>
+        @endif
 
     </div>
 </div>
+
 <!-- Shopping Cart Section End -->
 
 <!-- Scroll Top Start -->
@@ -166,64 +179,82 @@
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    var shippingFee = 30000; // Phí vận chuyển 30000 đồng
+        var shippingFee = 30000; // Phí vận chuyển 30000 đồng
 
-    // Xử lý sự kiện tăng/giảm số lượng
-    $('.qtybutton').on('click', function() {
-        var productDetailId = $(this).data('id');
-        var inputField = $(this).siblings('.cart-plus-minus-box');
-        var quantity = parseInt(inputField.val());
+        // Xử lý sự kiện tăng/giảm số lượng
+        $('.qtybutton').on('click', function() {
+            var productDetailId = $(this).data('id');
+            var inputField = $(this).siblings('.cart-plus-minus-box');
+            var quantity = parseInt(inputField.val());
+            var availableQuantity = parseInt(inputField.data('available-quantity')); // Lấy số lượng có sẵn từ data-attribute
 
-        // Tăng hoặc giảm số lượng
-        if ($(this).hasClass('inc')) {
-            quantity++;
-        } else if ($(this).hasClass('dec') && quantity > 1) {
-            quantity--;
-        }
-
-        // Gửi AJAX để cập nhật số lượng
-        $.ajax({
-            url: '{{ route("cart.update") }}',
-            method: 'POST',
-            data: {
-                product_detail_id: productDetailId,
-                quantity: quantity,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    inputField.val(quantity);
-
-                    // Update the subtotal for this product
-                    var subtotalCell = inputField.closest('tr').find('.subtotal-' +
-                        productDetailId);
-                    var formattedSubtotal = response
-                    .item_price; // Ensure price formatting here
-                    subtotalCell.text(formattedSubtotal);
-
-                    // Calculate the total for the cart
-                    var subTotal = 0;
-                    $('.pro-subtotal span').each(function() {
-                        var currentSubtotal = $(this).text().replace(' đ', '')
-                            .replace('.', '').trim();
-                        subTotal += parseFloat(currentSubtotal);
-                    });
-
-                    // Update the displayed totals
-                    $('.sub-total').text(subTotal.toFixed(0).replace(
-                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                    $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(
-                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+            // Tăng hoặc giảm số lượng
+            if ($(this).hasClass('inc')) {
+                if (quantity < availableQuantity) {
+                    quantity++;
+                } else {
+                    alert('Số lượng sản phẩm không đủ trong kho!');
+                    return; // Ngừng việc tăng nếu vượt quá số lượng tồn kho
                 }
-            },
-            error: function() {
-                alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
+            } else if ($(this).hasClass('dec') && quantity > 1) {
+                quantity--;
+            }
+
+            // Gửi AJAX để cập nhật số lượng
+            $.ajax({
+                url: '{{ route("cart.update") }}',
+                method: 'POST',
+                data: {
+                    product_detail_id: productDetailId,
+                    quantity: quantity,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        inputField.val(quantity);
+
+                        // Cập nhật lại subtotal cho sản phẩm này
+                        var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
+                        var formattedSubtotal = response.item_price; // Đảm bảo giá được format đúng
+                        subtotalCell.text(formattedSubtotal);
+
+                        // Tính toán tổng giỏ hàng
+                        var subTotal = 0;
+                        $('.pro-subtotal span').each(function() {
+                            var currentSubtotal = $(this).text().replace(' đ', '').replace('.', '').trim();
+                            subTotal += parseFloat(currentSubtotal);
+                        });
+
+                        // Cập nhật hiển thị tổng giỏ hàng
+                        $('.sub-total').text(subTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                        $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
+                }
+            });
+        });
+
+        // Kiểm tra và giới hạn giá trị nhập vào
+        $('.cart-plus-minus-box').on('input', function() {
+            var inputField = $(this);
+            var quantity = parseInt(inputField.val());
+            var availableQuantity = parseInt(inputField.data('available-quantity')); // Số lượng có sẵn
+
+            // Nếu giá trị nhập vào lớn hơn số lượng tồn kho, reset giá trị về số lượng tồn kho
+            if (quantity > availableQuantity) {
+                inputField.val(availableQuantity);
+                alert('Số lượng sản phẩm không đủ trong kho!');
+            }
+
+            // Đảm bảo chỉ cho phép nhập số
+            if (isNaN(quantity) || quantity < 1) {
+                inputField.val(1); // Reset về 1 nếu người dùng nhập giá trị không hợp lệ
             }
         });
     });
-});
 </script>
 @endsection
-

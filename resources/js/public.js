@@ -31,7 +31,7 @@ channel.bind("OderEvent", function (data) {
 
                 if (confirmForm) {
                     confirmForm.innerHTML = `
-                        <form id="confirm-order-${data.id}" action="/orders/update/${data.id}" method="POST" style="display:inline;">
+                        <form id="confirm-order-${data.id}" action="/orders/${data.id}/update" method="POST" style="display:inline;">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="_method" value="POST">
                             <input type="hidden" name="da_giao_hang" value="3">

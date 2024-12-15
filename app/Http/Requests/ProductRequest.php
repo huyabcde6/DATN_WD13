@@ -30,12 +30,9 @@ class ProductRequest extends FormRequest
             'stock_quantity' => 'required|integer|min:0',
             'short_description' => 'nullable|string|max:500',
             'description' => 'nullable|string',
-            'avata' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'variant_quantity.*.*' => 'required|integer|min:0',
             'variant_price.*.*' => 'nullable|numeric|min:0',
             'variant_discount_price.*.*' => 'nullable|numeric|min:0|lte:variant_price.*.*',
-            'variant_image.*.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 
@@ -61,22 +58,6 @@ class ProductRequest extends FormRequest
             'short_description.string' => 'Mô tả ngắn phải là chuỗi',
             'short_description.max' => 'Mô tả ngắn không vượt qua 500 ký tự',
             'description.string' => 'Mô tả phải là chuỗi',
-            'avata.image' => 'Ảnh đại diện phải là hình ảnh',
-            'avata.mimes' => 'Ảnh đại diện phải có định dạng jpeg, png, jpg, gif',
-            'avata.max' => 'Ảnh đại diện không vượt quá 2MB',
-            'images.*.image' => 'Hình ảnh phải là hình ảnh',
-            'images.*.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif',
-            'images.*.max' => 'Hình ảnh không vượt quá 2MB',
-            'variant_quantity.*.*.required' => 'Số lượng không được để trống',
-            'variant_quantity.*.*.integer' => 'Số lượng phải là số nguyên',
-            'variant_quantity.*.*.min' => 'Số lượng phải lớn hơn hoặc bằng 0',
-            'variant_price.*.*.numeric' => 'Giá phải là số',
-            'variant_price.*.*.min' => 'Giá phải lớn hơn hoặc bằng 0',
-            'variant_discount_price.*.*.lte' => 'Giá khuyến mãi phải nhỏ hơn hoặc bằng giá gốc',
-            'variant_discount_price.*.*.min' => 'Giá khuyến mãi phải lớn hơn hoặc bằng 0',
-            'variant_image.*.*.image' => 'Hình ảnh phải là hình ảnh',
-            'variant_image.*.*.mimes' => 'Hình ảnh phải có định dạng jpeg, png, jpg, gif',
-            'variant_image.*.*.max' => 'Hình ảnh không vượt quá 2MB',
         ];
     }
 }

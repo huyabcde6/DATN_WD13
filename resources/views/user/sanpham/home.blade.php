@@ -373,24 +373,23 @@
         </div>
     </div>
 </div>
-
 <!-- Blog Section Start -->
 <div class="section section-padding">
     <div class="container">
         <div class="row">
             <div class="section-title" data-aos="fade-up" data-aos-delay="300">
-                <h2 class="title pb-3">Blog mới nhất</h2>
+                <h2 class="title pb-3">Tin tức mới nhất</h2>
                 <div class="title-border-bottom"></div>
             </div>
         </div>
         <div class="row mb-n6">
-            @if (!empty($news))
+
             @foreach($news as $new)
             <div
                 class="col-lg-4 col-md-6 col-12 mb-6"
                 data-aos="fade-up"
                 data-aos-delay="300">
-            <div class="col-lg-4 col-md-6 col-12 mb-6" data-aos="fade-up" data-aos-delay="700">
+
                 <!-- Blog Single Post Start -->
                 <div class="blog-single-post-wrapper">
                     <div class="blog-thumb">
@@ -401,27 +400,22 @@
                     </div>
                     <div class="blog-content">
                         <div class="post-meta">
-                            <span>By : <a href="#">Admin</a></span>
-                            <span>14 Jul 2023</span>
+                            <span>{{ $new->created_at }}</span>
                         </div>
                         <h3 class="title">
-                            <a href="{{ route('tintucdetail', ['id' => $new->id]) }}">{{ $new->title }}</a>
+                            <a href="blog-details.html">{{ $new->title }}</a>
                         </h3>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do
-                            eiusmod tempo
+                            {{ $new->description }}
                         </p>
-                        <a href="{{ route('tintucdetail', ['id' => $new->id]) }}" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
+                        <a href="blog-details.html" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
                     </div>
                 </div>
                 <!-- Blog Single Post End -->
             </div>
             @endforeach
-            @endif
         </div>
     </div>
 </div>
-<!-- Blog Section End -->
 
 @endsection
-
