@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    // Hiển thị giỏ hàng
     public function index()
     {
 
