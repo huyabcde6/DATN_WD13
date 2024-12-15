@@ -95,14 +95,9 @@
                         <div class="col-lg-3 col-md-4">
                             <div class="myaccount-tab-menu nav" role="tablist">
                                 <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
-                                    Dashboard</a>
-                                <a href="#orders" data-bs-toggle="tab"><i
-                                        class="fa fa-cart-arrow-down"></i> Orders</a>
-
-                                <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i>
-                                    address</a>
-                                <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account
-                                    Details</a>
+                                    Trang chủ</a>
+                                <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Đơn hàng</a>
+                                <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i>Chi tiết tài khoản </a>
                                 <a class='dropdown-item notify-item' href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="mdi mdi-location-exit fs-16 align-middle"></i>
@@ -128,8 +123,8 @@
                                                     href="login-register.html" class="logout"> Logout</a>)</p>
                                         </div>
                                         <p class="mb-0">Từ bảng điều khiển tài khoản của bạn.
-                                             bạn có thể dễ dàng kiểm tra và xem các đơn đặt hàng gần đây của mình,
-                                             quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi tiết mật khẩu và tài khoản của mình.
+                                            bạn có thể dễ dàng kiểm tra và xem các đơn đặt hàng gần đây của mình,
+                                            quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi tiết mật khẩu và tài khoản của mình.
                                         </p>
                                     </div>
                                 </div>
@@ -137,8 +132,8 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="orders" role="tabpanel">
                                     <div class="d-flex justify-content-evenly mb-3 fs-12">
-                                        <a class="mx-1 filter-link active" data-status="all" href="#">Tất cả</a>
-                                        <a class="mx-1 filter-link" data-status="1" href="#">Chờ xác nhận</a>
+                                        <a class="mx-1 filter-link active" data-status="all">Tất cả</a>
+                                        <a class="mx-1 filter-link" data-status="1">Chờ xác nhận</a>
                                         <a class="mx-1 filter-link" data-status="2" href="#">Đã xác nhận</a>
                                         <a class="mx-1 filter-link" data-status="3" href="#">Vận chuyển</a>
                                         <a class="mx-1 filter-link" data-status="4" href="#">Đã giao hàng</a>
@@ -168,20 +163,6 @@
                                                 class="fa fa-edit me-2"></i>Edit Address</a>
                                     </div>
                                 </div>
-                                <!-- Single Tab Content End -->
-                                <div class="tab-pane fade " id="dashboad" role="tabpanel">
-                                    <div class="myaccount-content">
-                                        <h3 class="title">Dashboard</h3>
-                                        <div class="welcome">
-                                            <p>Hello, <strong>Alex Aya</strong> (If Not <strong>Aya !</strong><a
-                                                    href="login-register.html" class="logout"> Logout</a>)</p>
-                                        </div>
-                                        <p class="mb-0">From your account dashboard. you can easily check & view your
-                                            recent orders, manage your shipping and billing addresses and edit your
-                                            password and account details.</p>
-                                    </div>
-                                </div>
-                                <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="account-info" role="tabpanel">
                                     <div class="myaccount-content">
                                         <h3 class="title">Account Details</h3>
@@ -192,23 +173,23 @@
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
                                                             <label for="name" class="required mb-1">Họ tên</label>
-                                                            <input type="text" name="name" id="name" value="{{ $user->name }}"/>
+                                                            <input type="text" name="name" id="name" value="{{ $user->name }}" />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item mb-3">
                                                             <label for="email" class="required mb-1">Email</label>
-                                                            <input type="text" name="email" id="email" value="{{ $user->email }}"/>
+                                                            <input type="text" name="email" id="email" value="{{ $user->email }}" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="single-input-item mb-3">
                                                     <label for="address" class="required mb-1">Địa chỉ</label>
-                                                    <input type="text" name="address" id="address" value="{{ $user->address }}"/>
+                                                    <input type="text" name="address" id="address" value="{{ $user->address }}" />
                                                 </div>
                                                 <div class="single-input-item mb-3">
                                                     <label for="number_phone" class="required mb-1">Số điện thoại</label>
-                                                    <input type="number" name="number_phone" id="number_phone" value="{{ $user->number_phone }}"/>
+                                                    <input type="number" name="number_phone" id="number_phone" value="{{ $user->number_phone }}" />
                                                 </div>
                                                 <div class="form-group">
                                                     <button class="btn btn-success">Lưu</button>
@@ -240,17 +221,6 @@
 @vite('resources/js/public.js');
 @endsection
 @section('js')
-@if (session('success'))
-    <script>
-        alert('Cập nhật tài khoản thành công');
-    </script>
-@endif
-
-@if (session('error'))
-    <script>
-        alert('Đã xảy ra lỗi khi cập nhật tài khoản');
-    </script>
-@endif
 <script>
     let page = 1;
     let isLoading = false;

@@ -18,7 +18,6 @@ class HomeController extends Controller
     {
         $banners = Banner::where('status', 1)->get();
         $news = News::where('status', 1)->get();
-
         // Sản phẩm mới
         $newProducts = products::where('iS_new', 1)
             ->where('iS_show', 1)
@@ -34,7 +33,6 @@ class HomeController extends Controller
         $saleProducts = products::whereNotNull('discount_price')
             ->where('is_show', true)
             ->limit(8)->get();
-
         return view('user.sanpham.home', compact('banners', 'newProducts', 'bestSellingProducts', 'saleProducts', 'news'));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OderEvent;
 use App\Events\StatusOder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,13 +42,9 @@ class OrderController extends Controller
         if ($request->ajax()) {
             return view('user.khac.partials.orders', compact('orders'))->render();
         }
-
-        return view('user.khac.my_account', compact('orders'));
+        $user = Auth::user();
+        return view('user.khac.my_account', compact('orders', 'user'));
     }
-
-    /**
-     * Hiển thị chi tiết của một đơn hàng cụ thể.
-     */
     public function show($id)
     {
         $order = Order::with(['orderDetails.productDetail.products', 'status'])->findOrFail($id);
@@ -92,6 +89,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+
         if ($request->isMethod('POST')) {
             DB::beginTransaction();
             try {
@@ -123,7 +121,7 @@ class OrderController extends Controller
                         $productDetail->save();
                     }
                 }
-                if ($request->input('method') === "momo") {
+                if ($request->input('method') === "VNPAY") {
                     // Lưu giao dịch và chuyển hướng đến VNP
                     DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
                     return $this->processVNP($order); // Hàm xử lý thanh toán VNP
@@ -207,14 +205,14 @@ class OrderController extends Controller
         $vnp_TxnRef = $request->input('vnp_TxnRef');
 
         $order = Order::where('order_code', $vnp_TxnRef)->first();
-
         if ($vnp_ResponseCode == '00') {
             // Thanh toán thành công
             if ($order) {
                 $order->update([
                     'payment_status' => 'đã thanh toán',
-                    'method' => 'momo'
+                    'method' => 'VNPAY'
                 ]);
+                Session::forget('cart');
                 return redirect()->route('orders.index')->with('success', 'Thanh toán thành công.');
             }
         } else {
@@ -222,35 +220,13 @@ class OrderController extends Controller
             if ($order) {
                 $order->update([
                     'payment_status' => 'thất bại',
-                    'method' => 'momo'
+                    'method' => 'VNPAY',
+                    'status_donhang_id' => StatusDonHang::getIdByType(StatusDonHang::DA_HUY),
                 ]);
             }
             return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
         }
     }
-
-    return redirect($vnp_Url);
-}
-
-/**
- * Xử lý callback từ VNP
- */
-public function handleVNPReturn(Request $request)
-{
-    $vnp_ResponseCode = $request->input('vnp_ResponseCode');
-    $vnp_TxnRef = $request->input('vnp_TxnRef');
-
-    if ($vnp_ResponseCode == '00') {
-        // Thanh toán thành công
-        $order = Order::where('order_code', $vnp_TxnRef)->first();
-        if ($order) {
-            $order->update(['payment_status' => 'paid']);
-            return redirect()->route('orders.index')->with('success', 'Thanh toán thành công.');
-        }
-    }
-
-    return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
-}
     /**
      * Tạo mã đơn hàng duy nhất.
      */
@@ -281,13 +257,21 @@ public function handleVNPReturn(Request $request)
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_HUY);
                 } elseif ($request->has('da_giao_hang')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_GIAO_HANG);
+                    $params['payment_status'] = 'đã thanh toán';
+                } elseif ($request->has('cho_xac_nhan')) {
+                    $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::CHO_HOAN);
+                    if ($request->filled('return_reason')) {
+                        $params['return_reason'] = $request->input('return_reason');
+                    } else {
+                        throw new \Exception('Bạn phải cung cấp lý do trả hàng.');
+                    }
                 } else {
                     throw new \Exception('Hành động không hợp lệ.');
                 }
 
                 // Cập nhật trạng thái đơn hàng
                 $order->update($params);
-
+                broadcast(new OderEvent($order));
                 DB::commit();
                 return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
             } catch (\Exception $e) {

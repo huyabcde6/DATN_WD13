@@ -185,7 +185,7 @@
                             <form action="{{ route('shop.index') }}" method="GET">
                                 <div class="search-box">
                                     <input type="text" name="keyword" class="form-control"
-                                        placeholder="Nhập từ khóa cần tìm">
+                                        placeholder="Nhập từ khóa cần tìm" required>
                                     <button class="btn btn-dark btn-hover-primary" type="submit">
                                         <i class="fa fa-search"></i>
                                     </button>

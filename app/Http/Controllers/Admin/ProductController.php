@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\categories;
 use App\Models\products;
@@ -73,7 +72,7 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories', 'sizes', 'colors'));
     }
 
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
         try {
             // Tìm sản phẩm theo ID
@@ -143,7 +142,7 @@ class ProductController extends Controller
         }
     }
 
-    public function update(ProductRequest $request, $id)
+    public function update(Request $request, $id)
     {
 
         try {
