@@ -148,35 +148,34 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="avata">Hình ảnh sản phẩm</label>
-                                    <input class="form-control mb-3" type="file" name="avata" id="avata">
+                                    <input class="form-control mb-3" type="file" name="avata" >
                                     <img src="{{ url('storage/'. $products->avata) }}" alt="Hình ảnh sản phẩm"
                                         style="width: 80px; height: auto;">
                                 </div>
 
                                 <div class="mb-3">
-    <label for="images">Hình ảnh phụ</label>
-    <input class="form-control mb-3" type="file" name="images[]" id="images" multiple>
+                                    <label for="images">Hình ảnh phụ</label>
+                                    <input class="form-control mb-3" type="file" name="images[]" id="images" multiple>
 
-    <h4 class="collapse-button" data-bs-toggle="collapse" data-bs-target="#additionalImages" aria-expanded="false" aria-controls="additionalImages">
-        Xem thêm
-    </h4>
-
-    <div class="mt-2 collapse" id="additionalImages">
-        @foreach($products->productImages as $image)
-        <div class="product-images mt-3" style="display: inline-block; position: relative; margin: 5px;">
-            <img src="{{ url('storage/'. $image->image_path) }}" alt="Hình ảnh phụ"
-                style="width: 100px; height: 100px;">
-            <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle"
-                aria-label="Close" data-image-id="{{ $image->id }}"></button>
-        </div>
-        @endforeach
-    </div>
-</div>
-<input type="hidden" name="deleted_images" id="deletedImages">
-
-
-
-
+                                    <h4 class="collapse-button" data-bs-toggle="collapse"
+                                        data-bs-target="#additionalImages" aria-expanded="false"
+                                        aria-controls="additionalImages">
+                                        Xem thêm
+                                    </h4>
+                                    <div class="mt-2 collapse" id="additionalImages">
+                                        @foreach($products->productImages as $image)
+                                        <div class="product-images mt-3"
+                                            style="display: inline-block; position: relative; margin: 5px;">
+                                            <img src="{{ url('storage/'. $image->image_path) }}" alt="Hình ảnh phụ"
+                                                style="width: 100px; height: 100px;">
+                                            <button type="button"
+                                                class="btn-close position-absolute top-0 start-100 translate-middle"
+                                                aria-label="Close"  style="color: red;" data-image-id="{{ $image->id }}"></button>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <input type="hidden" name="deleted_images" id="deletedImages">
                                 <div class="button-group">
                                     <label for="sizes">Chọn kích thước</label>
                                     <div class="options" id="sizes">
@@ -203,20 +202,21 @@
                             <div>
                                 @foreach($variants as $variant)
                                 <div class="card border">
-                                <h4 class="mt-3 mx-3">Biến thể (Kích thước: {{ $variant->size->value }}, Màu:
-                                    {{ $variant->color->value }})</h4>
+                                    <h4 class="mt-3 mx-3">Biến thể (Kích thước: {{ $variant->size->value }}, Màu:
+                                        {{ $variant->color->value }})</h4>
                                     <div class="card-body">
                                         <div class="row mb-3">
                                             <div class="col-lg-1 mx-4">
-                                                <div id="variant-preview-container_${size.id}_${color.id}" class="mt-2 pl-3"></div>
+                                                <div id="variant-preview-container_${size.id}_${color.id}"
+                                                    class="mt-2 pl-3"></div>
                                             </div>
                                             <input type="hidden" name="variant_ids[]" value="{{ $variant->id }}">
                                             <div class="col-lg-4 mx-5">
                                                 <div class="mb-2">
                                                     <label for="">Hình
                                                         ảnh</label>
-                                                    <input type="file" name="variant_images[]" id="" class="form-control"
-                                                        accept="image/*">
+                                                    <input type="file" name="variant_images[]" id=""
+                                                        class="form-control" accept="image/*">
                                                 </div>
                                                 <div class="mb-2">
                                                     <label for="">Số
@@ -234,17 +234,17 @@
                                                 <div class="mb-2">
                                                     <label for="">Giá
                                                         khuyến mãi</label>
-                                                    <input type="number" name="discount_prices[]" id="" class="form-control"
-                                                        value="{{ $variant->discount_price }}">
+                                                    <input type="number" name="discount_prices[]" id=""
+                                                        class="form-control" value="{{ $variant->discount_price }}">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                
+
                                 </div>
                                 <hr>
                                 @endforeach
-                                </div>
+                            </div>
                             <div id="variants-container">
 
                             </div>
@@ -329,25 +329,25 @@ document.querySelectorAll('.btn-close').forEach(button => {
         // Gửi yêu cầu xóa ảnh qua API (ví dụ dùng fetch) nếu cần
         if (imageId) {
             fetch(`/api/delete-image/${imageId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert('Có lỗi xảy ra khi xóa ảnh!');
+                    }
+                })
+                .catch(error => {
                     alert('Có lỗi xảy ra khi xóa ảnh!');
-                }
-            })
-            .catch(error => {
-                alert('Có lỗi xảy ra khi xóa ảnh!');
-            });
+                });
         }
     });
 });
-
 </script>
 
 <script>

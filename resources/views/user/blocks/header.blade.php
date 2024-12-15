@@ -8,6 +8,7 @@
     <title>POLY STORE</title>
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico') }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Vendor CSS (Icon Font) -->
 

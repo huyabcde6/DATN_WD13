@@ -57,10 +57,45 @@ class OrderController extends Controller
     /**
      * Hiển thị form tạo đơn hàng mới.
      */
-    public function create()
-    {
+    public function create(Request $request)
+    {   
         $user = Auth::user();
 
+        if ($request->isMethod('post')) {
+            $productId = $request->input('products_id');
+            $quantity = $request->input('quantity');
+            $size = $request->input('size');
+            $color = $request->input('color');
+    
+            // Lấy sản phẩm từ CSDL
+            $product = Product::find($productId);
+            if (!$product) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Sản phẩm không tồn tại.'
+                ], 404);
+            }
+    
+            // Tính tổng tiền
+            $subTotal = $product->price * $quantity;
+            $shippingFee = 30000; // 30,000 VND phí vận chuyển
+            $total = $subTotal + $shippingFee;
+    
+            // Trả về JSON để JavaScript điều hướng tới trang thanh toán
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Đơn hàng đã được xử lý.',
+                'redirect_url' => route('checkout.page', [
+                    'product_id' => $productId,
+                    'quantity' => $quantity,
+                    'size' => $size,
+                    'color' => $color,
+                    'sub_total' => $subTotal,
+                    'shipping_fee' => $shippingFee,
+                    'total' => $total
+                ])
+            ]);
+        }
         // Lấy các sản phẩm trong giỏ hàng từ session
         $cartItems = Session::get('cart', []);
         if (!empty($cartItems)) {
