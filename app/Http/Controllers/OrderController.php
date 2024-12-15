@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OderEvent;
 use App\Events\StatusOder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,11 +42,9 @@ class OrderController extends Controller
         if ($request->ajax()) {
             return view('user.khac.partials.orders', compact('orders'))->render();
         }
-
-        return view('user.khac.my_account', compact('orders'));
+        $user = Auth::user();
+        return view('user.khac.my_account', compact('orders', 'user'));
     }
-     * Hiển thị chi tiết của một đơn hàng cụ thể.
-     */
     public function show($id)
     {
         $order = Order::with(['orderDetails.productDetail.products', 'status'])->findOrFail($id);
@@ -89,7 +88,7 @@ class OrderController extends Controller
      * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
     public function store(Request $request)
-    {   
+    {
 
         if ($request->isMethod('POST')) {
             DB::beginTransaction();
@@ -228,29 +227,6 @@ class OrderController extends Controller
             return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
         }
     }
-
-    return redirect($vnp_Url);
-}
-
-/**
- * Xử lý callback từ VNP
- */
-public function handleVNPReturn(Request $request)
-{
-    $vnp_ResponseCode = $request->input('vnp_ResponseCode');
-    $vnp_TxnRef = $request->input('vnp_TxnRef');
-
-    if ($vnp_ResponseCode == '00') {
-        // Thanh toán thành công
-        $order = Order::where('order_code', $vnp_TxnRef)->first();
-        if ($order) {
-            $order->update(['payment_status' => 'paid']);
-            return redirect()->route('orders.index')->with('success', 'Thanh toán thành công.');
-        }
-    }
-
-    return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
-}
     /**
      * Tạo mã đơn hàng duy nhất.
      */
@@ -295,7 +271,7 @@ public function handleVNPReturn(Request $request)
 
                 // Cập nhật trạng thái đơn hàng
                 $order->update($params);
-
+                broadcast(new OderEvent($order));
                 DB::commit();
                 return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
             } catch (\Exception $e) {

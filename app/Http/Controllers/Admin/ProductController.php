@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductImage;
-use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\categories;
 use App\Models\products;
 use App\Models\Size;
 use App\Models\Color;
 use App\Models\ProductDetail;
+use App\Models\ProductImage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -18,13 +17,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:view product', ['only' => ['index']]);
-    //     $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
-    //     $this->middleware('permission:edit product', ['only' => ['index']]);
-    //     $this->middleware('permission:delete product', ['only' => ['destroy']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('permission:view product', ['only' => ['index']]);
+        $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
+        $this->middleware('permission:edit product', ['only' => ['index']]);
+        $this->middleware('permission:delete product', ['only' => ['destroy']]);
+    }
 
     public function index(Request $request)
     {
@@ -73,7 +72,7 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories', 'sizes', 'colors'));
     }
 
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
         try {
             // Tìm sản phẩm theo ID
@@ -143,7 +142,7 @@ class ProductController extends Controller
         }
     }
 
-    public function update(ProductRequest $request, $id)
+    public function update(Request $request, $id)
     {
 
         try {
@@ -170,31 +169,27 @@ class ProductController extends Controller
                 $product->avata = $request->file('avata')->store('products', 'public');
             }
 
-            
+            $product->save();
 
             // Xử lý xóa hình ảnh phụ
+            if ($request->has('remove_images')) {
+                foreach ($request->remove_images as $imageId) {
+                    $image = ProductImage::findOrFail($imageId);
+                    if (Storage::disk('public')->exists($image->image_path)) {
+                        Storage::disk('public')->delete($image->image_path); // Xóa ảnh cũ
+                    }
+                    $image->delete();
+                }
+            }
+
+            // Thêm hình ảnh phụ mới
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    // Lưu hình ảnh mới
-                    $path = $image->store('product_images', 'public');
-                    $product->productImages()->create(['image_path' => $path]);
+                    $imagePath = $image->store('product_images', 'public');
+                    $product->productImages()->create(['image_path' => $imagePath]);
                 }
             }
-        
-            // Xử lý các hình ảnh bị xóa
-            if ($request->has('deleted_images') && !empty($request->deleted_images)) {
-                $deletedImages = explode(',', $request->deleted_images);
-                foreach ($deletedImages as $imageId) {
-                    $image = ProductImage::find($imageId);
-                    if ($image) {
-                        // Xóa hình ảnh khỏi storage
-                        Storage::disk('public')->delete($image->image_path);
-                        // Xóa hình ảnh khỏi cơ sở dữ liệu
-                        $image->delete();
-                    }
-                }
-            }
-            $product->update($request->except('images', 'deleted_images'));
+
             // Cập nhật biến thể đã có
             if ($request->has('variant_ids')) {
                 foreach ($request->variant_ids as $index => $variantId) {
