@@ -1,28 +1,29 @@
 @extends('layouts.home')
 
 @section('content')
+
 <div class="section">
 
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
+    <div class="breadcrumb-area bg-light ">
         <div class="container-fluid">
-            <div class="breadcrumb-content text-center">
-                <h1 class="title">My Account</h1>
-                <ul>
+            <div class="breadcrumb-content">
+                <ul class="breadcrumb-list">
                     <li>
-                        <a href="#">Home </a>
+                        <a href="http://datn_wd13.test">Trang chủ</a>
                     </li>
-                    <li class="active"> My Account </li>
+                    <li class="active">
+                        <a href="http://datn_wd13.test/register">Đăng kí</a>
+                    </li>
                 </ul>
             </div>
         </div>
+        <!-- Breadcrumb Area End -->
+
+
     </div>
-    <!-- Breadcrumb Area End -->
-
-</div>
-<div class="section section-margin">
-    <div class="container">
-
+    <div class="section section-margin">
+        <div class="container">
         <div class="row mb-n10 justify-content-center">
 
             <div class="col-lg-6 col-md-8 m-auto m-lg-0 pb-10">
@@ -31,8 +32,8 @@
 
                     <!-- Title and Description Start -->
                     <div class="section-content text-center mb-5 ">
-                        <h2 class="title mb-2">Create Account</h2>
-                        <p class="desc-content">Please Register using account details below.</p>
+                        <h2 class="title mb-2">Đăng kí</h2>
+                        <p class="desc-content">Vui lòng đăng kí tài khoản dưới đây.</p>
                     </div>
                     <!-- Title and Description End -->
 
@@ -42,69 +43,87 @@
 
                         <!-- Name Input Start -->
                         <div class="single-input-item mb-3">
-                            <input type="text" name="name" placeholder="Full Name" value="{{ old('name') }}" required autofocus>
+                            <input type="text" name="name" placeholder="Họ và tên" value="{{ old('name') }}" required autofocus>
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <!-- Name Input End -->
 
-                        <!-- Email Input Start -->
-                        <div class="single-input-item mb-3">
-                            <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
-                            @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <!-- Email Input End -->
+            <div class="row mb-n10 justify-content-center">
+                <div class="col-lg-6 col-md-8 m-auto m-lg-0 pb-10">
+                    <!-- Register Wrapper Start -->
+                    <div class="register-wrapper ">
 
-                        <!-- Password Input Start -->
-                        <div class="single-input-item mb-3">
-                            <input type="password" name="password" placeholder="Password" required>
-                            @error('password')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <!-- Title and Description Start -->
+                        <div class="section-content text-center mb-5 ">
+                            <h2 class="title mb-2">Tạo tài khoản</h2>
+                            <p class="desc-content">Vui lòng đăng ký bằng cách sử dụng chi tiết tài khoản bên dưới.</p>
                         </div>
-                        <!-- Password Input End -->
+                        <!-- Title and Description End -->
 
-                        <!-- Confirm Password Input Start -->
-                        <div class="single-input-item mb-3">
-                            <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
-                            @error('password_confirmation')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <!-- Confirm Password Input End -->
+                        <!-- Form Start -->
+                        <form method="POST" action="{{ route('register') }}">
+                            @csrf
 
-                        <!-- Newsletter Checkbox Start -->
-                        <div class="single-input-item mb-3">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="subscribe_newsletter" name="subscribe_newsletter">
-                                <label class="custom-control-label" for="subscribe_newsletter">Subscribe to Our Newsletter</label>
+                            <!-- Name Input Start -->
+                            <div class="single-input-item mb-3">
+                                <input type="text" name="name" placeholder="Họ và tên" value="{{ old('name') }}"
+                                     autofocus>
+                                @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
-                        </div>
-                        <!-- Newsletter Checkbox End -->
+                            <!-- Name Input End -->
 
-                        <!-- Register Button Start -->
-                        <div class="single-input-item mb-3">
-                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0">Register</button>
-                        </div>
-                        <!-- Register Button End -->
+                            <!-- Email Input Start -->
+                            <div class="single-input-item mb-3">
+                                <input type="email" name="email" placeholder="Email" value="{{ old('email') }}"
+                                    >
+                                @error('email')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <!-- Email Input End -->
 
-                        <!-- Login Link Start -->
-                        <span class="text">
-                            <a href="{{ route('login') }}">Already have an account?</a>
-                        </span>
-                        <!-- Login Link End -->
+                            <!-- Password Input Start -->
+                            <div class="single-input-item mb-3">
+                                <input type="password" name="password" placeholder="Mật khẩu" >
+                                @error('password')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <!-- Password Input End -->
 
-                    </form>
-                    <!-- Form End -->
+                            <!-- Confirm Password Input Start -->
+                            <div class="single-input-item mb-3">
+                                <input type="password" name="password_confirmation" placeholder="Xác nhận mật khẩu"
+                                    >
+                                @error('password_confirmation')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <!-- Confirm Password Input End -->
 
+                            <!-- Register Button Start -->
+                            <div class="single-input-item mb-3">
+                                <button type="submit" class="btn btn-dark btn-hover-primary rounded-0">Đăng ký</button>
+                            </div>
+                            <!-- Register Button End -->
+                            <!-- Login Link Start -->
+                            <div class="lost-password">
+                                <a href="{{ route('login') }}">Bạn đã có tài khoản ?</a>
+                            </div>
+                            <!-- Login Link End -->
+
+                        </form>
+                        <!-- Form End -->
+
+                    </div>
+                    <!-- Register Wrapper End -->
                 </div>
-                <!-- Register Wrapper End -->
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 @endsection

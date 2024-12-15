@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RoleRequet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+
 
 class RoleController extends Controller
 {
@@ -41,19 +43,8 @@ class RoleController extends Controller
         return view('role-permission.role.create');
     }
 
-    public function store(Request $request)
+    public function store(RoleRequet $request)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:roles,name'
-            ]
-        ], [
-            'name.required' => 'Vui lòng nhập tên vai trò',
-            'name.string' => 'Vai trò phải là chữ',
-            'name.unique' => 'Vai trò đã tồn tại'
-        ]);
 
         Role::create([
             'name' => $request->name
@@ -67,20 +58,8 @@ class RoleController extends Controller
         return view('role-permission.role.edit', compact('role'));
     }
 
-    public function update(Request $request, Role $role)
+    public function update(RoleRequet $request, Role $role)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:roles,name,' . $role->id
-            ]
-        ], [
-            'name.required' => 'Vui lòng nhập tên vai trò',
-            'name.string' => 'Vai trò phải là chữ',
-            'name.unique' => 'Vai trò đã tồn tại'
-        ]);
-
         $role ->update([
             'name' => $request->name
         ]);

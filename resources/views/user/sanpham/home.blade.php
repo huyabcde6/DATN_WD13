@@ -10,7 +10,8 @@
                 @foreach($banners as $banner)
                 <div class="hero-slide-item-two swiper-slide">
                     <div class="hero-slide-bg">
-                        <img src="{{ asset('storage/'.$banner->image_path) }}" alt="{{ $banner->title }}" />
+                        <!-- Sử dụng đường dẫn từ cơ sở dữ liệu để hiển thị ảnh -->
+                        <img src="{{ url('storage/'.$banner->image_path) }}" alt="{{ $banner->title }}" />
                     </div>
                     <div class="container">
                         <div class="row">
@@ -21,7 +22,7 @@
                                 <p>
                                     {{ $banner->description }}
                                 </p>
-                                <a href="shop-grid.html" class="btn btn-lg btn-primary btn-hover-dark">
+                                <a href="{{ route('shop.index',['category' => $banner->category_id]) }}" class="btn btn-lg btn-primary btn-hover-dark">
                                     Mua ngay
                                 </a>
                             </div>
@@ -29,6 +30,8 @@
                     </div>
                 </div>
                 @endforeach
+
+
             </div>
 
             <!-- Swiper Pagination Start -->
@@ -190,35 +193,35 @@
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
                                     @foreach($newProducts as $product)
-                                        <div class="swiper-slide product-wrapper">
-                                            <div class="product product-border-left mb-10" data-aos="fade-up" data-aos-delay="300">
-                                                <div class="thumb">
-                                                    <a href="{{ route('product.show', $product->slug) }}" class="image">
-                                                        <img class="image" src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" />
-                                                    </a>
-                                                    <span class="badges">
+                                    <div class="swiper-slide product-wrapper">
+                                        <div class="product product-border-left mb-10" data-aos="fade-up" data-aos-delay="300">
+                                            <div class="thumb">
+                                                <a href="{{ route('product.show', $product->slug) }}" class="image">
+                                                    <img class="image" src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" />
+                                                </a>
+                                                <span class="badges">
                                                     <span class="new">New</span>
-                                                    </span>
-                                                    <div class="actions">
-                                                        <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                                        <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                                        <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="content">
-                                                    <h5 class="title">
-                                                        <a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
-                                                    </h5>
-                                                    <span class="price">
-                                                        <span class="new">{{ number_format($product->price, 0, ',', '.') }} đ</span>
-                                                        @if($product->discount_price)
-                                                            <span class="old">{{ number_format($product->discount_price, 0, ',', '.') }} đ</span>
-                                                        @endif
-                                                    </span>
-                                                    <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                                </span>
+                                                <div class="actions">
+                                                    <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
+                                                    <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
+                                                    <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
                                                 </div>
                                             </div>
+                                            <div class="content">
+                                                <h5 class="title">
+                                                    <a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
+                                                </h5>
+                                                <span class="price">
+                                                    <span class="new">{{ number_format($product->price, 0, ',', '.') }} đ</span>
+                                                    @if($product->discount_price)
+                                                    <span class="old">{{ number_format($product->discount_price, 0, ',', '.') }} đ</span>
+                                                    @endif
+                                                </span>
+                                                <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                            </div>
                                         </div>
+                                    </div>
                                     @endforeach
                                 </div>
                                 <!-- Swiper Pagination Start -->
@@ -244,35 +247,35 @@
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
                                     @foreach($bestSellingProducts as $product)
-                                        <div class="swiper-slide product-wrapper">
-                                            <div class="product product-border-left mb-10" data-aos="fade-up" data-aos-delay="300">
-                                                <div class="thumb">
-                                                    <a href="{{ route('product.show', $product->slug) }}" class="image">
-                                                        <img class="image" src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" />
-                                                    </a>
-                                                    <span class="badges">
+                                    <div class="swiper-slide product-wrapper">
+                                        <div class="product product-border-left mb-10" data-aos="fade-up" data-aos-delay="300">
+                                            <div class="thumb">
+                                                <a href="{{ route('product.show', $product->slug) }}" class="image">
+                                                    <img class="image" src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" />
+                                                </a>
+                                                <span class="badges">
                                                     <span class="sale">Hot</span>
-                                                    </span>
-                                                    <div class="actions">
-                                                        <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                                        <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                                        <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="content">
-                                                    <h5 class="title">
-                                                        <a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
-                                                    </h5>
-                                                    <span class="price">
-                                                        <span class="new">{{ number_format($product->price, 0, ',', '.') }} đ</span>
-                                                        @if($product->discount_price)
-                                                            <span class="old">{{ number_format($product->discount_price, 0, ',', '.') }} đ</span>
-                                                        @endif
-                                                    </span>
-                                                    <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                                </span>
+                                                <div class="actions">
+                                                    <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
+                                                    <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
+                                                    <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
                                                 </div>
                                             </div>
+                                            <div class="content">
+                                                <h5 class="title">
+                                                    <a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
+                                                </h5>
+                                                <span class="price">
+                                                    <span class="new">{{ number_format($product->price, 0, ',', '.') }} đ</span>
+                                                    @if($product->discount_price)
+                                                    <span class="old">{{ number_format($product->discount_price, 0, ',', '.') }} đ</span>
+                                                    @endif
+                                                </span>
+                                                <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                            </div>
                                         </div>
+                                    </div>
                                     @endforeach
                                 </div>
                                 <!-- Swiper Pagination Start -->
@@ -298,39 +301,39 @@
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
                                     @foreach($saleProducts as $product)
-                                        <div class="swiper-slide product-wrapper">
-                                            <div class="product product-border-left mb-10" data-aos="fade-up" data-aos-delay="300">
-                                                <div class="thumb">
-                                                    <a href="{{ route('product.show', $product->slug) }}" class="image">
-                                                        <img class="image" src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" />
-                                                    </a>
-                                                    <span class="badges">
-                                                        <span class="sale">Sale</span>
-                                                    </span>
-                                                    <div class="actions">
-                                                        <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                                        <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                                        <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
-                                                    </div>
-                                                </div>
-                                                <div class="content">
-                                                    <h5 class="title">
-                                                        <a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
-                                                    </h5>
-                                                    <span class="price">
-                                                        <span class="new">{{ number_format($product->price, 0, ',', '.') }} VND</span>
-                                                        @if($product->discount_price)
-                                                            <span class="old">{{ number_format($product->discount_price, 0, ',', '.') }} VND</span>
-                                                        @endif
-                                                    </span>
-                                                    <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                    <div class="swiper-slide product-wrapper">
+                                        <div class="product product-border-left mb-10" data-aos="fade-up" data-aos-delay="300">
+                                            <div class="thumb">
+                                                <a href="{{ route('product.show', $product->slug) }}" class="image">
+                                                    <img class="image" src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" />
+                                                </a>
+                                                <span class="badges">
+                                                    <span class="sale">Sale</span>
+                                                </span>
+                                                <div class="actions">
+                                                    <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
+                                                    <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
+                                                    <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
                                                 </div>
                                             </div>
+                                            <div class="content">
+                                                <h5 class="title">
+                                                    <a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
+                                                </h5>
+                                                <span class="price">
+                                                    <span class="new">{{ number_format($product->price, 0, ',', '.') }} VND</span>
+                                                    @if($product->discount_price)
+                                                    <span class="old">{{ number_format($product->discount_price, 0, ',', '.') }} VND</span>
+                                                    @endif
+                                                </span>
+                                                <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                            </div>
                                         </div>
-                                        <!-- Swiper Pagination Start -->
-                                
+                                    </div>
+                                    <!-- Swiper Pagination Start -->
+
                                     @endforeach
-                                    
+
                                 </div>
                                 <div class="swiper-pagination d-md-none"></div>
                                 <!-- Swiper Pagination End -->
@@ -381,66 +384,18 @@
             </div>
         </div>
         <div class="row mb-n6">
-            <div class="col-lg-4 col-md-6 col-12 mb-6" data-aos="fade-up" data-aos-delay="300">
-                <!-- Blog Single Post Start -->
-                <div class="blog-single-post-wrapper">
-                    <div class="blog-thumb">
-                        <a class="blog-overlay" href="blog-details.html">
-                            <img class="fit-image" src="{{ asset('ngdung/assets/images/blog/blog-post/1.jpg')}}"
-                                alt="Blog Post" />
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <div class="post-meta">
-                            <span>By : <a href="#">Admin</a></span>
-                            <span>14 Jul 2023</span>
-                        </div>
-                        <h3 class="title">
-                            <a href="blog-details.html">Some Winter Collections</a>
-                        </h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do
-                            eiusmod tempo
-                        </p>
-                        <a href="blog-details.html" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
-                    </div>
-                </div>
-                <!-- Blog Single Post End -->
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-12 mb-6" data-aos="fade-up" data-aos-delay="500">
-                <!-- Blog Single Post Start -->
-                <div class="blog-single-post-wrapper">
-                    <div class="blog-thumb">
-                        <a class="blog-overlay" href="blog-details.html">
-                            <img class="fit-image" src="{{ asset('ngdung/assets/images/blog/blog-post/2.jpg')}}"
-                                alt="Blog Post" />
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <div class="post-meta">
-                            <span>By : <a href="#">Admin</a></span>
-                            <span>14 Jul 2023</span>
-                        </div>
-                        <h3 class="title">
-                            <a href="blog-details.html">My Perty Fashion</a>
-                        </h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do
-                            eiusmod tempo
-                        </p>
-                        <a href="blog-details.html" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
-                    </div>
-                </div>
-                <!-- Blog Single Post End -->
-            </div>
-
+            @if (!empty($news))
+            @foreach($news as $new)
+            <div
+                class="col-lg-4 col-md-6 col-12 mb-6"
+                data-aos="fade-up"
+                data-aos-delay="300">
             <div class="col-lg-4 col-md-6 col-12 mb-6" data-aos="fade-up" data-aos-delay="700">
                 <!-- Blog Single Post Start -->
                 <div class="blog-single-post-wrapper">
                     <div class="blog-thumb">
                         <a class="blog-overlay" href="blog-details.html">
-                            <img class="fit-image" src="{{ asset('ngdung/assets/images/blog/blog-post/3.jpg')}}"
+                            <img class="fit-image" src="{{ url('storage/'. $new->avata) }}"
                                 alt="Blog Post" />
                         </a>
                     </div>
@@ -450,20 +405,23 @@
                             <span>14 Jul 2023</span>
                         </div>
                         <h3 class="title">
-                            <a href="blog-details.html">Perfect Fashion House</a>
+                            <a href="{{ route('tintucdetail', ['id' => $new->id]) }}">{{ $new->title }}</a>
                         </h3>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipisici elit, sed do
                             eiusmod tempo
                         </p>
-                        <a href="blog-details.html" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
+                        <a href="{{ route('tintucdetail', ['id' => $new->id]) }}" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
                     </div>
                 </div>
                 <!-- Blog Single Post End -->
             </div>
+            @endforeach
+            @endif
         </div>
     </div>
 </div>
 <!-- Blog Section End -->
 
 @endsection
+

@@ -16,12 +16,12 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/pe-icon-7-stroke.min.css') }}" />
 
 
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/animate.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/aos.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/nice-select.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/jquery-ui.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/lightgallery.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
 
@@ -29,12 +29,12 @@
     <!-- Main Style CSS -->
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('ngdung/assets/css/loading.css') }}" />
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
 
 <body>
     <div class="header section">
-
         <!-- Header Bottom Start -->
         <div class="header-bottom">
             <div class="header-sticky">
@@ -54,38 +54,23 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="{{route('home.index')}}"><span>Trang Chủ</span></a>
+                                        <a href="{{ route('home.index') }}"><span>Trang Chủ</span></a>
                                     </li>
                                     <li class="has-children position-static">
-                                        <a href="{{route('shop.index')}}"><span>Cửa hàng</span></a>
+                                        <a href="{{ route('shop.index') }}"><span>Cửa hàng</span></a>
+
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Dịch Vụ</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="faq.html">Faq</a></li>
-                                            <li><a href="404-error.html">404 Error</a></li>
-                                        </ul>
+                                        <a href="#"><span>Dịch Vụ</span></a>
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Tin Tức</span> <i class="fa fa-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog.html">Blog</a></li>
-                                            <li>
-                                                <a href="blog-left-sidebar.html">Blog Left Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-right-sidebar.html">Blog Right Sidebar</a>
-                                            </li>
-                                            <li><a href="blog-details.html">Blog Details</a></li>
-                                            <li>
-                                                <a href="blog-details-sidebar.html">Blog Details Sidebar</a>
-                                            </li>
-                                        </ul>
+                                        <a href="{{ route('news.index') }}"><span>Tin Tức</span></a>
                                     </li>
                                     <li>
-                                        <a href="contact.html"> <span>Liên Hệ</span></a>
+                                        <a href="{{ route('contact') }}"> <span>Liên Hệ</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('introduction') }}"> <span>Giới Thiệu</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -96,15 +81,34 @@
                         <div class="col-xl-2 col-6">
                             <div class="header-actions">
                                 <!-- Search Header Action Button Start -->
-                                <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
-                                        class="pe-7s-search"></i></a>
+                                {{-- <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
+                                        class="pe-7s-search"></i></a> --}}
+
+                                <!-- Thêm liên kết đến Bootstrap CSS -->
+                                {{-- <link rel="stylesheet"
+                                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Thêm Font Awesome -->
+                            
+                            <form action="{{ route('products.search') }}" method="GET" onsubmit="return validateSearch()" class="search-form">
+                                <div class="input-group">
+                                    <input type="text" name="name" id="name" value="{{ request('name') }}" class="form-control" placeholder="Nhập từ khóa...">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search"></i> <!-- Icon tìm kiếm -->
+                                        </button>
+                                    </div>
+                                </div>
+                            </form> --}}
+
+
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
-                                <a href="{{ auth()->check() ? route('orders.index') : route('login') }}"
-                                    class="header-action-btn d-none d-md-block">
+                                <a href="{{ Auth::check() ? route ('orders.index') : route ('login') }}" class="header-action-btn d-none d-md-block">
                                     <i class="pe-7s-user"></i>
                                 </a>
+
 
                                 <!-- User Account Header Action Button End -->
 
@@ -118,7 +122,8 @@
                                 <!-- Shopping Cart Header Action Button Start -->
                                 <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
+                                    <span
+                                        class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
                                     </span>
                                 </a>
 
@@ -131,9 +136,32 @@
                                 </a>
                                 <!-- Mobile Menu Hambarger Action Button End -->
                             </div>
+                            <link rel="stylesheet"
+                                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+                            <!-- Thêm Font Awesome -->
+
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+                            <!-- Thêm Font Awesome -->
+
+                            <form action="{{ route('shop.index') }}" method="GET">
+                                <div class="search-box d-flex align-items-center">
+                                    <input type="text" name="keyword" class="form-control"
+                                        placeholder="" required>
+                                    <button class="btn btn-dark btn-hover-primary ml-2" type="submit">
+                                        <i class="fa fa-search"></i> <!-- Icon tìm kiếm -->
+                                    </button>
+                                </div>
+                            </form>
+
+
                         </div>
+
                         <!-- Header Action End -->
                     </div>
+
                 </div>
             </div>
         </div>

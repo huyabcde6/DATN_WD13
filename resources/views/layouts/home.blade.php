@@ -1,5 +1,5 @@
 @include('user.blocks.header')
-
+@yield('css')
 <main>
     @yield('content')
 </main>

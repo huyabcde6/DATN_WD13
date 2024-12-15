@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProductImage;
+use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\categories;
 use App\Models\products;
 use App\Models\Size;
 use App\Models\Color;
 use App\Models\ProductDetail;
-use App\Models\ProductImage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -17,12 +18,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function __construct(){
-        $this->middleware('permission:view product', ['only' => ['index']]);
-        $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
-        $this->middleware('permission:edit product', ['only' => ['index']]);
-        $this->middleware('permission:delete product', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view product', ['only' => ['index']]);
+    //     $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
+    //     $this->middleware('permission:edit product', ['only' => ['index']]);
+    //     $this->middleware('permission:delete product', ['only' => ['destroy']]);
+    // }
 
     public function index(Request $request)
     {
@@ -71,7 +73,7 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories', 'sizes', 'colors'));
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         try {
             // Tìm sản phẩm theo ID
@@ -87,8 +89,8 @@ class ProductController extends Controller
             $product->description = $request->description;
             $product->is_show = $request->is_show ?? 1; // Hiển thị mặc định nếu không chọn
             $product->is_new = $request->has('is_new'); // True nếu checkbox được chọn
-            $product->is_hot = $request->has('is_hot'); 
-            
+            $product->is_hot = $request->has('is_hot');
+
             // Xử lý ảnh đại diện
             if ($request->hasFile('avata')) {
                 $product->avata = $request->file('avata')->store('products', 'public');
@@ -130,7 +132,7 @@ class ProductController extends Controller
                     }
                 }
             }
-            
+
             return redirect()->route('admin.products.index')->with('success', 'Thêm mới sản phẩm thành công!');
         } catch (\Exception $e) {
             Log::error('Error adding product: ' . $e->getMessage(), [
@@ -141,7 +143,7 @@ class ProductController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
 
         try {

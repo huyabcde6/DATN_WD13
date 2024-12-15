@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <form action="{{url('userAdmin')}}" method="POST">
                             @csrf
-                                
+
                             <div class="mb-3">
                                 <label for=""> Name</label>
                                 <input type="text" name="name" value="{{ old('name') }}" class="form-control" />
@@ -45,6 +45,14 @@
                                 @error('roles')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="">Trạng thái</label>
+                                <select name="status" class="form-control">
+                                    <option value="">--Chọn--</option>
+                                    <option value="1">Hiển thị</option>
+                                    <option value="0">Ẩn</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Save</button>

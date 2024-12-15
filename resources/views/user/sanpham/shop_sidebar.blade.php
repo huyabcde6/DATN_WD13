@@ -5,15 +5,16 @@
 <div class="section">
 
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
+    <div class="breadcrumb-area bg-light ">
         <div class="container-fluid">
-            <div class="breadcrumb-content text-center">
-                <h1 class="title"></h1>
-                <ul>
+            <div class="breadcrumb-content">
+                <ul class="breadcrumb-list">
                     <li>
-                        <a href="index.html">Trang chủ </a>
+                        <a href="http://datn_wd13.test">Trang chủ</a>
                     </li>
-                    <li class="active"> Sản phẩm</li>
+                    <li class="active">
+                        <a href="http://datn_wd13.test/shop">Shop</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -96,7 +97,7 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <h4 class="sub-title"><a href="single-product.html">{{ $product->categories->name }}</a>
+                                <h4 class="sub-title">{{ $product->categories->name }}
                                 </h4>
                                 <h5 class="title"><a
                                         href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h5>
@@ -184,7 +185,7 @@
                             <form action="{{ route('shop.index') }}" method="GET">
                                 <div class="search-box">
                                     <input type="text" name="keyword" class="form-control"
-                                        placeholder="Nhập từ khóa cần tìm">
+                                        placeholder="Nhập từ khóa cần tìm" required>
                                     <button class="btn btn-dark btn-hover-primary" type="submit">
                                         <i class="fa fa-search"></i>
                                     </button>
@@ -224,10 +225,10 @@
                                     @foreach ($colors as $color)
                                     <li>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" 
+                                            <input type="checkbox"
                                                 class="custom-control-input"
-                                                id="color_{{ $color->color_id }}" 
-                                                value="{{ $color->color_id }}" 
+                                                id="color_{{ $color->color_id }}"
+                                                value="{{ $color->color_id }}"
                                                 {{ in_array($color->color_id, (array) request('colors', [])) ? 'checked' : '' }}
 
                                                 onchange="updateFilters()">
@@ -466,29 +467,27 @@
 </div>
 <!-- Modal End  -->
 @endsection
-
 @section('js')
 <script>
-function updateFilters() {
-    const selectedColors = [];
-    const checkboxes = document.querySelectorAll('.custom-control-input:checked');
+    function updateFilters() {
+        const selectedColors = [];
+        const checkboxes = document.querySelectorAll('.custom-control-input:checked');
 
-    checkboxes.forEach(checkbox => {
-        selectedColors.push(checkbox.value);
-    });
+        checkboxes.forEach(checkbox => {
+            selectedColors.push(checkbox.value);
+        });
 
-    // Lấy URL hiện tại
-    const url = new URL(window.location.href);
-    // Cập nhật giá trị "colors" trong query string
-    if (selectedColors.length > 0) {
-        url.searchParams.set('colors', selectedColors.join(','));
-    } else {
-        url.searchParams.delete('colors');
+        // Lấy URL hiện tại
+        const url = new URL(window.location.href);
+        // Cập nhật giá trị "colors" trong query string
+        if (selectedColors.length > 0) {
+            url.searchParams.set('colors', selectedColors.join(','));
+        } else {
+            url.searchParams.delete('colors');
+        }
+
+        // Điều hướng đến URL mới
+        window.location.href = url.toString();
     }
-
-    // Điều hướng đến URL mới
-    window.location.href = url.toString();
-}
-
 </script>
 @endsection

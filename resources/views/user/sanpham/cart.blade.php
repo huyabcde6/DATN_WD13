@@ -247,3 +247,4 @@ $('.cart-plus-minus-box').on('input', function() {
 
 </script>
 @endsection
+

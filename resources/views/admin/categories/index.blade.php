@@ -1,33 +1,21 @@
 @extends('layouts.admin')
 
 @section('title')
-Danh sách danh mục
+    Danh sách danh mục
 @endsection
 
 @section('content')
-@if (session()->has('error'))
-<div class="alert alert-danger">
-    {{ session()->get('error') }}
-</div>
-@endif
-
-@if (session()->has('success'))
-<div class="alert alert-success">
-    {{ session()->get('success') }}
-</div>
-@endif
-
-<div class="row m-3">
-    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-        <div class="flex-grow-1">
-            <h4 class="fs-18 fw-semibold m-0">Danh sách danh mục</h4>
+    @if (session()->has('error'))
+        <div class="alert alert-danger">
+            {{ session()->get('error') }}
         </div>
-        <div class="flex-grow-2 mx-2">
-        <button class="btn btn-sm btn-alt-secondary mx-2 fs-18 rounded-2 border p-1 me-2" data-bs-toggle="modal" data-bs-target="#addModal">
-            <i class="mdi mdi-plus text-muted"></i> Thêm mới
-        </button>
+    @endif
+
+    @if (session()->has('success'))
+        <div class="alert alert-success">
+            {{ session()->get('success') }}
         </div>
-    </div>
+    @endif
 
     <div class="row">
         <div class="col-12">
@@ -254,3 +242,4 @@ document.querySelectorAll('[data-bs-target="#deleteModal"]').forEach(button => {
 </script>
 
 @endsection
+
