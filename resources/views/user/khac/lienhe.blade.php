@@ -6,15 +6,16 @@
     <div class="section">
 
         <!-- Breadcrumb Area Start -->
-        <div class="breadcrumb-area bg-light">
+        <div class="breadcrumb-area bg-light ">
             <div class="container-fluid">
-                <div class="breadcrumb-content text-center">
-                    <h1 class="title">Liên hệ với chúng tôi</h1>
-                    <ul>
+                <div class="breadcrumb-content">
+                    <ul class="breadcrumb-list">
                         <li>
-                            <a href="index.html">Trang chủ </a>
+                            <a href="http://datn_wd13.test">Trang chủ</a>
                         </li>
-                        <li class="active">Liên hệ</li>
+                        <li class="active">
+                            <a href="http://datn_wd13.test/lienhe">Liên hệ với chúng tôi  </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -155,21 +156,21 @@
     <div class="section" data-aos="fade-up" data-aos-delay="300">
         <!-- Google Map Area Start -->
         <div class="google-map-area w-100">
-            <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8639311820666!2d105.74468687503176!3d21.03812978061353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313455e940879933%3A0xcf10b34e9f1a03df!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIEZQVCBQb2x5dGVjaG5pYw!5e0!3m2!1svi!2s!4v1733283838785!5m2!1svi!2s" 
-            width="100%" 
-            height="600" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
+            <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8639311820666!2d105.74468687503176!3d21.03812978061353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313455e940879933%3A0xcf10b34e9f1a03df!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIEZQVCBQb2x5dGVjaG5pYw!5e0!3m2!1svi!2s!4v1733283838785!5m2!1svi!2s"
+            width="100%"
+            height="600"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
             referrerpolicy="no-referrer-when-downgrade">
         </iframe>
-            {{-- <iframe class="contact-map" 
-            width="100%" 
-            height="450" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
+            {{-- <iframe class="contact-map"
+            width="100%"
+            height="450"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
             src="https://maps.app.goo.gl/BzNojcQfWU1Bd6E36">
         </iframe> --}}
         </div>

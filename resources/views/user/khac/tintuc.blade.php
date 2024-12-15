@@ -5,15 +5,16 @@
     <div class="section">
 
         <!-- Breadcrumb Area Start -->
-        <div class="breadcrumb-area bg-light">
+        <div class="breadcrumb-area bg-light ">
             <div class="container-fluid">
-                <div class="breadcrumb-content text-center">
-                    <h1 class="title">Tin tức</h1>
-                    <ul>
+                <div class="breadcrumb-content">
+                    <ul class="breadcrumb-list">
                         <li>
-                            <a href="index.html">Trang chủ </a>
+                            <a href="http://datn_wd13.test">Trang chủ</a>
                         </li>
-                        <li class="active"> Tin tức</li>
+                        <li class="active">
+                            <a href="http://datn_wd13.test/tin_tuc">Tin tức</a>
+                        </li>
                     </ul>
                 </div>
             </div>
