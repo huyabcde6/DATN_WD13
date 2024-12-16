@@ -43,7 +43,7 @@
                         <!-- Header Logo Start -->
                         <div class="col-xl-2 col-6">
                             <div class="header-logo">
-                                <a href="index.html"><img src="{{ asset('ngdung/assets/images/logo/logo1.png') }}"
+                                <a href="{{route('home.index')}}"><img src="{{ asset('ngdung/assets/images/logo/logo1.png') }}"
                                         alt="Site Logo" width="250xp" height="135px" /></a>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
 
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Dịch Vụ</span></a>
+                                        <a href="#"><span>Voucher</span></a>
                                     </li>
                                     <li class="has-children">
                                         <a href="{{ route('news.index') }}"><span>Tin Tức</span></a>
