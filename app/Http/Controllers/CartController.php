@@ -33,7 +33,6 @@ class CartController extends Controller
             }
             $subTotal += $item['price'] * $item['quantity'];
         }
-
         $total = $subTotal + $shippingFee;
         return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
@@ -92,6 +91,7 @@ class CartController extends Controller
                     'product_id' => $productDetail->products_id,
                     'price' => $price, // Dùng giá khuyến mãi nếu có
                     'image' => $productDetail->products->avata,
+                    'slug' =>$productDetail->products->slug,
                 ];
             }
 

@@ -288,98 +288,122 @@ class OrderController extends Controller
         // Validate dữ liệu từ client
         $request->validate([
             'voucher' => 'required|string',
-            'total' => 'required|numeric'
+            'total' => 'required|numeric',
+            'id_sp' => 'required|array',  // Thêm điều kiện kiểm tra id_sp
+            'id_sp.*' => 'required|numeric',  // Kiểm tra từng sản phẩm trong id_sp
         ]);
-
+    
         // Kiểm tra mã giảm giá trong DB
         $coupon = Coupons::where('code', $request->voucher)
             ->where('status', 'active')
             ->where('start_date', '<=', now())
             ->where('end_date', '>=', now())
             ->first();
-
+    
         // Nếu không tìm thấy mã giảm giá hợp lệ hoặc số lượng mã đã hết
         if (!$coupon || $coupon->total_quantity <= $coupon->used_quantity) {
             return response()->json([
                 'error' => 'Mã giảm giá không hợp lệ hoặc đã hết lượt sử dụng.'
             ], 400);
         }
-
+    
         // Kiểm tra nếu mã đã áp dụng trước đó
         if (Session::has('discount_applied')) {
-            // Xóa mã giảm giá cũ nếu có
             Session::forget('discount_applied');
         }
-
+    
         // Kiểm tra điều kiện áp dụng của mã giảm giá
         $cartTotal = $request->total;
         $discount = 0;
-
-        // Lấy các điều kiện áp dụng của mã giảm giá
         $couponConditions = Coupon_Conditions::where('coupon_id', $coupon->id)->get();
-
-        // Kiểm tra điều kiện áp dụng cho toàn bộ giỏ hàng
+        $isApplicable = false;
+    
         if ($couponConditions->isEmpty()) {
+            // Nếu không có điều kiện cụ thể, chỉ kiểm tra giá trị đơn hàng
             if ($cartTotal >= $coupon->min_order_amount) {
-                $discount = $this->calculateDiscount($coupon, $cartTotal);
+                $isApplicable = true;
             }
         } else {
-            // Kiểm tra điều kiện áp dụng cho sản phẩm hoặc danh mục cụ thể
+            // Duyệt qua các điều kiện áp dụng
             foreach ($couponConditions as $condition) {
                 if ($condition->product_id) {
-                    $product = Products::find($condition->product_id);
-                    if ($product && $cartTotal >= $coupon->min_order_amount) {
-                        $discount = $this->calculateDiscount($coupon, $cartTotal);
+                    // Kiểm tra mã giảm giá áp dụng cho sản phẩm cụ thể
+                    if (in_array($condition->product_id, $request->id_sp)) {
+                        $isApplicable = true;
                         break;
                     }
                 } elseif ($condition->category_id) {
-                    $categoryProducts = Products::where('categories_id', $condition->category_id)->get();
-                    foreach ($categoryProducts as $product) {
-                        if ($cartTotal >= $coupon->min_order_amount) {
-                            $discount = $this->calculateDiscount($coupon, $cartTotal);
-                            break 2; // Thoát cả vòng lặp
-                        }
+                    // Kiểm tra mã giảm giá áp dụng cho danh mục cụ thể
+                    $categoryProducts = Products::where('categories_id', $condition->category_id)
+                        ->whereIn('id', $request->id_sp)  // Lọc sản phẩm trong giỏ hàng thuộc danh mục này
+                        ->get();
+                    if ($categoryProducts->isNotEmpty()) {
+                        $isApplicable = true;
+                        break;
                     }
                 }
             }
         }
-
+    
+        // Nếu điều kiện áp dụng thỏa mãn, tính giảm giá
+        if ($isApplicable) {
+            $discount = $this->calculateDiscount($coupon, $cartTotal);
+    
+            // Đảm bảo số tiền giảm không vượt quá số tiền giảm tối đa
+            if ($coupon->max_discount_amount && $discount > $coupon->max_discount_amount) {
+                $discount = $coupon->max_discount_amount;
+            }
+        }
+    
         // Nếu không đủ điều kiện để áp dụng mã
         if ($discount <= 0) {
             return response()->json([
                 'error' => 'Mã giảm giá không áp dụng được cho đơn hàng này.'
             ], 400);
         }
-
+    
+        // Kiểm tra số tiền giảm có vượt quá số tiền giảm tối đa không
+        if ($coupon->max_discount_amount && $discount > $coupon->max_discount_amount) {
+            $discount = $coupon->max_discount_amount;
+        }
+    
         // Cập nhật mã giảm giá trong session
         Session::put('discount_applied', $coupon->code);
-
+    
         // Tăng số lượng mã đã sử dụng
         $coupon->increment('used_quantity');
-
+    
         // Tính lại tổng tiền sau khi áp dụng giảm giá
         $newTotal = $cartTotal - $discount;
-
-        // Trả dữ liệu về cho client (giao diện)
+    
         // Trả về dữ liệu JSON
         return response()->json([
             'message' => 'Mã giảm giá áp dụng thành công!',
             'discount' => number_format($discount, 0, ',', '.'),
-            'total' => number_format($newTotal, 0, ',', '.')
+            'total' => number_format($newTotal, 0, ',', '.'),
         ]);
     }
 
-    private function calculateDiscount($coupon, $total)
+    /**
+     * Tính giá trị giảm giá.
+     *
+     * @param Coupons $coupon
+     * @param float $cartTotal
+     * @return float
+     */
+    private function calculateDiscount($coupon, $cartTotal)
     {
-        if ($coupon->discount_type == 'percentage') {
-            $discount = ($coupon->discount_value / 100) * $total;
-            // Giới hạn giảm giá tối đa (nếu có)
-            return $coupon->max_discount_amount ? min($discount, $coupon->max_discount_amount) : $discount;
-        } else {
-            // Giảm giá cố định
-            return min($coupon->discount_value, $total);
+        if ($coupon->discount_type === 'percentage') {
+            // Tính giảm giá theo phần trăm
+            return ($coupon->discount_value / 100) * $cartTotal;
+        } elseif ($coupon->discount_type === 'fixed_amount') {
+            // Tính giảm giá theo số tiền cố định
+            return $coupon->discount_value;
         }
+
+        return 0;
     }
+
     public function muangay(Request $request)
     {
         dd($request->all());
