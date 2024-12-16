@@ -148,10 +148,11 @@
                                 </div>
                             </div>
 
+
                         </div>
                         <!-- Checkbox Form End -->
                     </div>
-
+                    <!-- Payment Method End -->
                     <div class="col-lg-6 col-12 mb-4">
                         <!-- Your Order Area Start -->
                         <div class="your-order-area border">

@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
-{   
-    public function __construct(){
+{
+
+    public function __construct()
+    {
         $this->middleware('permission:view order', ['only' => ['index']]);
 
         $this->middleware('permission:edit order', ['only' => ['update']]);
@@ -80,7 +82,7 @@ class OrderController extends Controller
             'sort_by' => $sortBy,  // Truyền lại tham số sắp xếp để giữ giá trị trong view
             'sort_order' => $sortOrder, // Truyền lại thứ tự sắp xếp
             'search' => $request->search,  // Truyền lại từ khóa tìm kiếm để hiển thị trong form
-        ]);
+        ]); 
     }
 
     public function show($id)

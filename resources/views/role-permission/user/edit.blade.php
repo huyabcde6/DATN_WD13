@@ -6,6 +6,7 @@
                     <div class="card-header">
                         <h4>
                             Edit Users
+
                             <a href="{{ url('userAdmin') }}" class="btn btn-danger float-end">Back</a>
                         </h4>
                     </div>
@@ -13,7 +14,6 @@
                         <form action="{{ url('userAdmin/' . $user->id) }}" method="POST">
                             @csrf
                             @method('PUT')
-
                             <div class="mb-3">
                                 <label for="">Name</label>
                                 <input type="text" name="name" value="{{ $user->name }}" class="form-control" />
@@ -46,10 +46,20 @@
                                     @endforeach
                                 </select>
                                 @error('roles')
-                                    <span class="text-danger">{{ $message }}</span>
+                                    <span class="text-danger">{{ $message }}</span> 
                                 @enderror
                             </div>
                             <div class="mb-3">
+                                <label for="">Trạng thái</label>
+                                <select name="status" class="form-control">
+                                    <option value="">--Chọn--</option>
+                                    <option value="1" {{ $user->status == 1 ? 'selected'
+                                    : '' }}>Hiển thị</option>
+                                    <option value="0" {{ $user->status == 0 ? 'selected'
+                                    : '' }}>Ẩn</option>
+                                </select>
+                            </div>
+                            <div>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>
