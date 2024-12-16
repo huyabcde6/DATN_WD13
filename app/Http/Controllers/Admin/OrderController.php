@@ -88,7 +88,10 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::with(['orderDetails.productDetail.products', 'status'])->orderBy('created_at', 'desc')->findOrFail($id);
-        return view('admin.orders.show', compact('order'));
+        $totalAmount = $order->orderDetails->sum(function($detail) {
+            return $detail->price * $detail->quantity;
+        });
+        return view('admin.orders.show', compact('order', 'totalAmount'));
     }
 
     public function update(Request $request, $id)

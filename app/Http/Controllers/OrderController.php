@@ -48,8 +48,10 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::with(['orderDetails.productDetail.products', 'status'])->findOrFail($id);
-
-        return view('user.khac.order_detail', compact('order'));
+        $totalAmount = $order->orderDetails->sum(function($detail) {
+            return $detail->price * $detail->quantity;
+        });
+        return view('user.khac.order_detail', compact('order', 'totalAmount'));
     }
 
     /**

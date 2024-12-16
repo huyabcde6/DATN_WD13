@@ -168,6 +168,7 @@
                                 <th>Size</th>
                                 <th>Số lượng</th>
                                 <th>Giá</th>
+                                <th>Tổng tiền</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -183,6 +184,7 @@
                                 <td>{{ $detail->size }}</td>
                                 <td>{{ $detail->quantity }}</td>
                                 <td>{{ number_format($detail->price, 0, '', ',') }} ₫</td>
+                                <td>{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }} đ</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -190,10 +192,13 @@
                 </div>
                 <div class="d-flex flex-column justify-content-end mx-3 mb-5">
     <h5 class="d-flex justify-content-between w-100">
-        <strong>Ship</strong> <span class="text-end">30.000 đ</span>
+ <strong>Tổng phụ :</strong> <span class="text-end">{{ number_format($totalAmount, 0, ',', '.') }} đ</span></span>
     </h5> 
     <h5 class="d-flex justify-content-between w-100">
-        <strong>Mã giảm giá :</strong> <span class="text-end">   {{ $order->discount ? number_format($order->discount, 0, ',', '.') : '0' }} đ</span>
+        <strong>Ship :</strong> <span class="text-end">30.000 đ</span>
+    </h5> 
+    <h5 class="d-flex justify-content-between w-100">
+        <strong>Mã giảm giá :</strong> <span class="text-end">  - {{ $order->discount ? number_format($order->discount, 0, ',', '.') : '0' }} đ</span>
     </h5>
     <h5 class="d-flex justify-content-between w-100">
         <strong>Tổng tiền:</strong> <span class="text-end">{{ number_format($order->total_price, 0, ',', '.') }} đ</span>
