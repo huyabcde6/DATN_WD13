@@ -18420,7 +18420,38 @@ input[type=checkbox]:checked + label:after {
   }
 }
 
-.breadcrumb-content .title {
+.breadcrumb {
+    width: 80%; /* Thu ngắn thanh còn 50% độ rộng của trang */
+    margin: 0 auto; /* Căn giữa thanh breadcrumb */
+    text-align: center; /* Căn giữa nội dung bên trong */
+    border-top: 1px solid #e0e0e0; /* Đường viền trên (tùy chọn) */
+    border-bottom: 1px solid #e0e0e0; /* Đường viền dưới (tùy chọn) */
+    padding: 10px 0; /* Tạo khoảng cách trên và dưới */
+}
+
+
+.breadcrumb a {
+    color: #555;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.breadcrumb-separator {
+    margin: 0 5px;
+    color: #ccc;
+    font-size: 16px;
+}
+.section-margin {
+    margin-top: 40px;    /* Khoảng cách phía trên */
+}
+
+
+
+/* .breadcrumb-content .title {
   font-size: 32px;
   font-weight: 600;
   font-family: "Montserrat", sans-serif;
@@ -18467,7 +18498,7 @@ input[type=checkbox]:checked + label:after {
 }
 .breadcrumb-content ul li a:hover {
   color: #ff4545;
-}
+} */
 
 /*====================
     6.7 Pagination CSS
@@ -20307,6 +20338,110 @@ input[type=checkbox]:checked + label:after {
   transition: all 0.3s ease 0s;
   text-decoration: underline;
 }
+/* Wrapper chung cho cả đăng ký và đăng nhập */
+.login-wrapper,
+.register-wrapper {
+    max-width: 500px;
+    margin: 50px auto; /* Căn giữa màn hình */
+    padding: 30px;
+    background-color: #f9f9f9; /* Màu nền nhẹ */
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Bo tròn góc */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
+}
+
+/* Tiêu đề và mô tả chung */
+.section-content .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.section-content .desc-content {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Input chung */
+.single-input-item input,
+.single-input-item .block {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.single-input-item input:focus {
+    border-color: #007bff;
+}
+
+/* Nút chung */
+.btn-dark {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-dark:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Checkbox và liên kết mật khẩu */
+.remember-meta label,
+.forget-pwd {
+    font-size: 14px;
+    color: #333;
+}
+
+.forget-pwd:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+/* Liên kết Tạo tài khoản */
+.lost-password a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.lost-password a:hover {
+    text-decoration: underline;
+}
+
+/* Thông báo lỗi */
+.alert-danger {
+    font-size: 14px;
+    color: #dc3545;
+    margin-bottom: 15px;
+}
+
+.text-danger {
+    font-size: 12px;
+    color: #dc3545;
+    margin-top: 5px;
+}
+
+/* Checkbox tùy chỉnh */
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
 
 /*====================
     7.6 Wishlist Page CSS
@@ -20763,6 +20898,62 @@ input[type=checkbox]:checked + label:after {
   display: inline-block;
   width: 100%;
 }
+/* Form wrapper */
+.checkout-form-list {
+    margin-bottom: 20px; /* Khoảng cách giữa các input */
+}
+
+/* Label */
+.checkout-form-list label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333; /* Màu chữ */
+    margin-bottom: 8px; /* Khoảng cách giữa label và input */
+}
+
+/* Input fields */
+.checkout-form-list input {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    margin-bottom: 15px; /* Khoảng cách giữa các input */
+}
+
+/* Input focus effect */
+.checkout-form-list input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Button */
+.btn-dark {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+.btn-dark:hover {
+    background-color: #007bff; /* Màu nền khi hover */
+}
+
+/* Button Icon */
+.btn-dark .fa {
+    margin-right: 8px; /* Khoảng cách giữa icon và text */
+}
+
 .checkbox-form .checkout-form-list {
   margin-bottom: 30px;
 }
@@ -21324,3 +21515,4 @@ input[type=checkbox]:checked + label:after {
 .faq_content_wrapper p {
   font-size: 14px;
 }
+

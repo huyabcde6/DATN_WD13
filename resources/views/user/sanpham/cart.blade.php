@@ -5,20 +5,13 @@
 <div class="section">
 
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light ">
-        <div class="container-fluid">
-            <div class="breadcrumb-content">
-                <ul class="breadcrumb-list">
-                    <li>
-                        <a href="http://datn_wd13.test">Trang chủ</a>
-                    </li>
-                    <li class="active">
-                        <a href="http://datn_wd13.test/cart">Giỏ hàng</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <div class="breadcrumb">
+        <a href="http://datn_wd13.test/"><i class="fa fa-home"></i> Trang Chủ</a>
+        <span class="breadcrumb-separator"> > </span>
+        <span><a href="http://datn_wd13.test/cart">Giỏ hàng</a></span>
     </div>
+
+
     <!-- Breadcrumb Area End -->
 
 </div>

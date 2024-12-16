@@ -50,25 +50,7 @@
 
 @section('content')
 <!-- Breadcrumb Section Start -->
-<div class="section">
 
-    <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
-        <div class="container-fluid">
-            <div class="breadcrumb-content text-center">
-                <h1 class="title">Tài khoản của tôi</h1>
-                <ul>
-                    <li>
-                        <a href="index.html">Trang chủ </a>
-                    </li>
-                    <li class="active"> Tài khoản</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- Breadcrumb Area End -->
-
-</div>
 
 <div class="section mt-4 mb-5">
     <div class="container">
@@ -98,7 +80,6 @@
                                     address</a>
                                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account
                                     Details</a>
-                                    Trang chủ</a>
                                 <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Đơn hàng</a>
                                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i>Chi tiết tài khoản </a>
                                 <a class='dropdown-item notify-item' href="{{ route('logout') }}"
@@ -162,7 +143,7 @@
                                                 <i class="fa fa-edit me-2"></i>Cập nhật địa chỉ
                                             </button>
                                         </form>
-                                        
+
                                     </div>
                                 </div>
                                 <!-- Single Tab Content End -->
