@@ -78,7 +78,7 @@
         <td>{{ $item->product_count ?? 0 }}</td><!-- Hiển thị số lượng sản phẩm -->
         <td>
             <div class="d-flex justify-content-center align-items-center">
-                <a class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 " href="{{ route('admin.categories.edit', $item->id) }}">
+                <a class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 " href="{{ route('admin.categories.edit', $item->id ) }}">
                     <i class="fa fa-pencil-alt"></i>
                 </a>
                 <button
