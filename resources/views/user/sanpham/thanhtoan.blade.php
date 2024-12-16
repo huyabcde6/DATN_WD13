@@ -224,10 +224,36 @@
                             <div class="d-flex flex-column">
                                 <div class="d-flex align-items-center mb-2">
                                     <input type="radio" name="method" value="COD" id="cod">
+                                    <input type="hidden" name="mua" value="{{$mua}}">
+                                    @if($mua === 'muangay')
+                                    @foreach ($cartItems as $item)
+                                    <input type="hidden" name="product_detail_id" value="{{ $item['product_detail_id'] }}">
+                                    <input type="hidden" name="size" value="{{ $item['size'] }}">
+                                    <input type="hidden" name="color" value="{{ $item['color'] }}">
+                                    <input type="hidden" name="quantity" value="{{ $item['quantity'] }}">
+                                    <input type="hidden" name="product_name" value="{{ $item['product_name'] }}">
+                                    <input type="hidden" name="product_id" value="{{ $item['product_id'] }}">
+                                    <input type="hidden" name="price" value="{{ $item['price'] }}">
+                                    <input type="hidden" name="image" value="{{ $item['image'] }}">
+                                    @endforeach
+                                    @endif
                                     <label for="cod" class="ms-2">Thanh toán khi nhận hàng</label>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <input type="radio" name="method" value="VNPAY" id="vnpay">
+                                    <input type="hidden" name="mua" value="{{$mua}}">
+                                    @if($mua === 'muangay')
+                                    @foreach ($cartItems as $item)
+                                    <input type="hidden" name="product_detail_id" value="{{ $item['product_detail_id'] }}">
+                                    <input type="hidden" name="size" value="{{ $item['size'] }}">
+                                    <input type="hidden" name="color" value="{{ $item['color'] }}">
+                                    <input type="hidden" name="quantity" value="{{ $item['quantity'] }}">
+                                    <input type="hidden" name="product_name" value="{{ $item['product_name'] }}">
+                                    <input type="hidden" name="product_id" value="{{ $item['product_id'] }}">
+                                    <input type="hidden" name="price" value="{{ $item['price'] }}">
+                                    <input type="hidden" name="image" value="{{ $item['image'] }}">
+                                    @endforeach
+                                    @endif
                                     <label for="vnpay" class="ms-2">Thanh toán bằng VNPAY</label>
                                 </div>
                             </div>
@@ -286,38 +312,38 @@
 
             // Gửi AJAX để kiểm tra và áp dụng mã giảm giá
             fetch("{{ route('vocher') }}", {
-                method: 'POST',
-                body: formData, // Gửi dữ liệu dưới dạng FormData
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Kiểm tra nếu có lỗi
-                if (data.error) {
+                    method: 'POST',
+                    body: formData, // Gửi dữ liệu dưới dạng FormData
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Kiểm tra nếu có lỗi
+                    if (data.error) {
+                        voucherMessage.innerHTML =
+                            `<div class="alert alert-danger">${data.error}</div>`;
+                        discountDisplay.textContent = '0 ₫'; // Reset giá trị giảm giá
+                        totalDisplay.textContent =
+                            `{{ number_format($total, 0, ',', '.') }} ₫`; // Reset tổng giá trị
+                        discountInput.value = 0;
+                        totalinput.value = '{{ str_replace(".", "", $total) }}';
+                    } else {
+                        // Hiển thị thông tin giảm giá
+                        voucherMessage.innerHTML =
+                            `<div class="alert alert-success">${data.message}</div>`;
+                        discountDisplay.textContent = `${data.discount} ₫`;
+                        totalDisplay.textContent = `${data.total} ₫`;
+                        discountInput.value = data.discount.replace(/\./g, '');;
+                        totalinput.value = data.total.replace(/\./g, '');;
+                    }
+                })
+                .catch(error => {
+                    console.error('Có lỗi xảy ra khi áp dụng mã:', error);
                     voucherMessage.innerHTML =
-                        `<div class="alert alert-danger">${data.error}</div>`;
-                    discountDisplay.textContent = '0 ₫'; // Reset giá trị giảm giá
-                    totalDisplay.textContent =
-                        `{{ number_format($total, 0, ',', '.') }} ₫`; // Reset tổng giá trị
-                    discountInput.value = 0;
-                    totalinput.value = '{{ str_replace(".", "", $total) }}';
-                } else {
-                    // Hiển thị thông tin giảm giá
-                    voucherMessage.innerHTML =
-                        `<div class="alert alert-success">${data.message}</div>`;
-                    discountDisplay.textContent = `${data.discount} ₫`;
-                    totalDisplay.textContent = `${data.total} ₫`;
-                    discountInput.value = data.discount.replace(/\./g, '');;
-                    totalinput.value = data.total.replace(/\./g, '');;
-                }
-            })
-            .catch(error => {
-                console.error('Có lỗi xảy ra khi áp dụng mã:', error);
-                voucherMessage.innerHTML =
-                    `<div class="alert alert-danger">Đã xảy ra lỗi, vui lòng thử lại sau.</div>`;
-            });
+                        `<div class="alert alert-danger">Đã xảy ra lỗi, vui lòng thử lại sau.</div>`;
+                });
         });
     });
 </script>

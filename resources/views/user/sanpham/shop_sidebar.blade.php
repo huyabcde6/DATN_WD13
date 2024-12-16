@@ -197,7 +197,7 @@
                                 <ul class="category-menu mb-n3">
                                     @foreach ($categories as $category)
                                     <li class="menu-item-has-children pb-4">
-                                        <a href="{{ route('shop.index', ['category' => $category->id]) }}">
+                                        <a href="#" data-category-id="{{ $category->id }}">
                                             {{ $category->name }}
                                         </a>
                                     </li>
@@ -284,26 +284,34 @@
 <!-- Scroll Top End -->
 @endsection
 @section('js')
+<!-- Include jQuery from CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    function updateFilters() {
-        const selectedColors = [];
-        const checkboxes = document.querySelectorAll('.custom-control-input:checked');
+    $(document).ready(function() {
+        // When a category is clicked
+        $('.category-menu a').on('click', function(e) {
+            e.preventDefault();
 
-        checkboxes.forEach(checkbox => {
-            selectedColors.push(checkbox.value);
+            // Get the selected category ID from the data attribute
+            var categoryId = $(this).data('category-id');
+
+            // Make an AJAX request to filter products by category
+            $.ajax({
+                url: '/filter-products', // This is the route that will handle the filtering
+                method: 'GET',
+                data: {
+                    category_id: categoryId // Sending category ID as a query parameter
+                },
+                success: function(response) {
+                    // Update the products list with the filtered data
+                    $('#products-list').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                }
+            });
         });
-
-        // Lấy URL hiện tại
-        const url = new URL(window.location.href);
-        // Cập nhật giá trị "colors" trong query string
-        if (selectedColors.length > 0) {
-            url.searchParams.set('colors', selectedColors.join(','));
-        } else {
-            url.searchParams.delete('colors');
-        }
-
-        // Điều hướng đến URL mới
-        window.location.href = url.toString();
-    }
+    });
 </script>
 @endsection

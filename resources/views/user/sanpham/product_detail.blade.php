@@ -225,7 +225,7 @@
                                 <input type="hidden" name="color" value="" id="mungay-color">
                                 <input type="hidden" name="quantity" id="muangay-quantity" value="">
                                 <button type="submit" class="btn btn-outline-dark btn-hover-primary"
-                                    id="add-to-cart-button">Mua Ngay</button>
+                                    id="add-to-buy">Mua Ngay</button>
                             </form>
                         </div>
                     </div>
@@ -646,27 +646,6 @@
             const maxQuantity = parseInt($(this).attr('max'));
             this.value = Math.min(Math.max(quantity, 1), maxQuantity);
         });
-        document.addEventListener("DOMContentLoaded", function() {
-            const quantityInput = document.getElementById("product-quantity");
-            const maxQuantity = parseInt(quantityInput.getAttribute("max")) || Infinity;
-            const minQuantity = parseInt(quantityInput.getAttribute("min")) || 1;
-            const muangayQuantityInput = document.getElementById("muangay-quantity");
-
-            // Đồng bộ số lượng nhập vào form "Mua Ngay"
-            function updateQuantity(newQuantity) {
-                // Đảm bảo giá trị nằm trong khoảng min và max
-                if (newQuantity >= minQuantity && newQuantity <= maxQuantity) {
-                    quantityInput.value = newQuantity;
-                    muangayQuantityInput.value = newQuantity;
-                }
-            }
-            // Lắng nghe sự kiện thay đổi từ ô nhập liệu số lượng
-            quantityInput.addEventListener("input", function() {
-                const currentQuantity = parseInt(quantityInput.value) || minQuantity;
-                updateQuantity(currentQuantity);
-            });
-        });
-
         // Thêm sản phẩm vào giỏ hàng
         $('#add-to-cart-button').on('click', function(event) {
             event.preventDefault();
@@ -730,31 +709,128 @@
     });
 </script>
 <script>
-    // Lắng nghe sự kiện submit của form "Mua Ngay"
-    document.addEventListener("DOMContentLoaded", function() {
-        // Xử lý sự kiện chọn size
-        document.querySelectorAll(".size-option").forEach((sizeOption) => {
-            sizeOption.addEventListener("click", function(event) {
-                event.preventDefault();
-                const sizeValue = this.getAttribute("data-value");
-                document.getElementById("muangay-size").value = sizeValue;
-                document.getElementById("selected-size").innerText = this.innerText;
-            });
+    $(document).ready(function() {
+        var selectedSize = null;
+        var selectedColor = null;
+        var variantDetails = @json($productDetails); // Dữ liệu biến thể sản phẩm
+
+        // Hiển thị tổng số lượng ban đầu
+        const totalStock = variantDetails.reduce((sum, variant) => sum + variant.quantity, 0);
+        $('#current-stock').text(`Số lượng: ${totalStock}`);
+
+        // Khi người dùng chọn kích thước
+        $('.size-option').on('click', function(event) {
+            event.preventDefault();
+            selectedSize = $(this).data('value');
+            $('#selected-size').val(selectedSize);
+            $('#muangay-size').val(selectedSize); // Cập nhật hidden input của form "Mua ngay"
+
+            $('#selected-size-text').text($(this).text());
+            $('.size-option').removeClass('active');
+            $(this).addClass('active');
+            updateAvailability();
+            updateVariantDetails();
         });
 
-        // Xử lý sự kiện chọn màu sắc
-        document.querySelectorAll(".color-option").forEach((colorOption) => {
-            colorOption.addEventListener("click", function(event) {
-                event.preventDefault();
-                const colorValue = this.getAttribute("data-value");
-                const colorName = this.getAttribute("data-color-name");
-                document.getElementById("mungay-color").value = colorValue;
-                document.getElementById("selected-color-text").innerText = colorName;
+        // Khi người dùng chọn màu sắc
+        $('.color-option').on('click', function(event) {
+            event.preventDefault();
+            if ($(this).hasClass('unavailable')) {
+                return;
+            }
+            selectedColor = $(this).data('value');
+            $('#selected-color').val(selectedColor);
+            $('#mungay-color').val(selectedColor); // Cập nhật hidden input của form "Mua ngay"
+
+            const colorName = $(this).data('color-name');
+            $('#selected-color-text').text(colorName);
+            $('.color-option').removeClass('active');
+            $(this).addClass('active');
+            updateAvailability();
+            updateVariantDetails();
+        });
+
+        // Kiểm tra khả dụng của biến thể
+        function isVariantAvailable(sizeId, colorId) {
+            return variantDetails.some(v => v.size_id == sizeId && v.color_id == colorId && v.quantity > 0);
+        }
+
+        // Cập nhật khả dụng của các tùy chọn
+        function updateAvailability() {
+            $('.color-option').each(function() {
+                const colorId = $(this).data('value');
+                const isAvailable = variantDetails.some(v => v.color_id == colorId && (!selectedSize || v.size_id == selectedSize) && v.quantity > 0);
+                toggleAvailability($(this), isAvailable);
             });
+
+            $('.size-option').each(function() {
+                const sizeId = $(this).data('value');
+                const isAvailable = variantDetails.some(v => v.size_id == sizeId && (!selectedColor || v.color_id == selectedColor) && v.quantity > 0);
+                toggleAvailability($(this), isAvailable);
+            });
+        }
+
+        // Thay đổi trạng thái khả dụng
+        function toggleAvailability(element, isAvailable) {
+            if (isAvailable) {
+                element.removeClass('unavailable').css({
+                    opacity: 1,
+                    textDecoration: 'none'
+                });
+            } else {
+                element.addClass('unavailable').css({
+                    opacity: 0.5,
+                    textDecoration: 'line-through'
+                });
+            }
+        }
+
+        // Cập nhật thông tin biến thể
+        function updateVariantDetails() {
+            if (selectedColor && selectedSize) {
+                const variant = variantDetails.find(v => v.color_id == selectedColor && v.size_id == selectedSize);
+                if (variant) {
+                    $('#current-price').text(new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    }).format(variant.discount_price));
+                    $('#current-sku').text(`SKU: ${variant.product_code}`);
+                    $('#current-stock').text(`Số lượng: ${variant.quantity}`);
+                    $('#product-quantity').attr('max', variant.quantity);
+                    $('#muangay-quantity').val(1); // Gán giá trị mặc định cho số lượng trong form "Mua ngay"
+
+                    if (variant.image) {
+                        $('#main-image').attr('src', `/storage/${variant.image}`);
+                        $('#main-image-link').attr('href', `/storage/${variant.image}`);
+                    }
+                } else {
+                    $('#current-stock').text('Không khả dụng');
+                }
+            } else {
+                const totalStock = variantDetails.reduce((sum, variant) => sum + variant.quantity, 0);
+                $('#current-stock').text(`Số lượng: ${totalStock}`);
+            }
+        }
+
+        // Xử lý nút "Mua ngay"
+        $('#add-to-buy').on('click', function(event) {
+            event.preventDefault();
+            if (!selectedSize || !selectedColor) {
+                Swal.fire({
+                    title: 'Thông báo',
+                    text: 'Vui lòng chọn cả kích thước và màu sắc trước khi mua.',
+                    icon: 'warning'
+                });
+                return;
+            }
+
+            // Gửi form "Mua ngay"
+            $(this).prop('disabled', true).text('Đang xử lý...');
+            $('#muangay-quantity').val($('#product-quantity').val()); // Gán số lượng vào hidden input
+
+            $('#muangay-form').submit();
         });
     });
 </script>
-<script>
 
-</script>
 @endsection

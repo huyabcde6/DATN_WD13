@@ -16,9 +16,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmationMail;
+use App\Models\Color;
 use App\Models\Coupon_Conditions;
 use App\Models\Coupons;
 use App\Models\products;
+use App\Models\Size;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
@@ -48,7 +50,7 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::with(['orderDetails.productDetail.products', 'status'])->findOrFail($id);
-        $totalAmount = $order->orderDetails->sum(function($detail) {
+        $totalAmount = $order->orderDetails->sum(function ($detail) {
             return $detail->price * $detail->quantity;
         });
         return view('user.khac.order_detail', compact('order', 'totalAmount'));
@@ -62,13 +64,14 @@ class OrderController extends Controller
         $user = Auth::user();
         // Lấy các sản phẩm trong giỏ hàng từ session
         $cartItems = Session::get('cart', []);
+        // dd($cartItems);
         if (!empty($cartItems)) {
 
             $subTotal = 0;
             foreach ($cartItems as $item) {
                 $subTotal += $item['price'] * $item['quantity']; // Tính tổng tiền của giỏ hàng
             }
-
+            $mua = 'giohang';
             // Phí vận chuyển bằng VND
             $shippingFee = 30000; // 30,000 VND
             $total = $subTotal + $shippingFee; // Tổng cộng bao gồm phí vận chuyển
@@ -78,7 +81,8 @@ class OrderController extends Controller
                 'subTotal',
                 'shippingFee',
                 'total',
-                'user'
+                'user',
+                'mua'
             ));
         }
 
@@ -105,23 +109,54 @@ class OrderController extends Controller
                 $carts = Session::get('cart', []); // Giỏ hàng trong session
 
                 // Thêm chi tiết đơn hàng
-                foreach ($carts as $productDetailId => $value) {
-                    $orderDetail = $order->orderDetails()->create([
+                // Thêm chi tiết đơn hàng
+                if ($request->mua === 'muangay') {
+                    $order->orderDetails()->create([
                         'order_id' => $orderId,
-                        'product_detail_id' => $productDetailId,
-                        'quantity' => $value['quantity'],
-                        'color' => $value['color'],
-                        'size' => $value['size'],
-                        'price' => $value['price'],
+                        'product_detail_id' => $request->product_detail_id,
+                        'quantity' => $request->quantity,
+                        'color' => $request->color,
+                        'size' => $request->size,
+                        'price' => $request->price,
                     ]);
 
+                    // Giảm số lượng sản phẩm trong kho
+                    $productDetail = ProductDetail::find($request->product_detail_id); // Tìm sản phẩm trong kho
+                    if ($productDetail) {
+                        if ($productDetail->quantity >= $request->quantity) { // Kiểm tra xem kho có đủ số lượng không
+                            $productDetail->quantity -= $request->quantity; // Giảm số lượng trong kho
+                            $productDetail->save(); // Lưu lại thay đổi
+                        } else {
+                            // Xử lý trường hợp không đủ hàng
+                            throw new \Exception('Số lượng sản phẩm không đủ trong kho');
+                        }
+                    }
+                } else {
+                    // Trường hợp "Thanh toán giỏ hàng"
+
+                    $carts = Session::get('cart', []); // Giỏ hàng trong session
+                    foreach ($carts as $productDetailId => $value) {
+                        $order->orderDetails()->create([
+                            'order_id' => $orderId,
+                            'product_detail_id' => $productDetailId,
+                            'quantity' => $value['quantity'],
+                            'color' => $value['color'] ?? null,
+                            'size' => $value['size'] ?? null,
+                            'price' => $value['price'],
+                        ]);
+                    }
                     // Giảm số lượng sản phẩm trong kho sau khi mua
                     $productDetail = ProductDetail::find($productDetailId);
                     if ($productDetail) {
                         $productDetail->quantity -= $value['quantity'];
                         $productDetail->save();
                     }
+                    Session::forget('cart');
                 }
+
+                // Xóa giỏ hàng nếu đơn hàng được tạo từ giỏ hàng
+
+
                 if ($request->input('method') === "VNPAY") {
                     // Lưu giao dịch và chuyển hướng đến VNP
                     DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
@@ -131,9 +166,6 @@ class OrderController extends Controller
 
                 // Gửi email xác nhận đơn hàng
                 Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
-
-                // Xóa giỏ hàng trong session
-                Session::put('cart', []);
                 return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được tạo thành công.');
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -294,32 +326,32 @@ class OrderController extends Controller
             'id_sp' => 'required|array',  // Thêm điều kiện kiểm tra id_sp
             'id_sp.*' => 'required|numeric',  // Kiểm tra từng sản phẩm trong id_sp
         ]);
-    
+
         // Kiểm tra mã giảm giá trong DB
         $coupon = Coupons::where('code', $request->voucher)
             ->where('status', 'active')
             ->where('start_date', '<=', now())
             ->where('end_date', '>=', now())
             ->first();
-    
+
         // Nếu không tìm thấy mã giảm giá hợp lệ hoặc số lượng mã đã hết
         if (!$coupon || $coupon->total_quantity <= $coupon->used_quantity) {
             return response()->json([
                 'error' => 'Mã giảm giá không hợp lệ hoặc đã hết lượt sử dụng.'
             ], 400);
         }
-    
+
         // Kiểm tra nếu mã đã áp dụng trước đó
         if (Session::has('discount_applied')) {
             Session::forget('discount_applied');
         }
-    
+
         // Kiểm tra điều kiện áp dụng của mã giảm giá
         $cartTotal = $request->total;
         $discount = 0;
         $couponConditions = Coupon_Conditions::where('coupon_id', $coupon->id)->get();
         $isApplicable = false;
-    
+
         if ($couponConditions->isEmpty()) {
             // Nếu không có điều kiện cụ thể, chỉ kiểm tra giá trị đơn hàng
             if ($cartTotal >= $coupon->min_order_amount) {
@@ -346,38 +378,38 @@ class OrderController extends Controller
                 }
             }
         }
-    
+
         // Nếu điều kiện áp dụng thỏa mãn, tính giảm giá
         if ($isApplicable) {
             $discount = $this->calculateDiscount($coupon, $cartTotal);
-    
+
             // Đảm bảo số tiền giảm không vượt quá số tiền giảm tối đa
             if ($coupon->max_discount_amount && $discount > $coupon->max_discount_amount) {
                 $discount = $coupon->max_discount_amount;
             }
         }
-    
+
         // Nếu không đủ điều kiện để áp dụng mã
         if ($discount <= 0) {
             return response()->json([
                 'error' => 'Mã giảm giá không áp dụng được cho đơn hàng này.'
             ], 400);
         }
-    
+
         // Kiểm tra số tiền giảm có vượt quá số tiền giảm tối đa không
         if ($coupon->max_discount_amount && $discount > $coupon->max_discount_amount) {
             $discount = $coupon->max_discount_amount;
         }
-    
+
         // Cập nhật mã giảm giá trong session
         Session::put('discount_applied', $coupon->code);
-    
+
         // Tăng số lượng mã đã sử dụng
         $coupon->increment('used_quantity');
-    
+
         // Tính lại tổng tiền sau khi áp dụng giảm giá
         $newTotal = $cartTotal - $discount;
-    
+
         // Trả về dữ liệu JSON
         return response()->json([
             'message' => 'Mã giảm giá áp dụng thành công!',
@@ -405,51 +437,50 @@ class OrderController extends Controller
 
         return 0;
     }
-
     public function muangay(Request $request)
     {
-        dd($request->all());
         $user = Auth::user();
-        $productId = $request->input('product_id');
-        $size = $request->input('size');
-        $color = $request->input('color');
+        $request->validate([
+            'products_id' => 'required|exists:products,id',
+            'size' => 'required|integer|exists:sizes,size_id',
+            'color' => 'required|integer|exists:colors,color_id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        // Lấy giỏ hàng từ session
+        $productsId = $request->input('products_id');
+        $sizeId = $request->input('size');
+        $colorId = $request->input('color');
         $quantity = $request->input('quantity');
 
-        // Lấy thông tin sản phẩm
-        $product = products::with('productDetails')->find($productId);
-        if (!$product) {
-            return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
-        }
-
-        // Kiểm tra size, color và số lượng
-        $stock = $product->productDetails
-            ->where('size_id', $size)
-            ->where('color_id', $color)
+        $productDetail = ProductDetail::where('products_id', $productsId)
+            ->where('size_id', $sizeId)
+            ->where('color_id', $colorId)
             ->first();
-
-        if (!$stock || $stock->quantity < $quantity) {
-            return redirect()->back()->with('error', 'Sản phẩm không đủ số lượng.');
-        }
-
-        // Tính giá tiền
-        $price = $product->discount_price ?? $product->price;
-        $total = $price * $quantity;
-
-        // Phí vận chuyển
-        $shippingFee = 30000; // 30,000 VND
-        $grandTotal = $total + $shippingFee;
-
-        // Điều hướng đến trang thanh toán
-        return view('user.sanpham.thanhtoan', [
-            'user' => $user,
-            'product' => $product,
-            'size' => $size,
-            'color' => $color,
+        $variantKey = $productDetail->id;
+        $price = $productDetail->discount_price ? $productDetail->discount_price : $productDetail->price;
+        $cartItems[$variantKey] = [
+            'product_detail_id' => $productDetail->id,
+            'size' => $productDetail->size->value,
+            'color' => $productDetail->color->value,
             'quantity' => $quantity,
-            'price' => $price,
-            'total' => $total,
-            'shippingFee' => $shippingFee,
-            'grandTotal' => $grandTotal,
-        ]);
+            'product_name' => $productDetail->products->name,
+            'product_id' => $productDetail->products_id,
+            'price' => $price, // Dùng giá khuyến mãi nếu có
+            'image' => $productDetail->products->avata,
+            'slug' => $productDetail->products->slug,
+        ];
+        $mua = 'muangay';
+        $subTotal = $price * $quantity;
+        $shippingFee = 30000; // 30,000 VND
+        $total = $subTotal + $shippingFee; // Tổng cộng bao gồm phí vận chuyển
+        return view('user.sanpham.thanhtoan', compact(
+            'cartItems',
+            'subTotal',
+            'shippingFee',
+            'total',
+            'user',
+            'mua'
+        ));
     }
 }
