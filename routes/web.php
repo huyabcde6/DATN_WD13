@@ -170,6 +170,10 @@ Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('produ
 Route::post('/update-address', [AddressController::class, 'updateAddress'])->name('user.updateAddress');
 
 
+// Route hiển thị danh sách voucher cho user
+Route::get('/vouchers', [VoucherController::class, 'index'])->name('user.vouchers');
+
+
 
 
 

@@ -49,47 +49,59 @@
         .payment-accordion-order-button {
             margin-top: 20px;
         }
+        .apply-coupon-wrapper input {
+    max-width: 300px;
+    height: 50px;
+    border-radius: 5;
+    margin-right: 10px;
+}
+#apply-voucher {
+    padding: 10px 20px; /* Tạo khoảng cách trong nút */
+    font-size: 14px; /* Kích thước chữ */
+    font-weight: bold; /* Chữ đậm */
+    color: #fff; /* Màu chữ trắng */
+    background-color: #343a40; /* Màu nền nút (đen xám) */
+    border: none; /* Xóa viền mặc định */
+    border-radius: 4px; /* Bo góc nhẹ */
+    cursor: pointer; /* Con trỏ dạng tay khi hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng hover */
+}
+
+#apply-voucher:hover {
+    background-color: #495057; /* Màu tối hơn khi hover */
+    transform: translateY(-2px); /* Nút nổi lên khi hover */
+}
+
+#apply-voucher:active {
+    background-color: #212529; /* Màu nền khi bấm nút */
+    transform: translateY(0); /* Trả về vị trí gốc */
+}
+
+#apply-voucher:focus {
+    outline: none; /* Xóa viền mặc định khi focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng viền xanh khi focus */
+}
+
+
     </style>
 
     @endsection
     @section('content')
-    <!-- Breadcrumb Section Start -->
-    <div class="section">
 
-        <!-- Breadcrumb Area Start -->
-        <div class="breadcrumb-area bg-light">
-            <div class="container-fluid">
-                <div class="breadcrumb-content text-center">
-                    <h1 class="title">Thanh toán</h1>
-                    <ul>
-                        <li>
-                            <a href="{{ url('/') }}">Trang chủ </a>
-                        </li>
-                        <li class="active"> Thanh toán</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- Breadcrumb Area End -->
-
-    </div>
-    <!-- Breadcrumb Section End -->
 
     <!-- Checkout Section Start -->
     <div class="section section-margin">
         <div class="container">
             <div class=" mt-4">
                 <div class="apply-coupon-wrapper d-flex">
-                    <form id="voucher-form" action="{{ route('vocher') }}" method="post" class="d-flex">
                         <form id="voucher-form" action="{{ route('vocher') }}" method="post" class="d-flex">
                             @csrf
                             @method ('POST')
                             <input type="hidden" name="total" value="{{ $total }}">
                             <input type="text" name="voucher" class="form-control" placeholder="Nhập mã giảm giá" />
-                            <button id="apply-voucher" class="btn btn-dark btn-hover-primary rounded-0 ms-2">Áp dụng mã</button>
+                            <button id="apply-voucher" class="btn btn-dark btn-hover-primary rounded-0 ms-2 form-control"> Áp dụng mã</button>
                         </form>
                 </div>
-                <div id="voucher-message" class="mt-3"></div>
             </div>
             <form action="{{ route('orders.store') }}" method="POST">
                 @csrf

@@ -61,7 +61,7 @@
 
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Voucher</span></a>
+                                        <a href="{{ route('user.vouchers') }}"><span>Voucher</span></a>
                                     </li>
                                     <li class="has-children">
                                         <a href="{{ route('news.index') }}"><span>Tin Tức</span></a>
@@ -93,7 +93,7 @@
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->
-                                
+
                                 <!-- Wishlist Header Action Button End -->
 
                                 <!-- Shopping Cart Header Action Button Start -->
