@@ -67,7 +67,7 @@ class CouponsController extends Controller
 
         return view('admin.coupons.editCoupont', compact('coupon', 'products', 'categories'));
     }
-    public function update(CouponRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $validated = $request->all();
 
