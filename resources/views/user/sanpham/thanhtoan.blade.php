@@ -109,6 +109,7 @@
 
                         <div class="row">
                             <!-- First Name Input Start -->
+
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
@@ -174,6 +175,10 @@
                                 <tbody>
                                     @foreach ($cartItems as $item)
                                     <tr>
+                                        @if (!empty($item['product_avata']))
+                                        <img src="{{ asset('storage/' . $item['product_avata']) }}" alt="Product Image">
+                                        @endif
+
                                         <td class="cart-product-name text-start">
                                             <a href="{{ route('product.show', $item['product_id']) }}">
                                                 {{ $item['product_name'] }}

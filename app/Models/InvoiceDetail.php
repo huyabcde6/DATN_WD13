@@ -12,6 +12,7 @@ class InvoiceDetail extends Model
     protected $fillable = [
         'invoice_id',
         'product_name',
+        'product_avata',
         'color',
         'size',
         'quantity',
@@ -25,6 +26,6 @@ class InvoiceDetail extends Model
 
     public function product()
     {
-        return $this->belongsTo(products::class, 'product_name', 'name');  // Liên kết với bảng 'products'
+        return $this->belongsTo(products::class);  // Liên kết với bảng 'products'
     }
 }

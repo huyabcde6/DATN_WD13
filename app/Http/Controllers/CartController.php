@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
+    // Hiển thị giỏ hàng
     public function index()
     {
 
@@ -34,6 +35,7 @@ class CartController extends Controller
             $subTotal += $item['price'] * $item['quantity'];
         }
         $total = $subTotal + $shippingFee;
+        
         return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
     public function addToCart(Request $request)
@@ -153,7 +155,7 @@ class CartController extends Controller
 
             // Tính toán giá của sản phẩm
             $itemPrice = $cart[$productDetailId]['price'];
-            $itemSubtotal = number_format($itemPrice * $quantity, 0, ',', '.') . ' đ'; // Tính subtotal
+            $itemSubtotal = $itemPrice * $quantity;// Tính subtotal
 
             // Tính tổng giá trị đơn hàng
             $total = 0;
@@ -168,8 +170,8 @@ class CartController extends Controller
             // Trả về JSON để JavaScript cập nhật lại giao diện
             return response()->json([
                 'status' => 'success',
-                'item_price' => $itemSubtotal, // Giá subtotal của sản phẩm
-                'total_price' => number_format($totalWithShipping, 0, ',', '.') . ' đ', // Tổng giá trị đơn hàng bao gồm phí vận chuyển
+                'item_price' => $itemSubtotal, // Giá subtotal của sản phẩm (chưa format)
+                'total_price' => $totalWithShipping, // Tổng giá trị đơn hàng bao gồm phí vận chuyển
             ]);
         }
 

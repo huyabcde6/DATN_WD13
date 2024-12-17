@@ -8,7 +8,6 @@
     <title>POLY STORE</title>
     <!-- Favicons -->
     <link rel="shortcut icon" href="http://datn_wd13.test/ngdung/assets/images/logo/logo1.png" />
-
     <!-- Vendor CSS (Icon Font) -->
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/fontawesome.min.css') }}" />

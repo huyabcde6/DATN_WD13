@@ -18,12 +18,11 @@ use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('permission:view order', ['only' => ['index']]);
-
-        $this->middleware('permission:edit order', ['only' => ['update']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view order', ['only' => ['index']]);
+    //     $this->middleware('permission:edit order', ['only' => ['update']]);
+    // }
 
     public function index(Request $request)
     {
@@ -222,7 +221,8 @@ class OrderController extends Controller
         // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
         foreach ($order->orderDetails as $orderDetail) {
             $invoice->invoiceDetails()->create([
-                'product_name' => $orderDetail->productDetail->products->name,
+                'product_name'  => $orderDetail->name,
+                'product_avata'  => $orderDetail->avata,
                 'color' => $orderDetail->color,
                 'size' => $orderDetail->size,
                 'quantity' => $orderDetail->quantity,

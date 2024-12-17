@@ -114,7 +114,6 @@ class CategoryProductController extends Controller
             DB::beginTransaction();
 
             $category = categories::findOrFail($id);
-
             $category->update([
                 'name' => $request->name,
                 'status' => $request->boolean('status')
@@ -136,6 +135,7 @@ class CategoryProductController extends Controller
             return back()->with('status_failed', $e->getMessage());
         }
     }
+
 
     /**
      * Xóa danh mục.

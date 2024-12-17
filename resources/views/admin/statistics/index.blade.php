@@ -88,19 +88,37 @@
 
         <!-- Sales Chart -->
         <div class="row">
-            <div class="col-md-12 col-xl-7">
+            <div class="col-md-12 col-xl-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h5 class="card-title mb-0">Thống kê doanh thu</h5>
-                        <select id="yearSelect" class="form-control text-center" style="max-width: 90px;">
-                            <option value="2027">2027</option>
-                            <option value="2026">2026</option>
-                            <option value="2025">2025</option>
-                            <option value="2024" selected>2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                            <!-- Thêm các năm khác -->
-                        </select>
+                        <div class="d-flex" style="max-width: 270px;">
+                            <select id="monthSelect" class="form-control text-center mx-2" style="width: 150px;">
+                                <option value="">Chọn tháng</option>
+                                <option value="1">Tháng 1</option>
+                                <option value="2">Tháng 2</option>
+                                <option value="3">Tháng 3</option>
+                                <option value="4">Tháng 4</option>
+                                <option value="5">Tháng 5</option>
+                                <option value="6">Tháng 6</option>
+                                <option value="7">Tháng 7</option>
+                                <option value="8">Tháng 8</option>
+                                <option value="9">Tháng 9</option>
+                                <option value="10">Tháng 10</option>
+                                <option value="11">Tháng 11</option>
+                                <option value="12">Tháng 12</option>
+                                <!-- Thêm các năm khác -->
+                            </select>
+                            <select id="yearSelect" class="form-control text-center" style="max-width: 90px;">
+                                <option value="2027">2027</option>
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024" selected>2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <!-- Thêm các năm khác -->
+                            </select>
+                        </div>
                     </div>
 
                     <div class="card-body">
@@ -109,49 +127,14 @@
                 </div>
             </div>
             <!-- Biểu đồ tỷ lệ đơn hàng -->
-            <div class="col-md-12 col-xl-5">
-                <div class="card">
 
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div class="border border-dark rounded-2 me-2 widget-icons-sections">
-                                <i data-feather="users" class="widgets-icons"></i>
-                            </div>
-                            <h5 class="card-title mb-0">Khách hàng thân thiết</h5>
-                        </div>
-                    </div>
-
-                    <!-- start card body -->
-                    <div class="card-body">
-                        <ul class="list-group custom-group">
-                            @foreach ($topCustomers as $customer)
-                            <li class="list-group-item align-items-center d-flex justify-content-between">
-                                <div class="product-list">
-                                    <div class="product-body align-self-center">
-                                        <h6 class="m-0 fw-semibold">{{ $customer->user->name }}</h6>
-                                    </div>
-                                </div>
-
-                                <div class="product-price text-end">
-                                    <h6 class="m-0 fw-semibold">Số tiền đã chi:
-                                        {{ number_format($customer->total_spent, 0, ',', '.') }} đ
-                                    </h6>
-                                    <p class="mb-0 mt-1 text-muted">Số đơn hàng: {{ $customer->total_orders }}</p>
-                                </div>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <!-- end card body -->
-                </div>
-            </div>
         </div>
 
 
         <!-- Top Selling Products -->
         <div class="row">
             <!-- Top Selling Products -->
-            <div class="col-md-6 col-xl-5">
+            <div class="col-md-6 col-xl-6">
                 <div class="card">
 
                     <div class="card-header">
@@ -191,25 +174,46 @@
                     <!-- end card body -->
                 </div>
             </div>
-
-            <!-- Top Selling Products -->
-            <div class="col-md-6 col-xl-7">
+            <div class="col-md-6 col-xl-6">
                 <div class="card">
+
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div class="border border-dark rounded-2 me-2 widget-icons-sections">
-                                <i data-feather="bar-chart" class="widgets-icons"></i>
+                                <i data-feather="users" class="widgets-icons"></i>
                             </div>
-                            <h5 class="card-title mb-0">Tỉ lệ gặp lại khách hàng</h5>
+                            <h5 class="card-title mb-0">Khách hàng thân thiết</h5>
                         </div>
                     </div>
 
+                    <!-- start card body -->
                     <div class="card-body">
-                        <!-- Đặt biểu đồ ApexCharts tại đây -->
-                        <div id="repeat-customer" class="apex-charts"></div>
+                        <ul class="list-group custom-group">
+                            @foreach ($topCustomers as $customer)
+                            <li class="list-group-item align-items-center d-flex justify-content-between">
+                                <div class="product-list">
+                                    <div class="product-body align-self-center">
+                                        <h6 class="m-0 fw-semibold">{{ $customer->user->name }}</h6>
+                                    </div>
+                                </div>
+
+                                <div class="product-price text-end">
+                                    <h6 class="m-0 fw-semibold">Số tiền đã chi:
+                                        {{ number_format($customer->total_spent, 0, ',', '.') }} đ
+                                    </h6>
+                                    <p class="mb-0 mt-1 text-muted">Số đơn hàng: {{ $customer->total_orders }}</p>
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
                     </div>
+                    <!-- end card body -->
                 </div>
             </div>
+
+
+
+
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -371,18 +375,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const yearSelect = document.getElementById("yearSelect"); // Dropdown chọn năm
-    const revenueChartContainer = document.getElementById("revenueChart"); // Nơi hiển thị biểu đồ
+    const monthSelect = document.getElementById("monthSelect");
+    const yearSelect = document.getElementById("yearSelect");
+    const revenueChartContainer = document.getElementById("revenueChart");
 
-    let chart; // Biến để lưu trữ biểu đồ
+    let chart;
 
-    async function fetchRevenueData(year) {
+    // Hàm lấy dữ liệu doanh thu từ API
+    async function fetchRevenueData(year, month = null) {
         try {
-            const response = await fetch(`http://datn_wd13.test/api/admin/revenue?year=${year}`);
+            let url = `http://datn_wd13.test/api/admin/revenue?year=${year}`;
+            if (month) {
+                url += `&month=${month}`;
+            }
+
+            const response = await fetch(url);
             const data = await response.json();
 
+            console.log(data); // In dữ liệu trả về để kiểm tra
+
             if (response.ok) {
-                renderChart(data.revenue);
+                renderChart(data.revenue, month);
             } else {
                 console.error("Error fetching data:", data.message);
             }
@@ -391,26 +404,44 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    function renderChart(revenueData) {
-        const months = Array.from({
-            length: 12
-        }, (_, i) => i + 1); // Danh sách 12 tháng
-        const revenues = months.map(month => {
-            const revenue = revenueData.find(item => item.month === month);
-            return revenue ? parseFloat(revenue.total) : 0;
-        });
 
-        // Kiểm tra xem chart đã được tạo chưa, nếu có thì destroy nó trước khi tạo lại
+    // Hàm vẽ biểu đồ
+    function renderChart(revenueData, month = null) {
+        let categories, revenues;
+
+        if (month) {
+            // Nếu có chọn tháng, hiển thị doanh thu theo ngày trong tháng
+            categories = Array.from({
+                length: 31
+            }, (_, i) => i + 1); // Thay đổi từ "Ngày 1" thành số 1
+
+            revenues = categories.map(day => {
+                // Tìm kiếm doanh thu theo số ngày
+                const revenue = revenueData.find(item => item.day === day);
+                console.log(`Looking for day: ${day}, found revenue:`, revenue);
+                return revenue ? parseFloat(revenue.total) : 0;
+            });
+
+
+            console.log("Revenues:", revenues); // In ra doanh thu cho tất cả các ngày
+        } else {
+            // Nếu không chọn tháng, hiển thị doanh thu theo 12 tháng
+            const months = Array.from({
+                length: 12
+            }, (_, i) => i + 1);
+            revenues = months.map(month => {
+                const revenue = revenueData.find(item => item.month === month);
+                return revenue ? parseFloat(revenue.total) : 0;
+            });
+            categories = months.map(month => `Tháng ${month}`);
+        }
+
         if (chart) {
             chart.destroy();
         }
 
-        // Định dạng doanh thu theo tiền VNĐ với dấu phân cách (Ví dụ: 1,000,000)
-        const formattedRevenues = revenues.map(revenue => {
-            return revenue.toLocaleString('vi-VN'); // Định dạng theo tiền Việt Nam
-        });
+        const formattedRevenues = revenues.map(revenue => revenue.toLocaleString('vi-VN'));
 
-        // Vẽ biểu đồ mới bằng ApexCharts
         const options = {
             chart: {
                 type: "bar",
@@ -418,12 +449,12 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             series: [{
                 name: "Doanh thu",
-                data: revenues // Dữ liệu vẫn là số để ApexCharts xử lý
+                data: revenues
             }],
             xaxis: {
-                categories: months.map(month => `Tháng ${month}`),
+                categories: categories,
                 title: {
-                    text: "Tháng"
+                    text: month ? "Ngày" : "Tháng"
                 }
             },
             yaxis: {
@@ -432,14 +463,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 labels: {
                     formatter: function(value) {
-                        return value.toLocaleString('vi-VN'); // Định dạng trục y với tiền VNĐ
+                        return value.toLocaleString('vi-VN');
                     }
                 }
             },
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return val.toLocaleString('vi-VN') + " VNĐ"; // Hiển thị tooltip với tiền VNĐ
+                        return val.toLocaleString('vi-VN') + " VNĐ";
                     }
                 }
             }
@@ -449,16 +480,24 @@ document.addEventListener("DOMContentLoaded", function() {
         chart.render();
     }
 
-    // Lắng nghe sự kiện thay đổi năm
+    // Lắng nghe sự kiện thay đổi năm và tháng
     yearSelect.addEventListener("change", function() {
         const selectedYear = yearSelect.value;
-        fetchRevenueData(selectedYear);
+        const selectedMonth = monthSelect.value;
+        fetchRevenueData(selectedYear, selectedMonth || null); // Truyền null nếu không chọn tháng
+    });
+
+    monthSelect.addEventListener("change", function() {
+        const selectedYear = yearSelect.value;
+        const selectedMonth = monthSelect.value;
+        fetchRevenueData(selectedYear, selectedMonth || null); // Truyền null nếu không chọn tháng
     });
 
     // Mặc định load dữ liệu năm hiện tại
     fetchRevenueData(new Date().getFullYear());
 });
 </script>
+
 
 <script>
 window.Echo.channel('order-updated')
@@ -548,60 +587,6 @@ orderStatusModal.addEventListener('show.bs.modal', function(event) {
     } else {
         returnReasonTextarea.closest('.form-group').style.display = 'none';
     }
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Gọi API để lấy dữ liệu tỷ lệ khách hàng quay lại
-    fetch('http://datn_wd13.test/api/repeat-customer-rate?year=2024') // URL của API
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); // Kiểm tra dữ liệu
-            const months = data.map(item => item.month);
-            const repeatRates = data.map(item => item.repeat_rate);
-
-            // Cấu hình biểu đồ ApexCharts
-            var options = {
-                series: [{
-                    name: 'Repeat Rate (%)',
-                    data: repeatRates
-                }],
-                chart: {
-                    height: 350,
-                    type: 'line',
-                    zoom: {
-                        enabled: false
-                    }
-                },
-                xaxis: {
-                    categories: months,
-                    title: {
-                        text: 'Months'
-                    }
-                },
-                yaxis: {
-                    title: {
-                        text: 'Repeat Rate (%)'
-                    },
-                    min: 0,
-                    max: 100
-                },
-                title: {
-                    text: 'Repeat Customer Rate',
-                    align: 'center'
-                },
-                grid: {
-                    borderColor: '#f1f1f1',
-                    strokeDashArray: 5
-                }
-            };
-
-            var chart = new ApexCharts(document.querySelector("#repeat-customer"), options);
-            chart.render();
-        })
-        .catch(error => {
-            console.error('Error fetching repeat customer rate data:', error);
-        });
 });
 </script>
 @endsection

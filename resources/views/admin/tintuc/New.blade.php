@@ -3,7 +3,10 @@
 @section('title')
 Danh sách Tin Tức
 @endsection
-
+@section('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+@endsection
 @section('content')
 @if (session()->has('success'))
 <div class="alert alert-success">
@@ -27,7 +30,7 @@ Danh sách Tin Tức
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-striped text-center">
+                    <table class="table table-bordered text-center" id="newTable">
                         <thead>
                             <tr>
                                 <th>Tiêu đề</th>
@@ -39,12 +42,12 @@ Danh sách Tin Tức
                                 <th>Tương tác</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class=" text-center align-items-center">
                             @foreach ($db as $tiem)
                             <tr>
                                 <td>{{ $tiem->title }}</td>
-                                <td><img src="{{ Storage::url($tiem->avata) }}" alt="Ảnh bìa" width="200px"></td>
-                                <td>{{ $tiem->description }}</td>
+                                <td><img src="{{ Storage::url($tiem->avata) }}" alt="Ảnh bìa" width="60px" height="auto"></td>
+                                <td>{{ $tiem->description}}</td>
                                 <td>{{ $tiem->view }}</td>
                                 <td>{{ $tiem->new_date }}</td>
                                 <td>
@@ -53,7 +56,7 @@ Danh sách Tin Tức
                                         <span class="slider"></span>
                                     </label>
                                 </td>
-                                <td class="d-flex justify-content-center align-items-center">
+                                <td class="d-flex">
                                     <a href="{{ route('admin.new.show', $tiem->id) }}" class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1" title="Sửa">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
@@ -74,4 +77,28 @@ Danh sách Tin Tức
         </div>
     </div>
 </div>
+@endsection
+@section('js')
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#newTable').DataTable({
+        "language": {
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+            "infoEmpty": "Không có dữ liệu",
+            "search": "Tìm kiếm:",
+            "paginate": {
+                "first": "Đầu",
+                "last": "Cuối",
+                "next": "Tiếp",
+                "previous": "Trước"
+            }
+        }
+    });
+});
+</script>
+
 @endsection
