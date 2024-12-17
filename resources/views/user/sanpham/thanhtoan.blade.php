@@ -45,7 +45,6 @@
     margin-bottom: 10px;
     background-color: #fff;
 }
-
 .payment-accordion-order-button {
     margin-top: 20px;
 }

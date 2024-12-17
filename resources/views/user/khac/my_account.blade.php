@@ -50,28 +50,6 @@
 
 @section('content')
 <!-- Breadcrumb Section Start -->
-<div class="section">
-
-    <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
-        <div class="container-fluid">
-            <div class="breadcrumb-content text-center">
-                <h1 class="title">My Account</h1>
-                <ul>
-                    <li>
-                        <a href="index.html">Home </a>
-                    </li>
-                    <li class="active"> My Account</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- Breadcrumb Area End -->
-
-</div>
-<!-- Breadcrumb Section End -->
-
-<!-- My Account Section Start -->
 <div class="section mt-4 mb-5">
     <div class="container">
         @if (session('success'))
@@ -87,10 +65,7 @@
         @endif
         <div class="row">
             <div class="col-lg-12">
-
-                <!-- My Account Page Start -->
                 <div class="myaccount-page-wrapper">
-                    <!-- My Account Tab Menu Start -->
                     <div class="row">
                         <div class="col-lg-3 col-md-4">
                             <div class="myaccount-tab-menu nav" role="tablist">
@@ -109,9 +84,6 @@
                                 </form>
                             </div>
                         </div>
-                        <!-- My Account Tab Menu End -->
-
-                        <!-- My Account Tab Content Start -->
                         <div class="col-lg-9 col-md-8">
                             <div class="tab-content" id="myaccountContent">
                                 <!-- Single Tab Content Start -->
@@ -128,8 +100,6 @@
                                         </p>
                                     </div>
                                 </div>
-
-                                <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="orders" role="tabpanel">
                                     <div class="d-flex justify-content-evenly mb-3 fs-12">
                                         <a class="mx-1 filter-link active" data-status="all">Tất cả</a>
@@ -152,15 +122,20 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="address-edit" role="tabpanel">
                                     <div class="myaccount-content">
-                                        <h3 class="title">Billing Address</h3>
-                                        <address>
-                                            <p><strong>Alex Aya</strong></p>
-                                            <p>1234 Market ##, Suite 900 <br>
-                                                Lorem Ipsum, ## 12345</p>
-                                            <p>Mobile: (123) 123-456789</p>
-                                        </address>
-                                        <a href="#" class="btn btn btn-dark btn-hover-primary rounded-0"><i
-                                                class="fa fa-edit me-2"></i>Edit Address</a>
+                                        <h3 class="title">Address</h3>
+                                        <form action="{{ route('user.updateAddress') }}" method="POST">
+                                            @csrf
+                                            <div class="checkout-form-list">
+                                                <label>Địa chỉ <span class="required">*</span></label>
+                                                <input placeholder="Street address" name="address" type="text" value="{{ Auth::user()->address }}"><br>
+                                                <label>Số điện thoại <span class="required">*</span></label>
+                                                <input type="text" placeholder="number phone" name="number_phone" value="{{ Auth::user()->number_phone }}">
+                                            </div>
+                                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0">
+                                                <i class="fa fa-edit me-2"></i>Cập nhật địa chỉ
+                                            </button>
+                                        </form>
+
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="account-info" role="tabpanel">
@@ -209,7 +184,7 @@
 
     </div>
 </div>
-<!-- My Account Section End -->
+<!-- ount Section End -->
 
 <!-- Scroll Top Start -->
 <a href="#" class="scroll-top" id="scroll-top">

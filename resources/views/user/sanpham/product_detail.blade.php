@@ -73,17 +73,6 @@
                             </a>
                             @endforeach
                         </div>
-
-
-                        <!-- Swiper Pagination Start -->
-                        <!-- <div class="swiper-pagination d-none"></div> -->
-                        <!-- Swiper Pagination End -->
-
-                        <!-- Next Previous Button Start -->
-                        <!-- <div class="swiper-product-tab-next swiper-button-next"><i class="pe-7s-angle-right"></i></div>
-                        <div class="swiper-product-tab-prev swiper-button-prev"><i class="pe-7s-angle-left"></i></div> -->
-                        <!-- Next Previous Button End -->
-
                     </div>
                     <!-- Single Product Image End -->
 
@@ -99,12 +88,6 @@
                             </div>
                             @endforeach
                         </div>
-
-                        <!-- Swiper Pagination Start -->
-                        <!-- <div class="swiper-pagination d-none"></div> -->
-                        <!-- Swiper Pagination End -->
-
-                        <!-- Next Previous Button Start -->
                         <div class="swiper-button-vertical-next  swiper-button-next"><i class="pe-7s-angle-right"></i>
                         </div>
                         <div class="swiper-button-vertical-prev swiper-button-prev"><i class="pe-7s-angle-left"></i>
@@ -147,7 +130,7 @@
                     </div>
                     <!-- Price Box End -->
 
-                   
+
                     <!-- SKU Start -->
                     <div class="sku mb-3">
                         <span id="current-sku">SKU: {{ $product->productDetails->first()->product_code }}</span>
@@ -218,7 +201,7 @@
                             </form>
                         </div>
                         <div class="add-to-wishlist">
-                            <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Yêu thích</a>
+                            <a class="btn btn-outline-dark btn-hover-primary" href="{{ route('orders.create') }}">Mua ngay</a>
                         </div>
                     </div>
                     <!-- Cart & Wishlist Button End -->
