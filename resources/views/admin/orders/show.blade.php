@@ -39,15 +39,15 @@
                     @foreach($order->orderDetails as $key => $detail)
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $detail->products->name }}</td>
+                        <td>{{ $detail->product_name }}</td>
                         <td>
-                            <img src="{{ url('storage/' . $detail->products->avata ?? '' )}}" alt="{{ $detail->products->name }}"
+                            <img src="{{ url('storage/' . $detail->product_avata ?? '' )}}" alt="{{ $detail->product_name }}"
                                 class="img-thumbnail" style="width: 70px; height: auto;">
                         </td>
                         <td>{{ $detail->color }}</td>
                         <td>{{ $detail->size }}</td>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ number_format($order->total_price, 0, ',', '.') }} đ</td>
+                        <td>{{ number_format($detail->price, 0, ',', '.') }} đ</td>
                     </tr>
                     @endforeach
                 </tbody>

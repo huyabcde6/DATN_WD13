@@ -33,45 +33,20 @@ Quản lý Vai trò & Quyền
         <div class="col-12">
             <div class="card">
                 <div class="d-flex m-3 justify-content-between align-items-center">
-                    <form method="GET" action="{{ url('permission') }}" class="d-flex">
-                        <div class="input-group">
-                            <span class="input-group-text">
-                            Tìm kiếm
-                            </span>
-                            <input type="text" name="search" class="form-control" placeholder="Nhập từ khóa cần tìm..."
-                                value="{{ request('search') }}">
-                        
-                        <button type="submit" class="btn btn-sm btn-dark">
-                            <i class="bi bi-search"></i>
-                        </button>
-                        </div>
-                    </form>
                     <button class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
                         data-bs-toggle="modal" data-bs-target="#addPermissionModal">
                         <i class="mdi mdi-plus text-muted"></i> Thêm Quyền
                     </button>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped text-center" id="permissionTable">
+                    <table class="table table-bordered text-center" id="permissionTable">
                         <thead>
                             <tr>
                                 <th>
-                                    <a href="{{ url('permission', [
-                                            'sort_by' => 'id', 
-                                            'sort_order' => request('sort_order') == 'asc' ? 'desc' : 'asc',
-                                            'search' => request('search')
-                                        ]) }}">
                                         #
-                                    </a>
                                 </th>
                                 <th class="text-center">
-                                    <a href="{{ url('permission', [
-                                            'sort_by' => 'name', 
-                                            'sort_order' => request('sort_order') == 'asc' ? 'desc' : 'asc',
-                                            'search' => request('search')
-                                        ]) }}">
                                         Tên quyền
-                                    </a>
                                 </th>
                                 <th class="text-center">Thao tác</th>
                             </tr>
@@ -225,6 +200,27 @@ deleteModal.addEventListener('show.bs.modal', function(event) {
     const id = button.getAttribute('data-id');
     const form = document.getElementById('deletePermissionForm');
     form.action = `permission/${id}`;
+});
+</script>
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#permissionTable').DataTable({
+        "language": {
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+            "infoEmpty": "Không có dữ liệu",
+            "search": "Tìm kiếm:",
+            "paginate": {
+                "first": "Đầu",
+                "last": "Cuối",
+                "next": "Tiếp",
+                "previous": "Trước"
+            }
+        }
+    });
 });
 </script>
 

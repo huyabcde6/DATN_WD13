@@ -124,7 +124,6 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-
         if ($request->isMethod('POST')) {
             DB::beginTransaction();
             try {
@@ -139,7 +138,12 @@ class OrderController extends Controller
                 $carts = Session::get('cart', []); // Giỏ hàng trong session
 
                 // Thêm chi tiết đơn hàng
-                foreach ($carts as $productDetailId => $value) {
+                foreach ($carts as $productDetailId => $value) {    
+                    $productDetail = ProductDetail::find($productDetailId);
+
+                    // Debug để kiểm tra giá trị product_name và product_avata
+                    // dd($productDetail->products->name ?? 'Unknown', $productDetail->products->avata ?? null);
+                
                     $orderDetail = $order->orderDetails()->create([
                         'order_id' => $orderId,
                         'product_detail_id' => $productDetailId,
@@ -147,6 +151,8 @@ class OrderController extends Controller
                         'color' => $value['color'],
                         'size' => $value['size'],
                         'price' => $value['price'],
+                        'product_name' => $productDetail->products->name ?? 'Unknown', // Tên sản phẩm
+                        'product_avata' => $productDetail->products->avata ?? null, // Giá trị thêm (nếu có)
                     ]);
 
                     // Giảm số lượng sản phẩm trong kho sau khi mua
@@ -286,13 +292,13 @@ class OrderController extends Controller
             try {
                 $order = Order::findOrFail($id);
                 $params = [];
-
                 // Kiểm tra hành động hủy đơn hàng hoặc giao hàng
                 if ($request->has('huy_don_hang')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_HUY);
                 } elseif ($request->has('da_giao_hang')) {
-                    $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_GIAO_HANG);
+                    $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::HOAN_THANH);
                     $params['payment_status'] = 'đã thanh toán';
+                    $this->moveOrderToInvoice($order);
                 } elseif ($request->has('cho_xac_nhan')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::CHO_HOAN);
                     if ($request->filled('return_reason')) {
@@ -308,17 +314,55 @@ class OrderController extends Controller
                 $order->update($params);
                 broadcast(new OderEvent($order));
                 DB::commit();
-                return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
+                return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error('Lỗi cập nhật đơn hàng: ' . $e->getMessage());
-                return redirect()->route('orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
+                return back()->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
             }
         }
 
         return redirect()->route('orders.index')->with('error', 'Phương thức không hợp lệ.');
     }
 
+    protected function moveOrderToInvoice(Order $order)
+    {
+        // Kiểm tra nếu hóa đơn đã tồn tại (tránh trùng lặp)
+        if ($order->toInvoice()->exists()) {
+            return;
+        }
+
+        $invoice = \App\Models\Invoice::create([
+            'invoice_code' => $order->order_code,
+            'user_id' => $order->user_id,
+            'order_id' => $order->id,
+            'nguoi_nhan' => $order->nguoi_nhan,
+            'email' => $order->email,
+            'number_phone' => $order->number_phone,
+            'address' => $order->address,
+            'status_donhang_id' => $order->status_donhang_id,
+            'ghi_chu' => $order->ghi_chu,
+            'method' => $order->method,
+            'payment_status' => $order->payment_status,
+            'subtotal' => $order->subtotal,
+            'discount' => $order->discount,
+            'shipping_fee' => $order->shipping_fee,
+            'total_price' => $order->total_price,
+            'date_invoice' => $order->created_at,
+        ]);
+
+        // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
+        foreach ($order->orderDetails as $orderDetail) {
+            $invoice->invoiceDetails()->create([
+                'product_name'  => $orderDetail->name,
+                'product_avata'  => $orderDetail->avata,
+                'color' => $orderDetail->color,
+                'size' => $orderDetail->size,
+                'quantity' => $orderDetail->quantity,
+                'price' => $orderDetail->price,
+            ]);
+        }
+    }
     public function applyVoucher(Request $request)
     {
         // Validate dữ liệu từ client

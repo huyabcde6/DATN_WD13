@@ -8,7 +8,7 @@
                     <h5 class="text-center">Mã đơn:
                         <span class="text-danger">{{ $order->order_code }}</span>
                     </h5>
-                    <p id="order-status-{{ $order->id }}" class="text-center mx-3">{{ $order->status->type ?? 'N/A' }}</p>
+                    <p id="order-status-{{ $order->id }}" class="text-center mx-3">{{$order->payment_status ?? 'N/A'}} | {{ $order->status->type ?? 'N/A' }}</p>
                 </div>
                 <div class="d-flex justify-content-start">
                     <p style="font-size: 14px;"><strong>Ngày đặt:</strong> {{ $order->created_at->format('d-m-Y') }}</p>
@@ -22,12 +22,12 @@
                 <div class="container d-flex justify-content-start align-items-center">
                     <!-- Hình ảnh sản phẩm -->
                     <div class="me-3">
-                        <img src="{{ url('storage/'. $detail->products->avata) }}" alt="{{ $detail->products->name }}"
+                        <img src="{{ url('storage/'. $detail->product_avata) }}" alt="{{ $detail->product_name }}"
                             class="img-fluid" style="max-width: 60px; height: auto;">
                     </div>
                     <!-- Thông tin sản phẩm -->
                     <div class="w-75">
-                        <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->products->name }}</h6>
+                        <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->product_name }}</h6>
                         <p class="mb-0 mx-3 text-muted text-start" style="font-size: 14px;"><strong>Loại:</strong>
                             {{ $detail->color }} / {{ $detail->size }}
                         </p>
@@ -53,13 +53,13 @@
                     <div class="container d-flex justify-content-start align-items-center">
                         <!-- Hình ảnh sản phẩm -->
                         <div class="me-3">
-                            <img src="{{ url('storage/'. $detail->products->avata) }}"
-                                alt="{{ $detail->products->name }}" class="img-fluid"
+                            <img src="{{ url('storage/'. $detail->product_avata) }}"
+                                alt="{{ $detail->product_name }}" class="img-fluid"
                                 style="max-width: 60px; height: auto;">
                         </div>
                         <!-- Thông tin sản phẩm -->
                         <div class="w-75">
-                            <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->products->name }}
+                            <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->product_name }}
                             </h6>
                             <p class="mb-0 mx-3 text-muted text-start" style="font-size: 14px;"><strong>Loại:</strong>
                                 {{ $detail->color }} / {{ $detail->size }}
@@ -109,10 +109,10 @@
                     <input type="hidden" name="huy_don_hang" value="1">
                     <button id="cancel-order-{{ $order->id }}" type="submit" class="btn btn-primary mx-3" style="font-size: 12px; margin-top: 19px;"
                         onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</button>
-                    @elseif($order->status->type === \App\Models\StatusDonHang::DANG_VAN_CHUYEN)
-                    <input type="hidden" name="da_giao_hang" value="3">
+                    @elseif($order->status->type === \App\Models\StatusDonHang::DA_GIAO_HANG)
+                    <input type="hidden" name="da_giao_hang" value="4">
                     <button type="submit" class="btn btn-success mx-3" style="font-size: 12px; margin-top: 19px;"
-                        onclick="return confirm('Bạn xác nhận đã nhận hàng?');">Đã nhận hàng</button>
+                        onclick="return confirm('Bạn xác nhận đã nhận hàng?');">Xác nhận nhận hàng</button>
                     @endif
                 </form>
             </div>

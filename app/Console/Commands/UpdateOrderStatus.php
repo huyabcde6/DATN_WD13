@@ -55,7 +55,8 @@ class UpdateOrderStatus extends Command
         // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
         foreach ($order->orderDetails as $orderDetail) {
             $invoice->invoiceDetails()->create([
-                'product_name' => $orderDetail->productDetail->products->name,
+                'product_name'  => $orderDetail->name,
+                'product_avata'  => $orderDetail->avata,
                 'color' => $orderDetail->color,
                 'size' => $orderDetail->size,
                 'quantity' => $orderDetail->quantity,

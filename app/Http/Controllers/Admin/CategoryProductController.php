@@ -90,17 +90,15 @@ class CategoryProductController extends Controller
     /**
      * Cập nhật thông tin danh mục.
      */
-    public function update(CategoryProductRequest $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             DB::beginTransaction();
 
             $category = categories::findOrFail($id);
 
-            $category->update([
-                'name' => $request->name,
-                'status' => $request->boolean('status')
-            ]);
+            // Cập nhật trạng thái danh mục và các sản phẩm liên quan
+            $category->updateStatus($request->boolean('status'));
 
             DB::commit();
 
@@ -112,6 +110,7 @@ class CategoryProductController extends Controller
             return back()->with('status_failed', $e->getMessage());
         }
     }
+
 
     /**
      * Xóa danh mục.

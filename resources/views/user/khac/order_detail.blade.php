@@ -205,9 +205,8 @@
                             onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">
                             Hủy đơn hàng
                         </button>
-                        @elseif($order->status->type === \App\Models\StatusDonHang::DANG_VAN_CHUYEN)
-                        <!-- Nếu trạng thái là 'Đang vận chuyển' -->
-                        <input type="hidden" name="da_giao_hang" value="3">
+                        @elseif($order->status->type === \App\Models\StatusDonHang::DA_GIAO_HANG)
+                        <input type="hidden" name="da_giao_hang" value="4">
                         <button type="submit" class="btn btn-success"
                             onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
                             Đã nhận hàng

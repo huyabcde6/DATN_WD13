@@ -56,7 +56,7 @@ class Order extends Model
         // Tạo hóa đơn
         $invoice = Invoice::create([
             'order_code'     => $this->order_code,
-            'order_id'       => $this->id,  // Liên kết với đơn hàng
+            'order_id'       => $this->id,
             'user_id'        => $this->user_id,
             'nguoi_nhan'     => $this->nguoi_nhan,
             'email'          => $this->email,
@@ -75,9 +75,9 @@ class Order extends Model
 
         // Lưu chi tiết hóa đơn
         foreach ($this->orderDetails as $orderDetail) {
-            $productName = $orderDetail->productDetail->products->name;
             $invoice->invoiceDetails()->create([
-                'product_name'  => $productName, 
+                'product_name'  => $orderDetail->product_name,
+                'product_avata'  => $orderDetail->product_avata,
                 'color'         => $orderDetail->color,
                 'size'          => $orderDetail->size,
                 'quantity'      => $orderDetail->quantity,

@@ -47,7 +47,7 @@
 
 <!-- Shop Section Start -->
 <div class="section section-margin">
-    <div class="container">
+    <div class="container ">
 
         <div class="row">
             <div class="col-lg-6 offset-lg-0 col-md-8 offset-md-2 col-custom">
