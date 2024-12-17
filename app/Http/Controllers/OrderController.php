@@ -37,7 +37,7 @@ class OrderController extends Controller
         if ($request->has('status') && $request->status !== 'all') {
             $query->where('status_donhang_id', $request->status);
         }
-
+        $role = User::whereHas('roles')->where('id', Auth::user()->id)->exists();
         $orders = $query->paginate(3); // Mỗi lần tải 3 đơn hàng
 
         // Nếu là request AJAX (khi cuộn hoặc lọc), trả về HTML của orders
@@ -45,7 +45,7 @@ class OrderController extends Controller
             return view('user.khac.partials.orders', compact('orders'))->render();
         }
         $user = Auth::user();
-        return view('user.khac.my_account', compact('orders', 'user'));
+        return view('user.khac.my_account', compact('orders', 'user', 'role'));
     }
     public function show($id)
     {
