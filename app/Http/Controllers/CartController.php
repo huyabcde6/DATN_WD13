@@ -132,7 +132,7 @@ class CartController extends Controller
         // Cập nhật session
         Session::put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Product removed from cart successfully!');
+        return redirect()->back()->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng thành công! ');
     }
 
     public function update(Request $request)

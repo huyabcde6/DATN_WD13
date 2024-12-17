@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
@@ -172,3 +174,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('vocher');
 Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');
+Route::post('/update-address', [AddressController::class, 'updateAddress'])->name('user.updateAddress');
+// Route hiển thị danh sách voucher cho user
+Route::get('/vouchers', [VoucherController::class, 'index'])->name('user.vouchers');
+

@@ -5,19 +5,13 @@
 <div class="section">
 
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
-        <div class="container-fluid">
-            <div class="breadcrumb-content text-center">
-                <h1 class="title">Giỏ Hàng</h1>
-                <ul>
-                    <li>
-                        <a href="/">Trang Chủ</a>
-                    </li>
-                    <li class="active">Giỏ Hàng</li>
-                </ul>
-            </div>
-        </div>
+    <div class="breadcrumb">
+        <a href="http://datn_wd13.test/"><i class="fa fa-home"></i> Trang Chủ</a>
+        <span class="breadcrumb-separator"> > </span>
+        <span><a href="http://datn_wd13.test/cart">Giỏ hàng</a></span>
     </div>
+
+
     <!-- Breadcrumb Area End -->
 
 </div>
@@ -99,13 +93,18 @@
                                         đ</span>
                                 </td>
                                 <td class="pro-remove">
-                                    <form action="{{ route('cart.remove', $item['product_detail_id']) }}" method="POST">
+                                    <form id="delete-form-{{ $item['product_detail_id'] }}"
+                                          action="{{ route('cart.remove', $item['product_detail_id']) }}"
+                                          method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"><i
-                                                class="pe-7s-trash"></i></button>
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="confirmDelete({{ $item['product_detail_id'] }})">
+                                            <i class="pe-7s-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
+
                             </tr>
                             @endforeach
                         </tbody>
@@ -255,5 +254,11 @@
             }
         });
     });
+    function confirmDelete(productDetailId) {
+        if (confirm('Bạn có chắc chắn muốn xóa mục này?')) {
+            // Tìm biểu mẫu và gửi đi nếu người dùng xác nhận
+            document.getElementById(`delete-form-${productDetailId}`).submit();
+        }
+    }
 </script>
 @endsection

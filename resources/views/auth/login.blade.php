@@ -1,25 +1,7 @@
 @extends('layouts.home')
 
 @section('content')
-    <div class="section">
-
-        <div class="breadcrumb-area bg-light ">
-            <div class="container-fluid">
-                <div class="breadcrumb-content">
-                    <ul class="breadcrumb-list">
-                        <li>
-                            <a href="http://datn_wd13.test">Trang chủ</a>
-                        </li>
-                        <li class="active">
-                            <a href="http://datn_wd13.test/login">Đăng nhập</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- Breadcrumb Area End -->
-
-    </div>
+<br>
     <div class="section section-margin">
         <div class="container">
 
