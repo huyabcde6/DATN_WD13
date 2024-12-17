@@ -393,7 +393,7 @@
                 <!-- Blog Single Post Start -->
                 <div class="blog-single-post-wrapper">
                     <div class="blog-thumb">
-                        <a class="blog-overlay" href="blog-details.html">
+                        <a class="blog-overlay" href="{{ route('tintucdetail', ['id' => $new->id]) }}">
                             <img class="fit-image" src="{{ url('storage/'. $new->avata) }}"
                                 alt="Blog Post" />
                         </a>
@@ -403,12 +403,12 @@
                             <span>{{ $new->created_at }}</span>
                         </div>
                         <h3 class="title">
-                            <a href="blog-details.html">{{ $new->title }}</a>
+                            <a href="{{ route('tintucdetail', ['id' => $new->id]) }}">{{ $new->title }}</a>
                         </h3>
                         <p>
                             {{ $new->description }}
                         </p>
-                        <a href="blog-details.html" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
+                        <a href="{{ route('tintucdetail', ['id' => $new->id]) }}" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
                     </div>
                 </div>
                 <!-- Blog Single Post End -->

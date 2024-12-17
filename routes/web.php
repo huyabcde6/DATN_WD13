@@ -55,6 +55,7 @@ Route::delete('/cart/remove/{productDetailId}', [CartController::class, 'removeF
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+Route::post('/muangay', [OrderController::class, 'muangay'])->name('muangay');
 // Route
 Route::get('/checkout/thankyou', function () {
     return view('checkout.thankyou');
@@ -94,7 +95,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý đơn hàng
     Route::resource('orders', AdminOrderController::class);
-    
+
     // Quản lý kích thước
     Route::resource('sizes', SizeController::class);
 
@@ -108,7 +109,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý danh mục
     Route::resource('categories', CategoryProductController::class);
-    
+
     Route::resource('users', UserController::class);
 
     Route::get('/', [StatisticsController::class, 'index'])->name('statistics.index');

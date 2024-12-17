@@ -69,7 +69,7 @@
                                             height="auto" width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
-                                    <a href="#">{{ $item['product_name'] }} <br> {{ $item['size'] }} /
+                                    <a href="{{ route('product.show', $item['slug']) }}">{{ $item['product_name'] }} <br> {{ $item['size'] }} /
                                         {{ $item['color'] }}</a>
                                 </td>
                                 <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
@@ -126,27 +126,26 @@
                     <div class="cart-calculate-items">
 
                         <!-- Cart Calculate Items Title Start -->
-                        <h3 class="title">Tổng giỏ hàng</h3>
+                        <!-- <h3 class="title">Tổng giỏ hàng</h3> -->
                         <!-- Cart Calculate Items Title End -->
 
                         <!-- Responsive Table Start -->
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
-                                    <td>Tổng phụ</td>
+                                    <td>Tổng giỏ hàng</td>
                                     <td class="sub-total">{{ number_format($subTotal, 0, ',', '.') }} đ</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>Phí vận chuyển</td>
-                                    <td>{{ number_format(30000, 0, ',', '.') }} đ</td> <!-- Hiển thị phí vận chuyển -->
+                                    <td>{{ number_format(30000, 0, ',', '.') }} đ</td> 
                                 </tr>
                                 <tr class="total">
                                     <td>Tổng cộng</td>
                                     <td class="total-amount">
                                         {{ number_format($total, 0, ',', '.') }} đ
-                                        <!-- Hiển thị tổng tiền bao gồm phí ship -->
                                     </td>
-                                </tr>
+                                </tr> -->
                             </table>
                         </div>
                         <!-- Responsive Table End -->

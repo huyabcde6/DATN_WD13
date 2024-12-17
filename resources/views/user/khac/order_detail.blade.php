@@ -144,7 +144,8 @@
                         <div class="d-flex m-3 justify-content-between">
                             <div class="col-md-12">
                                 <p><strong>Ngày đặt:</strong> {{ $order->created_at->format('d-m-Y') }}</p>
-                                <p id="order-status-{{ $order->id }}"><strong>Trạng thái:</strong> {{ $order->status->type ?? 'N/A' }}</p>
+                                <p id="order-status-{{ $order->id }}"><strong>Trạng thái đơn hàng:</strong> <mark>{{ $order->status->type ?? 'N/A' }}</mark></p>
+                                <p style="font-size: 14px;"><strong>Trạng thái thanh toán:</strong> <mark> {{ $order->payment_status }}</mark></p>
                                 <p><strong>Người nhận:</strong> {{ $order->nguoi_nhan }}</p>
                                 <p><strong>Email:</strong> {{ $order->email }}</p>
                                 <p><strong>Số điện thoại:</strong> {{ $order->number_phone }}</p>
@@ -167,6 +168,7 @@
                                 <th>Size</th>
                                 <th>Số lượng</th>
                                 <th>Giá</th>
+                                <th>Tổng tiền</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -182,17 +184,26 @@
                                 <td>{{ $detail->size }}</td>
                                 <td>{{ $detail->quantity }}</td>
                                 <td>{{ number_format($detail->price, 0, '', ',') }} ₫</td>
+                                <td>{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }} đ</td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex justify-content-end mx-3 mb-5">
-                    <h5><strong>Tổng
-                            tiền:</strong>
-                        {{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 0, '', ',') }}₫
-                    </h5>
-                </div>
+                <div class="d-flex flex-column justify-content-end mx-3 mb-5">
+    <h5 class="d-flex justify-content-between w-100">
+ <strong>Tổng phụ :</strong> <span class="text-end">{{ number_format($totalAmount, 0, ',', '.') }} đ</span></span>
+    </h5> 
+    <h5 class="d-flex justify-content-between w-100">
+        <strong>Ship :</strong> <span class="text-end">30.000 đ</span>
+    </h5> 
+    <h5 class="d-flex justify-content-between w-100">
+        <strong>Mã giảm giá :</strong> <span class="text-end">  - {{ $order->discount ? number_format($order->discount, 0, ',', '.') : '0' }} đ</span>
+    </h5>
+    <h5 class="d-flex justify-content-between w-100">
+        <strong>Tổng tiền:</strong> <span class="text-end">{{ number_format($order->total_price, 0, ',', '.') }} đ</span>
+    </h5>
+</div>
                 <div class="d-flex mx-3 justify-content-end">
                     <form action="{{ route('orders.update', $order->id) }}" method="POST" style="display:inline;">
                         @csrf

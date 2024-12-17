@@ -10,8 +10,9 @@
                     </h5>
                     <p id="order-status-{{ $order->id }}" class="text-center mx-3">{{ $order->status->type ?? 'N/A' }}</p>
                 </div>
-                <div class="d-flex justify-content-start">
+                <div class="d-flex justify-content-between">
                     <p style="font-size: 14px;"><strong>Ngày đặt:</strong> {{ $order->created_at->format('d-m-Y') }}</p>
+                    <p style="font-size: 14px;"><strong>Trạng thái thanh toán:</strong> <mark> {{ $order->payment_status }}</mark></p>
                 </div>
             </div>
 
@@ -94,7 +95,7 @@
             <!-- Tổng tiền -->
             <div class="d-flex justify-content-end mx-3 mb-3">
                 <h6><strong>Tổng tiền:</strong>
-                    {{ number_format($order->orderDetails->sum(fn($detail) => $detail->price * $detail->quantity) + $order->shipping_fee, 0, '', ',') }}₫
+                {{ number_format($order->total_price, 0, ',', '.') }} đ
                 </h6>
             </div>
 

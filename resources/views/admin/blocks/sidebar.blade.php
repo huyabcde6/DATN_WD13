@@ -6,7 +6,7 @@
          <div id="sidebar-menu">
 
              <div class="logo-box">
-                 {{-- <a class='logo logo-light' href='index.html'>
+                 {{-- <a class='logo logo-light' href="{{ route('admin.statistics.index') }}">
                      <span class="logo-sm">
                          <img src="{{ asset('assets/admin/images/logo-sm.png')}}" alt="" height="22">
                  </span>
@@ -14,7 +14,7 @@
                      <img src="{{ asset('assets/admin/images/logo-light.png')}}" alt="" height="24">
                  </span>
                  </a> --}}
-                 {{-- <a class='logo logo-dark' href='index.html'>
+                 {{-- <a class='logo logo-dark' href="{{ route('admin.statistics.index') }}">
                      <span class="logo-sm">
                          <img src="{{ asset('assets/admin/images/logo-sm.png')}}" alt="" height="22">
                  </span>

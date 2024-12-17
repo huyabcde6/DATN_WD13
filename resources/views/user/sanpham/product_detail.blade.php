@@ -1,24 +1,24 @@
 @extends('layouts.home')
 @section('css')
 <style>
-.unavailable {
-    opacity: 0.5;
-    /* Làm mờ màu không khả dụng */
-    pointer-events: none;
-    /* Ngăn chặn nhấp chuột vào các tùy chọn không khả dụng */
-    text-decoration: line-through;
+    .unavailable {
+        opacity: 0.5;
+        /* Làm mờ màu không khả dụng */
+        pointer-events: none;
+        /* Ngăn chặn nhấp chuột vào các tùy chọn không khả dụng */
+        text-decoration: line-through;
 
-    /* Gạch chéo */
-    .size-option.active {
-        border: 2px solid #000;
-        /* Đường viền đậm cho tùy chọn kích thước đã chọn */
-    }
+        /* Gạch chéo */
+        .size-option.active {
+            border: 2px solid #000;
+            /* Đường viền đậm cho tùy chọn kích thước đã chọn */
+        }
 
-    .color-option.active {
-        border: 2px solid #000;
-        /* Đường viền đậm cho tùy chọn màu sắc đã chọn */
+        .color-option.active {
+            border: 2px solid #000;
+            /* Đường viền đậm cho tùy chọn màu sắc đã chọn */
+        }
     }
-}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 @endsection
@@ -62,7 +62,7 @@
                             <!-- Ảnh chính: Ban đầu hiển thị ảnh đại diện -->
                             <a id="main-image-link" class="swiper-slide h-auto"
                                 href="{{ url('storage/' . $product->avata) }}">
-                                <img id="main-image"  src="{{ url('storage/' . $product->avata) }}"
+                                <img id="main-image" src="{{ url('storage/' . $product->avata) }}"
                                     alt="Product">
                             </a>
 
@@ -201,7 +201,15 @@
                             </form>
                         </div>
                         <div class="add-to-wishlist">
-                            <a class="btn btn-outline-dark btn-hover-primary" href="{{ route('orders.create') }}">Mua ngay</a>
+                            <form method="POST" action="{{ route('muangay') }}" id="muangay-form">
+                                @csrf
+                                <input type="hidden" name="products_id" value="{{ $product->id }}">
+                                <input type="hidden" name="size" value="" id="muangay-size">
+                                <input type="hidden" name="color" value="" id="mungay-color">
+                                <input type="hidden" name="quantity" id="muangay-quantity" value="">
+                                <button type="submit" class="btn btn-outline-dark btn-hover-primary"
+                                    id="add-to-buy">Mua Ngay</button>
+                            </form>
                         </div>
                     </div>
                     <!-- Cart & Wishlist Button End -->
@@ -250,7 +258,7 @@
                             <p class="mb-3">{!! $product->description !!}</p>
                         </div>
                     </div>
-        
+
                     <div class="tab-pane fade" id="connect-2" role="tabpanel" aria-labelledby="profile-tab">
                         <!-- Shipping Policy Start -->
                         <div class="shipping-policy mb-n2">
@@ -276,7 +284,7 @@
                         </div>
                         <!-- Shipping Policy End -->
                     </div>
-        
+
                     <div class="tab-pane fade" id="connect-3" role="tabpanel" aria-labelledby="review-tab">
                         <div class="size-tab table-responsive-lg">
                             <h4 class="title-3 mb-4">Bản size</h4>
@@ -329,7 +337,7 @@
                 </div>
             </div><br><br><br>
             <!-- Single Product Tab End -->
-        
+
             <!-- Start Comment Section (Moved) -->
             <div class="col-lg-12 col-custom single-product-comment">
                 @auth
@@ -341,7 +349,7 @@
                         <div class="card-header bg-dark text-white py-2">
                             <h6 class="mb-0" style="color: white">Đánh giá sản phẩm</h6>
                         </div>
-            
+
                         <div class="card-body bg-light">
                             <form method="POST" action="{{ route('product.comment', $product->slug) }}" class="px-2">
                                 @csrf
@@ -357,7 +365,7 @@
                     </div>
                 </div>
                 @endauth
-            
+
                 <!-- Comments List -->
                 <div class="reviews-list">
                     <h6 class="text-muted mb-3">Các đánh giá khác</h6>
@@ -385,10 +393,10 @@
                     @endif
                 </div>
             </div>
-            
+
             <!-- End Comment Section -->
         </div>
-        
+
 
         <!-- Products Start -->
         <div class="row">
@@ -414,7 +422,7 @@
                                 <!-- Single Product Start -->
                                 <div class="product product-border-left" data-aos="fade-up" data-aos-delay="300">
                                     <div class="thumb">
-                                        <a href="single-product.html" class="image">
+                                        <a href="{{ route('product.show', $item->slug) }}" class="image">
                                             <img class="image w-100 h-100" src="{{ url('storage/' . $item->avata) }}"
                                                 alt="Product" />
                                         </a>
@@ -426,9 +434,8 @@
                                         </div>
                                     </div>
                                     <div class="content">
-                                        <h4 class="sub-title"><a
-                                                href="single-product.html">{{ $item->categories->name }}</a></h4>
-                                        <h5 class="title"><a href="single-product.html">{{ $item->name }}</a></h5>
+                                        <h4 class="sub-title">{{ $item->categories->name }}</h4>
+                                        <h5 class="title"><a href="{{ route('product.show', $item->slug) }}">{{ $item->name }}</a></h5>
                                         <span class="ratings">
                                             <span class="rating-wrap">
                                                 <span class="star" style="width: 100%"></span>
@@ -436,8 +443,13 @@
                                             <span class="rating-num">(4)</span>
                                         </span>
                                         <span class="price">
-                                            <span class="new">$38.50</span>
-                                            <span class="old">$42.85</span>
+                                            @if ($item->discount_price)
+                                            <span class="new">{{ number_format($item->discount_price, 0, '', '.') }}
+                                                ₫</span>&nbsp;&nbsp;
+                                            <span class="old">{{ number_format($item->price, 0, '', '.') }} ₫</span>
+                                            @else
+                                            <span class="new">{{ number_format($item->price, 0, '', '.') }} ₫</span>
+                                            @endif
                                         </span>
                                         <button class="btn btn-sm btn-outline-dark btn-hover-primary">Thêm vào
                                             giỏ</button>
@@ -555,9 +567,15 @@
         // Hàm thay đổi trạng thái khả dụng
         function toggleAvailability(element, isAvailable) {
             if (isAvailable) {
-                element.removeClass('unavailable').css({ opacity: 1, textDecoration: 'none' });
+                element.removeClass('unavailable').css({
+                    opacity: 1,
+                    textDecoration: 'none'
+                });
             } else {
-                element.addClass('unavailable').css({ opacity: 0.5, textDecoration: 'line-through' });
+                element.addClass('unavailable').css({
+                    opacity: 0.5,
+                    textDecoration: 'line-through'
+                });
             }
         }
 
@@ -611,7 +629,6 @@
             const maxQuantity = parseInt($(this).attr('max'));
             this.value = Math.min(Math.max(quantity, 1), maxQuantity);
         });
-
         // Thêm sản phẩm vào giỏ hàng
         $('#add-to-cart-button').on('click', function(event) {
             event.preventDefault();
@@ -673,7 +690,130 @@
             });
         }
     });
+</script>
+<script>
+    $(document).ready(function() {
+        var selectedSize = null;
+        var selectedColor = null;
+        var variantDetails = @json($productDetails); // Dữ liệu biến thể sản phẩm
 
+        // Hiển thị tổng số lượng ban đầu
+        const totalStock = variantDetails.reduce((sum, variant) => sum + variant.quantity, 0);
+        $('#current-stock').text(`Số lượng: ${totalStock}`);
+
+        // Khi người dùng chọn kích thước
+        $('.size-option').on('click', function(event) {
+            event.preventDefault();
+            selectedSize = $(this).data('value');
+            $('#selected-size').val(selectedSize);
+            $('#muangay-size').val(selectedSize); // Cập nhật hidden input của form "Mua ngay"
+
+            $('#selected-size-text').text($(this).text());
+            $('.size-option').removeClass('active');
+            $(this).addClass('active');
+            updateAvailability();
+            updateVariantDetails();
+        });
+
+        // Khi người dùng chọn màu sắc
+        $('.color-option').on('click', function(event) {
+            event.preventDefault();
+            if ($(this).hasClass('unavailable')) {
+                return;
+            }
+            selectedColor = $(this).data('value');
+            $('#selected-color').val(selectedColor);
+            $('#mungay-color').val(selectedColor); // Cập nhật hidden input của form "Mua ngay"
+
+            const colorName = $(this).data('color-name');
+            $('#selected-color-text').text(colorName);
+            $('.color-option').removeClass('active');
+            $(this).addClass('active');
+            updateAvailability();
+            updateVariantDetails();
+        });
+
+        // Kiểm tra khả dụng của biến thể
+        function isVariantAvailable(sizeId, colorId) {
+            return variantDetails.some(v => v.size_id == sizeId && v.color_id == colorId && v.quantity > 0);
+        }
+
+        // Cập nhật khả dụng của các tùy chọn
+        function updateAvailability() {
+            $('.color-option').each(function() {
+                const colorId = $(this).data('value');
+                const isAvailable = variantDetails.some(v => v.color_id == colorId && (!selectedSize || v.size_id == selectedSize) && v.quantity > 0);
+                toggleAvailability($(this), isAvailable);
+            });
+
+            $('.size-option').each(function() {
+                const sizeId = $(this).data('value');
+                const isAvailable = variantDetails.some(v => v.size_id == sizeId && (!selectedColor || v.color_id == selectedColor) && v.quantity > 0);
+                toggleAvailability($(this), isAvailable);
+            });
+        }
+
+        // Thay đổi trạng thái khả dụng
+        function toggleAvailability(element, isAvailable) {
+            if (isAvailable) {
+                element.removeClass('unavailable').css({
+                    opacity: 1,
+                    textDecoration: 'none'
+                });
+            } else {
+                element.addClass('unavailable').css({
+                    opacity: 0.5,
+                    textDecoration: 'line-through'
+                });
+            }
+        }
+
+        // Cập nhật thông tin biến thể
+        function updateVariantDetails() {
+            if (selectedColor && selectedSize) {
+                const variant = variantDetails.find(v => v.color_id == selectedColor && v.size_id == selectedSize);
+                if (variant) {
+                    $('#current-price').text(new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    }).format(variant.discount_price));
+                    $('#current-sku').text(`SKU: ${variant.product_code}`);
+                    $('#current-stock').text(`Số lượng: ${variant.quantity}`);
+                    $('#product-quantity').attr('max', variant.quantity);
+                    $('#muangay-quantity').val(1); // Gán giá trị mặc định cho số lượng trong form "Mua ngay"
+
+                    if (variant.image) {
+                        $('#main-image').attr('src', `/storage/${variant.image}`);
+                        $('#main-image-link').attr('href', `/storage/${variant.image}`);
+                    }
+                } else {
+                    $('#current-stock').text('Không khả dụng');
+                }
+            } else {
+                const totalStock = variantDetails.reduce((sum, variant) => sum + variant.quantity, 0);
+                $('#current-stock').text(`Số lượng: ${totalStock}`);
+            }
+        }
+
+        // Xử lý nút "Mua ngay"
+        $('#add-to-buy').on('click', function(event) {
+            event.preventDefault();
+            if (!selectedSize || !selectedColor) {
+                Swal.fire({
+                    title: 'Thông báo',
+                    text: 'Vui lòng chọn cả kích thước và màu sắc trước khi mua.',
+                    icon: 'warning'
+                });
+                return;
+            }
+
+            // Gửi form "Mua ngay"
+            $(this).prop('disabled', true).text('Đang xử lý...');
+            $('#muangay-quantity').val($('#product-quantity').val()); // Gán số lượng vào hidden input
+
+            $('#muangay-form').submit();
+        });
+    });
 </script>
 
 @endsection
