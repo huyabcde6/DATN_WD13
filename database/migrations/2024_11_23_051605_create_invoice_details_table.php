@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('invoice_id')->constrained('invoices')->onDelete('cascade'); // Liên kết với bảng 'invoices'
             $table->string('product_name'); // Tên sản phẩm tại thời điểm hóa đơn
+            $table->string('product_avata');
             $table->string('color'); // Màu sắc sản phẩm
             $table->string('size'); // Kích thước sản phẩm
             $table->integer('quantity'); // Số lượng

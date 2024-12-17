@@ -19,7 +19,6 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
-
         return view('user.khac.my_account', compact('user'));
     }
 
@@ -79,7 +78,7 @@ class ProfileController extends Controller
             ];
 
             $user->update($data);
-            return back()->with('success', 'Thành công');
+            return back()->with('success', 'Cập Nhật Tài Khoản Thành Công');
         } catch (Exception $e) {
             return back()->with('error', 'Lỗi' . $e->getMessage());
         }

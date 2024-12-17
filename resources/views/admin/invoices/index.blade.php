@@ -3,7 +3,10 @@
 @section('title')
 Quản lý hóa đơn
 @endsection
-
+@section('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+@endsection
 @section('content')
 
 <div class="row m-3">
@@ -15,43 +18,29 @@ Quản lý hóa đơn
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="d-flex m-3">
-                    <form action="" method="get" class="">
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="bi bi-search"></i>
-                            </span>
-                            <input type="text" value="{{ request('search') }}" name="search" id="search"
-                                class="form-control" placeholder="Nhập từ khóa cần tìm..">
-                            <button type="submit" class="btn btn-dark">Tìm kiếm</button>
-                        </div>
-                    </form>
-                </div>
                 <div class="card-body">
-                    <table class="table table-striped text-center">
+                    <table class="table table-bordered text-center" id="invoiceTable">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Mã đơn hàng</th>
-                                <th>Người nhận</th>
-                                <th>SĐT</th>
-                                <th>Ngày tạo</th>
-                                <th>Tổng tiền</th>
-                                <th>Hình thức thanh toán</th>
-                                <th>Trạng thái thanh toán</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
+                                <th class="text-center">Mã đơn hàng</th>
+                                <th class="text-center">Người nhận</th>
+                                <th class="text-center">Ngày tạo</th>
+                                <th class="text-center">Tổng tiền</th>
+                                <th class="text-center">Hình thức thanh toán</th>
+                                <th class="text-center">Trạng thái thanh toán</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th class="text-center">Hành động</th>
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody class="text-center">
                             @foreach($invoices as $key => $invoice)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $invoice->order_code }}</td>
                                 <td>{{ $invoice->user->name }}</td>
-                                <td>{{ $invoice->number_phone }}</td>
-                                <td>{{ $invoice->created_at->format('d-m-Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($invoice->date_invoice)->format('d-m-Y') }}</td>
                                 <td>{{ number_format($invoice->total_price, 0, ',', '.') }} đ</td>
                                 <td>{{ $invoice->method }}</td>
                                 <td>{{ $invoice->payment_status }}</td>
@@ -62,7 +51,7 @@ Quản lý hóa đơn
 
                                 </td>
                                 <td>
-                                    <a href=""
+                                    <a href="{{ route('admin.invoices.show', $invoice->id) }}"
                                         class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
                                         data-bs-toggle="tooltip" title="Xem">
                                         <i class="mdi mdi-eye "></i>
@@ -78,5 +67,29 @@ Quản lý hóa đơn
         {{ $invoices->links('pagination::bootstrap-5') }}
     </div>
 </div>
+
+@endsection
+@section('js')
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#invoiceTable').DataTable({
+        "language": {
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+            "infoEmpty": "Không có dữ liệu",
+            "search": "Tìm kiếm:",
+            "paginate": {
+                "first": "Đầu",
+                "last": "Cuối",
+                "next": "Tiếp",
+                "previous": "Trước"
+            }
+        }
+    });
+});
+</script>
 
 @endsection

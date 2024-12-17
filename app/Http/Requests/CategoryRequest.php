@@ -30,7 +30,6 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'Vui lòng nhập tên danh mục',
-            'name.unique' => 'Tên danh mục đã tồn tại',
             'name.max' => 'Tên danh mục không được vượt quá 255 ký tự',
             'name.string' => 'Tên danh mục phải là chuỗi',
         ];

@@ -23,11 +23,19 @@ class CartController extends Controller
         $shippingFee = 30000;
 
         $subTotal = 0;
-        foreach ($cartItems as $item) {
+        foreach ($cartItems as $key => $item) {
+            $productDetail = ProductDetail::find($item['product_detail_id']);
+
+            if ($productDetail) {
+                // Thêm thông tin số lượng còn lại vào item giỏ hàng
+                $cartItems[$key]['available_quantity'] = $productDetail->quantity; // Số lượng sản phẩm trong kho
+            } else {
+                $cartItems[$key]['available_quantity'] = 0; // Nếu không tìm thấy sản phẩm, gán số lượng = 0
+            }
             $subTotal += $item['price'] * $item['quantity'];
         }
-
         $total = $subTotal + $shippingFee;
+        
         return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
     public function addToCart(Request $request)
@@ -85,6 +93,7 @@ class CartController extends Controller
                     'product_id' => $productDetail->products_id,
                     'price' => $price, // Dùng giá khuyến mãi nếu có
                     'image' => $productDetail->products->avata,
+                    'slug' =>$productDetail->products->slug,
                 ];
             }
 
@@ -125,7 +134,7 @@ class CartController extends Controller
         // Cập nhật session
         Session::put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Product removed from cart successfully!');
+        return redirect()->back()->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng thành công! ');
     }
 
     public function update(Request $request)
@@ -146,7 +155,7 @@ class CartController extends Controller
 
             // Tính toán giá của sản phẩm
             $itemPrice = $cart[$productDetailId]['price'];
-            $itemSubtotal = number_format($itemPrice * $quantity, 0, ',', '.') . ' đ'; // Tính subtotal
+            $itemSubtotal = $itemPrice * $quantity;// Tính subtotal
 
             // Tính tổng giá trị đơn hàng
             $total = 0;
@@ -161,8 +170,8 @@ class CartController extends Controller
             // Trả về JSON để JavaScript cập nhật lại giao diện
             return response()->json([
                 'status' => 'success',
-                'item_price' => $itemSubtotal, // Giá subtotal của sản phẩm
-                'total_price' => number_format($totalWithShipping, 0, ',', '.') . ' đ', // Tổng giá trị đơn hàng bao gồm phí vận chuyển
+                'item_price' => $itemSubtotal, // Giá subtotal của sản phẩm (chưa format)
+                'total_price' => $totalWithShipping, // Tổng giá trị đơn hàng bao gồm phí vận chuyển
             ]);
         }
 

@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
@@ -53,6 +55,11 @@ Route::delete('/cart/remove/{productDetailId}', [CartController::class, 'removeF
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+Route::post('/muangay', [OrderController::class, 'muangay'])->name('muangay');
+// Route
+Route::get('/checkout/thankyou', function () {
+    return view('checkout.thankyou');
+})->name('checkout.thankyou');
 
 
 // Route::get('/login', [UserController::class, 'login'])->name('login');
@@ -88,7 +95,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý đơn hàng
     Route::resource('orders', AdminOrderController::class);
-    
+
     // Quản lý kích thước
     Route::resource('sizes', SizeController::class);
 
@@ -102,7 +109,7 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
 
     // Quản lý danh mục
     Route::resource('categories', CategoryProductController::class);
-    
+
     Route::resource('users', UserController::class);
 
     Route::get('/', [StatisticsController::class, 'index'])->name('statistics.index');
@@ -151,7 +158,9 @@ Route::get('tintuc/{id}', [NewController::class, 'tintucdetail'])->name('tintucd
 Route::get('/lienhe', function () {
     return view('user.khac.lienhe');
 })->name('contact');
-
+Route::get('/gioithieu', function () {
+    return view('user.khac.gioithieu');
+})->name('introduction');
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
@@ -162,10 +171,10 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     Route::put('/comments/{commentId}', [CommentController::class, 'update'])->name('comments.update');
     Route::post('/comments/{commentId}/hide', [CommentController::class, 'hide'])->name('comments.hide');
 });
-
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
-
 Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('vocher');
-
-
 Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');
+Route::post('/update-address', [AddressController::class, 'updateAddress'])->name('user.updateAddress');
+// Route hiển thị danh sách voucher cho user
+Route::get('/vouchers', [VoucherController::class, 'index'])->name('user.vouchers');
+

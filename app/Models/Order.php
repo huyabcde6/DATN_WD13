@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Order extends Model
 {
@@ -41,7 +42,7 @@ class Order extends Model
     {
         return $this->belongsTo(StatusDonHang::class, 'status_donhang_id');
     }
-    
+
     public function products()
     {
         return $this->hasManyThrough(products::class, OrderDetail::class, 'order_id', 'id', 'id', 'products_id');
@@ -56,7 +57,7 @@ class Order extends Model
         // Tạo hóa đơn
         $invoice = Invoice::create([
             'order_code'     => $this->order_code,
-            'order_id'       => $this->id,  // Liên kết với đơn hàng
+            'order_id'       => $this->id,
             'user_id'        => $this->user_id,
             'nguoi_nhan'     => $this->nguoi_nhan,
             'email'          => $this->email,
@@ -70,14 +71,14 @@ class Order extends Model
             'discount'       => $this->discount,
             'shipping_fee'   => $this->shipping_fee,
             'total_price'    => $this->total_price,
-            'date_invoice'   => now(),
+            'date_invoice'   => $this->created_at,
         ]);
 
         // Lưu chi tiết hóa đơn
         foreach ($this->orderDetails as $orderDetail) {
-            $productName = $orderDetail->productDetail->products->name;
             $invoice->invoiceDetails()->create([
-                'product_name'  => $productName, 
+                'product_name'  => $orderDetail->product_name,
+                'product_avata'  => $orderDetail->product_avata,
                 'color'         => $orderDetail->color,
                 'size'          => $orderDetail->size,
                 'quantity'      => $orderDetail->quantity,
@@ -93,6 +94,8 @@ class Order extends Model
     {
         return $this->hasMany(InvoiceDetail::class);
     }
-
-
+    public function statusHistories()
+    {
+        return $this->hasMany(OrderStatusHistory::class);
+    }
 }

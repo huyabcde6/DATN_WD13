@@ -8,13 +8,6 @@
                 <div class="flex-grow-1">
                     <h4 class="fs-18 fw-semibold m-0">Thêm danh mục</h4>
                 </div>
-
-                <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh mục</a></li>
-                        <li class="breadcrumb-item active">Thêm danh mục</li>
-                    </ol>
-                </div>
             </div>
 
             <!-- General Form -->
@@ -36,7 +29,7 @@
                                             <div class="col-6">
                                                 <div class="mb-3">
                                                     <label for="simpleinput" class="form-label">Tên danh mục</label>
-                                                    <input type="text" placeholder="Nhập tên danh mục" value="{{ old('name') }}" name="name" class="form-control">
+                                                    <input type="text" placeholder="Nhập tên danh mục" value="{{ old('name') }}" name="name" class="form-control">
                                                     @error('name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -52,6 +45,31 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Thêm phần chọn sản phẩm chưa có danh mục -->
+                                        <div class="mt-4">
+                                            <label for="products" class="form-label">Chọn sản phẩm chưa có danh mục</label>
+                                            <div class="row">
+                                                @foreach($products as $product)
+                                                    @if($product->category_id == null)
+                                                        <div class="col-4">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="{{ $product->id }}" name="products[]">
+                                                                <label class="form-check-label" for="product_{{ $product->id }}">
+                                                                    <!-- Hiển thị ảnh sản phẩm -->
+                                                                    <img src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" style="width: 50px; height: 50px; object-fit: cover;">
+                                                                    {{ $product->name }}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                            @error('products')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
                                         <div class="mt-3">
                                             <button type="submit" class="btn btn-success">Thêm</button>
                                         </div>

@@ -373,7 +373,6 @@
         </div>
     </div>
 </div>
-
 <!-- Blog Section Start -->
 <div class="section section-padding">
     <div class="container">
@@ -384,7 +383,7 @@
             </div>
         </div>
         <div class="row mb-n6">
-            @if (!empty($news))
+
             @foreach($news as $new)
             <div
                 class="col-lg-4 col-md-6 col-12 mb-6"
@@ -394,7 +393,7 @@
                 <!-- Blog Single Post Start -->
                 <div class="blog-single-post-wrapper">
                     <div class="blog-thumb">
-                        <a class="blog-overlay" href="blog-details.html">
+                        <a class="blog-overlay" href="{{ route('tintucdetail', ['id' => $new->id]) }}">
                             <img class="fit-image" src="{{ url('storage/'. $new->avata) }}"
                                 alt="Blog Post" />
                         </a>
@@ -415,11 +414,8 @@
                 <!-- Blog Single Post End -->
             </div>
             @endforeach
-            @endif
         </div>
     </div>
 </div>
-<!-- Blog Section End -->
 
 @endsection
-

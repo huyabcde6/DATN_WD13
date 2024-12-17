@@ -148,15 +148,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="avata">Hình ảnh sản phẩm</label>
-                                    <input class="form-control mb-3" type="file" name="avata" id="avata">
+                                    <input class="form-control mb-3" type="file" name="avata" >
                                     <img src="{{ url('storage/'. $products->avata) }}" alt="Hình ảnh sản phẩm"
-                                        style="width: 100px; height: auto;">
+                                        style="width: 80px; height: auto;">
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="images">Hình ảnh phụ</label>
-
                                     <input class="form-control mb-3" type="file" name="images[]" id="images" multiple>
+
                                     <h4 class="collapse-button" data-bs-toggle="collapse"
                                         data-bs-target="#additionalImages" aria-expanded="false"
                                         aria-controls="additionalImages">
@@ -168,11 +168,14 @@
                                             style="display: inline-block; position: relative; margin: 5px;">
                                             <img src="{{ url('storage/'. $image->image_path) }}" alt="Hình ảnh phụ"
                                                 style="width: 100px; height: 100px;">
+                                            <button type="button"
+                                                class="btn-close position-absolute top-0 start-100 translate-middle"
+                                                aria-label="Close"  style="color: red;" data-image-id="{{ $image->id }}"></button>
                                         </div>
                                         @endforeach
                                     </div>
                                 </div>
-
+                                <input type="hidden" name="deleted_images" id="deletedImages">
                                 <div class="button-group">
                                     <label for="sizes">Chọn kích thước</label>
                                     <div class="options" id="sizes">
@@ -199,20 +202,21 @@
                             <div>
                                 @foreach($variants as $variant)
                                 <div class="card border">
-                                <h4 class="mt-3 mx-3">Biến thể (Kích thước: {{ $variant->size->value }}, Màu:
-                                    {{ $variant->color->value }})</h4>
+                                    <h4 class="mt-3 mx-3">Biến thể (Kích thước: {{ $variant->size->value }}, Màu:
+                                        {{ $variant->color->value }})</h4>
                                     <div class="card-body">
                                         <div class="row mb-3">
                                             <div class="col-lg-1 mx-4">
-                                                <div id="variant-preview-container_${size.id}_${color.id}" class="mt-2 pl-3"></div>
+                                                <div id="variant-preview-container_${size.id}_${color.id}"
+                                                    class="mt-2 pl-3"></div>
                                             </div>
                                             <input type="hidden" name="variant_ids[]" value="{{ $variant->id }}">
                                             <div class="col-lg-4 mx-5">
                                                 <div class="mb-2">
                                                     <label for="">Hình
                                                         ảnh</label>
-                                                    <input type="file" name="variant_images[]" id="" class="form-control"
-                                                        accept="image/*">
+                                                    <input type="file" name="variant_images[]" id=""
+                                                        class="form-control" accept="image/*">
                                                 </div>
                                                 <div class="mb-2">
                                                     <label for="">Số
@@ -230,17 +234,17 @@
                                                 <div class="mb-2">
                                                     <label for="">Giá
                                                         khuyến mãi</label>
-                                                    <input type="number" name="discount_prices[]" id="" class="form-control"
-                                                        value="{{ $variant->discount_price }}">
+                                                    <input type="number" name="discount_prices[]" id=""
+                                                        class="form-control" value="{{ $variant->discount_price }}">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                
+
                                 </div>
                                 <hr>
                                 @endforeach
-                                </div>
+                            </div>
                             <div id="variants-container">
 
                             </div>
@@ -263,17 +267,14 @@
 <script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
 
 
-<!-- Preview container -->
-<div id="preview-container" class="mt-3"></div>
-
 <script>
 document.getElementById('images').addEventListener('change', function(event) {
     const previewContainer = document.getElementById('preview-container');
-    previewContainer.innerHTML = ''; // Xóa nội dung trước đó
+    previewContainer.innerHTML = ''; // Clear previous content
 
     const files = Array.from(event.target.files);
 
-    // Tạo preview cho các file mới chọn
+    // Create preview for selected files
     files.forEach((file, index) => {
         const fileReader = new FileReader();
         fileReader.onload = function(e) {
@@ -292,7 +293,7 @@ document.getElementById('images').addEventListener('change', function(event) {
         fileReader.readAsDataURL(file);
     });
 
-    // Xử lý nút xóa cho ảnh mới
+    // Handle remove image button click for newly uploaded images
     previewContainer.addEventListener('click', function(e) {
         if (e.target.classList.contains('btn-close')) {
             const index = parseInt(e.target.getAttribute('data-index'));
@@ -300,51 +301,57 @@ document.getElementById('images').addEventListener('change', function(event) {
 
             files.forEach((file, i) => {
                 if (i !== index) {
-                    dt.items.add(file); // Giữ lại các file không bị xóa
+                    dt.items.add(file); // Keep files that are not removed
                 }
             });
 
-            event.target.files = dt.files; // Cập nhật danh sách file của input
-            e.target.parentElement.remove(); // Xóa phần tử hình ảnh khỏi preview
+            event.target.files = dt.files; // Update file list of the input
+            e.target.parentElement.remove(); // Remove the image element from preview
         }
     });
 });
 
-// Xử lý xóa hình ảnh cũ qua API hoặc thông qua form submit
+// Handle removal of old image through API or form submission
+// Xử lý xóa hình ảnh cũ
 document.querySelectorAll('.btn-close').forEach(button => {
     button.addEventListener('click', function(e) {
         const imageId = e.target.getAttribute('data-image-id');
+        const deletedImagesInput = document.getElementById('deletedImages');
 
-        // Gọi API để xóa ảnh cũ, có thể sử dụng AJAX hoặc form submit
+        // Thêm ID hình ảnh bị xóa vào trường deleted_images
+        let deletedImages = deletedImagesInput.value ? deletedImagesInput.value.split(',') : [];
+        deletedImages.push(imageId);
+        deletedImagesInput.value = deletedImages.join(',');
+
+        // Xóa hình ảnh khỏi giao diện
+        e.target.closest('.product-images').remove();
+
+        // Gửi yêu cầu xóa ảnh qua API (ví dụ dùng fetch) nếu cần
         if (imageId) {
-            // Gửi yêu cầu xóa ảnh qua API (ví dụ dùng fetch)
             fetch(`/api/delete-image/${imageId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Xóa hình ảnh khỏi giao diện
-                    e.target.closest('.product-images').remove();
-                } else {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert('Có lỗi xảy ra khi xóa ảnh!');
+                    }
+                })
+                .catch(error => {
                     alert('Có lỗi xảy ra khi xóa ảnh!');
-                }
-            })
-            .catch(error => {
-                alert('Có lỗi xảy ra khi xóa ảnh!');
-            });
+                });
         }
     });
 });
 </script>
 
-
 <script>
-// Quill Editor Setup
+// Quill Editor Setup for product description
 document.addEventListener('DOMContentLoaded', function() {
     var quill = new Quill("#quill-editor", {
         theme: "snow",
@@ -376,7 +383,7 @@ function removeVietnameseTones(str) {
         .replace(/đ/g, "d").replace(/Đ/g, "D");
 }
 
-// Size and Color Selection
+// Handle Size and Color Selection
 document.querySelectorAll('#sizes .option-button').forEach(button => {
     button.addEventListener('click', function() {
         this.classList.toggle('selected');
@@ -389,13 +396,13 @@ document.querySelectorAll('#colors .option-button').forEach(button => {
     });
 });
 
-// Generate Variants
+// Generate Variants for selected sizes and colors
 document.getElementById('generate-variants').addEventListener('click', function() {
     const selectedSizeButtons = document.querySelectorAll('#sizes .option-button.selected');
     const selectedColorButtons = document.querySelectorAll('#colors .option-button.selected');
 
     if (selectedSizeButtons.length === 0 || selectedColorButtons.length === 0) {
-        alert('Vui lòng chọn ít nhất một kích thước và một màu sắc.');
+        alert('Please select at least one size and one color.');
         return;
     }
 
@@ -428,7 +435,7 @@ document.getElementById('generate-variants').addEventListener('click', function(
                 const variantForm = document.createElement('div');
                 variantForm.innerHTML = `
                     <div class="card border">
-                        <h4 class="mt-3 mx-3">Biến thể (Kích thước: ${size.value}, Màu: ${color.value})</h4>
+                        <h4 class="mt-3 mx-3">Variant (Size: ${size.value}, Color: ${color.value})</h4>
                         <div class="card-body">
                             <div class="row mb-3">
                                 <div class="col-lg-1 mx-4">
@@ -436,21 +443,21 @@ document.getElementById('generate-variants').addEventListener('click', function(
                                 </div>
                                 <div class="col-lg-4 mx-5">
                                     <div class="mb-2">
-                                        <label for="variant_image_${size.id}_${color.id}">Hình ảnh</label>
+                                        <label for="variant_image_${size.id}_${color.id}">Image</label>
                                         <input type="file" name="variant_image[${size.id}][${color.id}]" id="variant_image_${size.id}_${color.id}" class="form-control" accept="image/*" required>
                                     </div>
                                     <div class="mb-2">
-                                        <label for="variant_quantity_${size.id}_${color.id}">Số lượng</label>
+                                        <label for="variant_quantity_${size.id}_${color.id}">Quantity</label>
                                         <input type="number" name="variant_quantity[${size.id}][${color.id}]" id="variant_quantity_${size.id}_${color.id}" class="form-control" min="1" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 mx-3 ">
                                     <div class="mb-2">
-                                        <label for="variant_price_${size.id}_${color.id}">Giá</label>
+                                        <label for="variant_price_${size.id}_${color.id}">Price</label>
                                         <input type="number" name="variant_price[${size.id}][${color.id}]" id="variant_price_${size.id}_${color.id}" class="form-control" min="1" required>
                                     </div>
                                     <div class="mb-2">
-                                        <label for="variant_discount_price_${size.id}_${color.id}">Giá khuyến mãi</label>
+                                        <label for="variant_discount_price_${size.id}_${color.id}">Discount Price</label>
                                         <input type="number" name="variant_discount_price[${size.id}][${color.id}]" id="variant_discount_price_${size.id}_${color.id}" class="form-control" min="0">
                                     </div>
                                 </div>
