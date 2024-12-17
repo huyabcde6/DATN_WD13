@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\categories;
 use App\Models\products;
@@ -74,6 +75,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->has('is_new'));
         try {
             // Tìm sản phẩm theo ID
             $product = new products();

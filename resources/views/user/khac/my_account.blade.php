@@ -50,28 +50,6 @@
 
 @section('content')
 <!-- Breadcrumb Section Start -->
-<div class="section">
-
-    <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
-        <div class="container-fluid">
-            <div class="breadcrumb-content text-center">
-                <h1 class="title">My Account</h1>
-                <ul>
-                    <li>
-                        <a href="index.html">Home </a>
-                    </li>
-                    <li class="active"> My Account</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- Breadcrumb Area End -->
-
-</div>
-<!-- Breadcrumb Section End -->
-
-<!-- My Account Section Start -->
 <div class="section mt-4 mb-5">
     <div class="container">
         @if (session('success'))
@@ -87,17 +65,16 @@
         @endif
         <div class="row">
             <div class="col-lg-12">
-
-                <!-- My Account Page Start -->
                 <div class="myaccount-page-wrapper">
-                    <!-- My Account Tab Menu Start -->
                     <div class="row">
                         <div class="col-lg-3 col-md-4">
                             <div class="myaccount-tab-menu nav" role="tablist">
                                 <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
                                     Trang chủ</a>
-                                <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Đơn hàng</a>
                                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i>Chi tiết tài khoản </a>
+                                @if($role)
+                                <a href="/admin"><i class="fa fa-user"></i>Chuyển trang Admin</a>
+                                @endif
                                 <a class='dropdown-item notify-item' href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="mdi mdi-location-exit fs-16 align-middle"></i>
@@ -109,18 +86,34 @@
                                 </form>
                             </div>
                         </div>
-                        <!-- My Account Tab Menu End -->
-
-                        <!-- My Account Tab Content Start -->
                         <div class="col-lg-9 col-md-8">
                             <div class="tab-content" id="myaccountContent">
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
-                                    <div class="myaccount-content">
-                                        <h3 class="title">Dashboard</h3>
+                                    <div class="myaccount-content" style="width: 110%;">
+                                        <h3 class="title ">Tài khoản</h3>
                                         <div class="welcome">
-                                            <p>Hello, <strong>Alex Aya</strong> (If Not <strong>Aya !</strong><a
-                                                    href="login-register.html" class="logout"> Logout</a>)</p>
+                                            <p>Xin chào, <strong>{{ $user->name }} </strong>!!!</p>
+                                            <p>Địa chỉ: {{ $user->address  ?? ''}}</p>
+                                            <p>Số điện thoại: {{ $user->number_phone ??''}}</p>
+                                            <h5>Đơn Hàng Của Bạn</h5>
+                                        </div>
+                                        <div class="d-flex justify-content-evenly mb-3 fs-12">
+                                            <a class="mx-1 filter-link active" data-status="all">Tất cả</a>
+                                            <a class="mx-1 filter-link" data-status="1">Chờ xác nhận</a>
+                                            <a class="mx-1 filter-link" data-status="2" href="#">Đã xác nhận</a>
+                                            <a class="mx-1 filter-link" data-status="3" href="#">Vận chuyển</a>
+                                            <a class="mx-1 filter-link" data-status="4" href="#">Đã giao hàng</a>
+                                            <a class="mx-1 filter-link" data-status="5" href="#">Hoàn thành</a>
+                                            <a class="mx-1 filter-link" data-status="7" href="#">Đã hủy</a>
+                                            <a class="mx-1 filter-link" data-status="6,8" href="#">Chờ/Hoàn hàng</a>
+                                        </div>
+                                        <div class="" id="orders-container">
+                                            @include('user.khac.partials.orders')
+                                            <!-- Hiển thị danh sách đơn hàng ban đầu -->
+                                        </div>
+                                        <div id="loading" class="text-center my-3" style="display: none;">
+                                            <p>Đang tải...</p>
                                         </div>
                                         <p class="mb-0">Từ bảng điều khiển tài khoản của bạn.
                                             bạn có thể dễ dàng kiểm tra và xem các đơn đặt hàng gần đây của mình,
@@ -128,8 +121,6 @@
                                         </p>
                                     </div>
                                 </div>
-
-                                <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="orders" role="tabpanel">
                                     <div class="d-flex justify-content-evenly mb-3 fs-12">
                                         <a class="mx-1 filter-link active" data-status="all">Tất cả</a>
@@ -152,17 +143,22 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade" id="address-edit" role="tabpanel">
                                     <div class="myaccount-content">
-                                        <h3 class="title">Billing Address</h3>
-                                        <address>
-                                            <p><strong>Alex Aya</strong></p>
-                                            <p>1234 Market ##, Suite 900 <br>
-                                                Lorem Ipsum, ## 12345</p>
-                                            <p>Mobile: (123) 123-456789</p>
-                                        </address>
-                                        <a href="#" class="btn btn btn-dark btn-hover-primary rounded-0"><i
-                                                class="fa fa-edit me-2"></i>Edit Address</a>
+                                        <h3 class="title">Address</h3>
+                                        <form action="{{ route('user.updateAddress') }}" method="POST">
+                                            @csrf
+                                            <div class="checkout-form-list">
+                                                <label>Địa chỉ <span class="required">*</span></label>
+                                                <input placeholder="Street address" name="address" type="text" value="{{ Auth::user()->address }}"><br>
+                                                <label>Số điện thoại <span class="required">*</span></label>
+                                                <input type="text" placeholder="number phone" name="number_phone" value="{{ Auth::user()->number_phone }}">
+                                            </div>
+                                            <button type="submit" class="btn btn-dark btn-hover-primary rounded-0">
+                                                <i class="fa fa-edit me-2"></i>Cập nhật địa chỉ
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
+                                <!-- end -->
                                 <div class="tab-pane fade" id="account-info" role="tabpanel">
                                     <div class="myaccount-content">
                                         <h3 class="title">Account Details</h3>
@@ -209,7 +205,7 @@
 
     </div>
 </div>
-<!-- My Account Section End -->
+<!-- ount Section End -->
 
 <!-- Scroll Top Start -->
 <a href="#" class="scroll-top" id="scroll-top">

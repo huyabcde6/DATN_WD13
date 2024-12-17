@@ -16,7 +16,7 @@ class StatusDonHang extends Model
     protected $fillable = ['type'];
 
     const CHO_XAC_NHAN = 'Chờ xác nhận';
-    const DA_XAC_NHAN = 'Đã xác nhận';    
+    const DA_XAC_NHAN = 'Đã xác nhận';
     const DANG_VAN_CHUYEN = 'Đang vận chuyển';
     const DA_GIAO_HANG = 'Đã giao hàng';
     const HOAN_THANH = 'Hoàn thành';
@@ -53,5 +53,14 @@ class StatusDonHang extends Model
         ];
 
         return $colors[$this->type] ?? 'bg-light';
+    }
+    public function previousStatusHistories()
+    {
+        return $this->hasMany(OrderStatusHistory::class, 'previous_status_id');
+    }
+
+    public function currentStatusHistories()
+    {
+        return $this->hasMany(OrderStatusHistory::class, 'current_status_id');
     }
 }

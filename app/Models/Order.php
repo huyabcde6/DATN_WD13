@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Order extends Model
 {
@@ -41,7 +42,7 @@ class Order extends Model
     {
         return $this->belongsTo(StatusDonHang::class, 'status_donhang_id');
     }
-    
+
     public function products()
     {
         return $this->hasManyThrough(products::class, OrderDetail::class, 'order_id', 'id', 'id', 'products_id');
@@ -93,6 +94,8 @@ class Order extends Model
     {
         return $this->hasMany(InvoiceDetail::class);
     }
-
-
+    public function statusHistories()
+    {
+        return $this->hasMany(OrderStatusHistory::class);
+    }
 }
