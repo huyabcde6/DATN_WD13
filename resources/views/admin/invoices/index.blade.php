@@ -51,7 +51,7 @@ Quản lý hóa đơn
                                 <td>{{ $invoice->order_code }}</td>
                                 <td>{{ $invoice->user->name }}</td>
                                 <td>{{ $invoice->number_phone }}</td>
-                                <td>{{ $invoice->created_at->format('d-m-Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($invoice->date_invoice)->format('d-m-Y') }}</td>
                                 <td>{{ number_format($invoice->total_price, 0, ',', '.') }} đ</td>
                                 <td>{{ $invoice->method }}</td>
                                 <td>{{ $invoice->payment_status }}</td>
@@ -62,7 +62,7 @@ Quản lý hóa đơn
 
                                 </td>
                                 <td>
-                                    <a href=""
+                                    <a href="{{ route('admin.invoices.show', $invoice->id) }}"
                                         class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
                                         data-bs-toggle="tooltip" title="Xem">
                                         <i class="mdi mdi-eye "></i>
