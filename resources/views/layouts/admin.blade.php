@@ -16,7 +16,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/admin/images/favicon.ico')}}">
+    <link rel="shortcut icon" href="http://datn_wd13.test/ngdung/assets/images/logo/logo1.png">
 
     <!-- App css -->
     <link href="{{ asset('assets/admin/css/app.min.css')}}" rel="stylesheet" type="text/css" id="app-style" />

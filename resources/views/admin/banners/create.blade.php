@@ -30,7 +30,9 @@ Thêm mới Banner
                         <label>Mô Tả</label>
                         <textarea name="description" class="form-control" rows="6"></textarea>
                     </div><br>
-
+                    @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                     <div class="form-group">
                         <label>Ảnh Banner</label>
                         <input type="file" name="image_path" class="form-control">
@@ -67,6 +69,9 @@ Thêm mới Banner
                             </select>
                         </div>
                     </div>
+                    @error('order')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
 
                     <button type="submit" class="btn btn-success mt-4">Lưu Banner</button>

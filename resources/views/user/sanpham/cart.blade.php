@@ -5,19 +5,13 @@
 <div class="section">
 
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
-        <div class="container-fluid">
-            <div class="breadcrumb-content text-center">
-                <h1 class="title">Giỏ Hàng</h1>
-                <ul>
-                    <li>
-                        <a href="/">Trang Chủ</a>
-                    </li>
-                    <li class="active">Giỏ Hàng</li>
-                </ul>
-            </div>
-        </div>
+    <div class="breadcrumb">
+        <a href="http://datn_wd13.test/"><i class="fa fa-home"></i> Trang Chủ</a>
+        <span class="breadcrumb-separator"> > </span>
+        <span><a href="http://datn_wd13.test/cart">Giỏ hàng</a></span>
     </div>
+
+
     <!-- Breadcrumb Area End -->
 
 </div>
@@ -75,7 +69,7 @@
                                             height="auto" width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
-                                    <a href="#">{{ $item['product_name'] }} <br> {{ $item['size'] }} /
+                                    <a href="{{ route('product.show', $item['slug']) }}">{{ $item['product_name'] }} <br> {{ $item['size'] }} /
                                         {{ $item['color'] }}</a>
                                 </td>
                                 <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
@@ -101,13 +95,18 @@
 
                                 </td>
                                 <td class="pro-remove">
-                                    <form action="{{ route('cart.remove', $item['product_detail_id']) }}" method="POST">
+                                    <form id="delete-form-{{ $item['product_detail_id'] }}"
+                                          action="{{ route('cart.remove', $item['product_detail_id']) }}"
+                                          method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"><i
-                                                class="pe-7s-trash"></i></button>
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="confirmDelete({{ $item['product_detail_id'] }})">
+                                            <i class="pe-7s-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
+
                             </tr>
                             @endforeach
                         </tbody>
@@ -129,27 +128,26 @@
                     <div class="cart-calculate-items">
 
                         <!-- Cart Calculate Items Title Start -->
-                        <h3 class="title">Tổng giỏ hàng</h3>
+                        <!-- <h3 class="title">Tổng giỏ hàng</h3> -->
                         <!-- Cart Calculate Items Title End -->
 
                         <!-- Responsive Table Start -->
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
-                                    <td>Tổng phụ</td>
+                                    <td>Tổng giỏ hàng</td>
                                     <td class="sub-total">{{ number_format($subTotal, 0, ',', '.') }} đ</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>Phí vận chuyển</td>
-                                    <td>{{ number_format(30000, 0, ',', '.') }} đ</td> <!-- Hiển thị phí vận chuyển -->
+                                    <td>{{ number_format(30000, 0, ',', '.') }} đ</td> 
                                 </tr>
                                 <tr class="total">
                                     <td>Tổng cộng</td>
                                     <td class="total-amount">
                                         {{ number_format($total, 0, ',', '.') }} đ
-                                        <!-- Hiển thị tổng tiền bao gồm phí ship -->
                                     </td>
-                                </tr>
+                                </tr> -->
                             </table>
                         </div>
                         <!-- Responsive Table End -->
@@ -268,6 +266,11 @@ $(document).ready(function() {
 function formatNumber(number) {
     return number.toLocaleString('vi-VN'); // Định dạng số theo kiểu Việt Nam, ví dụ: 2.340.000
 }
-
+    function confirmDelete(productDetailId) {
+        if (confirm('Bạn có chắc chắn muốn xóa mục này?')) {
+            // Tìm biểu mẫu và gửi đi nếu người dùng xác nhận
+            document.getElementById(`delete-form-${productDetailId}`).submit();
+        }
+    }
 </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryProductRequest;
 use App\Http\Requests\CategoryRequest;
 use App\Models\categories;
+use App\Models\products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,23 +21,30 @@ class CategoryProductController extends Controller
 
     public function index(Request $request)
     {
-        $query = categories::query();
+        $query = DB::table('categories')
+            ->leftJoin('products', 'categories.id', '=', 'products.categories_id') // Liên kết bảng categories và products
+            ->select(
+                'categories.id',
+                'categories.name',
+                'categories.status',
+                DB::raw('COUNT(products.id) as product_count') // Đếm số lượng sản phẩm
+            )
+            ->groupBy('categories.id', 'categories.name', 'categories.status'); // Nhóm theo các cột trong categories
 
         // Lọc theo từ khóa tìm kiếm
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('categories.name', 'like', '%' . $request->search . '%');
         }
 
         // Sắp xếp
         if ($request->filled('sort') && $request->filled('order')) {
             $query->orderBy($request->sort, $request->order);
         } else {
-            $query->orderBy('id', 'desc'); // Mặc định sắp xếp theo id giảm dần
+            $query->orderBy('categories.id', 'desc'); // Mặc định sắp xếp theo id giảm dần
         }
 
         // Lấy dữ liệu và phân trang
-        $categories = $query->select('id', 'name', 'status')->paginate(6);
-
+        $categories = $query->paginate(6);
         return view('admin.categories.index', compact('categories'))
             ->with('search', $request->search)
             ->with('sort', $request->sort)
@@ -44,12 +52,15 @@ class CategoryProductController extends Controller
     }
 
 
+
     /**
      * Hiển thị form tạo danh mục mới.
      */
     public function create()
     {
-        return view('admin.categories.create');
+
+        $products = products::where('categories_id', 13)->orWhere('categories_id', null)->get();
+        return view('admin.categories.create', compact('products'));
     }
 
     /**
@@ -60,12 +71,18 @@ class CategoryProductController extends Controller
         try {
             DB::beginTransaction();
 
-            categories::create([
+            $category = categories::create([
                 'name' => $request->name,
                 'status' => $request->boolean('status') // Dùng phương thức boolean để xử lý đúng kiểu boolean
 
             ]);
-
+            if ($request->has('products')) {
+                foreach ($request->products as $productId) {
+                    $product =   products::find($productId);
+                    $product->categories_id = $category->id;
+                    $product->save();
+                }
+            }
             DB::commit();
 
             return redirect()->route('admin.categories.index')
@@ -83,23 +100,31 @@ class CategoryProductController extends Controller
     public function edit($id)
     {
         $category = categories::findOrFail($id);
+        $products = products::where('categories_id', 13)->orWhere('categories_id', null)->get();
 
-        return view('admin.categories.edit', compact('category'));
+        return view('admin.categories.edit', compact('category', 'products'));
     }
 
     /**
      * Cập nhật thông tin danh mục.
      */
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
         try {
             DB::beginTransaction();
 
             $category = categories::findOrFail($id);
-
-            // Cập nhật trạng thái danh mục và các sản phẩm liên quan
-            $category->updateStatus($request->boolean('status'));
-
+            $category->update([
+                'name' => $request->name,
+                'status' => $request->boolean('status')
+            ]);
+            if ($request->has('products')) {
+                foreach ($request->products as $productId) {
+                    $product =   products::find($productId);
+                    $product->categories_id = $category->id;
+                    $product->save();
+                }
+            }
             DB::commit();
 
             return redirect()->route('admin.categories.index')
@@ -117,11 +142,21 @@ class CategoryProductController extends Controller
      */
     public function destroy($id)
     {
+        // Tìm danh mục theo ID
         $category = categories::findOrFail($id);
+        // Kiểm tra nếu danh mục có id = 13 (danh mục "Chưa xác định")
+        if ($category->id == 13) {
+            return redirect()->route('admin.categories.index')
+                ->with('status_error', 'Không thể xóa danh mục "Chưa xác định"');
+        }
+        // Cập nhật tất cả sản phẩm trong danh mục này về danh mục 'Chưa xác định' (id = 13)
+        products::where('categories_id', $id)->update(['categories_id' => 13]);
 
+        // Xóa danh mục
         $category->delete();
 
+        // Quay lại trang danh mục với thông báo thành công
         return redirect()->route('admin.categories.index')
-            ->with('status_succeed', 'Xóa thành công');
+            ->with('status_succeed', 'Xóa danh mục thành công');
     }
 }

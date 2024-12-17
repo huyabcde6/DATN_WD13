@@ -23,9 +23,9 @@ class BannerRequest extends FormRequest
     {
         return [
             'title'         => 'required',
-            'description'   => 'nullable',
+            'description'   => 'required',
             'image_path'    => 'required|image',
-            'order'         => 'nullable',
+            'order'         => 'required',
         ];
     }
 
@@ -33,7 +33,9 @@ class BannerRequest extends FormRequest
     {
         return [
             'title.required' => 'Tiêu đề không được để trống',
+            'description.required' => 'Mô tả không được để trống',
             'image_path.required' => 'Ảnh không được để trống',
+            'order.required' => 'Danh mục sản phẩm được để trống',
         ];
     }
 }
