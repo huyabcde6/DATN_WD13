@@ -1,5 +1,8 @@
 @extends('layouts.home')
-
+@section('ccss')
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+@endsection
 @section('content')
 <!-- Breadcrumb Section Start -->
 <div class="section">
@@ -43,32 +46,40 @@
 
                     <!-- Shopt Top Bar Right Start -->
                     <div class="shop-top-bar-right">
-                        <div class="shop-short-by mr-4">
-                            <select class="nice-select" aria-label=".form-select-sm example">
-                                <option selected>Hiển thị 24</option>
-                                <option value="1">Hiển thị 24</option>
-                                <option value="2">Hiển thị 12</option>
-                                <option value="3">Hiển thị 15</option>
-                                <option value="3">Hiển thị 30</option>
-                            </select>
-                        </div>
+                        <form action="{{ route('shop.index') }}" class="d-flex" method="GET">
+                            <div class="shop-short-by mr-4">
+                                <select class="form-select" name="limit" onchange="this.form.submit()">
+                                    <option value="12" {{ request('limit') == 12 ? 'selected' : '' }}>Hiển thị 12
+                                    </option>
+                                    <option value="24" {{ request('limit') == 24 ? 'selected' : '' }}>Hiển thị 24
+                                    </option>
+                                    <option value="36" {{ request('limit') == 36 ? 'selected' : '' }}>Hiển thị 36
+                                    </option>
+                                </select>
+                            </div>
 
-                        <div class="shop-short-by mr-4">
-                            <select class="nice-select" aria-label=".form-select-sm example">
-                                <option selected>Sắp xếp mặc định</option>
-                                <option value="1">Sản phẩm hot</option>
-                                <option value="2">Sắp xếp theo hạng</option>
-                                <option value="3">Sản phẩm mới nhất</option>
-                                <option value="3">Sắp xếp theo giá</option>
-                            </select>
-                        </div>
+                            <div class="shop-short-by mr-4">
+                                <select class="form-select" name="sort" onchange="this.form.submit()">
+                                    <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Sắp xếp mặc định
+                                    </option>
+                                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>
+                                        Giá giảm dần</option>
+                                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá
+                                        tăng dần</option>
+                                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Mới nhất
+                                    </option>
+                                    <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Cũ nhất
+                                    </option>
+                                </select>
+                            </div>
 
-                        <div class="shop_toolbar_btn">
-                            <button data-role="grid_3" type="button" class="active btn-grid-4" title="Grid"><i
-                                    class="fa fa-th"></i></button>
-                            <button data-role="grid_list" type="button" class="btn-list" title="List"><i
-                                    class="fa fa-th-list"></i></button>
-                        </div>
+                            <div class="shop_toolbar_btn">
+                                <button data-role="grid_3" type="button" class="active btn-grid-4" title="Grid"><i
+                                        class="fa fa-th"></i></button>
+                                <button data-role="grid_list" type="button" class="btn-list" title="List"><i
+                                        class="fa fa-th-list"></i></button>
+                            </div>
+                        </form>
                     </div>
                     <!-- Shopt Top Bar Right End -->
 
@@ -118,8 +129,9 @@
                                     <a title="Wishlist" href="#"
                                         class="btn btn-sm btn-outline-dark btn-hover-primary wishlist"><i
                                             class="fa fa-heart"></i></a>
-                                    <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"
-                                        title="Add To Cart"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                    <a href="{{ route('product.show', $product->slug) }}"
+                                        class="btn btn-sm btn-outline-dark btn-hover-primary" title="Add To Cart"><i
+                                            class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
                                     <a title="Compare" href="#"
                                         class="btn btn-sm btn-outline-dark btn-hover-primary compare"><i
                                             class="fa fa-random"></i></a>
@@ -133,41 +145,19 @@
                 <!-- Shop Wrapper End -->
 
                 <!--shop toolbar start-->
-                <div class="shop_toolbar_wrapper mt-10">
+                <div class="shop_toolbar_wrapper d-flex mt-10">
 
                     <!-- Shop Top Bar Left start -->
                     <div class="shop-top-bar-left">
-                        <div class="shop-short-by mr-4">
-                            <select class="nice-select rounded-0" aria-label=".form-select-sm example">
-                                <option selected>Hiển thị 12 mỗi trang</option>
-                                <option value="1">Hiển thị 12 mỗi trang</option>
-                                <option value="2">Hiển thị 24 mỗi trang</option>
-                                <option value="3">Hiển thị 15 mỗi trang</option>
-                                <option value="3">Hiển thị 30 mỗi trang</option>
-                            </select>
-                        </div>
+
                     </div>
                     <!-- Shop Top Bar Left end -->
 
                     <!-- Shopt Top Bar Right Start -->
-                    <div class="shop-top-bar-right">
-                        <nav>
-                            <ul class="pagination">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                    <div class="shop-top-bar-right justify-content-end">
+                        <div class="pagination-wrapper">
+                            {{ $products->appends(request()->input())->links() }}
+                        </div>
                     </div>
                     <!-- Shopt Top Bar Right End -->
 
@@ -181,18 +171,17 @@
                     <div class="widget_inner" data-aos="fade-up" data-aos-delay="200">
                         <div class="widget-list mb-10">
                             <h3 class="widget-title mb-4">Tìm kiếm</h3>
-
                             <form action="{{ route('shop.index') }}" method="GET">
                                 <div class="search-box">
                                     <input type="text" name="keyword" class="form-control"
-                                        placeholder="Nhập từ khóa cần tìm" required>
+                                        placeholder="Nhập từ khóa cần tìm" value="{{ request('keyword') }}">
                                     <button class="btn btn-dark btn-hover-primary" type="submit">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </div>
                             </form>
-
                         </div>
+
                         <div class="widget-list mb-10">
                             <h3 class="widget-title mb-4">Danh mục</h3>
                             <nav>
@@ -208,67 +197,82 @@
                             </nav>
                         </div>
 
+
                         <div class="widget-list mb-10">
                             <h3 class="widget-title mb-5">Bộ lọc giá</h3>
                             <form action="{{ route('shop.index') }}" method="GET">
                                 <div id="slider-range"></div>
-                                <input type="hidden" name="min_price" id="min_price" value="{{ $priceRange['min'] }}">
-                                <input type="hidden" name="max_price" id="max_price" value="{{ $priceRange['max'] }}">
-                                <button class="slider-range-submit" type="submit">Lọc</button>
 
+                                <!-- Hiển thị giá hiện tại -->
+                                <div class="price-range">
+                                    <span id="amount">Giá: {{ request('min_price', 0) }} -
+                                        {{ request('max_price', 1000000) }}</span>
+                                </div>
+
+                                <!-- Các input hidden để lưu giá trị min và max -->
+                                <input type="hidden" name="min_price" id="min_price"
+                                    value="{{ request('min_price', 0) }}">
+                                <input type="hidden" name="max_price" id="max_price"
+                                    value="{{ request('max_price', 1000000) }}">
+
+                                <!-- Nút lọc -->
+                                <button class="slider-range-submit" type="submit">Lọc</button>
                             </form>
                         </div>
-                        <div class="widget-list mb-10">
-                            <h3 class="widget-title">Màu sắc</h3>
-                            <div class="sidebar-body">
-                                <ul class="checkbox-container categories-list">
-                                    @foreach ($colors as $color)
-                                    <li>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox"
-                                                class="custom-control-input"
-                                                id="color_{{ $color->color_id }}"
-                                                value="{{ $color->color_id }}"
-                                                {{ in_array($color->color_id, (array) request('colors', [])) ? 'checked' : '' }}
 
-                                                onchange="updateFilters()">
-                                            <label class="custom-control-label" for="color_{{ $color->color_id }}">
-                                                {{ $color->value }} ({{ $color->productDetails->count() }})
-                                            </label>
-                                        </div>
-                                    </li>
-                                    @endforeach
-                                </ul>
+
+                        <form action="{{ route('shop.index') }}" method="GET" id="filterForm">
+                            <div class="widget-list mb-10">
+                                <h3 class="widget-title">Màu sắc</h3>
+                                <div class="sidebar-body">
+                                    <ul class="checkbox-container categories-list">
+                                        @foreach ($colors as $color)
+                                        <li>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input filter-color"
+                                                    id="color-{{ $color->color_id }}" name="colors[]"
+                                                    value="{{ $color->color_id }}"
+                                                    {{ in_array($color->color_id, request('colors', [])) ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="color-{{ $color->color_id }}">
+                                                    {{ $color->value }}
+                                                </label>
+                                            </div>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="widget-list">
+                            <button type="submit" class="btn btn-primary">Lọc</button>
+                        </form>
+
+
+
+                        <!-- <div class="widget-list">
                             <h3 class="widget-title mb-4">Sản phẩm gần đây</h3>
                             <div class="sidebar-body product-list-wrapper mb-n6">
-                                @foreach ($recentProducts as $product)
+
                                 <div class="single-product-list product-hover mb-6">
                                     <div class="thumb">
-                                        <a href="{{ route('product.show', $product->slug) }}" class="image">
-                                            <img class="image" src="{{ url('storage/'. $product->avata) }}"
-                                                alt="{{ $product->name }}">
+                                        <a href="" class="image">
+                                            <img class="image" src="" alt="">
                                         </a>
                                     </div>
                                     <div class="content">
-                                        <h5 class="title"><a
-                                                href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
+                                        <h5 class="title"><a href=""></a>
                                         </h5>
                                         <span class="price">
-                                            <span class="new">{{ number_format($product->price, 0, '', '.') }} ₫</span>
-                                            @if ($product->discount_price)
-                                            <span class="old">{{ number_format($product->discount_price , 0, '', '.') }}
+                                            <span class="new"></span>
+
+                                            <span class="old">
                                                 ₫</span>
-                                            @endif
+
                                         </span>
                                     </div>
                                 </div>
-                                @endforeach
+
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </aside>
@@ -285,209 +289,42 @@
 </a>
 <!-- Scroll Top End -->
 
-<!-- Modal Start  -->
-<div class="modalquickview modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <button class="btn close" data-bs-dismiss="modal">×</button>
-            <div class="row">
-                <div class="col-md-6 col-12">
-
-                    <!-- Product Details Image Start -->
-                    <div class="modal-product-carousel">
-
-                        <!-- Single Product Image Start -->
-                        <div class="swiper-container">
-                            <div class="swiper-wrapper">
-                                <a class="swiper-slide" href="#">
-                                    <img class="w-100" src="assets/images/products/large-size/1.jpg" alt="Product">
-                                </a>
-                                <a class="swiper-slide" href="#">
-                                    <img class="w-100" src="assets/images/products/large-size/2.jpg" alt="Product">
-                                </a>
-                                <a class="swiper-slide" href="#">
-                                    <img class="w-100" src="assets/images/products/large-size/3.jpg" alt="Product">
-                                </a>
-                                <a class="swiper-slide" href="#">
-                                    <img class="w-100" src="assets/images/products/large-size/4.jpg" alt="Product">
-                                </a>
-                                <a class="swiper-slide" href="#">
-                                    <img class="w-100" src="assets/images/products/large-size/5.jpg" alt="Product">
-                                </a>
-                                <a class="swiper-slide" href="#">
-                                    <img class="w-100" src="assets/images/products/large-size/6.jpg" alt="Product">
-                                </a>
-                            </div>
-
-                            <!-- Swiper Pagination Start -->
-                            <!-- <div class="swiper-pagination d-md-none"></div> -->
-                            <!-- Swiper Pagination End -->
-
-                            <!-- Next Previous Button Start -->
-                            <div class="swiper-product-button-next swiper-button-next"><i class="pe-7s-angle-right"></i>
-                            </div>
-                            <div class="swiper-product-button-prev swiper-button-prev"><i class="pe-7s-angle-left"></i>
-                            </div>
-                            <!-- Next Previous Button End -->
-                        </div>
-                        <!-- Single Product Image End -->
-
-                    </div>
-                    <!-- Product Details Image End -->
-
-                </div>
-                <div class="col-md-6 col-12 overflow-hidden position-relative">
-
-                    <!-- Product Summery Start -->
-                    <div class="product-summery">
-
-                        <!-- Product Head Start -->
-                        <div class="product-head mb-3">
-                            <h2 class="product-title">Sample product</h2>
-                        </div>
-                        <!-- Product Head End -->
-
-                        <!-- Price Box Start -->
-                        <div class="price-box mb-2">
-                            <span class="regular-price">$80.00</span>
-                            <span class="old-price"><del>$90.00</del></span>
-                        </div>
-                        <!-- Price Box End -->
-
-                        <!-- Rating Start -->
-                        <span class="ratings justify-content-start">
-                            <span class="rating-wrap">
-                                <span class="star" style="width: 100%"></span>
-                            </span>
-                            <span class="rating-num">(4)</span>
-                        </span>
-                        <!-- Rating End -->
-
-                        <!-- SKU Start -->
-                        <div class="sku mb-3">
-                            <span>SKU: 12345</span>
-                        </div>
-                        <!-- SKU End -->
-
-                        <!-- Description Start -->
-                        <p class="desc-content mb-5">I must explain to you how all this mistaken idea of denouncing
-                            pleasure and praising pain was born and I will give you a complete account of the system,
-                            and expound the actual teachings of the great explorer of the truth, the master-builder of
-                            human happiness.</p>
-                        <!-- Description End -->
-
-                        <!-- Product Meta Start -->
-                        <div class="product-meta mb-3">
-                            <!-- Product Size Start -->
-                            <div class="product-size">
-                                <span>Size :</span>
-                                <a href="#"><strong>S</strong></a>
-                                <a href="#"><strong>M</strong></a>
-                                <a href="#"><strong>L</strong></a>
-                                <a href="#"><strong>XL</strong></a>
-                            </div>
-                            <!-- Product Size End -->
-                        </div>
-                        <!-- Product Meta End -->
-
-                        <!-- Product Color Variation Start -->
-                        <div class="product-color-variation mb-3">
-                            <button type="button" class="btn bg-danger"></button>
-                            <button type="button" class="btn bg-primary"></button>
-                            <button type="button" class="btn bg-dark"></button>
-                            <button type="button" class="btn bg-success"></button>
-                        </div>
-                        <!-- Product Color Variation End -->
-
-                        <!-- Product Meta Start -->
-                        <div class="product-meta mb-5">
-                            <!-- Product Metarial Start -->
-                            <div class="product-metarial">
-                                <span>Metarial :</span>
-                                <a href="#"><strong>Metal</strong></a>
-                                <a href="#"><strong>Resin</strong></a>
-                                <a href="#"><strong>Lather</strong></a>
-                                <a href="#"><strong>Polymer</strong></a>
-                            </div>
-                            <!-- Product Metarial End -->
-                        </div>
-                        <!-- Product Meta End -->
-
-                        <!-- Quantity Start -->
-                        <div class="quantity mb-5">
-                            <div class="cart-plus-minus">
-                                <input class="cart-plus-minus-box" value="0" type="text">
-                                <div class="dec qtybutton"></div>
-                                <div class="inc qtybutton"></div>
-                            </div>
-                        </div>
-                        <!-- Quantity End -->
-
-                        <!-- Cart & Wishlist Button Start -->
-                        <div class="cart-wishlist-btn pb-4 mb-n3">
-                            <div class="add-to_cart mb-3">
-                                <a class="btn btn-outline-dark btn-hover-primary" href="cart.html">Add to cart</a>
-                            </div>
-                            <div class="add-to-wishlist mb-3">
-                                <a class="btn btn-outline-dark btn-hover-primary" href="wishlist.html">Add to
-                                    Wishlist</a>
-                            </div>
-                        </div>
-                        <!-- Cart & Wishlist Button End -->
-
-                        <!-- Social Shear Start -->
-                        <div class="social-share">
-                            <span>Share :</span>
-                            <a href="#"><i class="fa fa-facebook-square facebook-color"></i></a>
-                            <a href="#"><i class="fa fa-twitter-square twitter-color"></i></a>
-                            <a href="#"><i class="fa fa-linkedin-square linkedin-color"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-square pinterest-color"></i></a>
-                        </div>
-                        <!-- Social Shear End -->
-
-                        <!-- Product Delivery Policy Start -->
-                        <ul class="product-delivery-policy border-top pt-4 mt-4 border-bottom pb-4">
-                            <li> <i class="fa fa-check-square"></i> <span>Security Policy (Edit With Customer
-                                    Reassurance Module)</span></li>
-                            <li><i class="fa fa-truck"></i><span>Delivery Policy (Edit With Customer Reassurance
-                                    Module)</span></li>
-                            <li><i class="fa fa-refresh"></i><span>Return Policy (Edit With Customer Reassurance
-                                    Module)</span></li>
-                        </ul>
-                        <!-- Product Delivery Policy End -->
-
-                    </div>
-                    <!-- Product Summery End -->
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal End  -->
 @endsection
 @section('js')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    function updateFilters() {
-        const selectedColors = [];
-        const checkboxes = document.querySelectorAll('.custom-control-input:checked');
+$(document).ready(function() {
+    // Khởi tạo thanh trượt với giá trị min, max
+    $("#slider-range").slider({
+        range: true,
+        min: 0,
+        max: 1000000, // Giá trị tối đa của sản phẩm
+        step: 1000, // Bước nhảy mỗi lần
+        values: [{
+            {
+                request('min_price', 0)
+            }
+        }, {
+            {
+                request('max_price', 1000000)
+            }
+        }],
+        slide: function(event, ui) {
+            // Cập nhật giá trị của min_price và max_price
+            $("#min_price").val(ui.values[0]);
+            $("#max_price").val(ui.values[1]);
 
-        checkboxes.forEach(checkbox => {
-            selectedColors.push(checkbox.value);
-        });
-
-        // Lấy URL hiện tại
-        const url = new URL(window.location.href);
-        // Cập nhật giá trị "colors" trong query string
-        if (selectedColors.length > 0) {
-            url.searchParams.set('colors', selectedColors.join(','));
-        } else {
-            url.searchParams.delete('colors');
+            // Cập nhật hiển thị giá hiện tại
+            $("#amount").text("Giá: " + ui.values[0] + " - " + ui.values[1]);
         }
+    });
 
-        // Điều hướng đến URL mới
-        window.location.href = url.toString();
-    }
+    // Cập nhật giá trị mặc định của input min_price và max_price khi trang tải
+    $("#min_price").val($("#slider-range").slider("values", 0));
+    $("#max_price").val($("#slider-range").slider("values", 1));
+
+    // Cập nhật hiển thị giá khi trang tải
+    $("#amount").text("Giá: " + $("#min_price").val() + " - " + $("#max_price").val());
+});
 </script>
 @endsection
