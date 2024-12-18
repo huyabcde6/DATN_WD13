@@ -159,94 +159,77 @@ class OrderController extends Controller
      * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
     public function store(Request $request)
-    {
-        if ($request->isMethod('POST')) {
-            DB::beginTransaction();
-            try {
-                // Chuẩn bị dữ liệu cho đơn hàng
-                $params = $request->except('_token');
-                $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
-                $params['date_order'] = now(); // Lấy thời gian hiện tại
-                $params['status_donhang_id'] = 1; // Trạng thái đơn hàng mặc định là chờ xử lý
-                // Tạo đơn hàng
-                $order = Order::query()->create($params);
-                $orderId = $order->id;
-                $carts = Session::get('cart', []); // Giỏ hàng trong session
+{
+    if ($request->isMethod('POST')) {
+        DB::beginTransaction();
+        try {
+            // Chuẩn bị dữ liệu cho đơn hàng
+            $params = $request->except('_token');
+            $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
+            $params['date_order'] = now(); // Lấy thời gian hiện tại
+            $params['status_donhang_id'] = 1; // Trạng thái đơn hàng mặc định là chờ xử lý
+            // Tạo đơn hàng
+            $order = Order::query()->create($params);
+            $orderId = $order->id;
+            $carts = Session::get('cart', []); // Giỏ hàng trong session
 
-                // Thêm chi tiết đơn hàng
-                foreach ($carts as $productDetailId => $value) {    
-                    $productDetail = ProductDetail::find($productDetailId);
+            // Thêm chi tiết đơn hàng
+            foreach ($carts as $productDetailId => $value) {
+                $productDetail = ProductDetail::find($productDetailId);
 
-                    // Debug để kiểm tra giá trị product_name và product_avata
-                    // dd($productDetail->products->name ?? 'Unknown', $productDetail->products->avata ?? null);
-                
-                    $orderDetail = $order->orderDetails()->create([
-                        'order_id' => $orderId,
-                        'product_detail_id' => $productDetailId,
-                        'quantity' => $value['quantity'],
-                        'color' => $value['color'],
-                        'size' => $value['size'],
-                        'price' => $value['price'],
-                        'product_name' => $productDetail->products->name ?? 'Unknown', // Tên sản phẩm
-                        'product_avata' => $productDetail->products->avata ?? null, // Giá trị thêm (nếu có)
-                    ]);
+                $orderDetail = $order->orderDetails()->create([
+                    'order_id' => $orderId,
+                    'product_detail_id' => $productDetailId,
+                    'quantity' => $value['quantity'],
+                    'color' => $value['color'],
+                    'size' => $value['size'],
+                    'price' => $value['price'],
+                    'product_name' => $productDetail->products->name ?? 'Unknown', // Tên sản phẩm
+                    'product_avata' => $productDetail->products->avata ?? null, // Giá trị thêm (nếu có)
+                ]);
 
-                    // Giảm số lượng sản phẩm trong kho
-                    $productDetail = ProductDetail::find($request->product_detail_id); // Tìm sản phẩm trong kho
-                    if ($productDetail) {
-                        if ($productDetail->quantity >= $request->quantity) { // Kiểm tra xem kho có đủ số lượng không
-                            $productDetail->quantity -= $request->quantity; // Giảm số lượng trong kho
-                            $productDetail->save(); // Lưu lại thay đổi
-                        } else {
-                            // Xử lý trường hợp không đủ hàng
-                            throw new \Exception('Số lượng sản phẩm không đủ trong kho');
-                        }
-                    }
+                // Kiểm tra số lượng sản phẩm trong kho
+                if ($productDetail->quantity >= $value['quantity']) {
+                    $productDetail->quantity -= $value['quantity'];
+                    $productDetail->save(); // Giảm số lượng trong kho
                 } else {
-                    // Trường hợp "Thanh toán giỏ hàng"
-
-                    $carts = Session::get('cart', []); // Giỏ hàng trong session
-                    foreach ($carts as $productDetailId => $value) {
-                        $order->orderDetails()->create([
-                            'order_id' => $orderId,
-                            'product_detail_id' => $productDetailId,
-                            'quantity' => $value['quantity'],
-                            'color' => $value['color'] ?? null,
-                            'size' => $value['size'] ?? null,
-                            'price' => $value['price'],
-                        ]);
-                    }
-                    // Giảm số lượng sản phẩm trong kho sau khi mua
-                    $productDetail = ProductDetail::find($productDetailId);
-                    if ($productDetail) {
-                        $productDetail->quantity -= $value['quantity'];
-                        $productDetail->save();
-                    }
-                    Session::forget('cart');
+                    throw new \Exception('Số lượng sản phẩm không đủ trong kho');
                 }
-
-                // Xóa giỏ hàng nếu đơn hàng được tạo từ giỏ hàng
-
-
-                if ($request->input('method') === "VNPAY") {
-                    // Lưu giao dịch và chuyển hướng đến VNP
-                    DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
-                    return $this->processVNP($order); // Hàm xử lý thanh toán VNP
-                }
-                DB::commit();
-
-                // Gửi email xác nhận đơn hàng
-                Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
-                return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được tạo thành công.');
-            } catch (\Exception $e) {
-                DB::rollBack();
-                Log::error('Lỗi tạo đơn hàng: ' . $e->getMessage());
-                return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra trong quá trình tạo đơn hàng: ' . $e->getMessage());
             }
-        }
 
-        return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
+            // Giảm số lượng sản phẩm trong kho sau khi mua (cho tất cả giỏ hàng)
+            foreach ($carts as $productDetailId => $value) {
+                $productDetail = ProductDetail::find($productDetailId);
+                if ($productDetail) {
+                    $productDetail->quantity -= $value['quantity'];
+                    $productDetail->save();
+                }
+            }
+
+            // Xóa giỏ hàng nếu đơn hàng được tạo từ giỏ hàng
+            Session::forget('cart');
+
+            if ($request->input('method') === "VNPAY") {
+                // Lưu giao dịch và chuyển hướng đến VNP
+                DB::commit();
+                return $this->processVNP($order); // Hàm xử lý thanh toán VNP
+            }
+
+            DB::commit();
+
+            // Gửi email xác nhận đơn hàng
+            Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
+            return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được tạo thành công.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Lỗi tạo đơn hàng: ' . $e->getMessage());
+            return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra trong quá trình tạo đơn hàng: ' . $e->getMessage());
+        }
     }
+
+    return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
+}
+
     /**
      * Xử lý thanh toán qua VNP
      */
