@@ -13,12 +13,12 @@ class ColorController extends Controller
      * Hiển thị danh sách các màu.
      */
     // Controller (ColorController.php)
-    public function __construct(){
-        $this->middleware('permission:view color', ['only' => ['index']]);
-        $this->middleware('permission:create color', ['only' => ['create', 'store']]);
-        $this->middleware('permission:edit color', ['only' => ['update', 'edit']]);
-        $this->middleware('permission:delete color', ['only' => ['destroy']]);
-    }
+    // public function __construct(){
+    //     $this->middleware('permission:view color', ['only' => ['index']]);
+    //     $this->middleware('permission:create color', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:edit color', ['only' => ['update', 'edit']]);
+    //     $this->middleware('permission:delete color', ['only' => ['destroy']]);
+    // }
 
     public function index(Request $request)
     {

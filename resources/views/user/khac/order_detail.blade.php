@@ -222,14 +222,11 @@
                             onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
                             Đã nhận hàng
                         </button>
-                        @elseif($order->status->type === \App\Models\StatusDonHang::DA_GIAO_HANG)
-                        <input type="hidden" name="cho_xac_nhan" value="9">
+                        <input type="hidden" name="cho_xac_nhan" value="6">
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#returnModal">
                             Trả hàng
                         </button>
-
-                        @endif
                     </form>
                 </div>
             </div>

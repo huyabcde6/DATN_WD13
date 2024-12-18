@@ -134,9 +134,13 @@ class OrderController extends Controller
             // Chuyển đổi trạng thái đơn hàng theo quy định
             if ($order->status_donhang_id == 1 && in_array($statusId, [2, 7])) {
                 $order->status_donhang_id = $statusId;
-                if ($statusId == 7) {
+                if ($statusId == 7 && $order->method == 'VNPAY') {
+                    // Nếu thanh toán qua VNPAY và trạng thái là 7, thay đổi trạng thái thanh toán thành "đã hoàn lại"
+                    $order->payment_status = 'đã hoàn lại';
+                } elseif ($statusId == 7) {
+                    // Nếu không phải VNPAY và trạng thái là 7, thay đổi thanh toán thành "thất bại"
                     $order->payment_status = 'thất bại';
-                }
+                }                
             } elseif ($order->status_donhang_id == 2 && $statusId == 3) {
                 $order->status_donhang_id = $statusId;
             } elseif ($order->status_donhang_id == 3 && $statusId == 4) {
@@ -171,7 +175,7 @@ class OrderController extends Controller
             broadcast(new OderEvent($order));
 
             // Gửi email thông báo
-            Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
+            // Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
 
             DB::commit();
             return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');

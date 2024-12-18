@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:view product', ['only' => ['index']]);
-        $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
-        $this->middleware('permission:edit product', ['only' => ['index']]);
-        $this->middleware('permission:delete product', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view product', ['only' => ['index']]);
+    //     $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
+    //     $this->middleware('permission:edit product', ['only' => ['index']]);
+    //     $this->middleware('permission:delete product', ['only' => ['destroy']]);
+    // }
 
     public function index(Request $request)
     {
@@ -75,7 +75,6 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->has('is_new'));
         try {
             // Tìm sản phẩm theo ID
             $product = new products();
