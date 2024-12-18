@@ -59,44 +59,9 @@ class OrderController extends Controller
     /**
      * Hiển thị form tạo đơn hàng mới.
      */
-    public function create(Request $request)
-    {   
+    public function create()
+    {
         $user = Auth::user();
-        if ($request->isMethod('post')) {
-            $productId = $request->input('products_id');
-            $quantity = $request->input('quantity');
-            $size = $request->input('size');
-            $color = $request->input('color');
-    
-            // Lấy sản phẩm từ CSDL
-            $product = Product::find($productId);
-            if (!$product) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Sản phẩm không tồn tại.'
-                ], 404);
-            }
-    
-            // Tính tổng tiền
-            $subTotal = $product->price * $quantity;
-            $shippingFee = 30000; // 30,000 VND phí vận chuyển
-            $total = $subTotal + $shippingFee;
-    
-            // Trả về JSON để JavaScript điều hướng tới trang thanh toán
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Đơn hàng đã được xử lý.',
-                'redirect_url' => route('checkout.page', [
-                    'product_id' => $productId,
-                    'quantity' => $quantity,
-                    'size' => $size,
-                    'color' => $color,
-                    'sub_total' => $subTotal,
-                    'shipping_fee' => $shippingFee,
-                    'total' => $total
-                ])
-            ]);
-        }
         // Lấy các sản phẩm trong giỏ hàng từ session
         $cartItems = Session::get('cart', []);
         // dd($cartItems);
@@ -123,38 +88,7 @@ class OrderController extends Controller
 
         return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
     }
-    public function buyNow(Request $request)
-    {
-        $user = Auth::user();
 
-        // Lấy thông tin sản phẩm và số lượng từ request
-        $productId = $request->input('product_id');
-        $quantity = $request->input('quantity');
-
-        // Tìm sản phẩm theo ID
-        $product = products::findOrFail($productId); // Sử dụng Product model thay vì ProductController
-
-        // Kiểm tra xem số lượng trong kho có đủ không
-        if ($product->stock < $quantity) {
-            return redirect()->back()->with('error', 'Số lượng sản phẩm không đủ.');
-        }
-        
-
-        // Tính tổng tiền
-        $subTotal = $product->price * $quantity;
-        $shippingFee = 30000; // 30,000 VND phí vận chuyển
-        $total = $subTotal + $shippingFee;
-
-        // Trả về view với các dữ liệu cần thiết
-        return view('user.sanpham.thanhtoan', compact(
-            'user',
-            'product',
-            'quantity',
-            'subTotal',
-            'shippingFee',
-            'total'
-        ));
-    }
     /**
      * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
@@ -171,28 +105,27 @@ class OrderController extends Controller
                 // Tạo đơn hàng
                 $order = Order::query()->create($params);
                 $orderId = $order->id;
-                $carts = Session::get('cart', []); // Giỏ hàng trong session
+                $carts = Session::get('cart', []);
+                // Giỏ hàng trong session
 
                 // Thêm chi tiết đơn hàng
-                foreach ($carts as $productDetailId => $value) {    
-                    $productDetail = ProductDetail::find($productDetailId);
-
-                    // Debug để kiểm tra giá trị product_name và product_avata
-                    // dd($productDetail->products->name ?? 'Unknown', $productDetail->products->avata ?? null);
-                
-                    $orderDetail = $order->orderDetails()->create([
+                // Thêm chi tiết đơn hàng
+                if ($request->mua === 'muangay') {
+                    $productDetail = ProductDetail::find($request->product_detail_id);
+                    $order->orderDetails()->create([
                         'order_id' => $orderId,
-                        'product_detail_id' => $productDetailId,
-                        'quantity' => $value['quantity'],
-                        'color' => $value['color'],
-                        'size' => $value['size'],
-                        'price' => $value['price'],
+                        'product_detail_id' => $request->product_detail_id,
+                        'quantity' => $request->quantity,
+                        'color' => $request->color,
+                        'size' => $request->size,
+                        'price' => $request->price,
                         'product_name' => $productDetail->products->name ?? 'Unknown', // Tên sản phẩm
                         'product_avata' => $productDetail->products->avata ?? null, // Giá trị thêm (nếu có)
                     ]);
 
                     // Giảm số lượng sản phẩm trong kho
-                    $productDetail = ProductDetail::find($request->product_detail_id); // Tìm sản phẩm trong kho
+                    // Tìm sản phẩm trong kho
+
                     if ($productDetail) {
                         if ($productDetail->quantity >= $request->quantity) { // Kiểm tra xem kho có đủ số lượng không
                             $productDetail->quantity -= $request->quantity; // Giảm số lượng trong kho
@@ -207,6 +140,7 @@ class OrderController extends Controller
 
                     $carts = Session::get('cart', []); // Giỏ hàng trong session
                     foreach ($carts as $productDetailId => $value) {
+                        $productDetail = ProductDetail::find($productDetailId);
                         $order->orderDetails()->create([
                             'order_id' => $orderId,
                             'product_detail_id' => $productDetailId,
@@ -214,6 +148,8 @@ class OrderController extends Controller
                             'color' => $value['color'] ?? null,
                             'size' => $value['size'] ?? null,
                             'price' => $value['price'],
+                            'product_name' => $productDetail->products->name ?? 'Unknown', // Tên sản phẩm
+                            'product_avata' => $productDetail->products->avata ?? null, // Giá trị thêm (nếu có)
                         ]);
                     }
                     // Giảm số lượng sản phẩm trong kho sau khi mua
@@ -247,9 +183,6 @@ class OrderController extends Controller
 
         return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
     }
-    /**
-     * Xử lý thanh toán qua VNP
-     */
     private function processVNP($order)
     {
         // Tạo URL thanh toán VNP
@@ -358,13 +291,13 @@ class OrderController extends Controller
             try {
                 $order = Order::findOrFail($id);
                 $params = [];
+
                 // Kiểm tra hành động hủy đơn hàng hoặc giao hàng
                 if ($request->has('huy_don_hang')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_HUY);
-                } elseif ($request->has('da_giao_hang')) {
+                } elseif ($request->has('hoan_thanh')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::HOAN_THANH);
                     $params['payment_status'] = 'đã thanh toán';
-                    $this->moveOrderToInvoice($order);
                 } elseif ($request->has('cho_xac_nhan')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::CHO_HOAN);
                     if ($request->filled('return_reason')) {
@@ -380,55 +313,17 @@ class OrderController extends Controller
                 $order->update($params);
                 broadcast(new OderEvent($order));
                 DB::commit();
-                return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');
+                return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error('Lỗi cập nhật đơn hàng: ' . $e->getMessage());
-                return back()->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
+                return redirect()->route('orders.index')->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
             }
         }
 
         return redirect()->route('orders.index')->with('error', 'Phương thức không hợp lệ.');
     }
 
-    protected function moveOrderToInvoice(Order $order)
-    {
-        // Kiểm tra nếu hóa đơn đã tồn tại (tránh trùng lặp)
-        if ($order->toInvoice()->exists()) {
-            return;
-        }
-
-        $invoice = \App\Models\Invoice::create([
-            'invoice_code' => $order->order_code,
-            'user_id' => $order->user_id,
-            'order_id' => $order->id,
-            'nguoi_nhan' => $order->nguoi_nhan,
-            'email' => $order->email,
-            'number_phone' => $order->number_phone,
-            'address' => $order->address,
-            'status_donhang_id' => $order->status_donhang_id,
-            'ghi_chu' => $order->ghi_chu,
-            'method' => $order->method,
-            'payment_status' => $order->payment_status,
-            'subtotal' => $order->subtotal,
-            'discount' => $order->discount,
-            'shipping_fee' => $order->shipping_fee,
-            'total_price' => $order->total_price,
-            'date_invoice' => $order->created_at,
-        ]);
-
-        // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
-        foreach ($order->orderDetails as $orderDetail) {
-            $invoice->invoiceDetails()->create([
-                'product_name'  => $orderDetail->name,
-                'product_avata'  => $orderDetail->avata,
-                'color' => $orderDetail->color,
-                'size' => $orderDetail->size,
-                'quantity' => $orderDetail->quantity,
-                'price' => $orderDetail->price,
-            ]);
-        }
-    }
     public function applyVoucher(Request $request)
     {
         // Validate dữ liệu từ client

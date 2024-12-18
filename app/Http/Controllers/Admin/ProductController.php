@@ -75,7 +75,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->has('is_new'));
+        // dd($request->has('is_new'));
         try {
             // Tìm sản phẩm theo ID
             $product = new products();

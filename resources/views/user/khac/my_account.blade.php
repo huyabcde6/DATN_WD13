@@ -115,10 +115,6 @@
                                         <div id="loading" class="text-center my-3" style="display: none;">
                                             <p>Đang tải...</p>
                                         </div>
-                                        <p class="mb-0">Từ bảng điều khiển tài khoản của bạn.
-                                            bạn có thể dễ dàng kiểm tra và xem các đơn đặt hàng gần đây của mình,
-                                            quản lý địa chỉ giao hàng và thanh toán cũng như chỉnh sửa chi tiết mật khẩu và tài khoản của mình.
-                                        </p>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="orders" role="tabpanel">

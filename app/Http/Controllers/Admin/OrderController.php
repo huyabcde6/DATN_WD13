@@ -163,14 +163,10 @@ class OrderController extends Controller
 
             // Lưu thay đổi đơn hàng
             $order->save();
-
             // Lưu vào bảng lịch sử thay đổi trạng thái
             $this->logStatusChange($order, $previousStatus, $currentStatus);
-
-            // Phát sự kiện cập nhật đơn hàng
-            broadcast(new OderEvent($order));
-
             // Gửi email thông báo
+            broadcast(new OderEvent($order));
             Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
 
             DB::commit();
