@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    // Hiển thị giỏ hàng
     public function index()
     {
 
@@ -23,7 +22,15 @@ class CartController extends Controller
         $shippingFee = 30000;
 
         $subTotal = 0;
-        foreach ($cartItems as $item) {
+        foreach ($cartItems as $key => $item) {
+            $productDetail = ProductDetail::find($item['product_detail_id']);
+
+            if ($productDetail) {
+                // Thêm thông tin số lượng còn lại vào item giỏ hàng
+                $cartItems[$key]['available_quantity'] = $productDetail->quantity; // Số lượng sản phẩm trong kho
+            } else {
+                $cartItems[$key]['available_quantity'] = 0; // Nếu không tìm thấy sản phẩm, gán số lượng = 0
+            }
             $subTotal += $item['price'] * $item['quantity'];
         }
 

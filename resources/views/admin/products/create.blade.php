@@ -147,12 +147,8 @@
                             <div class="col-lg-7">
                                 <div class="mb-3">
                                     <label for="name">Tên sản phẩm</label>
-                                        <input type="text" name="name" value="{{ old('name') }}"
-                                            class="form-control @error('name') is-invalid @enderror"
-                                            placeholder="Tên sản phẩm" id="name">
-                                        @error('name')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <input type="text" name="name" class="form-control" placeholder="Tên sản phẩm"
+                                        id="name" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
@@ -161,30 +157,18 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="price">Giá sản phẩm</label>
-                                        <input type="number" name="price" value="{{ old('price') }}" id="price"
-                                            class="form-control @error('price') is-invalid @enderror"
-                                            placeholder="Giá sản phẩm">
-                                        @error('price')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <input type="number" name="price" id="price" class="form-control"
+                                        placeholder="Giá sản phẩm" required>
                                 </div>
                                 <div class="mb-3">
-                                   <label for="discount_price">Giá khuyến mãi</label>
-                                        <input type="number" name="discount_price" value="{{ old('discount_price') }}"
-                                            id="discount_price"
-                                            class="form-control @error('discount_price') is-invalid @enderror"
-                                            placeholder="Giá khuyến mãi">
-                                        @error('discount_price')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <label for="discount_price">Giá khuyến mãi</label>
+                                    <input type="number" name="discount_price" id="discount_price" class="form-control"
+                                        placeholder="Giá khuyến mãi" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="short_description">Mô tả ngắn</label>
-                                        <textarea name="short_description" id="short_description"
-                                            class="form-control @error('short_description') is-invalid @enderror" placeholder="Mô tả ngắn của sản phẩm">{{ old('short_description') }}</textarea>
-                                        @error('short_description')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <textarea name="short_description" id="short_description" class="form-control"
+                                        placeholder="Mô tả ngắn của sản phẩm" required></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Mô tả chi tiết sản phẩm</label>
@@ -232,11 +216,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="avata">Hình ảnh sản phẩm</label>
-                                        <input class="form-control" type="file" name="avata" id="avata">
-                                        <div id="avata-preview-container" class="mt-2"></div>
-                                        @error('avata')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                    <input class="form-control" type="file" name="avata" id="avata" required>
+                                    <div id="avata-preview-container" class="mt-2"></div>
                                 </div>
 
                                 <div class="mb-3">
@@ -285,6 +266,7 @@
 @section('js')
 <script src="{{ asset('assets/admin/libs/quill/quill.core.js')}}"></script>
 <script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
+
 <script>
 document.querySelectorAll('#sizes .option-button').forEach(button => {
     button.addEventListener('click', function() {
@@ -514,7 +496,4 @@ document.getElementById('variants-container').addEventListener('change', functio
     }
 });
 </script>
-
 @endsection
-
-

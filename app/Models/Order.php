@@ -70,7 +70,7 @@ class Order extends Model
             'discount'       => $this->discount,
             'shipping_fee'   => $this->shipping_fee,
             'total_price'    => $this->total_price,
-            'date_invoice'   => now(),
+            'date_invoice'   => $this->created_at,
         ]);
 
         // Lưu chi tiết hóa đơn

@@ -22,9 +22,16 @@ class NewController extends Controller
 
     public function index2()
     {
-        $news = News::all();
+        $news =  News::where('status', 1)->get();
 
         return view('user.khac.tintuc', compact('news'));
+    }
+    public function tintucdetail()
+    {
+        $id = request('id');
+        $news = News::findOrFail($id); // Tìm tin tức theo id, nếu không tìm thấy sẽ báo lỗi 404
+        $news->increment('view');
+        return view('user.khac.tintuc_detail', compact('news'));
     }
 
     /**

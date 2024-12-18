@@ -10,8 +10,6 @@
         <span class="breadcrumb-separator"> > </span>
         <span><a href="http://datn_wd13.test/shop">Shop</a></span>
     </div>
-
-
     <!-- Breadcrumb Area End -->
 
 </div>
@@ -178,7 +176,7 @@
                             <form action="{{ route('shop.index') }}" method="GET">
                                 <div class="search-box">
                                     <input type="text" name="keyword" class="form-control"
-                                        placeholder="Nhập từ khóa cần tìm">
+                                        placeholder="Nhập từ khóa cần tìm" required>
                                     <button class="btn btn-dark btn-hover-primary" type="submit">
                                         <i class="fa fa-search"></i>
                                     </button>
