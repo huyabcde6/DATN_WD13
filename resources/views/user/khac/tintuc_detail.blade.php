@@ -3,22 +3,22 @@
 @section('content')
 <!-- Breadcrumb Section Start -->
 <div class="section">
-
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light">
-        <div class="container-fluid">
-            <div class="breadcrumb-content text-center">
-                <h1 class="title">Chi tiết tin tức</h1>
-                <ul>
-                    <li>
-                        <a href="/">Trang Chủ</a>
-                    </li>
-                    <li class="active">{{ $news->title }}</li>
-                </ul>
-            </div>
+    <div class="section">
+
+        <!-- Breadcrumb Area Start -->
+        <div class="breadcrumb">
+            <a href="http://datn_wd13.test/"><i class="fa fa-home"></i> Trang Chủ</a>
+            <span class="breadcrumb-separator"> > </span>
+            <span><a href="http://datn_wd13.test/tintuc/1"> Chi tiết Tin tức</a></span>
         </div>
+
+
+        <!-- Breadcrumb Area End -->
+
     </div>
-    <!-- Breadcrumb Area End -->
+</div>
+<!-- Breadcrumb Area End -->
 
 </div>
 <!-- Breadcrumb Section End -->

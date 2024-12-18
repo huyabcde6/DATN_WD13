@@ -25,22 +25,22 @@
 @section('content')
 <!-- Breadcrumb Section Start -->
 <div class="section">
-
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light ">
-        <div class="container-fluid">
-            <div class="breadcrumb-content text-center">
-                <h1 class="title">Chi tiết</h1>
-                <ul>
-                    <li>
-                        <a href="index.html">Trang chủ </a>
-                    </li>
-                    <li class="active">Chi tiết sản phẩm</li>
-                </ul>
-            </div>
+    <div class="section">
+
+        <!-- Breadcrumb Area Start -->
+        <div class="breadcrumb">
+            <a href="http://datn_wd13.test/"><i class="fa fa-home"></i> Trang Chủ</a>
+            <span class="breadcrumb-separator"> > </span>
+            <span><a href="#"> Chi tiết sản phẩm</a></span>
         </div>
+
+
+        <!-- Breadcrumb Area End -->
+
     </div>
-    <!-- Breadcrumb Area End -->
+</div>
+<!-- Breadcrumb Area End -->
 
 </div>
 <!-- Breadcrumb Section End -->
@@ -250,7 +250,7 @@
                             <p class="mb-3">{!! $product->description !!}</p>
                         </div>
                     </div>
-        
+
                     <div class="tab-pane fade" id="connect-2" role="tabpanel" aria-labelledby="profile-tab">
                         <!-- Shipping Policy Start -->
                         <div class="shipping-policy mb-n2">
@@ -276,7 +276,7 @@
                         </div>
                         <!-- Shipping Policy End -->
                     </div>
-        
+
                     <div class="tab-pane fade" id="connect-3" role="tabpanel" aria-labelledby="review-tab">
                         <div class="size-tab table-responsive-lg">
                             <h4 class="title-3 mb-4">Bản size</h4>
@@ -329,7 +329,7 @@
                 </div>
             </div><br><br><br>
             <!-- Single Product Tab End -->
-        
+
             <!-- Start Comment Section (Moved) -->
             <div class="col-lg-12 col-custom single-product-comment">
                 @auth
@@ -341,7 +341,7 @@
                         <div class="card-header bg-dark text-white py-2">
                             <h6 class="mb-0" style="color: white">Đánh giá sản phẩm</h6>
                         </div>
-            
+
                         <div class="card-body bg-light">
                             <form method="POST" action="{{ route('product.comment', $product->slug) }}" class="px-2">
                                 @csrf
@@ -357,7 +357,7 @@
                     </div>
                 </div>
                 @endauth
-            
+
                 <!-- Comments List -->
                 <div class="reviews-list">
                     <h6 class="text-muted mb-3">Các đánh giá khác</h6>
@@ -385,10 +385,10 @@
                     @endif
                 </div>
             </div>
-            
+
             <!-- End Comment Section -->
         </div>
-        
+
 
         <!-- Products Start -->
         <div class="row">
