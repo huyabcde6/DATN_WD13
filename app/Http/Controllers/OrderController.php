@@ -173,7 +173,7 @@ class OrderController extends Controller
 
                 // Gửi email xác nhận đơn hàng
                 Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
-                return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được tạo thành công.');
+                return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Đơn hàng đã được tạo thành công.');
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error('Lỗi tạo đơn hàng: ' . $e->getMessage());
@@ -253,7 +253,7 @@ class OrderController extends Controller
                     'method' => 'VNPAY'
                 ]);
                 Session::forget('cart');
-                return redirect()->route('orders.index')->with('success', 'Thanh toán thành công.');
+                return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Thanh toán thành công.');
             }
         } else {
             // Thanh toán thất bại hoặc bị hủy
@@ -263,8 +263,11 @@ class OrderController extends Controller
                     'method' => 'VNPAY',
                     'status_donhang_id' => StatusDonHang::getIdByType(StatusDonHang::DA_HUY),
                 ]);
+    
+                // Xóa bỏ đơn hàng khi thanh toán thất bại
+                $order->delete();
             }
-            return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại.');
+            return redirect()->route('cart.index')->with('error', 'Thanh toán thất bại, đơn hàng đã bị hủy.');
         }
     }
     /**

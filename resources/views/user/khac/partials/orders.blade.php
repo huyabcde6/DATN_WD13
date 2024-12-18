@@ -102,8 +102,9 @@
 
             <!-- Nút chi tiết và hủy/nhận hàng -->
             <div class="d-flex justify-content-between">
-                <a href="{{ route('orders.show', $order->id) }}" class="btn btn-dark mx-5" style="font-size: 12px;">Chi
-                    tiết</a>
+                <div class=""><a href="{{ route('orders.show', $order->id) }}" class="btn btn-dark mx-5 py-3" style="margin-top:0px; font-size: 12px;">Chi
+                tiết</a></div>
+                
                 <form id="confirm-order-{{ $order->id }}" action="{{ route('orders.update', $order->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('POST')

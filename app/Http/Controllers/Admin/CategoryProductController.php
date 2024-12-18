@@ -59,7 +59,12 @@ class CategoryProductController extends Controller
     public function create()
     {
 
-        $products = products::where('categories_id', 13)->orWhere('categories_id', null)->get();
+        $products = products::whereHas('categories', function ($query) {
+            $query->where('name', 'không xác định');
+        })
+        ->orWhere('categories_id', null)
+        ->get();
+    
         return view('admin.categories.create', compact('products'));
     }
 
@@ -144,13 +149,24 @@ class CategoryProductController extends Controller
     {
         // Tìm danh mục theo ID
         $category = categories::findOrFail($id);
-        // Kiểm tra nếu danh mục có id = 13 (danh mục "Chưa xác định")
-        if ($category->id == 13) {
+
+        // Tìm danh mục mặc định có name = "Không xác định"
+        $defaultCategory = categories::where('name', 'Không xác định')->first();
+
+        // Kiểm tra nếu danh mục đang xóa là danh mục mặc định
+        if ($category->name == 'Không xác định') {
             return redirect()->route('admin.categories.index')
-                ->with('status_error', 'Không thể xóa danh mục "Chưa xác định"');
+                ->with('status_error', 'Không thể xóa danh mục "Không xác định"');
         }
-        // Cập nhật tất cả sản phẩm trong danh mục này về danh mục 'Chưa xác định' (id = 13)
-        products::where('categories_id', $id)->update(['categories_id' => 13]);
+
+        // Kiểm tra nếu danh mục mặc định không tồn tại
+        if (!$defaultCategory) {
+            return redirect()->route('admin.categories.index')
+                ->with('status_error', 'Không thể xóa danh mục vì danh mục mặc định "Không xác định" không tồn tại');
+        }
+
+        // Cập nhật tất cả sản phẩm trong danh mục này về danh mục mặc định
+        products::where('categories_id', $id)->update(['categories_id' => $defaultCategory->id]);
 
         // Xóa danh mục
         $category->delete();
@@ -159,4 +175,5 @@ class CategoryProductController extends Controller
         return redirect()->route('admin.categories.index')
             ->with('status_succeed', 'Xóa danh mục thành công');
     }
+
 }

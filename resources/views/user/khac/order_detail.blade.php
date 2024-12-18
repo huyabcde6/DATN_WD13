@@ -216,6 +216,11 @@
                         <input type="hidden" name="hoan_thanh" value="5">
                         <button type="submit" class="btn btn-success mx-3" style="font-size: 12px; margin-top: 19px;"
                             onclick="return confirm('Bạn xác nhận đã nhận hàng?');">Xác nhận nhận hàng</button>
+                            <input type="hidden" name="cho_xac_nhan" value="8">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#returnModal">
+                            Trả hàng
+                        </button>
                         @endif
                     </form>
                 </div>

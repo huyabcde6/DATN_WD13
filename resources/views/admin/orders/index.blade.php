@@ -20,16 +20,16 @@ Quản lý đơn hàng
             <div class="card">
                 <div class="d-flex mt-3 justify-content-between align-items-center">
                     <form action="{{ route('admin.orders.index') }}" method="get" class="ms-2">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between ">
                             <!-- Lọc theo ngày -->
 
-                            <input type="date" name="from_date" id="from_date" class="form-control"
+                            <input type="date" name="from_date" id="from_date" class="form-control mx-2"
                                 value="{{ request('from_date') }}">
 
-                            <input type="date" name="to_date" id="to_date" class="form-control"
+                            <input type="date" name="to_date" id="to_date" class="form-control mx-2"
                                 value="{{ request('to_date') }}">
 
-                            <select name="status_donhang_id" id="status_donhang_id" class="form-select">
+                            <select name="status_donhang_id" id="status_donhang_id" class="form-select  mx-2">
                                 <option value="">Chọn trạng thái</option>
                                 @foreach($statuses as $status)
                                 <option value="{{ $status->id }}"
@@ -39,7 +39,7 @@ Quản lý đơn hàng
                                 @endforeach
                             </select>
 
-                            <select name="method" id="method" class="form-select">
+                            <select name="method" id="method" class="form-select mx-2">
                                 <option value="">Chọn phương thức</option>
                                 <option value="COD" {{ request('method') == 'COD' ? 'selected' : '' }}>COD</option>
                                 <option value="credit_card" {{ request('method') == 'credit_card' ? 'selected' : '' }}>
@@ -50,7 +50,7 @@ Quản lý đơn hàng
                                 </option>
                             </select>
 
-                            <select name="payment_status" id="payment_status" class="form-select">
+                            <select name="payment_status" id="payment_status" class="form-select mx-2">
                                 <option value="">Chọn trạng thái thanh toán</option>
                                 <option value="chưa thanh toán"
                                     {{ request('payment_status') == 'chưa thanh toán' ? 'selected' : '' }}>Chưa
@@ -68,7 +68,7 @@ Quản lý đơn hàng
                                     {{ request('payment_status') == 'đã hoàn lại' ? 'selected' : '' }}>Đã hoàn lại
                                 </option>
                             </select>
-                            <button type="submit" class="btn btn-dark">Lọc</button>
+                            <button type="submit" class="btn btn-dark mx-2">Lọc</button>
                         </div>
                     </form>
                 </div>
@@ -223,6 +223,11 @@ Quản lý đơn hàng
 <script>
     $(document).ready(function() {
         $('#orderTable').DataTable({
+            "paging": false, // Cho phép phân trang
+            "searching": true, // Tìm kiếm
+            "ordering": true, // Sắp xếp cột
+            "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+            "info": false,
             "language": {
                 "lengthMenu": "Hiển thị _MENU_ mục",
                 "zeroRecords": "Không tìm thấy dữ liệu phù hợp",

@@ -84,9 +84,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($colors as $color)
+                            @foreach ($colors as $key => $color)
                             <tr>
-                                <td>{{ $color->color_id }}</td>
+                                <td>{{ $key + 1 }}</td>
                                 <td>{{ $color->value }}</td>
                                 <td>{{ $color->color_code }}</td>
                                 <td>{{ $color->status ? 'Kích hoạt' : 'Không kích hoạt' }}</td>
@@ -213,6 +213,11 @@ $(document).ready(function() {
 <script>
 $(document).ready(function() {
     $('#colorTable').DataTable({
+        "paging": false, // Cho phép phân trang
+        "searching": true, // Tìm kiếm
+        "ordering": true, // Sắp xếp cột
+        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+        "info": false,
         "language": {
             "lengthMenu": "Hiển thị _MENU_ mục",
             "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
