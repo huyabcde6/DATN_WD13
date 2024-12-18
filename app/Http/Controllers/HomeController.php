@@ -33,12 +33,6 @@ class HomeController extends Controller
         $saleProducts = products::whereNotNull('discount_price')
             ->where('is_show', true)
             ->limit(8)->get();
-<<<<<<< HEAD
-
-        return view('user.sanpham.home', compact('banners', 'news', 'newProducts', 'bestSellingProducts', 'saleProducts'));
-
-=======
         return view('user.sanpham.home', compact('banners', 'newProducts', 'bestSellingProducts', 'saleProducts', 'news'));
->>>>>>> f20c26ed70a5e6e731441cfc7dff3e3fda884763
     }
 }
