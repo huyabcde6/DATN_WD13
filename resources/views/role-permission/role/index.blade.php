@@ -34,7 +34,7 @@ Vai trò & quyền
                     </button>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped text-center" id="roleTable">
+                    <table class="table table-bordered text-center" id="roleTable">
                         <thead>
                             <tr>
                                 <th>#</th>

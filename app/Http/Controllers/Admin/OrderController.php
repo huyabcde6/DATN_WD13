@@ -11,17 +11,18 @@ use Illuminate\Support\Facades\DB;
 use App\Events\OrderUpdated;
 use Carbon\Carbon;
 use App\Mail\OrderStatusChanged;
+use App\Models\OrderStatusHistory;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
-{   
-    public function __construct(){
-        $this->middleware('permission:view order', ['only' => ['index']]);
+{
 
-        $this->middleware('permission:edit order', ['only' => ['update']]);
-
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view order', ['only' => ['index']]);
+    //     $this->middleware('permission:edit order', ['only' => ['update']]);
+    // }
 
     public function index(Request $request)
     {
@@ -85,50 +86,89 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $order = Order::with(['orderDetails.productDetail.products', 'status'])->orderBy('created_at', 'desc')->findOrFail($id);
-        return view('admin.orders.show', compact('order'));
+        // Lấy đơn hàng với các chi tiết và trạng thái
+        $order = Order::with(['orderDetails.productDetail.products', 'status'])
+            ->orderBy('created_at', 'desc')
+            ->findOrFail($id);
+
+        // Tính tổng số tiền đơn hàng
+        $totalAmount = $order->orderDetails->sum(function ($detail) {
+            return $detail->price * $detail->quantity;
+        });
+
+        // Lấy lịch sử trạng thái đơn hàng và eager load các quan hệ
+        $statusHistory = OrderStatusHistory::with(['previousStatus', 'currentStatus', 'user'])
+            ->where('order_id', $id)
+            ->orderBy('changed_at', 'desc')
+            ->get();
+
+        // Truyền dữ liệu sang view
+        return view('admin.orders.show', compact('order', 'totalAmount', 'statusHistory'));
     }
+
+
 
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
         try {
             $order = Order::findOrFail($id);
-            
+
+            // Lấy trạng thái trước khi thay đổi
+            $previousStatus = StatusDonhang::find($order->status_donhang_id); // Đảm bảo trạng thái là đối tượng, không phải id
+
             // Lấy trạng thái mới từ request
             $statusId = $request->input('status');
-            
-            if ($statusId && is_numeric($statusId)) {
-                // Chuyển trạng thái đơn hàng theo quy định
-                if ($order->status_donhang_id == 1 && in_array($statusId, [2, 7])) { // Chờ xác nhận -> Đã xác nhận, Hoàn hàng
-                    $order->status_donhang_id = $statusId;
-                    if ($statusId == 7) {
-                        $order->payment_status = 'thất bại'; // Đánh dấu thanh toán thất bại khi hủy
-                    }
-                } elseif ($order->status_donhang_id == 2 && $statusId == 3) { // Đã xác nhận -> Đang vận chuyển
-                    $order->status_donhang_id = $statusId;
-                } elseif ($order->status_donhang_id == 3 && $statusId == 4) { // Đang vận chuyển -> Đã giao hàng
-                    $order->status_donhang_id = $statusId;
-                    $order->payment_status = 'đã thanh toán';
-                } elseif ($order->status_donhang_id == 4 && in_array($statusId, [5, 8])) { // Đã giao hàng -> Hoàn thành, Chờ
-                    $order->status_donhang_id = $statusId;
-                    if ($statusId == 5) {
-                        $this->moveOrderToInvoice($order);
-                    }
-                } elseif ($order->status_donhang_id == 5) { // Hoàn thành không thể thay đổi trạng thái
-                    return back()->with('error', 'Đơn hàng đã hoàn thành và không thể thay đổi trạng thái.');
-                }elseif ($order->status_donhang_id == 8 && $statusId == 6) { // Chờ xác nhận hoàn hàng -> Hoàn hàng
-                    $order->status_donhang_id = $statusId;
-                    $order->payment_status = 'đã hoàn lại';
-                }else {
-                    return back()->with('error', 'Không thể chuyển trạng thái theo quy định.');
-                }
 
-   // Lưu đơn hàng và gửi sự kiện cập nhật
-                $order->update();
-                broadcast(new OderEvent(Order::findOrFail($id)));
-          Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
+            if (!$statusId || !is_numeric($statusId)) {
+                return back()->with('error', 'Trạng thái không hợp lệ.');
             }
+
+            // Lấy trạng thái mới
+            $currentStatus = StatusDonhang::find($statusId);
+
+            if (!$currentStatus) {
+                return back()->with('error', 'Trạng thái không hợp lệ.');
+            }
+
+            // Chuyển đổi trạng thái đơn hàng theo quy định
+            if ($order->status_donhang_id == 1 && in_array($statusId, [2, 7])) {
+                $order->status_donhang_id = $statusId;
+                if ($statusId == 7) {
+                    $order->payment_status = 'thất bại';
+                }
+            } elseif ($order->status_donhang_id == 2 && $statusId == 3) {
+                $order->status_donhang_id = $statusId;
+            } elseif ($order->status_donhang_id == 3 && $statusId == 4) {
+                $order->status_donhang_id = $statusId;
+                $order->payment_status = 'đã thanh toán';
+            } elseif ($order->status_donhang_id == 4 && in_array($statusId, [5, 8])) {
+                $order->status_donhang_id = $statusId;
+                if ($statusId == 5) {
+                    $this->moveOrderToInvoice($order);
+                }
+            } elseif ($order->status_donhang_id == 5) {
+                return back()->with('error', 'Đơn hàng đã hoàn thành và không thể thay đổi trạng thái.');
+            } elseif ($order->status_donhang_id == 8 && $statusId == 6) {
+                $order->status_donhang_id = $statusId;
+                $order->payment_status = 'đã hoàn lại';
+                foreach ($order->orderDetails as $orderDetail) {
+                    $productDetail = $orderDetail->productDetail;
+                    $productDetail->quantity += $orderDetail->quantity;
+                    $productDetail->save();
+                }
+            } else {
+                return back()->with('error', 'Không thể chuyển trạng thái theo quy định.');
+            }
+
+            // Lưu thay đổi đơn hàng
+            $order->save();
+            // Lưu vào bảng lịch sử thay đổi trạng thái
+            $this->logStatusChange($order, $previousStatus, $currentStatus);
+            // Gửi email thông báo
+            broadcast(new OderEvent($order));
+            Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
+
             DB::commit();
             return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');
         } catch (\Exception $e) {
@@ -136,8 +176,18 @@ class OrderController extends Controller
             \Log::error('Order update error: ' . $e->getMessage());
             return back()->with('error', 'Có lỗi xảy ra trong quá trình cập nhật đơn hàng: ' . $e->getMessage());
         }
-    }    
+    }
 
+    private function logStatusChange(Order $order, $previousStatus, $currentStatus)
+    {
+        OrderStatusHistory::create([
+            'order_id' => $order->id,
+            'previous_status_id' => $previousStatus ? $previousStatus->id : null, // Trạng thái trước khi thay đổi
+            'current_status_id' => $currentStatus->id, // Trạng thái hiện tại
+            'changed_at' => now(), // Thời gian thay đổi
+            'changed_by' => Auth::id(), // Người thay đổi
+        ]);
+    }
     protected function moveOrderToInvoice(Order $order)
     {
         // Kiểm tra nếu hóa đơn đã tồn tại (tránh trùng lặp)
@@ -161,13 +211,14 @@ class OrderController extends Controller
             'discount' => $order->discount,
             'shipping_fee' => $order->shipping_fee,
             'total_price' => $order->total_price,
-            'date_invoice' => now(),
+            'date_invoice' => $order->created_at,
         ]);
 
         // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
         foreach ($order->orderDetails as $orderDetail) {
             $invoice->invoiceDetails()->create([
-                'product_name' => $orderDetail->productDetail->products->name,
+                'product_name'  => $orderDetail->name,
+                'product_avata'  => $orderDetail->avata,
                 'color' => $orderDetail->color,
                 'size' => $orderDetail->size,
                 'quantity' => $orderDetail->quantity,
@@ -175,5 +226,4 @@ class OrderController extends Controller
             ]);
         }
     }
-
 }

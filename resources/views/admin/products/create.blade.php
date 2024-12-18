@@ -2,112 +2,112 @@
 
 @section('css')
 <style>
-#preview-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
+    #preview-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 
-#preview-container .position-relative {
-    position: relative;
-}
+    #preview-container .position-relative {
+        position: relative;
+    }
 
-#preview-container .btn-close {
-    background-color: red;
-    color: white;
-    font-size: 12px;
-    width: 20px;
-    height: 20px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-}
+    #preview-container .btn-close {
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        width: 20px;
+        height: 20px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+    }
 
-.button-group {
-    margin-bottom: 20px;
-}
+    .button-group {
+        margin-bottom: 20px;
+    }
 
-.button-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-}
+    .button-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
 
-.options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    /* Khoảng cách giữa các nút */
-}
+    .options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        /* Khoảng cách giữa các nút */
+    }
 
-.option-button {
-    padding: 10px 15px;
-    /* Khoảng cách bên trong */
-    border: 1px solid #007bff;
-    /* Đường viền */
-    border-radius: 4px;
-    /* Bo góc */
-    background-color: #ffffff;
-    /* Màu nền */
-    color: #007bff;
-    /* Màu chữ */
-    font-size: 16px;
-    /* Kích thước chữ */
-    cursor: pointer;
-    /* Con trỏ khi hover */
-    transition: background-color 0.3s, color 0.3s;
-    /* Hiệu ứng chuyển tiếp */
-}
+    .option-button {
+        padding: 10px 15px;
+        /* Khoảng cách bên trong */
+        border: 1px solid #007bff;
+        /* Đường viền */
+        border-radius: 4px;
+        /* Bo góc */
+        background-color: #ffffff;
+        /* Màu nền */
+        color: #007bff;
+        /* Màu chữ */
+        font-size: 16px;
+        /* Kích thước chữ */
+        cursor: pointer;
+        /* Con trỏ khi hover */
+        transition: background-color 0.3s, color 0.3s;
+        /* Hiệu ứng chuyển tiếp */
+    }
 
-.option-button:hover {
-    background-color: #007bff;
-    /* Màu nền khi hover */
-    color: #ffffff;
-    /* Màu chữ khi hover */
-}
+    .option-button:hover {
+        background-color: #007bff;
+        /* Màu nền khi hover */
+        color: #ffffff;
+        /* Màu chữ khi hover */
+    }
 
-.option-button.selected {
-    background-color: #007bff;
-    /* Màu nền khi được chọn */
-    color: #ffffff;
-    /* Màu chữ khi được chọn */
-    border-color: #0056b3;
-    /* Đổi màu viền khi chọn */
-}
+    .option-button.selected {
+        background-color: #007bff;
+        /* Màu nền khi được chọn */
+        color: #ffffff;
+        /* Màu chữ khi được chọn */
+        border-color: #0056b3;
+        /* Đổi màu viền khi chọn */
+    }
 
-.img-thumbnail {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
-    width: 100%;
-    height: auto;
-}
+    .img-thumbnail {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 100%;
+        height: auto;
+    }
 
-.position-relative .btn-close {
-    background-color: red;
-    color: white;
-    font-size: 12px;
-    border: none;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    z-index: 10;
-}
+    .position-relative .btn-close {
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        z-index: 10;
+    }
 
-.btn:hover i {
-    color: gray !important;
-    /* Màu xám */
-}
+    .btn:hover i {
+        color: gray !important;
+        /* Màu xám */
+    }
 
-/* Thay đổi màu nền và đường viền nút khi hover */
-.btn:hover {
-    background-color: #f1f1f1;
-    /* Màu nền xám nhạt */
-    border-color: gray;
-    /* Đổi màu đường viền */
-}
+    /* Thay đổi màu nền và đường viền nút khi hover */
+    .btn:hover {
+        background-color: #f1f1f1;
+        /* Màu nền xám nhạt */
+        border-color: gray;
+        /* Đổi màu đường viền */
+    }
 </style>
 @endsection
 
@@ -147,72 +147,75 @@
                             <div class="col-lg-7">
                                 <div class="mb-3">
                                     <label for="name">Tên sản phẩm</label>
-                                        <input type="text" name="name" value="{{ old('name') }}"
-                                            class="form-control @error('name') is-invalid @enderror"
-                                            placeholder="Tên sản phẩm" id="name">
-                                        @error('name')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <input type="text" name="name" class="form-control" placeholder="Tên sản phẩm" id="name" value="{{ old('name') }}">
                                 </div>
+                                @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
-                                    <input type="text" name="slug" class="form-control" placeholder="Slug" id="slug"
-                                        readonly>
+                                    <input type="text" name="slug" class="form-control" placeholder="Slug" id="slug" value="{{ old('slug') }}" readonly>
                                 </div>
+                                @error('slug')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+
                                 <div class="mb-3">
                                     <label for="price">Giá sản phẩm</label>
-                                        <input type="number" name="price" value="{{ old('price') }}" id="price"
-                                            class="form-control @error('price') is-invalid @enderror"
-                                            placeholder="Giá sản phẩm">
-                                        @error('price')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <input type="number" name="price" id="price" class="form-control" placeholder="Giá sản phẩm" value="{{ old('price') }}">
                                 </div>
+                                @error('price')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+
                                 <div class="mb-3">
-                                   <label for="discount_price">Giá khuyến mãi</label>
-                                        <input type="number" name="discount_price" value="{{ old('discount_price') }}"
-                                            id="discount_price"
-                                            class="form-control @error('discount_price') is-invalid @enderror"
-                                            placeholder="Giá khuyến mãi">
-                                        @error('discount_price')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <label for="discount_price">Giá khuyến mãi</label>
+                                    <input type="number" name="discount_price" id="discount_price" class="form-control" placeholder="Giá khuyến mãi" value="{{ old('discount_price') }}">
                                 </div>
+                                @error('discount_price')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+
                                 <div class="mb-3">
                                     <label for="short_description">Mô tả ngắn</label>
-                                        <textarea name="short_description" id="short_description"
-                                            class="form-control @error('short_description') is-invalid @enderror" placeholder="Mô tả ngắn của sản phẩm">{{ old('short_description') }}</textarea>
-                                        @error('short_description')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    <textarea name="short_description" id="short_description" class="form-control" placeholder="Mô tả ngắn của sản phẩm">{{ old('short_description') }}</textarea>
                                 </div>
+                                @error('short_description')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Mô tả chi tiết sản phẩm</label>
                                     <div id="quill-editor" style="height: 400px;"></div>
-                                    <textarea name="description" id="description_content"
-                                        class="d-none">Nhập mô tả chi tiết sản phẩm</textarea>
+                                    <textarea name="description" id="description_content" class="d-none">{{ old('description') }}</textarea>
                                 </div>
-
+                                @error('description')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
+
                             <div class="col-lg-5">
                                 <div class="mb-3">
                                     <label for="category_id">Danh mục</label>
-                                    <select name="categories_id" id="categories_id" class="form-select" required>
+                                    <select name="categories_id" id="categories_id" class="form-select">
                                         @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}" {{ old('categories_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+                                @error('categories_id')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+
                                 <div class="col-sm-10 d-flex gap-2">
                                     <label class="form-label" for="is_show">Trạng thái</label>
                                     <div class="form-check">
-                                        <input class="form-check-input mx-1" type="radio" name="is_show"
-                                            id="gridRadios1" value="1" checked>
+                                        <input class="form-check-input mx-1" type="radio" name="is_show" id="gridRadios1" value="1" {{ old('is_show') == '1' ? 'checked' : '' }}>
                                         <label class="form-check-label" for="gridRadios1">Hiển thị</label>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input mx-1" type="radio" name="is_show"
-                                            id="gridRadios2" value="0">
+                                        <input class="form-check-input mx-1" type="radio" name="is_show" id="gridRadios2" value="0" {{ old('is_show') == '0' ? 'checked' : '' }}>
                                         <label class="form-check-label" for="gridRadios2">Ẩn</label>
                                     </div>
                                 </div>
@@ -220,23 +223,19 @@
                                 <div class="form-switch mb-2 d-flex gap-2">
                                     <label class="form-label start" for="is_type">Tùy chỉnh</label>
                                     <div class="form-check">
-                                        <input class="form-check-input mx-1" type="checkbox" name="is_new" id="is_new"
-                                            checked>
+                                        <input class="form-check-input mx-1" type="checkbox" name="is_new" id="is_new" {{ old('is_new') ? 'checked' : '' }}>
                                         <label class="form-check-label" for="is_new">New</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input mx-1" type="checkbox" name="is_hot" id="is_hot"
-                                            checked>
+                                        <input class="form-check-input mx-1" type="checkbox" name="is_hot" id="is_hot" {{ old('is_hot') ? 'checked' : '' }}>
                                         <label class="form-check-label" for="is_hot">Hot</label>
                                     </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="avata">Hình ảnh sản phẩm</label>
-                                        <input class="form-control" type="file" name="avata" id="avata">
-                                        <div id="avata-preview-container" class="mt-2"></div>
-                                        @error('avata')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                    <input class="form-control" type="file" name="avata" id="avata">
+                                    <div id="avata-preview-container" class="mt-2"></div>
                                 </div>
 
                                 <div class="mb-3">
@@ -249,27 +248,27 @@
                                     <label for="sizes">Chọn kích thước</label>
                                     <div class="options" id="sizes">
                                         @foreach($sizes as $size)
-                                        <button type="button" class="option-button"
-                                            data-value="{{ $size->size_id }}">{{ $size->value }}</button>
+                                        <button type="button" class="option-button" data-value="{{ $size->size_id }}">{{ $size->value }}</button>
                                         @endforeach
                                     </div>
                                 </div>
+
                                 <div class="button-group">
                                     <label for="colors">Chọn màu sắc</label>
                                     <div class="options" id="colors">
                                         @foreach($colors as $color)
-                                        <button type="button" class="option-button"
-                                            data-value="{{ $color->color_id }}">{{ $color->value }}</button>
+                                        <button type="button" class="option-button" data-value="{{ $color->color_id }}">{{ $color->value }}</button>
                                         @endforeach
                                     </div>
                                 </div>
+
                                 <div class="d-flex justify-content-center">
-                                    <button type="button" id="generate-variants" class="btn btn-primary">Tạo biến
-                                        thể</button>
+                                    <button type="button" id="generate-variants" class="btn btn-primary">Tạo biến thể</button>
                                 </div>
                             </div>
 
                             <div id="variants-container"></div>
+
                             <div class="d-flex justify-content-center">
                                 <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
                             </div>
@@ -285,45 +284,46 @@
 @section('js')
 <script src="{{ asset('assets/admin/libs/quill/quill.core.js')}}"></script>
 <script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
+
 <script>
-document.querySelectorAll('#sizes .option-button').forEach(button => {
-    button.addEventListener('click', function() {
-        this.classList.toggle('selected');
+    document.querySelectorAll('#sizes .option-button').forEach(button => {
+        button.addEventListener('click', function() {
+            this.classList.toggle('selected');
+        });
     });
-});
 
-document.querySelectorAll('#colors .option-button').forEach(button => {
-    button.addEventListener('click', function() {
-        this.classList.toggle('selected');
+    document.querySelectorAll('#colors .option-button').forEach(button => {
+        button.addEventListener('click', function() {
+            this.classList.toggle('selected');
+        });
     });
-});
 
-document.getElementById('generate-variants').addEventListener('click', function() {
-    const selectedSizeButtons = document.querySelectorAll('#sizes .option-button.selected');
-    const selectedColorButtons = document.querySelectorAll('#colors .option-button.selected');
+    document.getElementById('generate-variants').addEventListener('click', function() {
+        const selectedSizeButtons = document.querySelectorAll('#sizes .option-button.selected');
+        const selectedColorButtons = document.querySelectorAll('#colors .option-button.selected');
 
-    if (selectedSizeButtons.length === 0 || selectedColorButtons.length === 0) {
-        alert('Vui lòng chọn ít nhất một kích thước và một màu sắc.');
-        return;
-    }
+        if (selectedSizeButtons.length === 0 || selectedColorButtons.length === 0) {
+            alert('Vui lòng chọn ít nhất một kích thước và một màu sắc.');
+            return;
+        }
 
-    const container = document.getElementById('variants-container');
-    container.innerHTML = ''; // Xóa các biến thể cũ
+        const container = document.getElementById('variants-container');
+        container.innerHTML = ''; // Xóa các biến thể cũ
 
-    selectedSizeButtons.forEach(sizeButton => {
-        const size = {
-            id: sizeButton.getAttribute('data-value'),
-            value: sizeButton.textContent
-        };
-
-        selectedColorButtons.forEach(colorButton => {
-            const color = {
-                id: colorButton.getAttribute('data-value'),
-                value: colorButton.textContent
+        selectedSizeButtons.forEach(sizeButton => {
+            const size = {
+                id: sizeButton.getAttribute('data-value'),
+                value: sizeButton.textContent
             };
 
-            const variantForm = document.createElement('div');
-            variantForm.innerHTML = `
+            selectedColorButtons.forEach(colorButton => {
+                const color = {
+                    id: colorButton.getAttribute('data-value'),
+                    value: colorButton.textContent
+                };
+
+                const variantForm = document.createElement('div');
+                variantForm.innerHTML = `
             <div class="card border">
                 <h4 class="mt-3 mx-3">Biến thể (Kích thước: ${size.value}, Màu: ${color.value})</h4>
                 <div class="card-body">
@@ -334,187 +334,193 @@ document.getElementById('generate-variants').addEventListener('click', function(
                         <div class="col-lg-4 mx-5">
                             <div class="mb-2">
                                 <label for="variant_image_${size.id}_${color.id}">Hình ảnh</label>
-                                <input type="file" name="variant_image[${size.id}][${color.id}]" id="variant_image_${size.id}_${color.id}" class="form-control" accept="image/*" required>
+                                <input type="file" name="variant_image[${size.id}][${color.id}]" id="variant_image_${size.id}_${color.id}" class="form-control" accept="image/*">
                             </div>
                             <div class="mb-2">
                                 <label for="variant_quantity_${size.id}_${color.id}">Số lượng</label>
-                                <input type="number" name="variant_quantity[${size.id}][${color.id}]" id="variant_quantity_${size.id}_${color.id}" class="form-control" required>
+                                <input type="number" name="variant_quantity[${size.id}][${color.id}]" id="variant_quantity_${size.id}_${color.id}" class="form-control">
                             </div>
+                               @error('variant_quantity[${size.id}][${color.id}]')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                         </div>
                         <div class="col-lg-4 mx-3 ">
                             <div class="mb-2">
                                 <label for="variant_price_${size.id}_${color.id}">Giá</label>
-                                <input type="number" name="variant_price[${size.id}][${color.id}]" id="variant_price_${size.id}_${color.id}" class="form-control" required>
+                                <input type="number" name="variant_price[${size.id}][${color.id}]" id="variant_price_${size.id}_${color.id}" class="form-control">
                             </div>
+                            @error('variant_price[${size.id}][${color.id}]')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             <div class="mb-2">
                                 <label for="variant_discount_price_${size.id}_${color.id}">Giá khuyến mãi</label>
-                                <input type="number" name="variant_discount_price[${size.id}][${color.id}]" id="variant_discount_price_${size.id}_${color.id}" class="form-control" required>
+                                <input type="number" name="variant_discount_price[${size.id}][${color.id}]" id="variant_discount_price_${size.id}_${color.id}" class="form-control">
                             </div>
+                            @error('variant_discount_price[${size.id}][${color.id}]')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                         </div>
                     </div>
                 </div>
             </div>
                     <hr>
             `;
-            container.appendChild(variantForm);
+                container.appendChild(variantForm);
+            });
         });
     });
-});
 
-document.addEventListener('DOMContentLoaded', function() {
-    var quill = new Quill("#quill-editor", {
-        theme: "snow",
+    document.addEventListener('DOMContentLoaded', function() {
+        var quill = new Quill("#quill-editor", {
+            theme: "snow",
+        })
+        var old_content = `{!! old('description') !!}`;
+        quill.root.innerHTML = old_content;
+        quill.on('text-change', function() {
+            var html = quill.root.innerHTML;
+            document.getElementById('description_content').value = html;
+        })
     })
-    var old_content = `{!! old('description') !!}`;
-    quill.root.innerHTML = old_content;
-    quill.on('text-change', function() {
-        var html = quill.root.innerHTML;
-        document.getElementById('description_content').value = html;
-    })
-})
 </script>
 <script>
-document.getElementById('name').addEventListener('keyup', function() {
-    const name = this.value;
-    const slug = removeVietnameseTones(name)
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-');
+    document.getElementById('name').addEventListener('keyup', function() {
+        const name = this.value;
+        const slug = removeVietnameseTones(name)
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
 
-    document.getElementById('slug').value = slug;
-});
+        document.getElementById('slug').value = slug;
+    });
 
-function removeVietnameseTones(str) {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/đ/g, "d").replace(/Đ/g, "D");
-}
+    function removeVietnameseTones(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/đ/g, "d").replace(/Đ/g, "D");
+    }
 </script>
 <script>
-document.getElementById('images').addEventListener('change', function(event) {
-    const previewContainer = document.getElementById('preview-container');
-    previewContainer.innerHTML = ''; // Xóa nội dung trước đó
+    document.getElementById('images').addEventListener('change', function(event) {
+        const previewContainer = document.getElementById('preview-container');
+        previewContainer.innerHTML = ''; // Xóa nội dung trước đó
 
-    const files = Array.from(event.target.files);
+        const files = Array.from(event.target.files);
 
-    files.forEach((file, index) => {
-        const fileReader = new FileReader();
-        fileReader.onload = function(e) {
-            const imageWrapper = document.createElement('div');
-            imageWrapper.classList.add('position-relative', 'me-2', 'mb-2');
-            imageWrapper.style.width = '70px';
-            imageWrapper.style.height = '70px';
+        files.forEach((file, index) => {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                const imageWrapper = document.createElement('div');
+                imageWrapper.classList.add('position-relative', 'me-2', 'mb-2');
+                imageWrapper.style.width = '70px';
+                imageWrapper.style.height = '70px';
 
-            imageWrapper.innerHTML = `
+                imageWrapper.innerHTML = `
                 <img src="${e.target.result}" alt="Preview" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
                 <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" aria-label="Close" data-index="${index}"></button>
             `;
 
-            previewContainer.appendChild(imageWrapper);
-        };
-        fileReader.readAsDataURL(file);
-    });
-
-    // Xử lý nút xóa
-    previewContainer.addEventListener('click', function(e) {
-        if (e.target.classList.contains('btn-close')) {
-            const index = parseInt(e.target.getAttribute('data-index'));
-            const dt = new DataTransfer();
-
-            files.forEach((file, i) => {
-                if (i !== index) {
-                    dt.items.add(file); // Giữ lại các file không bị xóa
-                }
-            });
-
-            event.target.files = dt.files; // Cập nhật danh sách file
-            e.target.parentElement.remove(); // Xóa phần tử hình ảnh khỏi preview
-        }
-    });
-});
-</script>
-
-<script>
-function handleImagePreview(inputId, previewContainerId) {
-    const inputElement = document.getElementById(inputId);
-    const previewContainer = document.getElementById(previewContainerId);
-
-    inputElement.addEventListener('change', function() {
-        previewContainer.innerHTML = ''; // Xóa hình ảnh hiện tại nếu có
-
-        const file = inputElement.files[0];
-        if (file) {
-            const fileReader = new FileReader();
-
-            fileReader.onload = function(e) {
-                const imageWrapper = document.createElement('div');
-                imageWrapper.classList.add('position-relative');
-                imageWrapper.style.width = '80px';
-                imageWrapper.style.height = '90px';
-
-                imageWrapper.innerHTML = `
-                    <img src="${e.target.result}" alt="Preview" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
-                    <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" aria-label="Close"></button>
-                `;
-
                 previewContainer.appendChild(imageWrapper);
-
-                // Xử lý nút xóa
-                imageWrapper.querySelector('.btn-close').addEventListener('click', function() {
-                    inputElement.value = ''; // Xóa file khỏi input
-                    previewContainer.innerHTML = ''; // Xóa preview
-                });
             };
-
             fileReader.readAsDataURL(file);
-        }
-    });
-}
+        });
 
-// Khởi tạo preview cho hình ảnh phụ và các biến thể
-handleImagePreview('avata', 'avata-preview-container');
+        // Xử lý nút xóa
+        previewContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-close')) {
+                const index = parseInt(e.target.getAttribute('data-index'));
+                const dt = new DataTransfer();
+
+                files.forEach((file, i) => {
+                    if (i !== index) {
+                        dt.items.add(file); // Giữ lại các file không bị xóa
+                    }
+                });
+
+                event.target.files = dt.files; // Cập nhật danh sách file
+                e.target.parentElement.remove(); // Xóa phần tử hình ảnh khỏi preview
+            }
+        });
+    });
 </script>
 
 <script>
-document.getElementById('variants-container').addEventListener('change', function(event) {
-    if (event.target.type === 'file' && event.target.name.startsWith('variant_image')) {
-        const inputElement = event.target;
-        const previewContainerId = inputElement.id.replace('variant_image', 'variant-preview-container');
+    function handleImagePreview(inputId, previewContainerId) {
+        const inputElement = document.getElementById(inputId);
         const previewContainer = document.getElementById(previewContainerId);
 
-        previewContainer.innerHTML = ''; // Xóa preview cũ nếu có
+        inputElement.addEventListener('change', function() {
+            previewContainer.innerHTML = ''; // Xóa hình ảnh hiện tại nếu có
 
-        const file = inputElement.files[0];
-        if (file) {
-            const fileReader = new FileReader();
+            const file = inputElement.files[0];
+            if (file) {
+                const fileReader = new FileReader();
 
-            fileReader.onload = function(e) {
-                const imageWrapper = document.createElement('div');
-                imageWrapper.classList.add('position-relative');
-                imageWrapper.style.width = '110px';
-                imageWrapper.style.height = '115px';
+                fileReader.onload = function(e) {
+                    const imageWrapper = document.createElement('div');
+                    imageWrapper.classList.add('position-relative');
+                    imageWrapper.style.width = '80px';
+                    imageWrapper.style.height = '90px';
 
-                imageWrapper.innerHTML = `
+                    imageWrapper.innerHTML = `
                     <img src="${e.target.result}" alt="Preview" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
                     <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" aria-label="Close"></button>
                 `;
 
-                previewContainer.appendChild(imageWrapper);
+                    previewContainer.appendChild(imageWrapper);
 
-                // Xử lý nút xóa
-                imageWrapper.querySelector('.btn-close').addEventListener('click', function() {
-                    inputElement.value = ''; // Xóa file khỏi input
-                    previewContainer.innerHTML = ''; // Xóa preview
-                });
-            };
+                    // Xử lý nút xóa
+                    imageWrapper.querySelector('.btn-close').addEventListener('click', function() {
+                        inputElement.value = ''; // Xóa file khỏi input
+                        previewContainer.innerHTML = ''; // Xóa preview
+                    });
+                };
 
-            fileReader.readAsDataURL(file);
-        }
+                fileReader.readAsDataURL(file);
+            }
+        });
     }
-});
+
+    // Khởi tạo preview cho hình ảnh phụ và các biến thể
+    handleImagePreview('avata', 'avata-preview-container');
 </script>
 
+<script>
+    document.getElementById('variants-container').addEventListener('change', function(event) {
+        if (event.target.type === 'file' && event.target.name.startsWith('variant_image')) {
+            const inputElement = event.target;
+            const previewContainerId = inputElement.id.replace('variant_image', 'variant-preview-container');
+            const previewContainer = document.getElementById(previewContainerId);
+
+            previewContainer.innerHTML = ''; // Xóa preview cũ nếu có
+
+            const file = inputElement.files[0];
+            if (file) {
+                const fileReader = new FileReader();
+
+                fileReader.onload = function(e) {
+                    const imageWrapper = document.createElement('div');
+                    imageWrapper.classList.add('position-relative');
+                    imageWrapper.style.width = '110px';
+                    imageWrapper.style.height = '115px';
+
+                    imageWrapper.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
+                    <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle" aria-label="Close"></button>
+                `;
+
+                    previewContainer.appendChild(imageWrapper);
+
+                    // Xử lý nút xóa
+                    imageWrapper.querySelector('.btn-close').addEventListener('click', function() {
+                        inputElement.value = ''; // Xóa file khỏi input
+                        previewContainer.innerHTML = ''; // Xóa preview
+                    });
+                };
+
+                fileReader.readAsDataURL(file);
+            }
+        }
+    });
+</script>
 @endsection
-
-

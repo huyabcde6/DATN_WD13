@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\categories;
 use App\Models\products;
@@ -74,6 +75,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->has('is_new'));
         try {
             // Tìm sản phẩm theo ID
             $product = new products();
@@ -170,7 +172,6 @@ class ProductController extends Controller
             }
 
             $product->save();
-
             // Xử lý xóa hình ảnh phụ
             if ($request->has('remove_images')) {
                 foreach ($request->remove_images as $imageId) {
@@ -189,6 +190,20 @@ class ProductController extends Controller
                     $product->productImages()->create(['image_path' => $imagePath]);
                 }
             }
+            // Xử lý các hình ảnh bị xóa
+            if ($request->has('deleted_images') && !empty($request->deleted_images)) {
+                $deletedImages = explode(',', $request->deleted_images);
+                foreach ($deletedImages as $imageId) {
+                    $image = ProductImage::find($imageId);
+                    if ($image) {
+                        // Xóa hình ảnh khỏi storage
+                        Storage::disk('public')->delete($image->image_path);
+                        // Xóa hình ảnh khỏi cơ sở dữ liệu
+                        $image->delete();
+                    }
+                }
+            }
+            // $product->update($request->except('images', 'deleted_images'));
 
             // Cập nhật biến thể đã có
             if ($request->has('variant_ids')) {

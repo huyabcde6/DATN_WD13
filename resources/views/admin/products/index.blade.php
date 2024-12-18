@@ -5,12 +5,13 @@ Danh sách sản phẩm
 @endsection
 
 @section('css')
-<!-- Link jQuery từ CDN -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" /> -->
 @endsection
 
 @section('content')
@@ -42,17 +43,7 @@ Danh sách sản phẩm
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="d-flex m-3 justify-content-between align-items-center">
-                    <form action="{{ route('admin.products.index') }}" class="d-flex" method="get" id="search-form">
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                Tìm kiếm
-                            </span>
-                            <input type="text" value="{{ request('search') }}" name="search" id="search"
-                                class="form-control" placeholder="Nhập từ khóa cần tìm..">
-                            <button type="submit" class="btn btn-sm btn-dark"><i class="bi bi-search"></i></button>
-                        </div>
-                    </form>
+                <div class="d-flex mt-3 justify-content-between align-items-center">
                     <form action="{{ route('admin.products.index') }}" method="get" class="ms-2">
                         <div class="d-flex">
                             <select name="categories_id" class="form-control" id="categories_id">
@@ -75,56 +66,26 @@ Danh sách sản phẩm
                 </div>
 
                 <div class="card-body">
-                    <table class="table table-striped text-center">
+                    <table class="table table-bordered text-center" id="productTable">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>
-                                    <a
-                                        href="{{ route('admin.products.index', array_merge(request()->query(), ['sort' => 'name', 'order' => request('order') === 'asc' ? 'desc' : 'asc'])) }}">
+                                <th >#</th>
+                                <th class="text-center">
                                         Tên sản phẩm
-                                        @if (request('sort') == 'name')
-                                        @if (request('order') == 'asc')
-                                        ↑
-                                        @else
-                                        ↓
-                                        @endif
-                                        @endif
-                                    </a>
                                 </th>
-                                <th>Hình ảnh</th>
-                                <th>
+                                <th class="text-center">Hình ảnh</th>
+                                <th class="text-center">
                                     Danh mục
                                 </th>
-                                <th>
-                                    <a
-                                        href="{{ route('admin.products.index', array_merge(request()->query(), ['sort' => 'price', 'order' => request('order') === 'asc' ? 'desc' : 'asc'])) }}">
+                                <th class="text-center">
                                         Giá
-                                        @if (request('sort') == 'price')
-                                        @if (request('order') == 'asc')
-                                        ↑
-                                        @else
-                                        ↓
-                                        @endif
-                                        @endif
-                                    </a>
                                 </th>
-                                <th>Giá giảm</th>
-                                <th>Số lượng tồn kho</th>
-                                <th>
-                                    <a
-                                        href="{{ route('admin.products.index', array_merge(request()->query(), ['sort' => 'created_at', 'order' => request('order') === 'asc' ? 'desc' : 'asc'])) }}">
+                                <th class="text-center">Giá giảm</th>
+                                <th class="text-center">Số lượng tồn kho</th>
+                                <th class="text-center">
                                         Ngày tạo
-                                        @if (request('sort') == 'created_at')
-                                        @if (request('order') == 'asc')
-                                        ↑
-                                        @else
-                                        ↓
-                                        @endif
-                                        @endif
-                                    </a>
                                 </th>
-                                <th>Hiện/ẩn</th>
+                                <th class="text-center">Hiện/ẩn</th>
                                 <th class="text-center">Tương tác</th>
                             </tr>
                         </thead>
@@ -136,7 +97,7 @@ Danh sách sản phẩm
                                 <td>{{ $product->name }}</td>
                                 <td>
                                     <img src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}"
-                                        width="50" height="50" class="img-thumbnail">
+                                        width="50px" height="auto" class="img-thumbnail">
                                 </td>
                                 <td>{{ $product->categories->name ?? 'Không có' }}</td>
                                 <td>{{ number_format($product->price, 0, '', '.') }} đ</td>
@@ -192,13 +153,13 @@ Danh sách sản phẩm
 </div>
 
 @push('scripts')
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
-
 <script>
 document.querySelectorAll('.delete-form').forEach(form => {
     form.addEventListener('submit', function(e) {
@@ -231,4 +192,28 @@ document.getElementById('search').addEventListener('input', function() {
 });
 </script>
 @endpush
+@endsection
+@section('js')
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#productTable').DataTable({
+        "language": {
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+            "infoEmpty": "Không có dữ liệu",
+            "search": "Tìm kiếm:",
+            "paginate": {
+                "first": "Đầu",
+                "last": "Cuối",
+                "next": "Tiếp",
+                "previous": "Trước"
+            }
+        }
+    });
+});
+</script>
+
 @endsection

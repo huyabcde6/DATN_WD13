@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CouponRequest;
 use App\Models\categories;
 use App\Models\Coupon_Conditions;
 use App\Models\Coupons;
@@ -24,21 +25,9 @@ class CouponsController extends Controller
 
         return view('admin.Coupons.addCoupons', compact('products', 'categories'));
     }
-    public function store(Request $request)
+    public function store(CouponRequest $request)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|unique:coupons,code',
-            'discount_type' => 'required|string|in:percentage,fixed_amount',
-            'discount_value' => 'required|numeric|min:0',
-            'max_discount_amount' => 'required|numeric|min:0',
-            'min_order_amount' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'total_quantity' => 'required|integer|min:1',
-            'status' => 'required|string|in:active,disabled,disabled',
-        ]);
-        // dd($validated);
-        $coupon = Coupons::create($validated);
+        $coupon = Coupons::create($request->all());
 
         // Lưu điều kiện áp dụng cho sản phẩm
         if ($request->filled('product_id')) {
@@ -80,17 +69,7 @@ class CouponsController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'code' => 'required|string|unique:coupons,code,' . $id,
-            'discount_type' => 'required|string|in:percentage,fixed_amount',
-            'discount_value' => 'required|numeric|min:0',
-            'max_discount_amount' => 'required|numeric|min:0',
-            'min_order_amount' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'total_quantity' => 'required|integer|min:1',
-            'status' => 'required|string|in:active,expired,disabled',
-        ]);
+        $validated = $request->all();
 
         $coupon = Coupons::findOrFail($id);
 

@@ -1,46 +1,23 @@
 @extends('layouts.home')
 
 @section('content')
-    <div class="section">
 
-        <!-- Breadcrumb Area Start -->
-        <div class="breadcrumb-area bg-light">
-            <div class="container-fluid">
-                <div class="breadcrumb-content text-center">
-                    <h1 class="title">Đăng ký</h1>
-                    <ul>
-                        <li>
-                            <a href="#">Trang chủ </a>
-                        </li>
-                        <li class="active"> Đăng ký </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- Breadcrumb Area End -->
-
-    </div>
     <div class="section section-margin">
         <div class="container">
+        <div class="row mb-n10 justify-content-center">
 
+            <div class="col-lg-6 col-md-8 m-auto m-lg-0 pb-10">
+                <!-- Register Wrapper Start -->
+                <div class="register-wrapper ">
             <div class="row mb-n10 justify-content-center">
-
-                <div class="col-lg-6 col-md-8 m-auto m-lg-0 pb-10">
-                    <!-- Register Wrapper Start -->
-                    <div class="register-wrapper ">
-
+                <div class="">
                         <!-- Title and Description Start -->
                         <div class="section-content text-center mb-5 ">
                             <h2 class="title mb-2">Tạo tài khoản</h2>
                             <p class="desc-content">Vui lòng đăng ký bằng cách sử dụng chi tiết tài khoản bên dưới.</p>
                         </div>
-                        <!-- Title and Description End -->
-
-                        <!-- Form Start -->
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
-
-                            <!-- Name Input Start -->
                             <div class="single-input-item mb-3">
                                 <input type="text" name="name" placeholder="Họ và tên" value="{{ old('name') }}"
                                      autofocus>
@@ -97,7 +74,5 @@
                     <!-- Register Wrapper End -->
                 </div>
             </div>
-
-        </div>
     </div>
 @endsection

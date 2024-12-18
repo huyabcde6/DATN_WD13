@@ -16,15 +16,15 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $banners = banner::orderBy('order')->get();
-        $news = News::get();
+        $banners = Banner::where('status', 1)->get();
+        $news = News::where('status', 1)->get();
         // Sản phẩm mới
         $newProducts = products::where('iS_new', 1)
             ->where('iS_show', 1)
             ->latest() // Sắp xếp theo ngày tạo mới nhất
             ->limit(8)->get(); // Hiển thị tối đa 8 sản phẩm
 
-            // Sản phẩm bán chạy
+        // Sản phẩm bán chạy
         $bestSellingProducts = products::where('is_hot', true)
             ->where('is_show', true)
             ->limit(8)->get();
@@ -33,9 +33,12 @@ class HomeController extends Controller
         $saleProducts = products::whereNotNull('discount_price')
             ->where('is_show', true)
             ->limit(8)->get();
+<<<<<<< HEAD
 
         return view('user.sanpham.home', compact('banners', 'news', 'newProducts', 'bestSellingProducts', 'saleProducts'));
 
+=======
+        return view('user.sanpham.home', compact('banners', 'newProducts', 'bestSellingProducts', 'saleProducts', 'news'));
+>>>>>>> f20c26ed70a5e6e731441cfc7dff3e3fda884763
     }
-
 }
