@@ -39,7 +39,7 @@
         <div class="container my-4">
             <div class="card shadow-sm p-4">
                 <header class="hero">
-                    <h1>Chào mừng đến với POLY STORE</h1>
+                    <h1>Chào mừng đến với Công ty Bán Hàng</h1>
                 </header>
                 <div class="container my-5">
                     <section class="mb-5 text-center">
