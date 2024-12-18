@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>POLY STORE</title>
     <!-- Favicons -->
-    <link rel="shortcut icon" href="{{ asset('ngdung/assets/images/favicon.ico') }}" />
-
+    <link rel="shortcut icon" href="http://datn_wd13.test/ngdung/assets/images/logo/logo1.png" />
     <!-- Vendor CSS (Icon Font) -->
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/fontawesome.min.css') }}" />
@@ -33,6 +32,7 @@
 </head>
 
 <body>
+    {{-- <div class="loader" style="display: none;"></div> --}}
     <div class="header section">
         <!-- Header Bottom Start -->
         <div class="header-bottom">
@@ -42,7 +42,7 @@
                         <!-- Header Logo Start -->
                         <div class="col-xl-2 col-6">
                             <div class="header-logo">
-                                <a href="index.html"><img src="{{ asset('ngdung/assets/images/logo/logo1.png') }}"
+                                <a href="{{route('home.index')}}"><img src="{{ asset('ngdung/assets/images/logo/logo1.png') }}"
                                         alt="Site Logo" width="250xp" height="135px" /></a>
                             </div>
                         </div>
@@ -53,23 +53,20 @@
                             <div class="main-menu position-relative">
                                 <ul>
                                     <li class="has-children">
-                                        <a href="{{ route('home.index') }}"><span>Trang Chủ</span></a>
+                                        <a href="{{route('home.index')}}"><span>Trang Chủ</span></a>
                                     </li>
                                     <li class="has-children position-static">
-                                        <a href="{{ route('shop.index') }}"><span>Cửa hàng</span></a>
+                                        <a href="{{route('shop.index')}}"><span>Cửa hàng</span></a>
 
                                     </li>
                                     <li class="has-children">
-                                        <a href="#"><span>Dịch Vụ</span></a>
+                                        <a href="{{ route('user.vouchers') }}"><span>Voucher</span></a>
                                     </li>
                                     <li class="has-children">
                                         <a href="{{ route('news.index') }}"><span>Tin Tức</span></a>
                                     </li>
                                     <li>
                                         <a href="{{ route('contact') }}"> <span>Liên Hệ</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('introduction') }}"> <span>Giới Thiệu</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -80,30 +77,13 @@
                         <div class="col-xl-2 col-6">
                             <div class="header-actions">
                                 <!-- Search Header Action Button Start -->
-                                {{-- <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
-                                        class="pe-7s-search"></i></a> --}}
-
-                                <!-- Thêm liên kết đến Bootstrap CSS -->
-                                {{-- <link rel="stylesheet"
-                                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-                            <link rel="stylesheet"
-                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Thêm Font Awesome -->
-                            
-                            <form action="{{ route('products.search') }}" method="GET" onsubmit="return validateSearch()" class="search-form">
-                                <div class="input-group">
-                                    <input type="text" name="name" id="name" value="{{ request('name') }}" class="form-control" placeholder="Nhập từ khóa...">
-                                    <div class="input-group-append">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-search"></i> <!-- Icon tìm kiếm -->
-                                        </button>
-                                    </div>
-                                </div>
-                            </form> --}}
-
-
+                                <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
+                                        class="pe-7s-search"></i></a>
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
+
+
                                 <a href="{{ Auth::check() ? route ('orders.index') : route ('login') }}" class="header-action-btn d-none d-md-block">
                                     <i class="pe-7s-user"></i>
                                 </a>
@@ -112,17 +92,13 @@
                                 <!-- User Account Header Action Button End -->
 
                                 <!-- Wishlist Header Action Button Start -->
-                                <a href="wishlist.html"
-                                    class="header-action-btn header-action-btn-wishlist d-none d-md-block">
-                                    <i class="pe-7s-like"></i>
-                                </a>
+
                                 <!-- Wishlist Header Action Button End -->
 
                                 <!-- Shopping Cart Header Action Button Start -->
                                 <a href="{{ route('cart.index') }}" class="header-action-btn header-action-btn-cart">
                                     <i class="pe-7s-shopbag"></i>
-                                    <span
-                                        class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
+                                    <span class="header-action-num">{{ session('cart') ? count(session('cart')) : '0' }}
                                     </span>
                                 </a>
 
@@ -135,32 +111,9 @@
                                 </a>
                                 <!-- Mobile Menu Hambarger Action Button End -->
                             </div>
-                            <link rel="stylesheet"
-                                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-                            <link rel="stylesheet"
-                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-                            <!-- Thêm Font Awesome -->
-
-                            <link rel="stylesheet"
-                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-                            <!-- Thêm Font Awesome -->
-
-                            <form action="{{ route('shop.index') }}" method="GET">
-                                <div class="search-box d-flex align-items-center">
-                                    <input type="text" name="keyword" class="form-control"
-                                        placeholder="" required>
-                                    <button class="btn btn-dark btn-hover-primary ml-2" type="submit">
-                                        <i class="fa fa-search"></i> <!-- Icon tìm kiếm -->
-                                    </button>
-                                </div>
-                            </form>
-
-
                         </div>
-
                         <!-- Header Action End -->
                     </div>
-
                 </div>
             </div>
         </div>
@@ -258,7 +211,7 @@
             <div class="offcanvas-overlay"></div>
 
             <!-- Cart Offcanvas Inner Start -->
-            <div class="cart-offcanvas-inner">
+            {{-- <div class="cart-offcanvas-inner">
                 <!-- Button Close Start -->
                 <div class="offcanvas-btn-close">
                     <i class="pe-7s-close"></i>
@@ -266,115 +219,9 @@
                 <!-- Button Close End -->
 
                 <!-- Offcanvas Cart Content Start -->
-                <div class="offcanvas-cart-content">
-                    <!-- Offcanvas Cart Title Start -->
-                    <h2 class="offcanvas-cart-title mb-10">Giỏ Hàng</h2>
-                    <!-- Offcanvas Cart Title End -->
 
-                    <!-- Cart Product/Price Start -->
-                    <div class="cart-product-wrapper mb-6">
-                        <!-- Single Cart Product Start -->
-                        <div class="single-cart-product">
-                            <div class="cart-product-thumb">
-                                <a href="single-product.html"><img
-                                        src="{{ asset('ngdung/assets/images/products/small-product/1.jpg') }}"
-                                        alt="Cart Product" /></a>
-                            </div>
-                            <div class="cart-product-content">
-                                <h3 class="title">
-                                    <a href="single-product.html">Brother Hoddies in Grey</a>
-                                </h3>
-                                <span class="price">
-                                    <span class="new">$38.50</span>
-                                    <span class="old">$40.00</span>
-                                </span>
-                            </div>
-                        </div>
-                        <!-- Single Cart Product End -->
-
-                        <!-- Product Remove Start -->
-                        <div class="cart-product-remove">
-                            <a href="#"><i class="fa fa-trash"></i></a>
-                        </div>
-                        <!-- Product Remove End -->
-                    </div>
-                    <!-- Cart Product/Price End -->
-
-                    <!-- Cart Product/Price Start -->
-                    <div class="cart-product-wrapper mb-6">
-                        <!-- Single Cart Product Start -->
-                        <div class="single-cart-product">
-                            <div class="cart-product-thumb">
-                                <a href="single-product.html"><img
-                                        src="{{ asset('ngdung/assets/images/products/small-product/2.jpg') }}"
-                                        alt="Cart Product" /></a>
-                            </div>
-                            <div class="cart-product-content">
-                                <h3 class="title">
-                                    <a href="single-product.html">Basic Jogging Shorts</a>
-                                </h3>
-                                <span class="price">
-                                    <span class="new">$14.50</span>
-                                    <span class="old">$18.00</span>
-                                </span>
-                            </div>
-                        </div>
-                        <!-- Single Cart Product End -->
-
-                        <!-- Product Remove Start -->
-                        <div class="cart-product-remove">
-                            <a href="#"><i class="fa fa-trash"></i></a>
-                        </div>
-                        <!-- Product Remove End -->
-                    </div>
-                    <!-- Cart Product/Price End -->
-
-                    <!-- Cart Product/Price Start -->
-                    <div class="cart-product-wrapper mb-6">
-                        <!-- Single Cart Product Start -->
-                        <div class="single-cart-product">
-                            <div class="cart-product-thumb">
-                                <a href="single-product.html"><img
-                                        src="{{ asset('ngdung/assets/images/products/small-product/3.jpg') }}"
-                                        alt="Cart Product" /></a>
-                            </div>
-                            <div class="cart-product-content">
-                                <h3 class="title">
-                                    <a href="single-product.html">Enjoy The Rest T-Shirt</a>
-                                </h3>
-                                <span class="price">
-                                    <span class="new">$20.00</span>
-                                    <span class="old">$21.00</span>
-                                </span>
-                            </div>
-                        </div>
-                        <!-- Single Cart Product End -->
-
-                        <!-- Product Remove Start -->
-                        <div class="cart-product-remove">
-                            <a href="#"><i class="fa fa-trash"></i></a>
-                        </div>
-                        <!-- Product Remove End -->
-                    </div>
-                    <!-- Cart Product/Price End -->
-
-                    <!-- Cart Product Total Start -->
-                    <div class="cart-product-total">
-                        <span class="value">Tổng phụ</span>
-                        <span class="price">220$</span>
-                    </div>
-                    <!-- Cart Product Total End -->
-
-                    <!-- Cart Product Button Start -->
-                    <div class="cart-product-btn mt-4">
-                        <a href="cart.html" class="btn btn-dark btn-hover-primary rounded-0 w-100">Xem giỏ hàng</a>
-                        <a href="checkout.html" class="btn btn-dark btn-hover-primary rounded-0 w-100 mt-4">Thanh
-                            toán</a>
-                    </div>
-                    <!-- Cart Product Button End -->
-                </div>
                 <!-- Offcanvas Cart Content End -->
-            </div>
+            </div> --}}
             <!-- Cart Offcanvas Inner End -->
         </div>
         <!-- Cart Offcanvas End -->
