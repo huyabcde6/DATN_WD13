@@ -21,6 +21,8 @@ use App\Models\Coupon_Conditions;
 use App\Models\Coupons;
 use App\Models\products;
 use App\Models\Size;
+use App\Mail\OrderStatusChanged;
+use App\Models\OrderStatusHistory;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
@@ -93,7 +95,7 @@ class OrderController extends Controller
      * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
     public function store(Request $request)
-    {
+    {   
         if ($request->isMethod('POST')) {
             DB::beginTransaction();
             try {
@@ -301,6 +303,7 @@ class OrderController extends Controller
                 } elseif ($request->has('hoan_thanh')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::HOAN_THANH);
                     $params['payment_status'] = 'đã thanh toán';
+                    $this->moveOrderToInvoice($order);
                 } elseif ($request->has('cho_xac_nhan')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::CHO_HOAN);
                     if ($request->filled('return_reason')) {
@@ -315,6 +318,7 @@ class OrderController extends Controller
                 // Cập nhật trạng thái đơn hàng
                 $order->update($params);
                 broadcast(new OderEvent($order));
+                Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
                 DB::commit();
                 return redirect()->route('orders.index')->with('success', 'Đơn hàng đã được cập nhật thành công.');
             } catch (\Exception $e) {
@@ -325,6 +329,44 @@ class OrderController extends Controller
         }
 
         return redirect()->route('orders.index')->with('error', 'Phương thức không hợp lệ.');
+    }
+    protected function moveOrderToInvoice(Order $order)
+    {
+        // Kiểm tra nếu hóa đơn đã tồn tại (tránh trùng lặp)
+        if ($order->toInvoice()->exists()) {
+            return;
+        }
+
+        $invoice = \App\Models\Invoice::create([
+            'invoice_code' => $order->order_code,
+            'user_id' => $order->user_id,
+            'order_id' => $order->id,
+            'nguoi_nhan' => $order->nguoi_nhan,
+            'email' => $order->email,
+            'number_phone' => $order->number_phone,
+            'address' => $order->address,
+            'status_donhang_id' => $order->status_donhang_id,
+            'ghi_chu' => $order->ghi_chu,
+            'method' => $order->method,
+            'payment_status' => $order->payment_status,
+            'subtotal' => $order->subtotal,
+            'discount' => $order->discount,
+            'shipping_fee' => $order->shipping_fee,
+            'total_price' => $order->total_price,
+            'date_invoice' => $order->created_at,
+        ]);
+
+        // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
+        foreach ($order->orderDetails as $orderDetail) {
+            $invoice->invoiceDetails()->create([
+                'product_name'  => $orderDetail->name,
+                'product_avata'  => $orderDetail->avata,
+                'color' => $orderDetail->color,
+                'size' => $orderDetail->size,
+                'quantity' => $orderDetail->quantity,
+                'price' => $orderDetail->price,
+            ]);
+        }
     }
 
     public function applyVoucher(Request $request)
@@ -448,7 +490,10 @@ class OrderController extends Controller
         return 0;
     }
     public function muangay(Request $request)
-    {
+    {   
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }        
         $user = Auth::user();
         $request->validate([
             'products_id' => 'required|exists:products,id',

@@ -112,7 +112,7 @@ class CartController extends Controller
             // Trả về phản hồi JSON cho Ajax
             return response()->json([
                 'status' => 'success',
-                'message' => 'Product added to cart successfully!',
+                'message' => 'Thêm sản phẩm vào giỏ hàng thành công!',
                 'total_price' => number_format($totalWithShipping, 0, ',', '.') . ' đ', // Định dạng tiền tệ
             ]);
         } catch (\Exception $e) {

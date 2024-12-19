@@ -170,7 +170,6 @@
 
 <!-- Banner Section Start -->
 <div class="section">
-
     <div class="container">
         <!-- Banners Start -->
         <h2>Ưu đãi dành cho bạn</h2>
@@ -178,19 +177,19 @@
             <!-- Banner Start -->
 
             @forelse($coupons as $voucher)
-            <div class=" mx-3 mt-3 coupon-card">
+            <div class="mx-3 mt-3 coupon-card">
                 <div class="coupon-left"></div>
                 <div class="coupon-content">
                     <div class="coupon-title">{{ $voucher->code }}</div>
                     <div class="coupon-desc">
                         giảm {{ number_format($voucher->discount_value, 0, ',', '.') }}% (tối đa
                         {{ number_format($voucher->max_discount_amount, 0, ',', '.') }} đ) <br>
-                        Mã: <strong>{{ $voucher->code }}</strong> <br>
+                        Mã: <strong class="voucher-code">{{ $voucher->code }}</strong> <br>
                         HSD: {{ \Carbon\Carbon::parse($voucher->end_date)->format('d-m-Y') }}
                     </div>
                     <div class="coupon-footer mt-2">
-                        <div class="fw-bold" id="voucher-code">{{ $voucher->code }}</div>
-                        <button class="copy-btn" id="copy-voucher">Sao chép mã</button>
+                        <div class="fw-bold voucher-code">{{ $voucher->code }}</div>
+                        <button class="copy-btn">Sao chép mã</button>
                     </div>
                 </div>
             </div>
@@ -493,26 +492,29 @@
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.getElementById('copy-voucher').addEventListener('click', function() {
-    var voucherCode = document.getElementById('voucher-code').textContent; // Lấy mã khuyến mãi
-    var tempInput = document.createElement('input'); // Tạo một input ẩn tạm thời
+    document.querySelectorAll('.copy-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Tìm mã voucher gần nút sao chép nhất
+            var voucherCode = button.closest('.coupon-card').querySelector('.voucher-code').textContent; 
 
-    // Đặt giá trị của input là mã khuyến mãi
-    tempInput.value = voucherCode;
-    document.body.appendChild(tempInput);
+            var tempInput = document.createElement('input'); // Tạo một input ẩn tạm thời
+            tempInput.value = voucherCode;
+            document.body.appendChild(tempInput);
 
-    tempInput.select(); // Chọn nội dung của input
-    document.execCommand('copy'); // Thực hiện sao chép
+            tempInput.select(); // Chọn nội dung của input
+            document.execCommand('copy'); // Thực hiện sao chép
 
-    document.body.removeChild(tempInput); // Xóa input tạm thời
+            document.body.removeChild(tempInput); // Xóa input tạm thời
 
-    Swal.fire({
+            Swal.fire({
                 title: 'Sao chép thành công!',
                 text: 'Mã khuyến mãi: ' + voucherCode,
                 icon: 'success',
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'Đóng'
             }); // Thông báo cho người dùng
-});
+        });
+    });
 </script>
+
 @endsection

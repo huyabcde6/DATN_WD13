@@ -18,63 +18,64 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        // Khởi tạo query cho sản phẩm
-        $query = products::with(['categories', 'productDetails', 'productImages']);
-
-        // Lọc theo từ khóa tìm kiếm
-        if ($request->filled('keyword')) {
-            $query->where('name', 'like', "%{$request->keyword}%");
+        // Lấy các tham số từ request
+        $sort = $request->input('sort');
+        $limit = $request->input('limit', 12);
+        $categoryFilter = $request->input('category');
+        $colorsFilter = $request->input('colors', []);
+        $minPrice = $request->input('min_price', 0);
+        $maxPrice = $request->input('max_price', 1000000);
+        $keyword = $request->input('keyword');
+        
+        // Truy vấn sản phẩm
+        $query = products::query();
+        if ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%');
         }
-
         // Lọc theo danh mục
-        if ($request->filled('category')) {
-            $query->where('categories_id', $request->category);
-        }
-
-        // Lọc theo giá
-        if ($request->filled('min_price') && $request->filled('max_price')) {
-            $query->whereBetween('price', [(float)$request->min_price, (float)$request->max_price]);
+        if ($categoryFilter) {
+            $query->where('categories_id', $categoryFilter);
         }
 
         // Lọc theo màu sắc
-        if ($request->filled('colors')) {
-            $colors = explode(',', $request->colors); // Chuyển chuỗi thành mảng
-            $query->whereHas('productDetails', function ($q) use ($colors) {
-                $q->whereIn('color_id', $colors);
+        if (!empty($colorsFilter)) {
+            $query->whereHas('productDetails', function ($query) use ($colorsFilter) {
+                $query->whereIn('color_id', $colorsFilter);
             });
         }
 
-        // Lọc theo kích thước
-        if ($request->filled('sizes')) {
-            $sizes = explode(',', $request->sizes);
-            $query->whereHas('productDetails', function ($q) use ($sizes) {
-                $q->whereIn('size_id', $sizes);
-            });
+        // Lọc theo khoảng giá
+        if ($minPrice && $maxPrice) {
+            $query->whereBetween('price', [$minPrice, $maxPrice]);
         }
 
-        // Lấy danh sách sản phẩm sau khi lọc
-        $products = $query->paginate(12);
+        // Sắp xếp sản phẩm
+        switch ($sort) {
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'newest':
+                $query->latest();
+                break;
+            case 'oldest':
+                $query->oldest();
+                break;
+            default:
+                $query->orderBy('id', 'asc');
+                break;
+        }
 
-        // Lấy danh mục
-        $categories = categories::all();
+        // Lấy tất cả danh mục
+        $categories = Categories::all();
+        $colors = Color::all();
+        // Phân trang sản phẩm
+        $products = $query->paginate($limit);
 
-        // Lấy màu sắc
-        $colors = Color::withCount('productDetails')->get();
-
-        // Lấy kích thước
-        $sizes = Size::withCount('productDetails')->get();
-
-        // Sản phẩm gần đây
-        $recentProducts = products::latest()->take(5)->get();
-
-        // Dữ liệu cho bộ lọc giá
-        $priceRange = [
-            'min' => products::min('price'),
-            'max' => products::max('price'),
-        ];
-
-        // Trả dữ liệu sang view
-        return view('user.sanpham.shop_sidebar', compact('products', 'categories', 'colors', 'sizes', 'recentProducts', 'priceRange'));
+        // Trả về view với danh sách sản phẩm và danh mục
+        return view('user.sanpham.shop_sidebar', compact('products', 'categories', 'colors'));
     }
 
 
