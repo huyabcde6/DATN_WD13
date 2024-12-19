@@ -76,6 +76,9 @@
                                     <label for="name">Tên sản phẩm</label>
                                     <input type="text" name="name" class="form-control" value="{{ $products->name }}"
                                         placeholder="Tên sản phẩm" id="name" required>
+                                    @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
@@ -86,23 +89,35 @@
                                     <label for="price">Giá sản phẩm</label>
                                     <input type="number" name="price" id="price" value="{{ $products->price }}"
                                         class="form-control" placeholder="Giá sản phẩm" required>
+                                    @error('price')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="discount_price">Giá khuyến mãi</label>
                                     <input type="number" name="discount_price" value="{{ $products->discount_price }}"
                                         id="discount_price" class="form-control" placeholder="Giá khuyến mãi" required>
+                                    @error('discount_price')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="short_description">Mô tả ngắn</label>
                                     <textarea name="short_description" id="short_description" class="form-control"
                                         placeholder="Mô tả ngắn của sản phẩm"
                                         required>{{ $products->short_description }}</textarea>
+                                        @error('short_description')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Mô tả chi tiết sản phẩm</label>
                                     <div id="quill-editor" style="height: 400px;"></div>
                                     <textarea name="description" id="description_content"
                                         class="d-none">{{ $products->description }}</textarea>
+                                        @error('description')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 </div>
 
 
@@ -148,7 +163,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="avata">Hình ảnh sản phẩm</label>
-                                    <input class="form-control mb-3" type="file" name="avata" >
+                                    <input class="form-control mb-3" type="file" name="avata">
                                     <img src="{{ url('storage/'. $products->avata) }}" alt="Hình ảnh sản phẩm"
                                         style="width: 80px; height: auto;">
                                 </div>
@@ -170,7 +185,8 @@
                                                 style="width: 100px; height: 100px;">
                                             <button type="button"
                                                 class="btn-close position-absolute top-0 start-100 translate-middle"
-                                                aria-label="Close"  style="color: red;" data-image-id="{{ $image->id }}"></button>
+                                                aria-label="Close" style="color: red;"
+                                                data-image-id="{{ $image->id }}"></button>
                                         </div>
                                         @endforeach
                                     </div>

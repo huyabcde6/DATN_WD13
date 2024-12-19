@@ -103,14 +103,14 @@ class OrderController extends Controller
                 $params = $request->except('_token');
                 $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
                 $params['date_order'] = now(); // Lấy thời gian hiện tại
-                $params['status_donhang_id'] = 1; // Trạng thái đơn hàng mặc định là chờ xử lý
+                $params['status_donhang_id'] = 1;
+                $params['payment_status'] = 'Chưa thanh toán'; // Trạng thái đơn hàng mặc định là chờ xử lý
+
                 // Tạo đơn hàng
                 $order = Order::query()->create($params);
                 $orderId = $order->id;
-                $carts = Session::get('cart', []);
-                // Giỏ hàng trong session
+                $carts = Session::get('cart', []); // Giỏ hàng trong session
 
-                // Thêm chi tiết đơn hàng
                 // Thêm chi tiết đơn hàng
                 if ($request->mua === 'muangay') {
                     $productDetail = ProductDetail::find($request->product_detail_id);
@@ -126,10 +126,8 @@ class OrderController extends Controller
                     ]);
 
                     // Giảm số lượng sản phẩm trong kho
-                    // Tìm sản phẩm trong kho
-
                     if ($productDetail) {
-                        if ($productDetail->quantity >= $request->quantity) { // Kiểm tra xem kho có đủ số lượng không
+                        if ($productDetail->quantity >= $request->quantity) { // Kiểm tra kho có đủ số lượng không
                             $productDetail->quantity -= $request->quantity; // Giảm số lượng trong kho
                             $productDetail->save(); // Lưu lại thay đổi
                         } else {
@@ -139,8 +137,6 @@ class OrderController extends Controller
                     }
                 } else {
                     // Trường hợp "Thanh toán giỏ hàng"
-
-                    $carts = Session::get('cart', []); // Giỏ hàng trong session
                     foreach ($carts as $productDetailId => $value) {
                         $productDetail = ProductDetail::find($productDetailId);
                         $order->orderDetails()->create([
@@ -153,28 +149,30 @@ class OrderController extends Controller
                             'product_name' => $productDetail->products->name ?? 'Unknown', // Tên sản phẩm
                             'product_avata' => $productDetail->products->avata ?? null, // Giá trị thêm (nếu có)
                         ]);
+                        
+                        // Giảm số lượng sản phẩm trong kho sau khi mua
+                        if ($productDetail) {
+                            $productDetail->quantity -= $value['quantity'];
+                            $productDetail->save();
+                        }
                     }
-                    // Giảm số lượng sản phẩm trong kho sau khi mua
-                    $productDetail = ProductDetail::find($productDetailId);
-                    if ($productDetail) {
-                        $productDetail->quantity -= $value['quantity'];
-                        $productDetail->save();
-                    }
-                    Session::forget('cart');
+                    // Không xóa giỏ hàng ở đây nữa
                 }
 
-                // Xóa giỏ hàng nếu đơn hàng được tạo từ giỏ hàng
-
-
+                // Kiểm tra phương thức thanh toán
                 if ($request->input('method') === "VNPAY") {
                     // Lưu giao dịch và chuyển hướng đến VNP
                     DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
                     return $this->processVNP($order); // Hàm xử lý thanh toán VNP
                 }
-                DB::commit();
 
                 // Gửi email xác nhận đơn hàng
                 Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
+                
+                // Xóa giỏ hàng chỉ khi thanh toán thành công
+                Session::forget('cart');
+
+                DB::commit();
                 return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Đơn hàng đã được tạo thành công.');
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -185,6 +183,7 @@ class OrderController extends Controller
 
         return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
     }
+
     private function processVNP($order)
     {
         // Tạo URL thanh toán VNP
@@ -253,8 +252,10 @@ class OrderController extends Controller
                 $order->update([
                     'payment_status' => 'đã thanh toán',
                     'method' => 'VNPAY'
+
                 ]);
                 Session::forget('cart');
+                Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
                 return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Thanh toán thành công.');
             }
         } else {
@@ -265,6 +266,13 @@ class OrderController extends Controller
                     'method' => 'VNPAY',
                     'status_donhang_id' => StatusDonHang::getIdByType(StatusDonHang::DA_HUY),
                 ]);
+                foreach ($order->orderDetails as $orderDetail) {
+                    $productDetail = $orderDetail->productDetail;
+                    if ($productDetail) {
+                        $productDetail->quantity += $orderDetail->quantity; // Cộng lại số lượng sản phẩm
+                        $productDetail->save();
+                    }
+                }
     
                 // Xóa bỏ đơn hàng khi thanh toán thất bại
                 $order->delete();

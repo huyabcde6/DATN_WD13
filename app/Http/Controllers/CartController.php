@@ -74,6 +74,11 @@ class CartController extends Controller
                 return response()->json(['status' => 'error', 'message' => 'Không tìm thấy sản phẩm hoặc không có sẵn biến thể.'], 404);
             }
 
+            // Kiểm tra số lượng sản phẩm có trong kho
+            if ($quantity > $productDetail->quantity) {
+                return response()->json(['status' => 'error', 'message' => 'Số lượng yêu cầu vượt quá số lượng có sẵn trong kho.'], 400);
+            }
+
             // Kiểm tra xem sản phẩm có giá khuyến mãi không
             $price = $productDetail->discount_price ? $productDetail->discount_price : $productDetail->price;
 
@@ -83,6 +88,11 @@ class CartController extends Controller
             // Thêm hoặc cập nhật sản phẩm trong giỏ hàng
             if (isset($cart[$variantKey])) {
                 $cart[$variantKey]['quantity'] += $quantity;
+
+                // Kiểm tra lại số lượng trong giỏ hàng không vượt quá số lượng trong kho
+                if ($cart[$variantKey]['quantity'] > $productDetail->quantity) {
+                    return response()->json(['status' => 'error', 'message' => 'Số lượng trong giỏ hàng vượt quá số lượng có sẵn trong kho.'], 400);
+                }
             } else {
                 $cart[$variantKey] = [
                     'product_detail_id' => $productDetail->id,
@@ -93,7 +103,7 @@ class CartController extends Controller
                     'product_id' => $productDetail->products_id,
                     'price' => $price, // Dùng giá khuyến mãi nếu có
                     'image' => $productDetail->products->avata,
-                    'slug' =>$productDetail->products->slug,
+                    'slug' => $productDetail->products->slug,
                 ];
             }
 
@@ -120,6 +130,7 @@ class CartController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Có lỗi xảy ra, vui lòng thử lại sau.'], 500);
         }
     }
+
 
 
     public function removeFromCart($productDetailId)

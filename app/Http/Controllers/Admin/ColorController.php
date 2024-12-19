@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ColorRequest;
+use App\Http\Requests\ColorRequestUpdate;
 use Illuminate\Http\Request;
 use App\Models\Color;
 
@@ -74,7 +75,7 @@ class ColorController extends Controller
     /**
      * Cập nhật thông tin màu trong cơ sở dữ liệu.
      */
-    public function update(ColorRequest $request, $id)
+    public function update(ColorRequestUpdate $request, $id)
     {
         $color = Color::findOrFail($id);
 

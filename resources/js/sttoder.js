@@ -30,14 +30,15 @@ channel.bind("OderEvent", function (data) {
                 break;
             case 4: // ID trạng thái DA_GIAO
                 statusText = "Đã giao hàng";
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 if (confirmForm) {
                     confirmForm.innerHTML = `
                         <form id="confirm-order-${data.id}" action="{{ route('orders.update', ${data.id}) }}" method="POST" style="display:inline;">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="_token" value="${csrfToken}">
                             <input type="hidden" name="_method" value="POST">
                             <input type="hidden" name="hoan_thanh" value="5">
                             <button type="submit" class="btn btn-success mx-3" style="font-size: 12px; margin-top: 19px;">
-                                Đã nhận hàng
+                                Xác nhận nhận hàng
                             </button>
                         </form>`;
                 } else {

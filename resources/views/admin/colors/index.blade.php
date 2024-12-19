@@ -1,8 +1,10 @@
 @extends('layouts.admin')
+
 @section('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 @endsection
+
 @section('content')
 <div class="row m-3">
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
@@ -19,7 +21,9 @@
                         <i class="mdi mdi-plus text-muted">Thêm mới</i>
                     </button>
                 </div>
-
+                @error('value')
+                <div class="alert alert-danger text-danger">{{ $message }}</div>
+                @enderror
                 <!-- Modal thêm mới -->
                 <div class="modal fade" id="createColorModal" tabindex="-1" aria-labelledby="createColorModalLabel"
                     aria-hidden="true">
@@ -39,13 +43,6 @@
                                         <input type="text" id="new_value" value="{{ old('value') }}" name="value"
                                             class="form-control">
                                         @error('value')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="new_color_code">Mã Màu:</label>
-                                        <input type="text" id="new_color_code" name="color_code" class="form-control">
-                                        @error('color_code')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -76,9 +73,6 @@
                                 <th class="text-center">
                                     Màu sắc
                                 </th>
-                                <th class="text-center">
-                                    Mã Màu
-                                </th>
                                 <th class="text-center">Trạng thái</th>
                                 <th class="text-center">Tương tác</th>
                             </tr>
@@ -88,7 +82,6 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $color->value }}</td>
-                                <td>{{ $color->color_code }}</td>
                                 <td>{{ $color->status ? 'Kích hoạt' : 'Không kích hoạt' }}</td>
                                 <td>
                                     <!-- Nút chỉnh sửa -->
@@ -130,16 +123,14 @@
                                                     <input type="text" id="value" name="value" class="form-control"
                                                         value="{{ $color->value }}">
                                                 </div>
-                                                <div class="form-group mb-3">
-                                                    <label for="color_code">Mã Màu:</label>
-                                                    <input type="text" id="color_code" name="color_code"
-                                                        class="form-control" value="{{ $color->color_code }}" />
-                                                </div>
                                                 <div class="form-group">
                                                     <label for="status">Kích Hoạt:</label>
                                                     <input type="hidden" name="status" value="0">
                                                     <input type="checkbox" id="status" name="status" value="1"
                                                         {{ $color->status ? 'checked' : '' }}>
+                                                    @error('status')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -190,28 +181,14 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('js')
-<script>
-$(document).ready(function() {
-    @if($errors -> any() && old('id') == null)
-    $('#createColorModal').modal('show');
-    @endif
-
-    @foreach($colors as $color)
-    @if($errors -> any() && old('id') == "{{ $color->color_id }}")
-    $('#editColorModal{{ $color->color_id }}').modal('show');
-    @endif
-    @endforeach
-});
-</script>
-
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
     $('#colorTable').DataTable({
         "paging": false, // Cho phép phân trang
         "searching": true, // Tìm kiếm

@@ -33,8 +33,8 @@
                                 <th>Giá trị</th>
                                 <th>Thời gian áp dụng</th>
                                 <th>Số lượng</th>
+                                <th>Đã sử dụng</th>
                                 <th>Trạng thái</th>
-                                <th>Điều kiện áp dụng</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -56,23 +56,8 @@
                                     {{ $coupon->end_date->format('d/m/Y H:i') }}
                                 </td>
                                 <td>{{ $coupon->total_quantity }}</td>
+                                <td>{{ $coupon->used_quantity }}</td>
                                 <td>{{ $coupon->status == 'active' ? 'Hoạt động' : 'Tạm dừng' }}</td>
-                                <td>
-                                    @if($coupon->conditions->isNotEmpty())
-                                    <ul>
-                                        @foreach($coupon->conditions as $condition)
-                                        @if($condition->product_id)
-                                        <li>Áp dụng cho sản phẩm ID: {{ $condition->product_id }}</li>
-                                        @endif
-                                        @if($condition->category_id)
-                                        <li>Áp dụng cho danh mục ID: {{ $condition->category_id }}</li>
-                                        @endif
-                                        @endforeach
-                                    </ul>
-                                    @else
-                                    Không có
-                                    @endif
-                                </td>
                                 <td>
                                     <a href="{{ route('admin.Coupons.edit', $coupon->id) }}"
                                         class="btn btn-sm btn-primary">Sửa</a>

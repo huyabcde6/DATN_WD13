@@ -247,13 +247,6 @@
                                                 <span class="badges">
                                                     <span class="new">New</span>
                                                 </span>
-                                                <div class="actions">
-                                                    <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                                    <a href="#" class="action quickview" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModalCenter"><i
-                                                            class="pe-7s-search"></i></a>
-                                                    <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
-                                                </div>
                                             </div>
                                             <div class="content">
                                                 <h5 class="title">
@@ -261,11 +254,11 @@
                                                         href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                                 </h5>
                                                 <span class="price">
-                                                    <span class="new">{{ number_format($product->price, 0, ',', '.') }}
+                                                    <span class="new">{{ number_format($product->discount_price, 0, ',', '.') }}
                                                         đ</span>
                                                     @if($product->discount_price)
                                                     <span
-                                                        class="old">{{ number_format($product->discount_price, 0, ',', '.') }}
+                                                        class="old">{{ number_format($product->price, 0, ',', '.') }}
                                                         đ</span>
                                                     @endif
                                                 </span>
@@ -311,13 +304,7 @@
                                                 <span class="badges">
                                                     <span class="sale">Hot</span>
                                                 </span>
-                                                <div class="actions">
-                                                    <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                                    <a href="#" class="action quickview" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModalCenter"><i
-                                                            class="pe-7s-search"></i></a>
-                                                    <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
-                                                </div>
+                                            
                                             </div>
                                             <div class="content">
                                                 <h5 class="title">
@@ -325,11 +312,11 @@
                                                         href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                                 </h5>
                                                 <span class="price">
-                                                    <span class="new">{{ number_format($product->price, 0, ',', '.') }}
+                                                    <span class="new">{{ number_format($product->discount_price, 0, ',', '.') }}
                                                         đ</span>
                                                     @if($product->discount_price)
                                                     <span
-                                                        class="old">{{ number_format($product->discount_price, 0, ',', '.') }}
+                                                        class="old">{{ number_format($product->price, 0, ',', '.') }}
                                                         đ</span>
                                                     @endif
                                                 </span>
@@ -375,13 +362,7 @@
                                                 <span class="badges">
                                                     <span class="sale">Sale</span>
                                                 </span>
-                                                <div class="actions">
-                                                    <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                                    <a href="#" class="action quickview" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModalCenter"><i
-                                                            class="pe-7s-search"></i></a>
-                                                    <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
-                                                </div>
+                                            
                                             </div>
                                             <div class="content">
                                                 <h5 class="title">
@@ -389,11 +370,11 @@
                                                         href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                                 </h5>
                                                 <span class="price">
-                                                    <span class="new">{{ number_format($product->price, 0, ',', '.') }}
+                                                    <span class="new">{{ number_format($product->discount_price, 0, ',', '.') }}
                                                         VND</span>
                                                     @if($product->discount_price)
                                                     <span
-                                                        class="old">{{ number_format($product->discount_price, 0, ',', '.') }}
+                                                        class="old">{{ number_format($product->price, 0, ',', '.') }}
                                                         VND</span>
                                                     @endif
                                                 </span>

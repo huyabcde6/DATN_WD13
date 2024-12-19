@@ -23,8 +23,8 @@
                 <div class="container d-flex justify-content-start align-items-center">
                     <!-- Hình ảnh sản phẩm -->
                     <div class="me-3">
-                        <img src="{{ url('storage/'. $detail->products->avata) }}"
-                            alt="{{ $detail->products->name }}" class="img-fluid"
+                        <img src="{{ url('storage/'. $detail->product_avata) }}"
+                            alt="{{ $detail->product_name }}" class="img-fluid"
                             style="max-width: 60px; height: auto;">
                     </div>
                     <!-- Thông tin sản phẩm -->
@@ -55,8 +55,8 @@
                     <div class="container d-flex justify-content-start align-items-center">
                         <!-- Hình ảnh sản phẩm -->
                         <div class="me-3">
-                            <img src="{{ url('storage/'. $detail->products->avata) }}"
-                                alt="{{ $detail->products->name }}" class="img-fluid"
+                            <img src="{{ url('storage/'. $detail->product_avata) }}"
+                                alt="{{ $detail->product_name }}" class="img-fluid"
                                 style="max-width: 60px; height: auto;">
                         </div>
                         <!-- Thông tin sản phẩm -->
@@ -87,8 +87,8 @@
                 <button class="btn btn-link toggle-details-btn" style="font-size: 13px;" data-bs-toggle="collapse"
                     data-bs-target="#details-{{ $order->id }}" aria-expanded="false"
                     aria-controls="details-{{ $order->id }}">
-                    <span class="show-text" style="font-size: 12px;">Hiện</span>
-                    <span class="hide-text d-none" style="font-size: 12x;">Ẩn</span>
+                    <span class="show-text" style="font-size: 12px;">Hiện/ẩn</span>
+                    <span class="hide-text d-none" style="font-size: 12x;">Hiện/ẩn</span>
                 </button>
             </div>
             @endif

@@ -608,8 +608,16 @@ $(document).ready(function() {
     $('.inc.qtybutton').on('click', function() {
         var currentQuantity = parseInt($('#product-quantity').val());
         var maxQuantity = parseInt($('#product-quantity').attr('max'));
+
+        // Kiểm tra nếu số lượng hiện tại đã đạt số lượng tối đa
         if (currentQuantity < maxQuantity) {
             $('#product-quantity').val(currentQuantity + 1);
+        } else {
+            Swal.fire({
+                title: 'Lỗi',
+                text: 'Số lượng sản phẩm không thể vượt quá số lượng tồn kho.',
+                icon: 'error'
+            });
         }
     });
 
@@ -619,6 +627,7 @@ $(document).ready(function() {
             $('#product-quantity').val(currentQuantity - 1);
         }
     });
+
 
     $('#product-quantity').on('input', function() {
         let quantity = parseInt(this.value) || 1;
@@ -636,13 +645,29 @@ $(document).ready(function() {
             });
             return;
         }
+
+        // Lấy số lượng tối đa của biến thể đã chọn
+        const maxQuantityForSelectedVariant = variantDetails.find(v => v.size_id == selectedSize && v.color_id == selectedColor)?.quantity || 0;
+        const selectedQuantity = parseInt($('#product-quantity').val());
+
+        // Kiểm tra số lượng chọn có vượt quá số lượng tồn kho của biến thể không
+        if (selectedQuantity > maxQuantityForSelectedVariant) {
+            Swal.fire({
+                title: 'Lỗi',
+                text: `Số lượng bạn chọn vượt quá số lượng tồn kho của biến thể này. Số lượng tối đa là ${maxQuantityForSelectedVariant}.`,
+                icon: 'error'
+            });
+            return;
+        }
+
         $(this).prop('disabled', true).text('Đang thêm...');
+
         $.ajax({
             url: '{{ route("cart.add") }}',
             method: 'POST',
             data: {
                 products_id: $('input[name="products_id"]').val(),
-                quantity: $('#product-quantity').val(),
+                quantity: selectedQuantity,
                 size: selectedSize,
                 color: selectedColor,
                 _token: '{{ csrf_token() }}'
@@ -672,6 +697,7 @@ $(document).ready(function() {
             }
         });
     });
+
 
     // Hàm để cập nhật số lượng sản phẩm trong giỏ hàng
     function updateCartCount() {

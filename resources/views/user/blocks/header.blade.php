@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>POLY STORE</title>
     <!-- Favicons -->
     <link rel="shortcut icon" href="http://datn_wd13.test/ngdung/assets/images/logo/logo1.png" />

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CouponRequest extends FormRequest
+class CouponRequestUpdate extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,6 @@ class CouponRequest extends FormRequest
             'code' => [
             'required',
             'string',
-            $couponId ? 'unique:coupons,code,' . $couponId : 'unique:coupons,code',
         ],
             'discount_type' => 'required|string|in:percentage,fixed_amount',
             'discount_value' => [

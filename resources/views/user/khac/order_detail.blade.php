@@ -227,12 +227,23 @@ form {
                         method="POST" style="display:inline;">
                         @csrf
                         @method('POST')
+                        <!-- Sử dụng POST nếu bạn xử lý logic này trong phương thức update -->
+                        <input type="hidden" name="da_giao_hang" value="4">
+                        <button type="submit" class="btn btn-success"
+                            onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
+                            Xác nhận nhận hàng
+                        </button>
+                    </form>
+                    <!-- <form id="confirm-order-{{ $order->id }}" action="{{ route('orders.update', $order->id) }}"
+                        method="POST" style="display:inline;">
+                        @csrf
+                        @method('POST')
                         <input type="hidden" name="cho_xac_nhan" value="6">
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#returnModal">
                             Trả hàng
                         </button>
-                    </form>
+                    </form> -->
                     @endif
 
                 </div>

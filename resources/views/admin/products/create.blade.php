@@ -157,9 +157,7 @@
                                     <label for="slug">Slug</label>
                                     <input type="text" name="slug" class="form-control" placeholder="Slug" id="slug" value="{{ old('slug') }}" readonly>
                                 </div>
-                                @error('slug')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                
 
                                 <div class="mb-3">
                                     <label for="price">Giá sản phẩm</label>

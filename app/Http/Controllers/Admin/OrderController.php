@@ -160,15 +160,13 @@ class OrderController extends Controller
             } else {
                 return back()->with('error', 'Không thể chuyển trạng thái theo quy định.');
             }
-
+            Mail::to($order->email)->send(new OrderStatusChanged($order));
             // Lưu thay đổi đơn hàng
             $order->save();
             // Lưu vào bảng lịch sử thay đổi trạng thái
             $this->logStatusChange($order, $previousStatus, $currentStatus);
             // Gửi email thông báo
             broadcast(new OderEvent($order));
-            Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
-
             DB::commit();
             return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');
         } catch (\Exception $e) {

@@ -72,7 +72,7 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories', 'sizes', 'colors'));
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest  $request)
     {
         // dd($request->has('is_new'));
         try {
@@ -143,7 +143,7 @@ class ProductController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
 
         try {
