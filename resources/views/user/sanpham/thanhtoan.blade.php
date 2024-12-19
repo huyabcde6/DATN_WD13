@@ -124,7 +124,7 @@
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Số điện thoại <span class="required">*</span></label>
-                                    <input type="text" placeholder="number phone" name="number_phone"
+                                    <input type="text" placeholder="Số điện thoại" name="number_phone"
                                         value="{{ Auth::user()->number_phone }}">
                                 </div>
                             </div>
@@ -133,7 +133,7 @@
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Địa chỉ <span class="required">*</span></label>
-                                    <input placeholder="Street address" name="address" type="text"
+                                    <input placeholder="Địa chỉ" name="address" type="text"
                                         value="{{ Auth::user()->address }}">
                                 </div>
                             </div>
@@ -143,7 +143,7 @@
                                 <div class="checkout-form-list checkout-form-list-2">
                                     <label>Ghi chú đặt hàng</label>
                                     <textarea id="checkout-mess" name="ghi_chu" cols="30" rows="10"
-                                        placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                        placeholder="Nhập ghi chú của bạn ở đây."></textarea>
                                 </div>
                             </div>
                         </div>

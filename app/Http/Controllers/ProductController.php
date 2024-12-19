@@ -69,7 +69,7 @@ class ProductController extends Controller
         }
 
         // Lấy tất cả danh mục
-        $categories = Categories::all();
+        $categories = Categories::where('status', 1)->get();
         $colors = Color::all();
         // Phân trang sản phẩm
         $products = $query->paginate($limit);

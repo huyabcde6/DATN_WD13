@@ -33,15 +33,20 @@
                                     <th class="text-center">
                                         Trạng thái
                                     </th >
+                                    <th class="text-center">
+                                        Số lượng
+                                    </th >
                                     <th class="text-center">Tương tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($sizes as $key => $size)
+                                
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $size->value }}</td>
                                     <td>{{ $size->status ? 'Hoạt động' : 'Không hoạt động' }}</td>
+                                    <td>{{ $size->product_details_count }}</td>
                                     <td>
                                         <!-- Nút sửa -->
                                         <button

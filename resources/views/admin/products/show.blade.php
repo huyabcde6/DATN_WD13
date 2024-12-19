@@ -1,5 +1,11 @@
 @extends('layouts.admin')
-
+@section('css')
+<style>
+.no-border .list-group-item {
+    border: none;
+}
+</style>
+@endsection
 @section('content')
 <div class="row m-3">
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
@@ -11,16 +17,6 @@
         <div class="col-12">
             <div class="card">
                 <div class="d-flex m-3 justify-content-between">
-                    <form action="{{ route('admin.products.index') }}" method="get" id="search-form">
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="bi bi-search"></i>
-                            </span>
-                            <input type="text" value="{{ request('search') }}" name="search" id="search"
-                                class="form-control" placeholder="Nhập từ khóa cần tìm..">
-                            <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
-                        </div>
-                    </form>
 
                     <a href="{{ route('admin.products.index') }}"
                         class="btn btn-sm btn-alt-secondary  mx-1 fs-18 rounded-2 border p-1 me-1"
@@ -29,20 +25,57 @@
                     </a>
                 </div>
                 <div class="card-body">
-                    <h4 class="mt-4">Thông tin sản phẩm: <strong>{{ $product->name }}</strong></h4>
+                    <h4 class="">Thông tin sản phẩm: <strong>{{ $product->name }}</strong></h4>
 
                     <!-- Hiển thị thông tin sản phẩm -->
-                    <div class="mb-4">
-                        <ul class="list-group">
-                            <li class="list-group-item">Tên: <strong>{{ $product->name }}</strong></li>
-                            <li class="list-group-item">Giá: <strong>{{ number_format($product->price, 0, ',', '.') }}
-                                    VNĐ</strong></li>
-                            <li class="list-group-item">Giá khuyến mãi:
-                                <strong>{{ number_format($product->discount_price, 0, ',', '.') }} VNĐ</strong>
-                            </li>
-                            <!-- Thêm các thông tin khác nếu cần -->
-                        </ul>
+                    <div class="row my-3">
+                        <div class="col-12 d-flex mt-3">
+                            <!-- Main Image -->
+                            <div class="col-6 text-center pt-5">
+                                <img src="{{ url('storage/' . $product->avata) }}" width="350px" height="auto"
+                                    alt="Product Image">
+                            </div>
+                            <div class="col-6">
+                                <!-- Product Information -->
+                                <ul class="list-group">
+                                    <li class="list-group-item border-0 fs-5">Tên: <strong>{{ $product->name }}</strong></li>
+                                    <li class="list-group-item border-0 fs-6">Giá:
+                                        <strong>{{ number_format($product->price, 0, ',', '.') }} VNĐ</strong>
+                                    </li>
+                                    <li class="list-group-item border-0 fs-6">Giá khuyến mãi:
+                                        <strong>{{ number_format($product->discount_price, 0, ',', '.') }} VNĐ</strong>
+                                    </li>
+                                    <li class="list-group-item border-0 fs-6">Số lượng trong kho:
+                                        <strong>{{ $product->productDetails->sum('quantity') }}</strong>
+                                    </li>
+                                    <li class="list-group-item border-0 fs-6">Mô tả ngắn:
+                                        <strong>{{ $product->short_description }}</strong>
+                                    </li>
+                                    <li class="list-group-item border-0">Mổ tả chi tiết:
+                                        <strong>{!! $product->description !!}</strong>
+                                    </li>
+                                    
+                                </ul>
+
+                            </div>
+                        </div>
+
+                        <!-- Additional Images and Description -->
+                        <div class="col-6">
+                            <div class="row">
+                                @foreach($product->productImages as $image)
+                                <div class="col-md-2 " width="100px" height="auto">
+                                    <div class="mb-3" width="100px" height="auto">
+                                        <img src="{{ url('storage/' . $image->image_path) }}" class="card-img-top"
+                                            alt="Additional Image">
+
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
+
 
                     <!-- Hiển thị danh sách biến thể -->
                     <h5>Các biến thể sản phẩm</h5>

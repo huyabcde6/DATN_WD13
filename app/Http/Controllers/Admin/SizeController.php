@@ -33,7 +33,7 @@ class SizeController extends Controller
             $query->orderBy($request->sort, $request->direction ?? 'asc');
         }
 
-        $sizes = $query->paginate(10);
+        $sizes = $query->withCount('productDetails')->paginate(10);
 
         return view('admin.sizes.index', compact('sizes'));
     }

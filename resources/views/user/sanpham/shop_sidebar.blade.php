@@ -86,14 +86,7 @@
                                     <img class="image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
                                         width="auto" height="auto" />
                                 </a>
-                                <div class="actions">
-                                    <a href="wishlist.html" title="Wishlist" class="action wishlist"><i
-                                            class="pe-7s-like"></i></a>
-                                    <a href="#" title="Quickview" class="action quickview" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                    <a href="compare.html" title="Compare" class="action compare"><i
-                                            class="pe-7s-shuffle"></i></a>
-                                </div>
+                                
                             </div>
                             <div class="content">
                                 <h4 class="sub-title">{{ $product->categories->name }}

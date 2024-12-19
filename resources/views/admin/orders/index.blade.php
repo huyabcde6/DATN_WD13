@@ -263,6 +263,9 @@ orderStatusModal.addEventListener('show.bs.modal', function(event) {
         statusSelect.innerHTML += `<option value="3">Đang vận chuyển</option>`;
     } else if (currentStatus === 3) {
         statusSelect.innerHTML += `<option value="4">Đã giao hàng</option>`;
+    }else if (currentStatus === 4) {
+        statusSelect.innerHTML = `<option value="4" selected>Đã giao hàng</option>`;
+        statusSelect.disabled = true;
     } else if (currentStatus === 8) {
         statusSelect.innerHTML += `<option value="6">Hoàn hàng</option>`;
     } else {

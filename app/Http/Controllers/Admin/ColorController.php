@@ -7,6 +7,7 @@ use App\Http\Requests\ColorRequest;
 use App\Http\Requests\ColorRequestUpdate;
 use Illuminate\Http\Request;
 use App\Models\Color;
+use App\Models\products;
 
 class ColorController extends Controller
 {
@@ -36,8 +37,8 @@ class ColorController extends Controller
             $query->orderBy($request->sort, $direction);
         }
 
-        $colors = $query->paginate(10);
-
+        $colors = $query->withCount('productDetails')->paginate(10);
+    
         return view('admin.colors.index', compact('colors'));
     }
 

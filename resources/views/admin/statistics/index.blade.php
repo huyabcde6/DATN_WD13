@@ -133,10 +133,38 @@
 
         <!-- Top Selling Products -->
         <div class="row">
-            <!-- Top Selling Products -->
-            <div class="col-md-6 col-xl-6">
+            <!-- Form: Lọc theo ngày -->
+            <div class="col-md-12">
                 <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Lọc theo ngày khách hàng, sản phẩm</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.statistics.index') }}" method="GET">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="start_date">Ngày bắt đầu:</label>
+                                        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ request('start_date') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="end_date">Ngày kết thúc:</label>
+                                        <input type="date" name="end_date" id="end_date" class="form-control" value="{{ request('end_date') }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">Lọc</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Sản phẩm bán chạy và Khách hàng thân thiết -->
+            <div class="col-md-6 col-xl-6">
+                <!-- Sản phẩm bán chạy -->
+                <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div class="border border-dark rounded-2 me-2 widget-icons-sections">
@@ -145,8 +173,6 @@
                             <h5 class="card-title mb-0">Sản phẩm bán chạy</h5>
                         </div>
                     </div>
-
-                    <!-- start card body -->
                     <div class="card-body">
                         <ul class="list-group custom-group">
                             @foreach ($topProducts as $product)
@@ -155,28 +181,24 @@
                                     <img class="avatar-md p-1 rounded bg-primary-subtle img-fluid me-3"
                                         src="{{ url('storage/' . $product->avata) }}" alt="product-image"
                                         style="width: 45px; height: auto;">
-
-
                                     <div class="product-body align-self-center">
-                                        <h6 class="m-0 fw-semibold">{{ $product->name }}</h6>
+                                        <h6 class="m-0 fw-semibold"><a href="{{ route('admin.products.show', $product->id) }}" style="color: black;">{{ $product->name }}</a></h6>
                                     </div>
                                 </div>
-
                                 <div class="product-price text-end">
-                                    <h6 class="m-0 fw-semibold">Giá:
-                                        {{ number_format($product->discount_price, 0, '', '.') }} đ</h6>
+                                    <h6 class="m-0 fw-semibold">Giá: {{ number_format($product->discount_price, 0, '', '.') }} đ</h6>
                                     <p class="mb-0 mt-1 text-muted">Số đơn hàng: {{ $product->total_sold }}</p>
                                 </div>
                             </li>
                             @endforeach
                         </ul>
                     </div>
-                    <!-- end card body -->
                 </div>
             </div>
-            <div class="col-md-6 col-xl-6">
-                <div class="card">
 
+            <div class="col-md-6 col-xl-6">
+                <!-- Khách hàng thân thiết -->
+                <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
                             <div class="border border-dark rounded-2 me-2 widget-icons-sections">
@@ -185,36 +207,28 @@
                             <h5 class="card-title mb-0">Khách hàng thân thiết</h5>
                         </div>
                     </div>
-
-                    <!-- start card body -->
                     <div class="card-body">
                         <ul class="list-group custom-group">
                             @foreach ($topCustomers as $customer)
                             <li class="list-group-item align-items-center d-flex justify-content-between">
                                 <div class="product-list">
                                     <div class="product-body align-self-center">
-                                        <h6 class="m-0 fw-semibold">{{ $customer->user->name }}</h6>
+                                        <h6 class="m-0 fw-semibold"><a href="{{ route('admin.users.show', $customer->user->id) }}" style="color: black;">{{ $customer->user->name }}</a></h6>
                                     </div>
                                 </div>
-
                                 <div class="product-price text-end">
-                                    <h6 class="m-0 fw-semibold">Số tiền đã chi:
-                                        {{ number_format($customer->total_spent, 0, ',', '.') }} đ
-                                    </h6>
+                                    <h6 class="m-0 fw-semibold">Số tiền đã chi: {{ number_format($customer->total_spent, 0, ',', '.') }} đ</h6>
                                     <p class="mb-0 mt-1 text-muted">Số đơn hàng: {{ $customer->total_orders }}</p>
                                 </div>
                             </li>
                             @endforeach
                         </ul>
                     </div>
-                    <!-- end card body -->
                 </div>
             </div>
-
-
-
-
         </div>
+
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card overflow-hidden">
@@ -223,7 +237,7 @@
                             <div class="border border-dark rounded-2 me-2 widget-icons-sections">
                                 <i data-feather="crosshair" class="widgets-icons"></i>
                             </div>
-                            <h5 class="card-title mb-0">Recent Order</h5>
+                            <h5 class="card-title mb-0">Đơn hàng mới gần đây</h5>
                         </div>
                     </div>
 
@@ -235,7 +249,6 @@
                                     <tr>
                                         <th>Order ID</th>
                                         <th class="text-center">Người nhận</th>
-                                        <th class="text-center">SĐT</th>
                                         <th class="text-center">Tổng tiền</th>
                                         <th>HTTT</th>
                                         <th class="text-center">TTTT</th>
@@ -250,9 +263,6 @@
                                     </td>
                                     <td>
                                         <p class="mb-0 text-center">{{ $order->user->name }}</p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 text-center">{{ $order->number_phone }}</p>
                                     </td>
                                     <td>
                                         <p class="mb-0 text-center">

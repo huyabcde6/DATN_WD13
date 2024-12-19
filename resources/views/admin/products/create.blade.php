@@ -146,7 +146,7 @@
                         <div class="row">
                             <div class="col-lg-7">
                                 <div class="mb-3">
-                                    <label for="name">Tên sản phẩm</label>
+                                    <label for="name">Tên sản phẩm <span class="required text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control" placeholder="Tên sản phẩm" id="name" value="{{ old('name') }}">
                                 </div>
                                 @error('name')
@@ -160,7 +160,7 @@
                                 
 
                                 <div class="mb-3">
-                                    <label for="price">Giá sản phẩm</label>
+                                    <label for="price">Giá sản phẩm <span class="required text-danger">*</span></label>
                                     <input type="number" name="price" id="price" class="form-control" placeholder="Giá sản phẩm" value="{{ old('price') }}">
                                 </div>
                                 @error('price')
@@ -168,7 +168,7 @@
                                 @enderror
 
                                 <div class="mb-3">
-                                    <label for="discount_price">Giá khuyến mãi</label>
+                                    <label for="discount_price">Giá khuyến mãi <span class="required text-danger">*</span></label>
                                     <input type="number" name="discount_price" id="discount_price" class="form-control" placeholder="Giá khuyến mãi" value="{{ old('discount_price') }}">
                                 </div>
                                 @error('discount_price')
@@ -176,7 +176,7 @@
                                 @enderror
 
                                 <div class="mb-3">
-                                    <label for="short_description">Mô tả ngắn</label>
+                                    <label for="short_description">Mô tả ngắn <span class="required text-danger">*</span></label>
                                     <textarea name="short_description" id="short_description" class="form-control" placeholder="Mô tả ngắn của sản phẩm">{{ old('short_description') }}</textarea>
                                 </div>
                                 @error('short_description')
@@ -231,19 +231,19 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="avata">Hình ảnh sản phẩm</label>
+                                    <label for="avata">Hình ảnh sản phẩm <span class="required text-danger">*</span></label>
                                     <input class="form-control" type="file" name="avata" id="avata">
                                     <div id="avata-preview-container" class="mt-2"></div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="images">Hình ảnh phụ</label>
+                                    <label for="images">Hình ảnh phụ <span class="required text-danger">*</span></label>
                                     <input class="form-control" type="file" name="images[]" id="images" multiple>
                                     <div id="preview-container" class="d-flex flex-wrap mt-2"></div>
                                 </div>
 
                                 <div class="button-group">
-                                    <label for="sizes">Chọn kích thước</label>
+                                    <label for="sizes">Chọn kích thước <span class="required text-danger">*</span></label>
                                     <div class="options" id="sizes">
                                         @foreach($sizes as $size)
                                         <button type="button" class="option-button" data-value="{{ $size->size_id }}">{{ $size->value }}</button>
@@ -252,7 +252,7 @@
                                 </div>
 
                                 <div class="button-group">
-                                    <label for="colors">Chọn màu sắc</label>
+                                    <label for="colors">Chọn màu sắc <span class="required text-danger">*</span></label>
                                     <div class="options" id="colors">
                                         @foreach($colors as $color)
                                         <button type="button" class="option-button" data-value="{{ $color->color_id }}">{{ $color->value }}</button>
@@ -331,11 +331,11 @@
                         </div>
                         <div class="col-lg-4 mx-5">
                             <div class="mb-2">
-                                <label for="variant_image_${size.id}_${color.id}">Hình ảnh</label>
+                                <label for="variant_image_${size.id}_${color.id}">Hình ảnh <span class="required text-danger">*</span></label>
                                 <input type="file" name="variant_image[${size.id}][${color.id}]" id="variant_image_${size.id}_${color.id}" class="form-control" accept="image/*">
                             </div>
                             <div class="mb-2">
-                                <label for="variant_quantity_${size.id}_${color.id}">Số lượng</label>
+                                <label for="variant_quantity_${size.id}_${color.id}">Số lượng <span class="required text-danger">*</span></label>
                                 <input type="number" name="variant_quantity[${size.id}][${color.id}]" id="variant_quantity_${size.id}_${color.id}" class="form-control">
                             </div>
                                @error('variant_quantity[${size.id}][${color.id}]')
@@ -344,14 +344,14 @@
                         </div>
                         <div class="col-lg-4 mx-3 ">
                             <div class="mb-2">
-                                <label for="variant_price_${size.id}_${color.id}">Giá</label>
+                                <label for="variant_price_${size.id}_${color.id}">Giá <span class="required text-danger">*</span></label>
                                 <input type="number" name="variant_price[${size.id}][${color.id}]" id="variant_price_${size.id}_${color.id}" class="form-control">
                             </div>
                             @error('variant_price[${size.id}][${color.id}]')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             <div class="mb-2">
-                                <label for="variant_discount_price_${size.id}_${color.id}">Giá khuyến mãi</label>
+                                <label for="variant_discount_price_${size.id}_${color.id}">Giá khuyến mãi <span class="required text-danger">*</span></label>
                                 <input type="number" name="variant_discount_price[${size.id}][${color.id}]" id="variant_discount_price_${size.id}_${color.id}" class="form-control">
                             </div>
                             @error('variant_discount_price[${size.id}][${color.id}]')

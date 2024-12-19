@@ -74,6 +74,7 @@
                                     Màu sắc
                                 </th>
                                 <th class="text-center">Trạng thái</th>
+                                <th class="text-center">Số lượng</th>
                                 <th class="text-center">Tương tác</th>
                             </tr>
                         </thead>
@@ -82,7 +83,9 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $color->value }}</td>
+                                
                                 <td>{{ $color->status ? 'Kích hoạt' : 'Không kích hoạt' }}</td>
+                                <td>{{ $color->product_details_count  }}</td>
                                 <td>
                                     <!-- Nút chỉnh sửa -->
                                     <button type="button"
