@@ -42,9 +42,9 @@ Quản lý người dùng
                         </thead>
 
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($users as $key => $user)
                             <tr>
-                                <td>{{ $user->id }}</td>
+                                <td>{{ $key + 1 }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->created_at }}</td>

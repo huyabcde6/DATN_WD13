@@ -435,12 +435,7 @@
                                         <h5 class="title"><a
                                                 href="{{ route('product.show', $item->slug) }}">{{ $item->name }}</a>
                                         </h5>
-                                        <span class="ratings">
-                                            <span class="rating-wrap">
-                                                <span class="star" style="width: 100%"></span>
-                                            </span>
-                                            <span class="rating-num">(4)</span>
-                                        </span>
+
                                         <span class="price">
                                             @if ($item->discount_price)
                                             <span class="new">{{ number_format($item->discount_price, 0, '', '.') }}
@@ -450,8 +445,8 @@
                                             <span class="new">{{ number_format($item->price, 0, '', '.') }} ₫</span>
                                             @endif
                                         </span>
-                                        <button class="btn btn-sm btn-outline-dark btn-hover-primary">Thêm vào
-                                            giỏ</button>
+                                        <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"
+                                        title="Add To Cart"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
                                     </div>
                                 </div>
                                 <!-- Single Product End -->
