@@ -13,12 +13,12 @@ class ColorController extends Controller
      * Hiển thị danh sách các màu.
      */
     // Controller (ColorController.php)
-    public function __construct(){
-        $this->middleware('permission:view color', ['only' => ['index']]);
-        $this->middleware('permission:create color', ['only' => ['create', 'store']]);
-        $this->middleware('permission:edit color', ['only' => ['update', 'edit']]);
-        $this->middleware('permission:delete color', ['only' => ['destroy']]);
-    }
+    // public function __construct(){
+    //     $this->middleware('permission:view color', ['only' => ['index']]);
+    //     $this->middleware('permission:create color', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:edit color', ['only' => ['update', 'edit']]);
+    //     $this->middleware('permission:delete color', ['only' => ['destroy']]);
+    // }
 
     public function index(Request $request)
     {
@@ -96,9 +96,22 @@ class ColorController extends Controller
      */
     public function destroy(string $id)
     {
+        // Tìm màu theo ID
         $color = Color::findOrFail($id);
+
+        // Kiểm tra nếu có sản phẩm nào đang sử dụng màu sắc này
+        $isUsed = $color->productDetails()->exists();
+
+        if ($isUsed) {
+            return redirect()->route('admin.colors.index')
+                ->with('error', 'Không thể xóa màu này vì đang được sử dụng trong sản phẩm.');
+        }
+
+        // Nếu không được sử dụng, xóa màu
         $color->delete();
 
-        return redirect()->route('admin.colors.index')->with('success', 'Màu đã được xóa thành công.');
+        return redirect()->route('admin.colors.index')
+            ->with('success', 'Màu đã được xóa thành công.');
     }
+
 }

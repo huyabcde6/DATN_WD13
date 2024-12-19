@@ -8,7 +8,7 @@
     <div class="breadcrumb">
         <a href="http://datn_wd13.test/"><i class="fa fa-home"></i> Trang Chủ</a>
         <span class="breadcrumb-separator"> > </span>
-        <span><a href="http://datn_wd13.test/shop">Shop</a></span>
+        <span><a href="http://datn_wd13.test/shop">Cửa hàng</a></span>
     </div>
     <!-- Breadcrumb Area End -->
 
@@ -175,7 +175,7 @@
                                 <div class="search-box">
                                     <input type="text" name="keyword" class="form-control"
                                         placeholder="Nhập từ khóa cần tìm" required>
-                                    <button class="btn btn-dark btn-hover-primary" type="submit">
+                                    <button class="btn btn-dark btn-hover-primary"  style="margin-top:0px" type="submit">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </div>

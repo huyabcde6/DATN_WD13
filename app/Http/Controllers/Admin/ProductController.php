@@ -15,28 +15,24 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:view product', ['only' => ['index']]);
-        $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
-        $this->middleware('permission:edit product', ['only' => ['index']]);
-        $this->middleware('permission:delete product', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view product', ['only' => ['index']]);
+    //     $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
+    //     $this->middleware('permission:edit product', ['only' => ['index']]);
+    //     $this->middleware('permission:delete product', ['only' => ['destroy']]);
+    // }
 
     public function index(Request $request)
     {
         $query = products::query();
 
-        if ($request->has('sort') && $request->has('order')) {
-            $sort = $request->input('sort');
-            $order = $request->input('order');
-            $query->orderBy($sort, $order);
-        } else {
-            $query->orderBy('created_at', 'desc'); // Sắp xếp mặc định theo ngày tạo
-        }
+        // Sắp xếp mặc định theo 'created_at' theo thứ tự giảm dần
+        $query->orderBy('created_at', 'desc');
 
         // Tìm kiếm theo tên sản phẩm
         if ($request->has('search') && $request->search) {
@@ -57,8 +53,11 @@ class ProductController extends Controller
             $query->where('created_at', '<=', $request->to_date);
         }
 
+        // Lấy danh sách các danh mục
         $categories = categories::all();
-        $products = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Lấy danh sách sản phẩm với phân trang
+        $products = $query->paginate(10);
 
         return view('admin.products.index', compact('products', 'categories'));
     }
@@ -75,7 +74,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->has('is_new'));
+        // dd($request->has('is_new'));
         try {
             // Tìm sản phẩm theo ID
             $product = new products();

@@ -13,8 +13,9 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="d-flex m-3">
-                    <a href="{{ route('admin.Coupons.create') }}" class="btn btn-success">+ Thêm Mã Giảm Giá</a>
+                <div class="d-flex mt-3 mx-2">
+                    <a href="{{ route('admin.Coupons.create') }}" class="btn btn-sm btn-alt-primary mx-2 fs-18 rounded-2 border p-1 me-1 "
+                        data-bs-toggle="tooltip" title="Thêm mới"><i class="mdi mdi-plus text-muted px-1 mr-1">Thêm mới</i></a>
                 </div>
 
                 @if(session('success'))
@@ -107,6 +108,11 @@
 <script>
 $(document).ready(function() {
     $('#couponTable').DataTable({
+        "paging": false, // Cho phép phân trang
+        "searching": true, // Tìm kiếm
+        "ordering": true, // Sắp xếp cột
+        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+        "info": false,
         "language": {
             "lengthMenu": "Hiển thị _MENU_ mục",
             "zeroRecords": "Không tìm thấy dữ liệu phù hợp",

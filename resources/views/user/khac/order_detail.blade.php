@@ -127,7 +127,7 @@
         <div class="d-flex justify-content-between my-3">
             <div class="col-md-11">
                 <h2 class="title text-center">Thông tin đơn hàng: <span
-                        class="text-danger">{{ $order->order_code }}</span></h2>
+                        class="text-danger fs-4">{{ $order->order_code }}</span></h2>
             </div>
             <div class="col-md-1">
                 <div class="d-flex justify-content-end mb-4">
@@ -191,44 +191,36 @@
                     </table>
                 </div>
                 <div class="d-flex flex-column justify-content-end mx-3 mb-5">
-    <h5 class="d-flex justify-content-between w-100">
- <strong>Tổng phụ :</strong> <span class="text-end">{{ number_format($totalAmount, 0, ',', '.') }} đ</span></span>
-    </h5> 
-    <h5 class="d-flex justify-content-between w-100">
-        <strong>Ship :</strong> <span class="text-end">30.000 đ</span>
-    </h5> 
-    <h5 class="d-flex justify-content-between w-100">
-        <strong>Mã giảm giá :</strong> <span class="text-end">  - {{ $order->discount ? number_format($order->discount, 0, ',', '.') : '0' }} đ</span>
-    </h5>
-    <h5 class="d-flex justify-content-between w-100">
-        <strong>Tổng tiền:</strong> <span class="text-end">{{ number_format($order->total_price, 0, ',', '.') }} đ</span>
-    </h5>
-</div>
+                    <h5 class="d-flex justify-content-between w-100">
+                        <strong>Tổng phụ :</strong> <span class="text-end">{{ number_format($totalAmount, 0, ',', '.') }} đ</span></span>
+                    </h5>
+                    <h5 class="d-flex justify-content-between w-100">
+                        <strong>Ship :</strong> <span class="text-end">30.000 đ</span>
+                    </h5>
+                    <h5 class="d-flex justify-content-between w-100">
+                        <strong>Mã giảm giá :</strong> <span class="text-end"> - {{ $order->discount ? number_format($order->discount, 0, ',', '.') : '0' }} đ</span>
+                    </h5>
+                    <h5 class="d-flex justify-content-between w-100">
+                        <strong>Tổng tiền:</strong> <span class="text-end">{{ number_format($order->total_price, 0, ',', '.') }} đ</span>
+                    </h5>
+                </div>
                 <div class="d-flex mx-3 justify-content-end">
-                    <form action="{{ route('orders.update', $order->id) }}" method="POST" style="display:inline;">
+                    <form id="confirm-order-{{ $order->id }}" action="{{ route('orders.update', $order->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('POST')
-
                         @if($order->status->type === \App\Models\StatusDonHang::CHO_XAC_NHAN)
-                        <!-- Nếu trạng thái là 'Chờ xác nhận' -->
                         <input type="hidden" name="huy_don_hang" value="1">
-                        <button type="submit" class="btn btn-primary"
-                            onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">
-                            Hủy đơn hàng
-                        </button>
+                        <button id="cancel-order-{{ $order->id }}" type="submit" class="btn btn-danger" style=" margin:0px;"
+                            onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</button>
                         @elseif($order->status->type === \App\Models\StatusDonHang::DA_GIAO_HANG)
-                        <input type="hidden" name="da_giao_hang" value="4">
-                        <button type="submit" class="btn btn-success"
-                            onclick="return confirm('Bạn xác nhận đã nhận hàng?');">
-                            Đã nhận hàng
-                        </button>
-                        @elseif($order->status->type === \App\Models\StatusDonHang::DA_GIAO_HANG)
-                        <input type="hidden" name="cho_xac_nhan" value="9">
+                        <input type="hidden" name="hoan_thanh" value="5">
+                        <button type="submit" class="btn btn-success mx-3" style=""
+                            onclick="return confirm('Bạn xác nhận đã nhận hàng?');">Xác nhận nhận hàng</button>
+                            <input type="hidden" name="cho_xac_nhan" value="8">
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#returnModal">
                             Trả hàng
                         </button>
-
                         @endif
                     </form>
                 </div>
@@ -244,7 +236,7 @@
                 <h5 class="modal-title" id="returnModalLabel">Lý do trả hàng</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('orders.update', $order->id) }}" method="POST">
+            <form action="{{ route('orders.update', $order->id) }}" class="row" method="POST">
                 @csrf
                 @method('POST')
                 <input type="hidden" name="cho_xac_nhan" value="1">

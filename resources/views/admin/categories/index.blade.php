@@ -8,11 +8,11 @@ Danh sách danh mục
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 @endsection
 @section('content')
-    @if (session()->has('status_error'))
-        <div class="alert alert-danger">
-            {{ session()->get('status_error') }}
-        </div>
-    @endif
+@if (session()->has('status_error'))
+<div class="alert alert-danger">
+    {{ session()->get('status_error') }}
+</div>
+@endif
 @if (session()->has('success'))
 <div class="alert alert-success">
     {{ session()->get('success') }}
@@ -28,80 +28,57 @@ Danh sách danh mục
         <div class="col-12">
             <div class="card">
                 <div class="d-flex m-3 justify-content-between align-items-center">
-                    <form method="GET" action="{{ route('admin.categories.index') }}" class="d-flex">
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                Tìm kiếm
-                            </span>
-                            <input type="text" name="search" class="form-control" placeholder="Nhập từ khóa cần tìm..."
-                                value="{{ request('search') }}">
-
-                            <button type="submit" class="btn btn-sm btn-dark">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-                    </form>
-                <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Thêm Mới</a>
+                    <a href="{{ route('admin.categories.create') }}"class="btn btn-sm btn-alt-primary mx-2 fs-18 rounded-2 border p-1 me-1 "
+                        data-bs-toggle="tooltip" title="Thêm mới">
+                        <i class="mdi mdi-plus text-muted px-1 mr-1">Thêm mới</i></a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped text-center">
+                        <table class="table table-bordered text-center" id="categoryTable">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <a
-                                            href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}">
-                                            #
-                                            @if (request('sort') === 'id')
-                                            <i class="bi bi-arrow-{{ request('order') === 'asc' ? 'down' : 'up' }}"></i>
-                                            @endif
-                                        </a>
+                                    <th class="text-center">
+                                        #
                                     </th>
-                                    <th>
-                                        <a
-                                            href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'order' => request('order') === 'asc' ? 'desc' : 'asc']) }}">
-                                            Tên danh mục
-                                            @if (request('sort') === 'name')
-                                            <i class="bi bi-arrow-{{ request('order') === 'asc' ? 'down' : 'up' }}"></i>
-                                            @endif
-                                        </a>
+                                    <th class="text-center">Tên danh mục
                                     </th>
-                                    <th>
+                                    <th class="text-center">
                                         Trạng thái
                                     </th>
-                                    <th>Số lượng sản phẩm</th>
+                                    <th class="text-center">Số lượng sản phẩm</th>
                                     <th class="text-center">
                                         Tương tác
                                     </th>
                                 </tr>
                             </thead>
                             <tbody id="category-table">
-    @forelse ($categories as $key => $item)
-    <tr>
-        <td>{{ $key + 1 }}</td>
-        <td>{{ $item->name }}</td>
-        <td>{{ $item->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>
-        <td>{{ $item->product_count ?? 0 }}</td><!-- Hiển thị số lượng sản phẩm -->
-        <td>
-            <div class="d-flex justify-content-center align-items-center">
-                <a class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 " href="{{ route('admin.categories.edit', $item->id ) }}">
-                    <i class="fa fa-pencil-alt"></i>
-                </a>
-                <button
-                    class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 text-danger"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal"
-                    data-id="{{ $item->id }}">
-                    <i class="fa fa-fw fa-times text-danger"></i>
-                </button>
-            </div>
-        </td>
-    </tr>
-    @empty
-    <tr>
-        <td colspan="5">Không có danh mục nào!</td>
-    </tr>
-    @endforelse
-</tbody>
+                                @forelse ($categories as $key => $item)
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>
+                                    <td>{{ $item->product_count ?? 0 }}</td><!-- Hiển thị số lượng sản phẩm -->
+                                    <td>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <a class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
+                                                href="{{ route('admin.categories.edit', $item->id ) }}">
+                                                <i class="fa fa-pencil-alt"></i>
+                                            </a>
+                                            <button
+                                                class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 text-danger"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                data-id="{{ $item->id }}">
+                                                <i class="fa fa-fw fa-times text-danger"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5">Không có danh mục nào!</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -163,6 +140,11 @@ document.querySelectorAll('[data-bs-target="#deleteModal"]').forEach(button => {
 <script>
 $(document).ready(function() {
     $('#categoryTable').DataTable({
+        "paging": false, // Cho phép phân trang
+        "searching": true, // Tìm kiếm
+        "ordering": true, // Sắp xếp cột
+        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+        "info": false,
         "language": {
             "lengthMenu": "Hiển thị _MENU_ mục",
             "zeroRecords": "Không tìm thấy dữ liệu phù hợp",

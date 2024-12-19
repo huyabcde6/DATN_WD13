@@ -197,6 +197,11 @@ deleteModal.addEventListener('show.bs.modal', function(event) {
 <script>
     $(document).ready(function() {
         $('#roleTable').DataTable({
+            "paging": false, // Cho phép phân trang
+            "searching": true, // Tìm kiếm
+            "ordering": true, // Sắp xếp cột
+            "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+            "info": false,
             "language": {
                 "lengthMenu": "Hiển thị _MENU_ mục",
                 "zeroRecords": "Không tìm thấy dữ liệu phù hợp",

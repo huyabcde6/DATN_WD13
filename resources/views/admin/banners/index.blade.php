@@ -27,7 +27,7 @@ Quản lý Banner
                 <div class="d-flex m-3">
                     <a href="{{ route('admin.banners.create') }}"
                         class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 " title="Thêm mới">
-                        <i class="mdi mdi-plus text-muted "></i>
+                        <i class="mdi mdi-plus text-muted "> Thêm mới</i>
                     </a>
                 </div>
                 <div class="card-body">
@@ -87,6 +87,11 @@ Quản lý Banner
 <script>
 $(document).ready(function() {
     $('#bannerTable').DataTable({
+        "paging": false, // Cho phép phân trang
+        "searching": true, // Tìm kiếm
+        "ordering": true, // Sắp xếp cột
+        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+        "info": false,
         "language": {
             "lengthMenu": "Hiển thị _MENU_ mục",
             "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
