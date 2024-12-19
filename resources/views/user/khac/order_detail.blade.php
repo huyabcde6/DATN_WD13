@@ -127,7 +127,7 @@
         <div class="d-flex justify-content-between my-3">
             <div class="col-md-11">
                 <h2 class="title text-center">Thông tin đơn hàng: <span
-                        class="text-danger">{{ $order->order_code }}</span></h2>
+                        class="text-danger fs-4">{{ $order->order_code }}</span></h2>
             </div>
             <div class="col-md-1">
                 <div class="d-flex justify-content-end mb-4">
@@ -210,11 +210,11 @@
                         @method('POST')
                         @if($order->status->type === \App\Models\StatusDonHang::CHO_XAC_NHAN)
                         <input type="hidden" name="huy_don_hang" value="1">
-                        <button id="cancel-order-{{ $order->id }}" type="submit" class="btn btn-primary mx-3" style="font-size: 12px; margin-top: 19px;"
+                        <button id="cancel-order-{{ $order->id }}" type="submit" class="btn btn-danger" style=" margin:0px;"
                             onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</button>
                         @elseif($order->status->type === \App\Models\StatusDonHang::DA_GIAO_HANG)
                         <input type="hidden" name="hoan_thanh" value="5">
-                        <button type="submit" class="btn btn-success mx-3" style="font-size: 12px; margin-top: 19px;"
+                        <button type="submit" class="btn btn-success mx-3" style=""
                             onclick="return confirm('Bạn xác nhận đã nhận hàng?');">Xác nhận nhận hàng</button>
                             <input type="hidden" name="cho_xac_nhan" value="8">
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
@@ -236,7 +236,7 @@
                 <h5 class="modal-title" id="returnModalLabel">Lý do trả hàng</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('orders.update', $order->id) }}" method="POST">
+            <form action="{{ route('orders.update', $order->id) }}" class="row" method="POST">
                 @csrf
                 @method('POST')
                 <input type="hidden" name="cho_xac_nhan" value="1">

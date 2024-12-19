@@ -9,12 +9,12 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionControler extends Controller
 {
-    public function __construct(){
-        $this->middleware('permission:view permission', ['only' => ['index']]);
-        $this->middleware('permission:create permission', ['only' => ['create', 'store']]);
-        $this->middleware('permission:edit permission', ['only' => ['update', 'edit']]);
-        $this->middleware('permission:delete permission', ['only' => ['destroy']]);
-    }
+    // public function __construct(){
+    //     $this->middleware('permission:view permission', ['only' => ['index']]);
+    //     $this->middleware('permission:create permission', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:edit permission', ['only' => ['update', 'edit']]);
+    //     $this->middleware('permission:delete permission', ['only' => ['destroy']]);
+    // }
 
     public function index(Request $request, $sort_by = 'id', $sort_order = 'asc')
     {

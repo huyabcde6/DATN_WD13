@@ -19,17 +19,19 @@ Danh sách Tin Tức
         <div class="flex-grow-1">
             <h4 class="fs-18 fw-semibold m-0">Danh sách tin tức</h4>
         </div>
-        <div class="ms-auto">
-            <a href="{{ route('admin.new.store') }}" class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1" title="Thêm mới">
-                <i class="mdi mdi-plus text-muted"></i> Thêm mới
-            </a>
-        </div>
+
     </div>
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="ms-auto">
+                        <a href="{{ route('admin.new.store') }}"
+                            class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1" title="Thêm mới">
+                            <i class="mdi mdi-plus text-muted"></i> Thêm mới
+                        </a>
+                    </div>
                     <table class="table table-bordered text-center" id="newTable">
                         <thead>
                             <tr>
@@ -46,7 +48,8 @@ Danh sách Tin Tức
                             @foreach ($db as $tiem)
                             <tr>
                                 <td>{{ $tiem->title }}</td>
-                                <td><img src="{{ Storage::url($tiem->avata) }}" alt="Ảnh bìa" width="60px" height="auto"></td>
+                                <td><img src="{{ Storage::url($tiem->avata) }}" alt="Ảnh bìa" width="60px"
+                                        height="auto"></td>
                                 <td>{{ $tiem->description}}</td>
                                 <td>{{ $tiem->view }}</td>
                                 <td>{{ $tiem->new_date }}</td>
@@ -57,13 +60,18 @@ Danh sách Tin Tức
                                     </label>
                                 </td>
                                 <td class="d-flex">
-                                    <a href="{{ route('admin.new.show', $tiem->id) }}" class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1" title="Sửa">
+                                    <a href="{{ route('admin.new.show', $tiem->id) }}"
+                                        class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1"
+                                        title="Sửa">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
-                                    <form action="{{ route('admin.new.destroy', $tiem->id) }}" method="POST" class="form-delete" onsubmit="return confirm('Bạn có chắc muốn xóa không?')">
+                                    <form action="{{ route('admin.new.destroy', $tiem->id) }}" method="POST"
+                                        class="form-delete" onsubmit="return confirm('Bạn có chắc muốn xóa không?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1" title="Xóa">
+                                        <button type="submit"
+                                            class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1"
+                                            title="Xóa">
                                             <i class="fa fa-fw fa-times text-danger"></i>
                                         </button>
                                     </form>
@@ -84,6 +92,11 @@ Danh sách Tin Tức
 <script>
 $(document).ready(function() {
     $('#newTable').DataTable({
+        "paging": false, // Cho phép phân trang
+        "searching": true, // Tìm kiếm
+        "ordering": true, // Sắp xếp cột
+        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+        "info": false,
         "language": {
             "lengthMenu": "Hiển thị _MENU_ mục",
             "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
