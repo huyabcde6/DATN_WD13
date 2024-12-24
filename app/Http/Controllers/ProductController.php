@@ -26,7 +26,7 @@ class ProductController extends Controller
         $minPrice = $request->input('min_price', 0);
         $maxPrice = $request->input('max_price', 1000000);
         $keyword = $request->input('keyword');
-        
+
         // Truy vấn sản phẩm
         $query = products::query();
         if ($keyword) {
@@ -93,8 +93,10 @@ class ProductController extends Controller
         $productDetails = $product->productDetails;
 
         // Comment
-        $comments = $product->productComments()->orderByDesc('created_at')->paginate(3);
-
+        $comments = $product->productComments()
+            ->where('is_hidden', 0)
+            ->orderByDesc('created_at')
+            ->paginate(3);
         $hasPurchased = true;
 
         if (Auth::check()) {
