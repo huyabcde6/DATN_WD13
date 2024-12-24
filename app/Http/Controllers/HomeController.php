@@ -6,7 +6,7 @@ use App\Models\banner;
 use App\Models\News;
 use App\Models\products;
 use Illuminate\Http\Request;
-
+use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Order;
@@ -33,6 +33,13 @@ class HomeController extends Controller
         $saleProducts = products::whereNotNull('discount_price')
             ->where('is_show', true)
             ->limit(8)->get();
-        return view('user.sanpham.home', compact('banners', 'newProducts', 'bestSellingProducts', 'saleProducts', 'news'));
+
+        $coupons = Voucher::where('status', 1) // Chỉ lấy voucher hoạt động
+        ->whereDate('start_date', '<=', now()) // Đang trong khoảng thời gian hợp lệ
+        ->whereDate('end_date', '>=', now())
+        ->get();
+
+
+        return view('user.sanpham.home', compact('banners', 'coupons', 'newProducts', 'bestSellingProducts', 'saleProducts', 'news'));
     }
 }

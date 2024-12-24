@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
+    // Hiển thị giỏ hàng
     public function index()
     {
 
@@ -34,6 +35,7 @@ class CartController extends Controller
             $subTotal += $item['price'] * $item['quantity'];
         }
         $total = $subTotal + $shippingFee;
+        
         return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
     }
     public function addToCart(Request $request)
@@ -72,6 +74,11 @@ class CartController extends Controller
                 return response()->json(['status' => 'error', 'message' => 'Không tìm thấy sản phẩm hoặc không có sẵn biến thể.'], 404);
             }
 
+            // Kiểm tra số lượng sản phẩm có trong kho
+            if ($quantity > $productDetail->quantity) {
+                return response()->json(['status' => 'error', 'message' => 'Số lượng yêu cầu vượt quá số lượng có sẵn trong kho.'], 400);
+            }
+
             // Kiểm tra xem sản phẩm có giá khuyến mãi không
             $price = $productDetail->discount_price ? $productDetail->discount_price : $productDetail->price;
 
@@ -81,6 +88,11 @@ class CartController extends Controller
             // Thêm hoặc cập nhật sản phẩm trong giỏ hàng
             if (isset($cart[$variantKey])) {
                 $cart[$variantKey]['quantity'] += $quantity;
+
+                // Kiểm tra lại số lượng trong giỏ hàng không vượt quá số lượng trong kho
+                if ($cart[$variantKey]['quantity'] > $productDetail->quantity) {
+                    return response()->json(['status' => 'error', 'message' => 'Số lượng trong giỏ hàng vượt quá số lượng có sẵn trong kho.'], 400);
+                }
             } else {
                 $cart[$variantKey] = [
                     'product_detail_id' => $productDetail->id,
@@ -91,7 +103,7 @@ class CartController extends Controller
                     'product_id' => $productDetail->products_id,
                     'price' => $price, // Dùng giá khuyến mãi nếu có
                     'image' => $productDetail->products->avata,
-                    'slug' =>$productDetail->products->slug,
+                    'slug' => $productDetail->products->slug,
                 ];
             }
 
@@ -110,7 +122,7 @@ class CartController extends Controller
             // Trả về phản hồi JSON cho Ajax
             return response()->json([
                 'status' => 'success',
-                'message' => 'Product added to cart successfully!',
+                'message' => 'Thêm sản phẩm vào giỏ hàng thành công!',
                 'total_price' => number_format($totalWithShipping, 0, ',', '.') . ' đ', // Định dạng tiền tệ
             ]);
         } catch (\Exception $e) {
@@ -118,6 +130,7 @@ class CartController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Có lỗi xảy ra, vui lòng thử lại sau.'], 500);
         }
     }
+
 
 
     public function removeFromCart($productDetailId)
@@ -153,7 +166,7 @@ class CartController extends Controller
 
             // Tính toán giá của sản phẩm
             $itemPrice = $cart[$productDetailId]['price'];
-            $itemSubtotal = number_format($itemPrice * $quantity, 0, ',', '.') . ' đ'; // Tính subtotal
+            $itemSubtotal = $itemPrice * $quantity;// Tính subtotal
 
             // Tính tổng giá trị đơn hàng
             $total = 0;
@@ -168,8 +181,8 @@ class CartController extends Controller
             // Trả về JSON để JavaScript cập nhật lại giao diện
             return response()->json([
                 'status' => 'success',
-                'item_price' => $itemSubtotal, // Giá subtotal của sản phẩm
-                'total_price' => number_format($totalWithShipping, 0, ',', '.') . ' đ', // Tổng giá trị đơn hàng bao gồm phí vận chuyển
+                'item_price' => $itemSubtotal, // Giá subtotal của sản phẩm (chưa format)
+                'total_price' => $totalWithShipping, // Tổng giá trị đơn hàng bao gồm phí vận chuyển
             ]);
         }
 

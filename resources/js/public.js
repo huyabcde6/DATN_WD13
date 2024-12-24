@@ -27,25 +27,27 @@ channel.bind("OderEvent", function (data) {
             case 3: // ID trạng thái DANG_VAN_CHUYEN
                 statusText = "Đang vận chuyển";
                 // Hiển thị form nút đã nhận hàng
-                console.log(data.id);
-
-                if (confirmForm) {
-                    confirmForm.innerHTML = `
-                        <form id="confirm-order-${data.id}" action="/orders/${data.id}/update" method="POST" style="display:inline;">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="_method" value="POST">
-                            <input type="hidden" name="da_giao_hang" value="3">
-                            <button type="submit" class="btn btn-success mx-3" style="font-size: 12px; margin-top: 19px;"
-                                onclick="return confirm('Bạn xác nhận đã nhận hàng?');">Đã nhận hàng</button>
-                        </form>`;
-                } else {
-                    console.log("không tìm thấy from");
-                }
+                // console.log(data.id);
                 break;
             case 4: // ID trạng thái DA_GIAO
                 statusText = "Đã giao hàng";
-
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                if (confirmForm) {
+                    confirmForm.innerHTML = `
+                        <form id="confirm-order-${data.id}" action="/orders/${data.id}" method="POST" style="display:inline;">
+                            <input type="hidden" name="_token" value="${csrfToken}">
+                            <input type="hidden" name="_method" value="POST">
+                            <input type="hidden" name="hoan_thanh" value="5">
+                            <button type="submit" class="btn btn-success mx-3" style="font-size: 12px; margin-top: 19px;">
+                                Xác nhận nhận hàng
+                            </button>
+                        </form>`;
+                }
+                else {
+                    console.log("Không tìm thấy form");
+                }
                 break;
+
             case 5: // ID trạng thái HOAN_THANH
                 statusText = "Hoàn thành";
                 break;

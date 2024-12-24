@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponsController;
+use App\Models\Order; 
 use App\Http\Controllers\VoucherController;
 
 
@@ -46,6 +47,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 
 
+Route::get('thank-you/{order}', function ($orderId) {
+    $order = Order::find($orderId);
+    return view('user.sanpham.thank_you', compact('order'));
+})->name('thank_you');
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
@@ -57,9 +62,7 @@ Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 Route::post('/muangay', [OrderController::class, 'muangay'])->name('muangay');
 // Route
-Route::get('/checkout/thankyou', function () {
-    return view('checkout.thankyou');
-})->name('checkout.thankyou');
+
 
 
 // Route::get('/login', [UserController::class, 'login'])->name('login');

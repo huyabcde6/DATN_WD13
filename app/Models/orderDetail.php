@@ -12,6 +12,8 @@ class OrderDetail extends Model
 
     protected $fillable = [
         'order_id',
+        'product_name',
+        'product_avata',
         'product_detail_id',
         'quantity',
         'color',
@@ -33,5 +35,4 @@ class OrderDetail extends Model
     {
         return $this->hasOneThrough(products::class, ProductDetail::class, 'id', 'id', 'product_detail_id', 'products_id');
     }
-    
 }

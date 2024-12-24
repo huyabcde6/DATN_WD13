@@ -69,7 +69,8 @@
                                             height="auto" width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
-                                    <a href="{{ route('product.show', $item['slug']) }}">{{ $item['product_name'] }} <br> {{ $item['size'] }} /
+                                    <a href="{{ route('product.show', $item['slug']) }}">{{ $item['product_name'] }}
+                                        <br> {{ $item['size'] }} /
                                         {{ $item['color'] }}</a>
                                 </td>
                                 <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
@@ -88,18 +89,19 @@
                                     </div>
                                 </td>
                                 <td class="pro-subtotal">
-                                    <span
-                                        class="subtotal-{{ $item['product_detail_id'] }}">{{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 0, ',', '.') }}
-                                        đ</span>
+                                    <span class="subtotal-{{ $item['product_detail_id'] }}">
+                                        {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 0, ',', '.') }}
+                                        đ
+                                    </span>
+
                                 </td>
                                 <td class="pro-remove">
                                     <form id="delete-form-{{ $item['product_detail_id'] }}"
-                                          action="{{ route('cart.remove', $item['product_detail_id']) }}"
-                                          method="POST">
+                                        action="{{ route('cart.remove', $item['product_detail_id']) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" class="btn btn-danger"
-                                                onclick="confirmDelete({{ $item['product_detail_id'] }})">
+                                            onclick="confirmDelete({{ $item['product_detail_id'] }})">
                                             <i class="pe-7s-trash"></i>
                                         </button>
                                     </form>
@@ -176,89 +178,113 @@
 
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        var shippingFee = 30000; // Phí vận chuyển 30000 đồng
+    var shippingFee = 30000; // Phí vận chuyển 30000 đồng
 
-        // Xử lý sự kiện tăng/giảm số lượng
-        $('.qtybutton').on('click', function() {
-            var productDetailId = $(this).data('id');
-            var inputField = $(this).siblings('.cart-plus-minus-box');
-            var quantity = parseInt(inputField.val());
-            var availableQuantity = parseInt(inputField.data('available-quantity')); // Lấy số lượng có sẵn từ data-attribute
+    // Xử lý sự kiện tăng/giảm số lượng
+    $('.qtybutton').on('click', function() {
+        var productDetailId = $(this).data('id');
+        var inputField = $(this).siblings('.cart-plus-minus-box');
+        var quantity = parseInt(inputField.val());
+        var availableQuantity = parseInt(inputField.data(
+            'available-quantity')); // Lấy số lượng có sẵn từ data-attribute
 
-            // Tăng hoặc giảm số lượng
-            if ($(this).hasClass('inc')) {
-                if (quantity < availableQuantity) {
-                    quantity++;
-                } else {
-                    alert('Số lượng sản phẩm không đủ trong kho!');
-                    return; // Ngừng việc tăng nếu vượt quá số lượng tồn kho
-                }
-            } else if ($(this).hasClass('dec') && quantity > 1) {
-                quantity--;
+        // Tăng hoặc giảm số lượng
+        if ($(this).hasClass('inc')) {
+            if (quantity < availableQuantity) {
+                quantity++;
+            } else {
+                // Sử dụng SweetAlert2
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Không đủ sản phẩm trong kho!',
+                    text: 'Số lượng sản phẩm không đủ để đáp ứng yêu cầu của bạn.',
+                    confirmButtonText: 'Đã hiểu',
+                    confirmButtonColor: '#3085d6',
+                });
+                return; // Ngừng việc tăng nếu vượt quá số lượng tồn kho
             }
+        } else if ($(this).hasClass('dec') && quantity > 1) {
+            quantity--;
+        }
 
-            // Gửi AJAX để cập nhật số lượng
-            $.ajax({
-                url: '{{ route("cart.update") }}',
-                method: 'POST',
-                data: {
-                    product_detail_id: productDetailId,
-                    quantity: quantity,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.status === 'success') {
-                        inputField.val(quantity);
 
-                        // Cập nhật lại subtotal cho sản phẩm này
-                        var subtotalCell = inputField.closest('tr').find('.subtotal-' + productDetailId);
-                        var formattedSubtotal = response.item_price; // Đảm bảo giá được format đúng
-                        subtotalCell.text(formattedSubtotal);
+        // Gửi AJAX để cập nhật số lượng
+        $.ajax({
+            url: '{{ route("cart.update") }}',
+            method: 'POST',
+            data: {
+                product_detail_id: productDetailId,
+                quantity: quantity,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    inputField.val(quantity);
 
-                        // Tính toán tổng giỏ hàng
-                        var subTotal = 0;
-                        $('.pro-subtotal span').each(function() {
-                            var currentSubtotal = $(this).text().replace(' đ', '').replace('.', '').trim();
-                            subTotal += parseFloat(currentSubtotal);
-                        });
+                    // Cập nhật lại subtotal cho sản phẩm này
+                    var subtotalCell = inputField.closest('tr').find('.subtotal-' +
+                        productDetailId);
+                    var formattedSubtotal = formatNumber(response
+                    .item_price); // Đảm bảo giá được format đúng
 
-                        // Cập nhật hiển thị tổng giỏ hàng
-                        $('.sub-total').text(subTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                        $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                    }
-                },
-                error: function() {
-                    alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
+                    // Cập nhật subtotal cho sản phẩm
+                    subtotalCell.text(formattedSubtotal + ' đ');
+
+                    // Tính toán tổng giỏ hàng
+                    var subTotal = 0;
+                    $('.pro-subtotal span').each(function() {
+                        var currentSubtotal = $(this).text().replace(' đ', '')
+                            .replace('.', '').trim();
+                        subTotal += parseFloat(currentSubtotal);
+                    });
+
+                    // Cập nhật hiển thị tổng giỏ hàng
+                    $('.sub-total').text(subTotal.toFixed(0).replace(
+                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(
+                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
                 }
-            });
-        });
-
-        // Kiểm tra và giới hạn giá trị nhập vào
-        $('.cart-plus-minus-box').on('input', function() {
-            var inputField = $(this);
-            var quantity = parseInt(inputField.val());
-            var availableQuantity = parseInt(inputField.data('available-quantity')); // Số lượng có sẵn
-
-            // Nếu giá trị nhập vào lớn hơn số lượng tồn kho, reset giá trị về số lượng tồn kho
-            if (quantity > availableQuantity) {
-                inputField.val(availableQuantity);
-                alert('Số lượng sản phẩm không đủ trong kho!');
-            }
-
-            // Đảm bảo chỉ cho phép nhập số
-            if (isNaN(quantity) || quantity < 1) {
-                inputField.val(1); // Reset về 1 nếu người dùng nhập giá trị không hợp lệ
+            },
+            error: function() {
+                alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
             }
         });
     });
-    function confirmDelete(productDetailId) {
-        if (confirm('Bạn có chắc chắn muốn xóa mục này?')) {
-            // Tìm biểu mẫu và gửi đi nếu người dùng xác nhận
-            document.getElementById(`delete-form-${productDetailId}`).submit();
+
+    // Kiểm tra và giới hạn giá trị nhập vào
+    $('.cart-plus-minus-box').on('input', function() {
+        var inputField = $(this);
+        var quantity = parseInt(inputField.val());
+        var availableQuantity = parseInt(inputField.data('available-quantity')); // Số lượng có sẵn
+
+        // Nếu giá trị nhập vào lớn hơn số lượng tồn kho, reset giá trị về số lượng tồn kho
+        if (quantity > availableQuantity) {
+            inputField.val(availableQuantity);
+            alert('Số lượng sản phẩm không đủ trong kho!');
         }
+
+        // Đảm bảo chỉ cho phép nhập số
+        if (isNaN(quantity) || quantity < 1) {
+            inputField.val(1); // Reset về 1 nếu người dùng nhập giá trị không hợp lệ
+        }
+    });
+});
+
+function formatNumber(number) {
+    return number.toLocaleString('vi-VN'); // Định dạng số theo kiểu Việt Nam, ví dụ: 2.340.000
+}
+
+function confirmDelete(productDetailId) {
+    if (confirm('Bạn có chắc chắn muốn xóa mục này?')) {
+        // Tìm biểu mẫu và gửi đi nếu người dùng xác nhận
+        document.getElementById(`delete-form-${productDetailId}`).submit();
     }
+}
 </script>
 @endsection

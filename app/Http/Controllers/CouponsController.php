@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CouponRequestUpdate;
 use App\Http\Requests\CouponRequest;
 use App\Models\categories;
 use App\Models\Coupon_Conditions;
@@ -27,6 +28,9 @@ class CouponsController extends Controller
     }
     public function store(CouponRequest $request)
     {
+        $request->validate([
+            'code' => 'required|string|unique:coupons,code',
+        ]);
         $coupon = Coupons::create($request->all());
 
         // Lưu điều kiện áp dụng cho sản phẩm
@@ -67,8 +71,9 @@ class CouponsController extends Controller
 
         return view('admin.coupons.editCoupont', compact('coupon', 'products', 'categories'));
     }
-    public function update(Request $request, $id)
+    public function update(CouponRequestUpdate $request, $id)
     {
+        
         $validated = $request->all();
 
         $coupon = Coupons::findOrFail($id);

@@ -73,9 +73,12 @@
                         <div class="row">
                             <div class="col-lg-7">
                                 <div class="mb-3">
-                                    <label for="name">Tên sản phẩm</label>
+                                    <label for="name">Tên sản phẩm <span class="required text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control" value="{{ $products->name }}"
                                         placeholder="Tên sản phẩm" id="name" required>
+                                    @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
@@ -83,33 +86,45 @@
                                         value="{{ $products->slug }}" readonly>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="price">Giá sản phẩm</label>
+                                    <label for="price">Giá sản phẩm <span class="required text-danger">*</span></label>
                                     <input type="number" name="price" id="price" value="{{ $products->price }}"
                                         class="form-control" placeholder="Giá sản phẩm" required>
+                                    @error('price')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="discount_price">Giá khuyến mãi</label>
+                                    <label for="discount_price">Giá khuyến mãi <span class="required text-danger">*</span></label>
                                     <input type="number" name="discount_price" value="{{ $products->discount_price }}"
                                         id="discount_price" class="form-control" placeholder="Giá khuyến mãi" required>
+                                    @error('discount_price')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="short_description">Mô tả ngắn</label>
+                                    <label for="short_description">Mô tả ngắn <span class="required text-danger">*</span></label>
                                     <textarea name="short_description" id="short_description" class="form-control"
                                         placeholder="Mô tả ngắn của sản phẩm"
                                         required>{{ $products->short_description }}</textarea>
+                                        @error('short_description')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Mô tả chi tiết sản phẩm</label>
                                     <div id="quill-editor" style="height: 400px;"></div>
                                     <textarea name="description" id="description_content"
                                         class="d-none">{{ $products->description }}</textarea>
+                                        @error('description')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 </div>
 
 
                             </div>
                             <div class="col-lg-5">
                                 <div class="mb-3">
-                                    <label for="categories_id">Danh mục</label>
+                                    <label for="categories_id">Danh mục </label>
                                     <select name="categories_id" id="categories_id" class="form-select" required>
                                         @foreach($categories as $category)
                                         <option value="{{ $category->id }}"
@@ -147,38 +162,38 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="avata">Hình ảnh sản phẩm</label>
-                                    <input class="form-control mb-3" type="file" name="avata" id="avata">
+                                    <label for="avata">Hình ảnh sản phẩm <span class="required text-danger">*</span></label>
+                                    <input class="form-control mb-3" type="file" name="avata">
                                     <img src="{{ url('storage/'. $products->avata) }}" alt="Hình ảnh sản phẩm"
                                         style="width: 80px; height: auto;">
                                 </div>
 
                                 <div class="mb-3">
-    <label for="images">Hình ảnh phụ</label>
-    <input class="form-control mb-3" type="file" name="images[]" id="images" multiple>
+                                    <label for="images">Hình ảnh phụ <span class="required text-danger">*</span></label>
+                                    <input class="form-control mb-3" type="file" name="images[]" id="images" multiple>
 
-    <h4 class="collapse-button" data-bs-toggle="collapse" data-bs-target="#additionalImages" aria-expanded="false" aria-controls="additionalImages">
-        Xem thêm
-    </h4>
-
-    <div class="mt-2 collapse" id="additionalImages">
-        @foreach($products->productImages as $image)
-        <div class="product-images mt-3" style="display: inline-block; position: relative; margin: 5px;">
-            <img src="{{ url('storage/'. $image->image_path) }}" alt="Hình ảnh phụ"
-                style="width: 100px; height: 100px;">
-            <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle"
-                aria-label="Close" data-image-id="{{ $image->id }}"></button>
-        </div>
-        @endforeach
-    </div>
-</div>
-<input type="hidden" name="deleted_images" id="deletedImages">
-
-
-
-
+                                    <h4 class="collapse-button" data-bs-toggle="collapse"
+                                        data-bs-target="#additionalImages" aria-expanded="false"
+                                        aria-controls="additionalImages">
+                                        Xem thêm
+                                    </h4>
+                                    <div class="mt-2 collapse" id="additionalImages">
+                                        @foreach($products->productImages as $image)
+                                        <div class="product-images mt-3"
+                                            style="display: inline-block; position: relative; margin: 5px;">
+                                            <img src="{{ url('storage/'. $image->image_path) }}" alt="Hình ảnh phụ"
+                                                style="width: 100px; height: 100px;">
+                                            <button type="button"
+                                                class="btn-close position-absolute top-0 start-100 translate-middle"
+                                                aria-label="Close" style="color: red;"
+                                                data-image-id="{{ $image->id }}"></button>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <input type="hidden" name="deleted_images" id="deletedImages">
                                 <div class="button-group">
-                                    <label for="sizes">Chọn kích thước</label>
+                                    <label for="sizes">Chọn kích thước <span class="required text-danger">*</span></label>
                                     <div class="options" id="sizes">
                                         @foreach($sizes as $size)
                                         <button type="button" class="option-button"
@@ -187,7 +202,7 @@
                                     </div>
                                 </div>
                                 <div class="button-group">
-                                    <label for="colors">Chọn màu sắc</label>
+                                    <label for="colors">Chọn màu sắc <span class="required text-danger">*</span></label>
                                     <div class="options" id="colors">
                                         @foreach($colors as $color)
                                         <button type="button" class="option-button"
@@ -203,48 +218,49 @@
                             <div>
                                 @foreach($variants as $variant)
                                 <div class="card border">
-                                <h4 class="mt-3 mx-3">Biến thể (Kích thước: {{ $variant->size->value }}, Màu:
-                                    {{ $variant->color->value }})</h4>
+                                    <h4 class="mt-3 mx-3">Biến thể (Kích thước: {{ $variant->size->value }}, Màu:
+                                        {{ $variant->color->value }})</h4>
                                     <div class="card-body">
                                         <div class="row mb-3">
                                             <div class="col-lg-1 mx-4">
-                                                <div id="variant-preview-container_${size.id}_${color.id}" class="mt-2 pl-3"></div>
+                                                <div id="variant-preview-container_${size.id}_${color.id}"
+                                                    class="mt-2 pl-3"></div>
                                             </div>
                                             <input type="hidden" name="variant_ids[]" value="{{ $variant->id }}">
                                             <div class="col-lg-4 mx-5">
                                                 <div class="mb-2">
                                                     <label for="">Hình
-                                                        ảnh</label>
-                                                    <input type="file" name="variant_images[]" id="" class="form-control"
-                                                        accept="image/*">
+                                                        ảnh <span class="required text-danger">*</span></label>
+                                                    <input type="file" name="variant_images[]" id=""
+                                                        class="form-control" accept="image/*">
                                                 </div>
                                                 <div class="mb-2">
                                                     <label for="">Số
-                                                        lượng</label>
+                                                        lượng <span class="required text-danger">*</span></label>
                                                     <input type="number" name="quantities[]" class="form-control"
                                                         value="{{ $variant->quantity }}">
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 mx-3 ">
                                                 <div class="mb-2">
-                                                    <label for="">Giá</label>
+                                                    <label for="">Giá <span class="required text-danger">*</span></label>
                                                     <input type="number" name="prices[]" id="" class="form-control"
                                                         value="{{ $variant->price }}">
                                                 </div>
                                                 <div class="mb-2">
                                                     <label for="">Giá
-                                                        khuyến mãi</label>
-                                                    <input type="number" name="discount_prices[]" id="" class="form-control"
-                                                        value="{{ $variant->discount_price }}">
+                                                        khuyến mãi <span class="required text-danger">*</span></label>
+                                                    <input type="number" name="discount_prices[]" id=""
+                                                        class="form-control" value="{{ $variant->discount_price }}">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                
+
                                 </div>
                                 <hr>
                                 @endforeach
-                                </div>
+                            </div>
                             <div id="variants-container">
 
                             </div>
@@ -329,25 +345,25 @@ document.querySelectorAll('.btn-close').forEach(button => {
         // Gửi yêu cầu xóa ảnh qua API (ví dụ dùng fetch) nếu cần
         if (imageId) {
             fetch(`/api/delete-image/${imageId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert('Có lỗi xảy ra khi xóa ảnh!');
+                    }
+                })
+                .catch(error => {
                     alert('Có lỗi xảy ra khi xóa ảnh!');
-                }
-            })
-            .catch(error => {
-                alert('Có lỗi xảy ra khi xóa ảnh!');
-            });
+                });
         }
     });
 });
-
 </script>
 
 <script>
@@ -443,21 +459,21 @@ document.getElementById('generate-variants').addEventListener('click', function(
                                 </div>
                                 <div class="col-lg-4 mx-5">
                                     <div class="mb-2">
-                                        <label for="variant_image_${size.id}_${color.id}">Image</label>
+                                        <label for="variant_image_${size.id}_${color.id}">Ảnh <span class="required text-danger">*</span></label>
                                         <input type="file" name="variant_image[${size.id}][${color.id}]" id="variant_image_${size.id}_${color.id}" class="form-control" accept="image/*" required>
                                     </div>
                                     <div class="mb-2">
-                                        <label for="variant_quantity_${size.id}_${color.id}">Quantity</label>
+                                        <label for="variant_quantity_${size.id}_${color.id}">Số lượng <span class="required text-danger">*</span></label>
                                         <input type="number" name="variant_quantity[${size.id}][${color.id}]" id="variant_quantity_${size.id}_${color.id}" class="form-control" min="1" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 mx-3 ">
                                     <div class="mb-2">
-                                        <label for="variant_price_${size.id}_${color.id}">Price</label>
+                                        <label for="variant_price_${size.id}_${color.id}">Giá <span class="required text-danger">*</span></label>
                                         <input type="number" name="variant_price[${size.id}][${color.id}]" id="variant_price_${size.id}_${color.id}" class="form-control" min="1" required>
                                     </div>
                                     <div class="mb-2">
-                                        <label for="variant_discount_price_${size.id}_${color.id}">Discount Price</label>
+                                        <label for="variant_discount_price_${size.id}_${color.id}">Giá khuyến mãi <span class="required text-danger">*</span></label>
                                         <input type="number" name="variant_discount_price[${size.id}][${color.id}]" id="variant_discount_price_${size.id}_${color.id}" class="form-control" min="0">
                                     </div>
                                 </div>

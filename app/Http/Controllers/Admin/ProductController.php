@@ -16,27 +16,23 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
+
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:view product', ['only' => ['index']]);
-        $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
-        $this->middleware('permission:edit product', ['only' => ['index']]);
-        $this->middleware('permission:delete product', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view product', ['only' => ['index']]);
+    //     $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
+    //     $this->middleware('permission:edit product', ['only' => ['index']]);
+    //     $this->middleware('permission:delete product', ['only' => ['destroy']]);
+    // }
 
     public function index(Request $request)
     {
         $query = products::query();
 
-        if ($request->has('sort') && $request->has('order')) {
-            $sort = $request->input('sort');
-            $order = $request->input('order');
-            $query->orderBy($sort, $order);
-        } else {
-            $query->orderBy('created_at', 'desc'); // Sắp xếp mặc định theo ngày tạo
-        }
+        // Sắp xếp mặc định theo 'created_at' theo thứ tự giảm dần
+        $query->orderBy('created_at', 'desc');
 
         // Tìm kiếm theo tên sản phẩm
         if ($request->has('search') && $request->search) {
@@ -57,8 +53,11 @@ class ProductController extends Controller
             $query->where('created_at', '<=', $request->to_date);
         }
 
+        // Lấy danh sách các danh mục
         $categories = categories::all();
-        $products = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Lấy danh sách sản phẩm với phân trang
+        $products = $query->paginate(10);
 
         return view('admin.products.index', compact('products', 'categories'));
     }
@@ -73,9 +72,9 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories', 'sizes', 'colors'));
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest  $request)
     {
-        dd($request->has('is_new'));
+        // dd($request->has('is_new'));
         try {
             // Tìm sản phẩm theo ID
             $product = new products();
@@ -144,7 +143,7 @@ class ProductController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
 
         try {
@@ -172,7 +171,6 @@ class ProductController extends Controller
             }
 
             $product->save();
-
             // Xử lý xóa hình ảnh phụ
             if ($request->has('remove_images')) {
                 foreach ($request->remove_images as $imageId) {
@@ -191,6 +189,20 @@ class ProductController extends Controller
                     $product->productImages()->create(['image_path' => $imagePath]);
                 }
             }
+            // Xử lý các hình ảnh bị xóa
+            if ($request->has('deleted_images') && !empty($request->deleted_images)) {
+                $deletedImages = explode(',', $request->deleted_images);
+                foreach ($deletedImages as $imageId) {
+                    $image = ProductImage::find($imageId);
+                    if ($image) {
+                        // Xóa hình ảnh khỏi storage
+                        Storage::disk('public')->delete($image->image_path);
+                        // Xóa hình ảnh khỏi cơ sở dữ liệu
+                        $image->delete();
+                    }
+                }
+            }
+            // $product->update($request->except('images', 'deleted_images'));
 
             // Cập nhật biến thể đã có
             if ($request->has('variant_ids')) {

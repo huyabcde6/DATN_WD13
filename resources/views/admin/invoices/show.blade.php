@@ -69,8 +69,8 @@
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $detail->product_name }}</td>
                                                 <td>
-                                                    <img src="{{ url('storage/' . $detail->product->avata ?? '' )}}"
-                                                        alt="" class="img-thumbnail" style="width: 70px; height: auto;">
+                                                    <img src="{{ url('storage/' . $detail->product_avata ?? '' )}}"
+                                                        alt="{{ $detail->product_name }}" class="img-thumbnail" style="width: 70px; height: auto;">
                                                 </td>
                                                 <td>{{ $detail->color }}</td>
                                                 <td>{{ $detail->size }}</td>
@@ -150,8 +150,8 @@
                         <div class="d-print-none">
                             <div class="float-end">
                                 <a href="javascript:window.print()" class="btn btn-dark border-0"><i
-                                        class="mdi mdi-printer me-1"></i>Print</a>
-                                <a href="#" class="btn btn-primary">Submit</a>
+                                        class="mdi mdi-printer me-1"></i>In</a>
+                                <a href="{{ route('admin.invoices.index') }}" class="btn btn-primary">Quay lại</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>

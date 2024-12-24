@@ -1,5 +1,8 @@
 @extends('layouts.admin')
-
+@section('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+@endsection
 @section('content')
 <div class="container">
     <div class="row m-3">
@@ -12,51 +15,38 @@
             <div class="col-12">
                 <div class="card">
                     <div class="d-flex m-3 justify-content-between align-items-center">
-                    <form action="{{ route('admin.sizes.index') }}" class="d-flex" method="get" id="search-form">
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                Tìm kiếm
-                            </span>
-                            <input type="text" value="{{ request('search') }}" name="search" id="search"
-                                class="form-control" placeholder="Nhập từ khóa cần tìm..">
-                            <button type="submit" class="btn btn-sm btn-dark"><i class="bi bi-search"></i></button>
-                        </div>
-                    </form>
                         <button class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
                             data-bs-toggle="modal" data-bs-target="#addSizeModal" title="Thêm mới">
                             <i class="mdi mdi-plus text-muted">Thêm mới</i>
                         </button>
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped text-center">
+                        <table class="table table-bordered text-center" id="sizeTable">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <a href="{{ route('admin.sizes.index', [
-                                            'sort' => 'size_id',
-                                            'direction' => request('direction') == 'asc' ? 'desc' : 'asc',
-                                            'search' => request('search')
-                                        ]) }}">#</a>
+                                    <th class="text-center">
+                                        #
                                     </th>
-                                    <th>
-                                        <a href="{{ route('admin.sizes.index', [
-                                            'sort' => 'value',
-                                            'direction' => request('direction') == 'asc' ? 'desc' : 'asc',
-                                            'search' => request('search')
-                                        ]) }}">Giá trị</a>
+                                    <th class="text-center">
+                                        Giá trị
                                     </th>
-                                    <th>
+                                    <th class="text-center">
                                         Trạng thái
-                                    </th>
-                                    <th>Tương tác</th>
+                                    </th >
+                                    <th class="text-center">
+                                        Số lượng
+                                    </th >
+                                    <th class="text-center">Tương tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($sizes as $size)
+                                @foreach ($sizes as $key => $size)
+                                
                                 <tr>
-                                    <td>{{ $size->size_id }}</td>
+                                    <td>{{ $key + 1 }}</td>
                                     <td>{{ $size->value }}</td>
                                     <td>{{ $size->status ? 'Hoạt động' : 'Không hoạt động' }}</td>
+                                    <td>{{ $size->product_details_count }}</td>
                                     <td>
                                         <!-- Nút sửa -->
                                         <button
@@ -207,4 +197,32 @@
         @endforeach
     });
 </script>
+
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#sizeTable').DataTable({
+        "paging": false, // Cho phép phân trang
+        "searching": true, // Tìm kiếm
+        "ordering": true, // Sắp xếp cột
+        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+        "info": false,
+        "language": {
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+            "infoEmpty": "Không có dữ liệu",
+            "search": "Tìm kiếm:",
+            "paginate": {
+                "first": "Đầu",
+                "last": "Cuối",
+                "next": "Tiếp",
+                "previous": "Trước"
+            }
+        }
+    });
+});
+</script>
+
 @endsection
