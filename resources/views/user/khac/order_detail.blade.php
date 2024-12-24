@@ -2,122 +2,247 @@
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
-.custom-container {
-    margin: 0 auto;
-    padding: 0 15px;
-    max-width: 90%;
-}
+    .custom-container {
+        margin: 0 auto;
+        padding: 0 15px;
+        max-width: 90%;
+    }
 
-/* Tổng thể thẻ card */
-.card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    background-color: #fff;
-    transition: all 0.3s ease;
-}
+    /* Tổng thể thẻ card */
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        background-color: #fff;
+        transition: all 0.3s ease;
+    }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
 
-/* Nội dung bên trong card */
-.card .col-md-10 {
-    font-size: 16px;
-    line-height: 1.6;
-}
+    /* Nội dung bên trong card */
+    .card .col-md-10 {
+        font-size: 16px;
+        line-height: 1.6;
+    }
 
-.card .col-md-10 p {
-    margin-bottom: 10px;
-}
+    .card .col-md-10 p {
+        margin-bottom: 10px;
+    }
 
-.card .col-md-10 strong {
-    color: #333;
-}
+    .card .col-md-10 strong {
+        color: #333;
+    }
 
-/* Nút hành động */
-.card .col-md-2 .btn {
-    font-size: 14px;
-    padding: 8px 15px;
-    width: 100%;
-    text-align: center;
-    transition: background-color 0.3s, border-color 0.3s;
-}
+    /* Nút hành động */
+    .card .col-md-2 .btn {
+        font-size: 14px;
+        padding: 8px 15px;
+        width: 100%;
+        text-align: center;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
 
-.card .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-}
+    .card .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
 
-.card .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
+    .card .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
 
-.card .btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-}
+    .card .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
 
-.card .btn:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
+    .card .btn:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
 
-.card .btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
+    .card .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
 
-.card .btn-success:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-}
+    .card .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
 
-/* Canh lề */
-.d-flex.m-3.justify-content-between {
-    margin: 20px 0;
-}
+    /* Canh lề */
+    .d-flex.m-3.justify-content-between {
+        margin: 20px 0;
+    }
 
-/* Khoảng cách tổng thể */
-.card p {
-    margin-bottom: 8px;
-}
+    /* Khoảng cách tổng thể */
+    .card p {
+        margin-bottom: 8px;
+    }
 
-/* Căn chỉnh khoảng cách form */
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
+    /* Căn chỉnh khoảng cách form */
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-/* Căn giữa nút */
-.text-center a {
-    display: inline-block;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
+    /* Căn giữa nút */
+    .text-center a {
+        display: inline-block;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
 
-/* Hiệu ứng hover cho các dòng trong bảng */
-.table tbody tr:hover {
-    background-color: #f7f7f7;
-    cursor: pointer;
-}
+    /* Hiệu ứng hover cho các dòng trong bảng */
+    .table tbody tr:hover {
+        background-color: #f7f7f7;
+        cursor: pointer;
+    }
 
-/* Định dạng cho bảng */
-.table {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-}
+    /* Định dạng cho bảng */
+    .table {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+    }
 
-.table th,
-.table td {
-    padding: 12px 15px;
-}
+    .table th,
+    .table td {
+        padding: 12px 15px;
+    }
+
+    /* From Uiverse.io by vinodjangid07 */
+    .messageBox {
+        width: 85%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #2d2d2d00;
+        padding: 0 15px;
+        border-radius: 10px;
+        border: 1px solid rgb(63, 63, 63);
+    }
+
+    .messageBox:focus-within {
+        border: 1px solid rgb(110, 110, 110);
+    }
+
+    .fileUploadWrapper {
+        width: fit-content;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #file {
+        display: none;
+    }
+
+    .fileUploadWrapper label {
+        cursor: pointer;
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .fileUploadWrapper label svg {
+        height: 18px;
+    }
+
+    .fileUploadWrapper label svg path {
+        transition: all 0.3s;
+    }
+
+    .fileUploadWrapper label svg circle {
+        transition: all 0.3s;
+    }
+
+    .fileUploadWrapper label:hover svg path {
+        stroke: #fff;
+    }
+
+    .fileUploadWrapper label:hover svg circle {
+        stroke: #fff;
+        fill: #3c3c3c;
+    }
+
+    .fileUploadWrapper label:hover .tooltip {
+        display: block;
+        opacity: 1;
+    }
+
+    .tooltip {
+        position: absolute;
+        top: -40px;
+        display: none;
+        opacity: 0;
+        color: white;
+        font-size: 10px;
+        text-wrap: nowrap;
+        background-color: #000;
+        padding: 6px 10px;
+        border: 1px solid #3c3c3c;
+        border-radius: 5px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.596);
+        transition: all 0.3s;
+    }
+
+    #messageInput {
+        width: 200px;
+        height: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        padding-left: 10px;
+        color: black;
+    }
+
+    #messageInput:focus~#sendButton svg path,
+    #messageInput:valid~#sendButton svg path {
+        fill: #3c3c3c;
+        stroke: white;
+    }
+
+    #sendButton {
+        width: fit-content;
+        height: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    #sendButton svg {
+        height: 18px;
+        transition: all 0.3s;
+    }
+
+    #sendButton svg path {
+        transition: all 0.3s;
+    }
+
+    #sendButton:hover svg path {
+        fill: #3c3c3c;
+        stroke: white;
+    }
 </style>
 @endsection
 
@@ -189,6 +314,39 @@ form {
                                 <td>{{ number_format($detail->price, 0, '', ',') }} ₫</td>
                                 <td>{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }} đ</td>
                             </tr>
+                            <!-- from bình luận -->
+                            @if($order->status_donhang_id == 5)
+                            <tr style="border: white;">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="2">
+                                    <form method="POST" action="{{ route('product.comment', $detail->products->slug) }}">
+                                        @csrf
+                                        <div class="messageBox">
+                                            <input name="description" placeholder="Viết đánh giá của bạn..." type="text" id="messageInput" />
+                                            <button id="sendButton">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
+                                                    <path
+                                                        fill="none"
+                                                        d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"></path>
+                                                    <path
+                                                        stroke-linejoin="round"
+                                                        stroke-linecap="round"
+                                                        stroke-width="33.67"
+                                                        stroke="#6c6c6c"
+                                                        d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            @endif
                             @endforeach
                         </tbody>
                     </table>
