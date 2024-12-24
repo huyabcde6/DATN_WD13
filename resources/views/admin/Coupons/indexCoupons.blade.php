@@ -19,10 +19,10 @@
             <tr>
                 <th>#</th>
                 <th>Mã giảm giá</th>
-                <th>Loại giảm giá</th>
                 <th>Giá trị</th>
                 <th>Thời gian áp dụng</th>
                 <th>Số lượng</th>
+                <th>Số lượng đã sử dụng</th>
                 <th>Trạng thái</th>
                 <th>Điều kiện áp dụng</th>
                 <th>Hành động</th>
@@ -33,19 +33,15 @@
             <tr>
                 <td>{{ $coupon->id }}</td>
                 <td>{{ $coupon->code }}</td>
-                <td>{{ $coupon->discount_type == 'percentage' ? 'Phần trăm' : 'Số tiền cố định' }}</td>
                 <td>
-                    @if($coupon->discount_type == 'percentage')
                     {{ $coupon->discount_value }}%
-                    @else
-                    {{ number_format($coupon->discount_value, 0, ',', '.') }} VNĐ
-                    @endif
                 </td>
                 <td>
                     {{ $coupon->start_date->format('d/m/Y H:i') }} -
                     {{ $coupon->end_date->format('d/m/Y H:i') }}
                 </td>
                 <td>{{ $coupon->total_quantity }}</td>
+                <td>{{ $coupon->used_quantity }}</td>
                 <td>{{ $coupon->status == 'active' ? 'Hoạt động' : 'Tạm dừng' }}</td>
                 <td>
                     @if($coupon->conditions->isNotEmpty())

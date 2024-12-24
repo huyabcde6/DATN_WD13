@@ -25,11 +25,11 @@
                             <!-- Loại giảm giá -->
                             <div class="col-md-6 mb-3">
                                 <label for="discount_type" class="form-label">Loại Giảm Giá</label>
-                                <select name="discount_type" id="discount_type" class="form-select" required>
+                                <select name="discount_type" id="discount_type" class="form-select" required disabled>
                                     <option value="percentage">Phần Trăm</option>
-                                    <option value="fixed_amount">Số Tiền Cố Định</option>
                                 </select>
                             </div>
+
 
                             <!-- Giá trị giảm -->
                             <div class="col-md-6 mb-3">
