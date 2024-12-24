@@ -53,20 +53,7 @@
                             <td>{{ $coupon->used_quantity }}</td>
                             <td>{{ $coupon->status == 'active' ? 'Hoạt động' : 'Tạm dừng' }}</td>
                             <td>
-                                @if($coupon->conditions->isNotEmpty())
-                                <ul>
-                                    @foreach($coupon->conditions as $condition)
-                                    @if($condition->product_id)
-                                    <li>Áp dụng cho sản phẩm ID: {{ $condition->product_id }}</li>
-                                    @endif
-                                    @if($condition->category_id)
-                                    <li>Áp dụng cho danh mục ID: {{ $condition->category_id }}</li>
-                                    @endif
-                                    @endforeach
-                                </ul>
-                                @else
-                                Không có
-                                @endif
+                                Đơn hàng tối thiểu : {{ number_format($coupon->min_order_amount, 0, '', '.') }} đ
                             </td>
                             <td>
                                 <a href="{{ route('admin.Coupons.edit', $coupon->id) }}" class="btn btn-sm btn-primary">Sửa</a>

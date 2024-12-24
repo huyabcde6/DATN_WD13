@@ -95,8 +95,9 @@ class OrderController extends Controller
      * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
     public function store(Request $request)
-    {   
+    {
         if ($request->isMethod('POST')) {
+            // dd(session('discount_applied'));
             DB::beginTransaction();
             try {
                 // Chuẩn bị dữ liệu cho đơn hàng
@@ -149,14 +150,15 @@ class OrderController extends Controller
                             'product_name' => $productDetail->products->name ?? 'Unknown', // Tên sản phẩm
                             'product_avata' => $productDetail->products->avata ?? null, // Giá trị thêm (nếu có)
                         ]);
-                        
+
                         // Giảm số lượng sản phẩm trong kho sau khi mua
                         if ($productDetail) {
                             $productDetail->quantity -= $value['quantity'];
                             $productDetail->save();
                         }
                     }
-                    // Không xóa giỏ hàng ở đây nữa
+                    // Xóa giỏ hàng chỉ khi thanh toán thành công
+                    Session::forget('cart');
                 }
 
                 // Kiểm tra phương thức thanh toán
@@ -168,9 +170,12 @@ class OrderController extends Controller
 
                 // Gửi email xác nhận đơn hàng
                 Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
-                
-                // Xóa giỏ hàng chỉ khi thanh toán thành công
-                Session::forget('cart');
+                // dd(session('discount_applied'));
+                if (session('discount_applied')) {
+                    $coupon = Coupons::where('id', session('discount_applied'))->first();
+                    $coupon->increment('used_quantity');
+                }
+
 
                 DB::commit();
                 return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Đơn hàng đã được tạo thành công.');
@@ -256,6 +261,10 @@ class OrderController extends Controller
                 ]);
                 Session::forget('cart');
                 Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
+                if (session('discount_applied')) {
+                    $coupon = Coupons::where('id', session('discount_applied'))->first();
+                    $coupon->increment('used_quantity');
+                }
                 return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Thanh toán thành công.');
             }
         } else {
@@ -273,7 +282,7 @@ class OrderController extends Controller
                         $productDetail->save();
                     }
                 }
-    
+
                 // Xóa bỏ đơn hàng khi thanh toán thất bại
                 $order->delete();
             }
@@ -462,10 +471,10 @@ class OrderController extends Controller
         }
 
         // Cập nhật mã giảm giá trong session
-        Session::put('discount_applied', $coupon->code);
+        Session::put('discount_applied', $coupon->id);
 
         // Tăng số lượng mã đã sử dụng
-        $coupon->increment('used_quantity');
+        // $coupon->increment('used_quantity');
 
         // Tính lại tổng tiền sau khi áp dụng giảm giá
         $newTotal = $cartTotal - $discount;
@@ -498,10 +507,10 @@ class OrderController extends Controller
         return 0;
     }
     public function muangay(Request $request)
-    {   
+    {
         if (!Auth::check()) {
             return redirect()->route('login');
-        }        
+        }
         $user = Auth::user();
         $request->validate([
             'products_id' => 'required|exists:products,id',

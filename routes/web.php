@@ -22,7 +22,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponsController;
-use App\Models\Order; 
+use App\Models\Order;
 use App\Http\Controllers\VoucherController;
 
 
@@ -178,6 +178,5 @@ Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('produc
 Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('vocher');
 Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');
 Route::post('/update-address', [AddressController::class, 'updateAddress'])->name('user.updateAddress');
-// Route hiển thị danh sách voucher cho user
-Route::get('/vouchers', [VoucherController::class, 'index'])->name('user.vouchers');
-
+// // Route hiển thị danh sách voucher cho user
+// Route::get('/vouchers', [VoucherController::class, 'index'])->name('user.vouchers');

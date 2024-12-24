@@ -28,8 +28,7 @@
                                 <input type="text" name="code" id="code"
                                     class="form-control @error('code') is-invalid @enderror"
                                     placeholder="Nhập mã giảm giá"
-                                    value="{{ old('code', $coupon->code) }}"
-                                    required>
+                                    value="{{ old('code', $coupon->code) }}">
 
                                 <!-- Display validation error for 'code' -->
                                 @error('code')
@@ -42,27 +41,22 @@
                             <!-- Loại giảm giá -->
                             <div class="col-md-6 mb-3">
                                 <label for="discount_type" class="form-label">Loại Giảm Giá</label>
-                                <select name="discount_type" id="discount_type" class="form-select @error('discount_type') is-invalid @enderror" required>
-                                    <option value="percentage" {{ old('discount_type', $coupon->discount_type) == 'percentage' ? 'selected' : '' }}>Phần Trăm</option>
-                                    <option value="fixed_amount" {{ old('discount_type', $coupon->discount_type) == 'fixed_amount' ? 'selected' : '' }}>Số Tiền Cố Định</option>
+                                <select name="discount_type" id="discount_type" class="form-select" required disabled>
+                                    <option value="percentage">Phần Trăm</option>
                                 </select>
-
-                                <!-- Display validation error for 'discount_type' -->
+                                <input type="hidden" name="discount_type" value="percentage">
                                 @error('discount_type')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <!-- Giá trị giảm -->
                             <div class="col-md-6 mb-3">
                                 <label for="discount_value" class="form-label">Giá Trị Giảm</label>
-                                <input type="number" name="discount_value" id="discount_value"
+                                <input type="text" name="discount_value" id="discount_value"
                                     class="form-control @error('discount_value') is-invalid @enderror"
                                     placeholder="Nhập giá trị giảm"
-                                    value="{{ old('discount_value', $coupon->discount_value) }}"
-                                    required>
+                                    value="{{ old('discount_value', $coupon->discount_value) }}">
 
                                 <!-- Display validation error for 'discount_value' -->
                                 @error('discount_value')
@@ -75,7 +69,7 @@
                             <!-- Số tiền giảm tối đa -->
                             <div class="col-md-6 mb-3">
                                 <label for="max_discount_amount" class="form-label">Giảm Tối Đa (VNĐ)</label>
-                                <input type="number" name="max_discount_amount" id="max_discount_amount"
+                                <input type="text" name="max_discount_amount" id="max_discount_amount"
                                     class="form-control @error('max_discount_amount') is-invalid @enderror"
                                     placeholder="Nhập số tiền tối đa"
                                     value="{{ old('max_discount_amount', $coupon->max_discount_amount) }}">
@@ -110,11 +104,11 @@
                                 <input type="datetime-local" name="start_date" id="start_date"
                                     class="form-control @error('start_date') is-invalid @enderror"
                                     value="{{ old('start_date', \Carbon\Carbon::parse($coupon->start_date)->format('Y-m-d\TH:i')) }}"
-                                    required>
+                                    min="{{ now()->format('Y-m-d\TH:i') }}">
 
                                 <!-- Display validation error for 'start_date' -->
                                 @error('start_date')
-                                <div class="invalid-feedback">
+                                <div class=" invalid-feedback">
                                     {{ $message }}
                                 </div>
                                 @enderror
@@ -126,7 +120,7 @@
                                 <input type="datetime-local" name="end_date" id="end_date"
                                     class="form-control @error('end_date') is-invalid @enderror"
                                     value="{{ old('end_date', \Carbon\Carbon::parse($coupon->end_date)->format('Y-m-d\TH:i')) }}"
-                                    required>
+                                    min="{{ now()->format('Y-m-d\TH:i') }}">
 
                                 <!-- Display validation error for 'end_date' -->
                                 @error('end_date')
@@ -142,8 +136,7 @@
                                 <input type="number" name="total_quantity" id="total_quantity"
                                     class="form-control @error('total_quantity') is-invalid @enderror"
                                     placeholder="Nhập số lượng mã"
-                                    value="{{ old('total_quantity', $coupon->total_quantity) }}"
-                                    required>
+                                    value="{{ old('total_quantity', $coupon->total_quantity) }}">
 
                                 <!-- Display validation error for 'total_quantity' -->
                                 @error('total_quantity')
