@@ -32,4 +32,3 @@ class OrderUpdated implements ShouldBroadcast
         return 'order.updated';
     }
 }
-

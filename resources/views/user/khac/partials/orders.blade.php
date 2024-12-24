@@ -23,12 +23,13 @@
                 <div class="container d-flex justify-content-start align-items-center">
                     <!-- Hình ảnh sản phẩm -->
                     <div class="me-3">
-                        <img src="{{ url('storage/'. $detail->products->avata) }}" alt="{{ $detail->products->name }}"
-                            class="img-fluid" style="max-width: 60px; height: auto;">
+                        <img src="{{ url('storage/'. $detail->product_avata) }}"
+                            alt="{{ $detail->product_name }}" class="img-fluid"
+                            style="max-width: 60px; height: auto;">
                     </div>
                     <!-- Thông tin sản phẩm -->
                     <div class="w-75">
-                        <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->products->name }}</h6>
+                        <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->product_name }}</h6>
                         <p class="mb-0 mx-3 text-muted text-start" style="font-size: 14px;"><strong>Loại:</strong>
                             {{ $detail->color }} / {{ $detail->size }}
                         </p>
@@ -54,13 +55,13 @@
                     <div class="container d-flex justify-content-start align-items-center">
                         <!-- Hình ảnh sản phẩm -->
                         <div class="me-3">
-                            <img src="{{ url('storage/'. $detail->products->avata) }}"
-                                alt="{{ $detail->products->name }}" class="img-fluid"
+                            <img src="{{ url('storage/'. $detail->product_avata) }}"
+                                alt="{{ $detail->product_name }}" class="img-fluid"
                                 style="max-width: 60px; height: auto;">
                         </div>
                         <!-- Thông tin sản phẩm -->
                         <div class="w-75">
-                            <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->products->name }}
+                            <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->product_name }}
                             </h6>
                             <p class="mb-0 mx-3 text-muted text-start" style="font-size: 14px;"><strong>Loại:</strong>
                                 {{ $detail->color }} / {{ $detail->size }}
@@ -86,8 +87,8 @@
                 <button class="btn btn-link toggle-details-btn" style="font-size: 13px;" data-bs-toggle="collapse"
                     data-bs-target="#details-{{ $order->id }}" aria-expanded="false"
                     aria-controls="details-{{ $order->id }}">
-                    <span class="show-text" style="font-size: 12px;">Hiện</span>
-                    <span class="hide-text d-none" style="font-size: 12x;">Ẩn</span>
+                    <span class="show-text" style="font-size: 12px;">Hiện/ẩn</span>
+                    <span class="hide-text d-none" style="font-size: 12x;">Hiện/ẩn</span>
                 </button>
             </div>
             @endif
@@ -95,14 +96,15 @@
             <!-- Tổng tiền -->
             <div class="d-flex justify-content-end mx-3 mb-3">
                 <h6><strong>Tổng tiền:</strong>
-                {{ number_format($order->total_price, 0, ',', '.') }} đ
+                    {{ number_format($order->total_price, 0, ',', '.') }} đ
                 </h6>
             </div>
 
             <!-- Nút chi tiết và hủy/nhận hàng -->
             <div class="d-flex justify-content-between">
-                <a href="{{ route('orders.show', $order->id) }}" class="btn btn-dark mx-5" style="font-size: 12px;">Chi
-                    tiết</a>
+                <div class=""><a href="{{ route('orders.show', $order->id) }}" class="btn btn-dark mx-5 py-3" style="margin-top:0px; font-size: 12px;">Chi
+                tiết</a></div>
+                
                 <form id="confirm-order-{{ $order->id }}" action="{{ route('orders.update', $order->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('POST')
@@ -110,10 +112,10 @@
                     <input type="hidden" name="huy_don_hang" value="1">
                     <button id="cancel-order-{{ $order->id }}" type="submit" class="btn btn-primary mx-3" style="font-size: 12px; margin-top: 19px;"
                         onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');">Hủy đơn hàng</button>
-                    @elseif($order->status->type === \App\Models\StatusDonHang::DANG_VAN_CHUYEN)
-                    <input type="hidden" name="da_giao_hang" value="3">
+                    @elseif($order->status->type === \App\Models\StatusDonHang::DA_GIAO_HANG)
+                    <input type="hidden" name="hoan_thanh" value="5">
                     <button type="submit" class="btn btn-success mx-3" style="font-size: 12px; margin-top: 19px;"
-                        onclick="return confirm('Bạn xác nhận đã nhận hàng?');">Đã nhận hàng</button>
+                        onclick="return confirm('Bạn xác nhận đã nhận hàng?');">Xác nhận nhận hàng</button>
                     @endif
                 </form>
             </div>

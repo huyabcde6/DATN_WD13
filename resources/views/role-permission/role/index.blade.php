@@ -34,7 +34,7 @@ Vai trò & quyền
                     </button>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped text-center" id="roleTable">
+                    <table class="table table-bordered text-center" id="roleTable">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -60,12 +60,7 @@ Vai trò & quyền
                                             data-id="{{ $role->id }}" data-name="{{ $role->name }}" title="Sửa">
                                             <i class="fa fa-pencil-alt"></i>
                                         </button>
-                                        <button
-                                            class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
-                                            data-bs-toggle="modal" data-bs-target="#deleteRoleModal"
-                                            data-id="{{ $role->id }}" title="Xóa">
-                                            <i class="fa fa-fw fa-times text-danger"></i>
-                                        </button>
+
                                     </div>
                                 </td>
                             </tr>
@@ -136,28 +131,7 @@ Vai trò & quyền
     </div>
 </div>
 
-<!-- Modal Xóa Vai Trò -->
-<div class="modal fade" id="deleteRoleModal" tabindex="-1" aria-labelledby="deleteRoleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form id="deleteRoleForm" method="POST">
-            @csrf
-            @method('DELETE')
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteRoleModalLabel">Xóa Vai Trò</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có chắc chắn muốn xóa vai trò này?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-danger">Xóa</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+
 @endsection
 
 @section('js')
@@ -197,6 +171,11 @@ deleteModal.addEventListener('show.bs.modal', function(event) {
 <script>
     $(document).ready(function() {
         $('#roleTable').DataTable({
+            "paging": false, // Cho phép phân trang
+            "searching": true, // Tìm kiếm
+            "ordering": true, // Sắp xếp cột
+            "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+            "info": false,
             "language": {
                 "lengthMenu": "Hiển thị _MENU_ mục",
                 "zeroRecords": "Không tìm thấy dữ liệu phù hợp",

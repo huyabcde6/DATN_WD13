@@ -22,7 +22,7 @@ class SizeRequet extends FormRequest
     public function rules(): array
     {
         return [
-            'value' => 'required|string|max:255'
+            'value' => 'required|string|max:255|unique:sizes',
         ];
     }
 
@@ -31,7 +31,8 @@ class SizeRequet extends FormRequest
         return [
             'value.required' => 'Kích thước không được để trống',
             'value.string' => 'Kích thước phải là chuỗi',
-            'value.max' => 'Kích thước không vượt qua 255 ký tự'
+            'value.max' => 'Kích thước không vượt qua 255 ký tự',
+            'value.unique' => 'Kích thước đã tồn tại trong bảng',
         ];
     }
 }

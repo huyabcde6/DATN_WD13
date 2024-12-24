@@ -9,12 +9,12 @@ use App\Models\Size;
 
 class SizeController extends Controller
 {
-    public function __construct(){
-        $this->middleware('permission:view size', ['only' => ['index']]);
-        $this->middleware('permission:create size', ['only' => ['create', 'store']]);
-        $this->middleware('permission:edit size', ['only' => ['update', 'edit']]);
-        $this->middleware('permission:delete size', ['only' => ['destroy']]);
-    }
+    // public function __construct(){
+    //     $this->middleware('permission:view size', ['only' => ['index']]);
+    //     $this->middleware('permission:create size', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:edit size', ['only' => ['update', 'edit']]);
+    //     $this->middleware('permission:delete size', ['only' => ['destroy']]);
+    // }
 
     /**
      * Display a listing of the resource.
@@ -33,7 +33,7 @@ class SizeController extends Controller
             $query->orderBy($request->sort, $request->direction ?? 'asc');
         }
 
-        $sizes = $query->paginate(10);
+        $sizes = $query->withCount('productDetails')->paginate(10);
 
         return view('admin.sizes.index', compact('sizes'));
     }
@@ -71,9 +71,22 @@ class SizeController extends Controller
      */
     public function destroy(string $id)
     {
+        // Tìm kích thước theo ID
         $size = Size::findOrFail($id);
+
+        // Kiểm tra nếu có sản phẩm nào đang sử dụng kích thước này
+        $isUsed = $size->productDetails()->exists();
+
+        if ($isUsed) {
+            return redirect()->route('admin.sizes.index')
+                ->with('error', 'Không thể xóa kích thước này vì đang được sử dụng trong sản phẩm.');
+        }
+
+        // Nếu không được sử dụng, xóa kích thước
         $size->delete();
 
-        return redirect()->route('admin.sizes.index')->with('success', 'Kích thước đã được xóa thành công.');
+        return redirect()->route('admin.sizes.index')
+            ->with('success', 'Kích thước đã được xóa thành công.');
     }
+
 }

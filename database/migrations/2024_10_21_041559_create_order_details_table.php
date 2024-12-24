@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Order::class)->constrained()->onDelete('cascade');;
-            $table->foreignIdFor(ProductDetail::class)->constrained()->onDelete('cascade');;
+            $table->foreignIdFor(Order::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(ProductDetail::class)->constrained()->onDelete('cascade');
+            $table->string('product_name');
+            $table->string('product_avata');
             $table->integer('quantity');
             $table->string('color');
             $table->string('size');

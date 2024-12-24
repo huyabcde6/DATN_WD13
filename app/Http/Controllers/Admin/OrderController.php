@@ -18,12 +18,11 @@ use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('permission:view order', ['only' => ['index']]);
-
-        $this->middleware('permission:edit order', ['only' => ['update']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view order', ['only' => ['index']]);
+    //     $this->middleware('permission:edit order', ['only' => ['update']]);
+    // }
 
     public function index(Request $request)
     {
@@ -161,19 +160,13 @@ class OrderController extends Controller
             } else {
                 return back()->with('error', 'Không thể chuyển trạng thái theo quy định.');
             }
-
+            Mail::to($order->email)->send(new OrderStatusChanged($order));
             // Lưu thay đổi đơn hàng
             $order->save();
-
             // Lưu vào bảng lịch sử thay đổi trạng thái
             $this->logStatusChange($order, $previousStatus, $currentStatus);
-
-            // Phát sự kiện cập nhật đơn hàng
-            broadcast(new OderEvent($order));
-
             // Gửi email thông báo
-            Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
-
+            broadcast(new OderEvent($order));
             DB::commit();
             return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');
         } catch (\Exception $e) {
@@ -222,7 +215,8 @@ class OrderController extends Controller
         // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
         foreach ($order->orderDetails as $orderDetail) {
             $invoice->invoiceDetails()->create([
-                'product_name' => $orderDetail->productDetail->products->name,
+                'product_name'  => $orderDetail->name,
+                'product_avata'  => $orderDetail->avata,
                 'color' => $orderDetail->color,
                 'size' => $orderDetail->size,
                 'quantity' => $orderDetail->quantity,

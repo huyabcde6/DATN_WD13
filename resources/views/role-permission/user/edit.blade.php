@@ -49,16 +49,6 @@
                                     <span class="text-danger">{{ $message }}</span> 
                                 @enderror
                             </div>
-                            <div class="mb-3">
-                                <label for="">Trạng thái</label>
-                                <select name="status" class="form-control">
-                                    <option value="">--Chọn--</option>
-                                    <option value="1" {{ $user->status == 1 ? 'selected'
-                                    : '' }}>Hiển thị</option>
-                                    <option value="0" {{ $user->status == 0 ? 'selected'
-                                    : '' }}>Ẩn</option>
-                                </select>
-                            </div>
                             <div>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
