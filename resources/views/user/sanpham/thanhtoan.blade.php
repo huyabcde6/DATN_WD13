@@ -166,6 +166,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($cartItems as $item)
+                                    <input type="hidden" name="select-item[]" value="{{ $item['product_detail_id'] }}" style="display: block;" />
                                     <tr>
                                         @if (!empty($item['product_avata']))
                                         <img src="{{ asset('storage/' . $item['product_avata']) }}" alt="Product Image">

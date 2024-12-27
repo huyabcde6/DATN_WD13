@@ -44,12 +44,16 @@
                 @else
 
                 <!-- Cart Table Start -->
+                <!-- Cart Table Start -->
                 <div class="cart-table table-responsive">
                     <table class="table table-bordered">
 
                         <!-- Table Head Start -->
                         <thead>
                             <tr>
+                                <th class="pro-checkbox">
+                                    <input type="checkbox" id="select-all" style="display: block;" />
+                                </th>
                                 <th class="pro-thumbnail">Hình ảnh</th>
                                 <th class="pro-title">Sản phẩm</th>
                                 <th class="pro-price">Giá</th>
@@ -64,36 +68,35 @@
                         <tbody id="cartItems">
                             @foreach ($cartItems as $item)
                             <tr>
+                                <td class="pro-checkbox">
+                                    <input type="checkbox" class="select-item" data-id="{{ $item['product_detail_id'] }}" style="display: block;" />
+                                </td>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
-                                            height="auto" width="70" alt="Product" /></a>
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" height="auto"
+                                            width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
                                     <a href="{{ route('product.show', $item['slug']) }}">{{ $item['product_name'] }}
-                                        <br> {{ $item['size'] }} /
-                                        {{ $item['color'] }}</a>
+                                        <br> {{ $item['size'] }} / {{ $item['color'] }}</a>
                                 </td>
-                                <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
-                                        đ</span></td>
+                                <td class="pro-price">
+                                    <span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }} đ</span>
+                                </td>
                                 <td class="pro-quantity">
                                     <div class="quantity">
                                         <div class="cart-plus-minus" style="margin-left: 35px;">
-                                            <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}"
-                                                type="text" data-id="{{ $item['product_detail_id'] }}"
+                                            <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}" type="text"
+                                                data-id="{{ $item['product_detail_id'] }}"
                                                 data-available-quantity="{{ $item['available_quantity'] }}">
-                                            <div class="dec qtybutton" data-id="{{ $item['product_detail_id'] }}">-
-                                            </div>
-                                            <div class="inc qtybutton" data-id="{{ $item['product_detail_id'] }}">+
-                                            </div>
+                                            <div class="dec qtybutton" data-id="{{ $item['product_detail_id'] }}">-</div>
+                                            <div class="inc qtybutton" data-id="{{ $item['product_detail_id'] }}">+</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="pro-subtotal">
                                     <span class="subtotal-{{ $item['product_detail_id'] }}">
-                                        {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 0, ',', '.') }}
-                                        đ
+                                        {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 0, ',', '.') }} đ
                                     </span>
-
                                 </td>
                                 <td class="pro-remove">
                                     <form id="delete-form-{{ $item['product_detail_id'] }}"
@@ -106,7 +109,6 @@
                                         </button>
                                     </form>
                                 </td>
-
                             </tr>
                             @endforeach
                         </tbody>
@@ -114,6 +116,7 @@
 
                     </table>
                 </div>
+
                 @endif
 
             </div>
@@ -153,8 +156,14 @@
                         <!-- Responsive Table End -->
 
                     </div>
-                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
-                        hành thanh toán</a>
+                    <form id="checkout-form" action="{{ route('orders.create') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="selected_items" value="">
+                        <button type="submit" id="checkout-btn" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến hành thanh toán</button>
+                    </form>
+
+                    <!-- <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
+                        hành thanh toán</a> -->
                 </div>
 
                 <!-- Cart Calculation Area End -->
@@ -182,109 +191,188 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    var shippingFee = 30000; // Phí vận chuyển 30000 đồng
+        var shippingFee = 30000; // Phí vận chuyển 30000 đồng
 
-    // Xử lý sự kiện tăng/giảm số lượng
-    $('.qtybutton').on('click', function() {
-        var productDetailId = $(this).data('id');
-        var inputField = $(this).siblings('.cart-plus-minus-box');
-        var quantity = parseInt(inputField.val());
-        var availableQuantity = parseInt(inputField.data(
-            'available-quantity')); // Lấy số lượng có sẵn từ data-attribute
+        // Xử lý sự kiện tăng/giảm số lượng
+        $('.qtybutton').on('click', function() {
+            var productDetailId = $(this).data('id');
+            var inputField = $(this).siblings('.cart-plus-minus-box');
+            var quantity = parseInt(inputField.val());
+            var availableQuantity = parseInt(inputField.data(
+                'available-quantity')); // Lấy số lượng có sẵn từ data-attribute
 
-        // Tăng hoặc giảm số lượng
-        if ($(this).hasClass('inc')) {
-            if (quantity < availableQuantity) {
-                quantity++;
-            } else {
-                // Sử dụng SweetAlert2
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Không đủ sản phẩm trong kho!',
-                    text: 'Số lượng sản phẩm không đủ để đáp ứng yêu cầu của bạn.',
-                    confirmButtonText: 'Đã hiểu',
-                    confirmButtonColor: '#3085d6',
-                });
-                return; // Ngừng việc tăng nếu vượt quá số lượng tồn kho
-            }
-        } else if ($(this).hasClass('dec') && quantity > 1) {
-            quantity--;
-        }
-
-
-        // Gửi AJAX để cập nhật số lượng
-        $.ajax({
-            url: '{{ route("cart.update") }}',
-            method: 'POST',
-            data: {
-                product_detail_id: productDetailId,
-                quantity: quantity,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    inputField.val(quantity);
-
-                    // Cập nhật lại subtotal cho sản phẩm này
-                    var subtotalCell = inputField.closest('tr').find('.subtotal-' +
-                        productDetailId);
-                    var formattedSubtotal = formatNumber(response
-                    .item_price); // Đảm bảo giá được format đúng
-
-                    // Cập nhật subtotal cho sản phẩm
-                    subtotalCell.text(formattedSubtotal + ' đ');
-
-                    // Tính toán tổng giỏ hàng
-                    var subTotal = 0;
-                    $('.pro-subtotal span').each(function() {
-                        var currentSubtotal = $(this).text().replace(' đ', '')
-                            .replace('.', '').trim();
-                        subTotal += parseFloat(currentSubtotal);
+            // Tăng hoặc giảm số lượng
+            if ($(this).hasClass('inc')) {
+                if (quantity < availableQuantity) {
+                    quantity++;
+                } else {
+                    // Sử dụng SweetAlert2
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Không đủ sản phẩm trong kho!',
+                        text: 'Số lượng sản phẩm không đủ để đáp ứng yêu cầu của bạn.',
+                        confirmButtonText: 'Đã hiểu',
+                        confirmButtonColor: '#3085d6',
                     });
-
-                    // Cập nhật hiển thị tổng giỏ hàng
-                    $('.sub-total').text(subTotal.toFixed(0).replace(
-                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
-                    $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(
-                        /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    return; // Ngừng việc tăng nếu vượt quá số lượng tồn kho
                 }
-            },
-            error: function() {
-                alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
+            } else if ($(this).hasClass('dec') && quantity > 1) {
+                quantity--;
+            }
+
+
+            // Gửi AJAX để cập nhật số lượng
+            $.ajax({
+                url: '{{ route("cart.update") }}',
+                method: 'POST',
+                data: {
+                    product_detail_id: productDetailId,
+                    quantity: quantity,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        inputField.val(quantity);
+
+                        // Cập nhật lại subtotal cho sản phẩm này
+                        var subtotalCell = inputField.closest('tr').find('.subtotal-' +
+                            productDetailId);
+                        var formattedSubtotal = formatNumber(response
+                            .item_price); // Đảm bảo giá được format đúng
+
+                        // Cập nhật subtotal cho sản phẩm
+                        subtotalCell.text(formattedSubtotal + ' đ');
+
+                        // Tính toán tổng giỏ hàng
+                        var subTotal = 0;
+                        $('.pro-subtotal span').each(function() {
+                            var currentSubtotal = $(this).text().replace(' đ', '')
+                                .replace('.', '').trim();
+                            subTotal += parseFloat(currentSubtotal);
+                        });
+
+                        // Cập nhật hiển thị tổng giỏ hàng
+                        $('.sub-total').text(subTotal.toFixed(0).replace(
+                            /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                        $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(
+                            /\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra khi cập nhật giỏ hàng. Vui lòng thử lại.');
+                }
+            });
+        });
+
+        // Kiểm tra và giới hạn giá trị nhập vào
+        $('.cart-plus-minus-box').on('input', function() {
+            var inputField = $(this);
+            var quantity = parseInt(inputField.val());
+            var availableQuantity = parseInt(inputField.data('available-quantity')); // Số lượng có sẵn
+
+            // Nếu giá trị nhập vào lớn hơn số lượng tồn kho, reset giá trị về số lượng tồn kho
+            if (quantity > availableQuantity) {
+                inputField.val(availableQuantity);
+                alert('Số lượng sản phẩm không đủ trong kho!');
+            }
+
+            // Đảm bảo chỉ cho phép nhập số
+            if (isNaN(quantity) || quantity < 1) {
+                inputField.val(1); // Reset về 1 nếu người dùng nhập giá trị không hợp lệ
             }
         });
     });
 
-    // Kiểm tra và giới hạn giá trị nhập vào
-    $('.cart-plus-minus-box').on('input', function() {
-        var inputField = $(this);
-        var quantity = parseInt(inputField.val());
-        var availableQuantity = parseInt(inputField.data('available-quantity')); // Số lượng có sẵn
-
-        // Nếu giá trị nhập vào lớn hơn số lượng tồn kho, reset giá trị về số lượng tồn kho
-        if (quantity > availableQuantity) {
-            inputField.val(availableQuantity);
-            alert('Số lượng sản phẩm không đủ trong kho!');
-        }
-
-        // Đảm bảo chỉ cho phép nhập số
-        if (isNaN(quantity) || quantity < 1) {
-            inputField.val(1); // Reset về 1 nếu người dùng nhập giá trị không hợp lệ
-        }
-    });
-});
-
-function formatNumber(number) {
-    return number.toLocaleString('vi-VN'); // Định dạng số theo kiểu Việt Nam, ví dụ: 2.340.000
-}
-
-function confirmDelete(productDetailId) {
-    if (confirm('Bạn có chắc chắn muốn xóa mục này?')) {
-        // Tìm biểu mẫu và gửi đi nếu người dùng xác nhận
-        document.getElementById(`delete-form-${productDetailId}`).submit();
+    function formatNumber(number) {
+        return number.toLocaleString('vi-VN'); // Định dạng số theo kiểu Việt Nam, ví dụ: 2.340.000
     }
-}
+
+    function confirmDelete(productDetailId) {
+        if (confirm('Bạn có chắc chắn muốn xóa mục này?')) {
+            // Tìm biểu mẫu và gửi đi nếu người dùng xác nhận
+            document.getElementById(`delete-form-${productDetailId}`).submit();
+        }
+    }
+</script>
+<script>
+    $(document).ready(function() {
+        var shippingFee = 30000;
+
+        // Xử lý chọn tất cả checkbox
+        $('#select-all').on('change', function() {
+            var isChecked = $(this).is(':checked');
+            $('.select-item').prop('checked', isChecked);
+            calculateTotal();
+        });
+
+        // Xử lý chọn từng checkbox
+        $('.select-item').on('change', function() {
+            if ($('.select-item:checked').length === $('.select-item').length) {
+                $('#select-all').prop('checked', true);
+            } else {
+                $('#select-all').prop('checked', false);
+            }
+            calculateTotal();
+        });
+
+        // Xử lý tăng/giảm số lượng
+        $('.btn-increase, .btn-decrease').on('click', function() {
+            var inputField = $(this).siblings('.quantity-input');
+            var currentQuantity = parseInt(inputField.val());
+            var productDetailId = $(this).data('id');
+
+            if ($(this).hasClass('btn-increase')) {
+                currentQuantity++;
+            } else if ($(this).hasClass('btn-decrease') && currentQuantity > 1) {
+                currentQuantity--;
+            }
+
+            // Cập nhật số lượng
+            inputField.val(currentQuantity);
+
+            // Cập nhật subtotal của sản phẩm
+            var pricePerItem = parseFloat($('.price-' + productDetailId).text().replace(' đ', '').replace(/\./g, '').trim());
+            var newSubtotal = pricePerItem * currentQuantity;
+            $('.subtotal-' + productDetailId).text(newSubtotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+
+            calculateTotal();
+        });
+
+        // Hàm tính tổng số tiền dựa trên các sản phẩm được chọn
+        function calculateTotal() {
+            var subTotal = 0;
+            $('.select-item:checked').each(function() {
+                var productDetailId = $(this).data('id');
+                var subtotalText = $('.subtotal-' + productDetailId).text().replace(' đ', '').replace(/\./g, '').trim();
+                subTotal += parseFloat(subtotalText);
+            });
+
+            // Cập nhật hiển thị tổng giỏ hàng
+            $('.sub-total').text(subTotal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+            $('.total-amount').text((subTotal + shippingFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ');
+        }
+
+        // Xử lý gửi form khi ấn "Tiến hành thanh toán"
+        $('#checkout-btn').on('click', function(e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định
+            var selectedItems = [];
+
+            $('.select-item:checked').each(function() {
+                selectedItems.push($(this).data('id'));
+            });
+
+            if (selectedItems.length === 0) {
+                alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán.');
+                return;
+            }
+
+            // Gửi form qua AJAX hoặc chuyển hướng
+            var form = $('#checkout-form');
+            form.find('input[name="selected_items"]').val(selectedItems.join(','));
+            form.submit(); // Gửi form đến route xử lý
+        });
+    });
 </script>
 @endsection
