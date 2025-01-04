@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ColorRequest;
+use App\Http\Requests\ColorRequestUpdate;
 use Illuminate\Http\Request;
 use App\Models\Color;
+use App\Models\products;
 
 class ColorController extends Controller
 {
@@ -35,8 +37,8 @@ class ColorController extends Controller
             $query->orderBy($request->sort, $direction);
         }
 
-        $colors = $query->paginate(10);
-
+        $colors = $query->withCount('productDetails')->paginate(10);
+    
         return view('admin.colors.index', compact('colors'));
     }
 
@@ -74,7 +76,7 @@ class ColorController extends Controller
     /**
      * Cập nhật thông tin màu trong cơ sở dữ liệu.
      */
-    public function update(ColorRequest $request, $id)
+    public function update(ColorRequestUpdate $request, $id)
     {
         $color = Color::findOrFail($id);
 
@@ -96,9 +98,22 @@ class ColorController extends Controller
      */
     public function destroy(string $id)
     {
+        // Tìm màu theo ID
         $color = Color::findOrFail($id);
+
+        // Kiểm tra nếu có sản phẩm nào đang sử dụng màu sắc này
+        $isUsed = $color->productDetails()->exists();
+
+        if ($isUsed) {
+            return redirect()->route('admin.colors.index')
+                ->with('error', 'Không thể xóa màu này vì đang được sử dụng trong sản phẩm.');
+        }
+
+        // Nếu không được sử dụng, xóa màu
         $color->delete();
 
-        return redirect()->route('admin.colors.index')->with('success', 'Màu đã được xóa thành công.');
+        return redirect()->route('admin.colors.index')
+            ->with('success', 'Màu đã được xóa thành công.');
     }
+
 }

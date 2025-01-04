@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\AttributeValueController;
+use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\Admin\CategoryProductController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\PaymentController;
@@ -22,6 +24,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponsController;
+use App\Models\Order; 
 use App\Http\Controllers\VoucherController;
 
 
@@ -46,20 +49,23 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 
 
+Route::get('thank-you/{order}', function ($orderId) {
+    $order = Order::find($orderId);
+    return view('user.sanpham.thank_you', compact('order'));
+})->name('thank_you');
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::delete('/cart/remove/{productDetailId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::delete('/cart/remove/{productId}/{variantId?}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 Route::post('/muangay', [OrderController::class, 'muangay'])->name('muangay');
 // Route
-Route::get('/checkout/thankyou', function () {
-    return view('checkout.thankyou');
-})->name('checkout.thankyou');
+
 
 
 // Route::get('/login', [UserController::class, 'login'])->name('login');
@@ -113,6 +119,10 @@ Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
     Route::resource('users', UserController::class);
 
     Route::get('/', [StatisticsController::class, 'index'])->name('statistics.index');
+
+    Route::resource('attribute_values', AttributeValueController::class);
+
+    Route::resource('attributes', AttributeController::class);
 });
 
 

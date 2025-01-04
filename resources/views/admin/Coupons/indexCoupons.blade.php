@@ -13,8 +13,9 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="d-flex m-3">
-                    <a href="{{ route('admin.Coupons.create') }}" class="btn btn-success">+ Thêm Mã Giảm Giá</a>
+                <div class="d-flex mt-3 mx-2">
+                    <a href="{{ route('admin.Coupons.create') }}" class="btn btn-sm btn-alt-primary mx-2 fs-18 rounded-2 border p-1 me-1 "
+                        data-bs-toggle="tooltip" title="Thêm mới"><i class="mdi mdi-plus text-muted px-1 mr-1">Thêm mới</i></a>
                 </div>
 
                 @if(session('success'))
@@ -32,8 +33,8 @@
                                 <th>Giá trị</th>
                                 <th>Thời gian áp dụng</th>
                                 <th>Số lượng</th>
+                                <th>Đã sử dụng</th>
                                 <th>Trạng thái</th>
-                                <th>Điều kiện áp dụng</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -55,23 +56,8 @@
                                     {{ $coupon->end_date->format('d/m/Y H:i') }}
                                 </td>
                                 <td>{{ $coupon->total_quantity }}</td>
+                                <td>{{ $coupon->used_quantity }}</td>
                                 <td>{{ $coupon->status == 'active' ? 'Hoạt động' : 'Tạm dừng' }}</td>
-                                <td>
-                                    @if($coupon->conditions->isNotEmpty())
-                                    <ul>
-                                        @foreach($coupon->conditions as $condition)
-                                        @if($condition->product_id)
-                                        <li>Áp dụng cho sản phẩm ID: {{ $condition->product_id }}</li>
-                                        @endif
-                                        @if($condition->category_id)
-                                        <li>Áp dụng cho danh mục ID: {{ $condition->category_id }}</li>
-                                        @endif
-                                        @endforeach
-                                    </ul>
-                                    @else
-                                    Không có
-                                    @endif
-                                </td>
                                 <td>
                                     <a href="{{ route('admin.Coupons.edit', $coupon->id) }}"
                                         class="btn btn-sm btn-primary">Sửa</a>
@@ -107,6 +93,11 @@
 <script>
 $(document).ready(function() {
     $('#couponTable').DataTable({
+        "paging": false, // Cho phép phân trang
+        "searching": true, // Tìm kiếm
+        "ordering": true, // Sắp xếp cột
+        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+        "info": false,
         "language": {
             "lengthMenu": "Hiển thị _MENU_ mục",
             "zeroRecords": "Không tìm thấy dữ liệu phù hợp",

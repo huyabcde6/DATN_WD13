@@ -33,7 +33,8 @@ Vai trò & Quyền
                                 <th>Tên</th>
                                 <th>Email</th>
                                 <th>Vai trò</th>
-                                <th>Hành động</th>
+                                
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -49,17 +50,7 @@ Vai trò & Quyền
                                     @endforeach
                                     @endif
                                 </td>
-                                <td>
-                                    <a href="{{ url('userAdmin/' . $user->id . '/edit') }}" class="btn btn-sm btn-warning mx-1"
-                                        title="Chỉnh sửa">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="{{ url('userAdmin/' . $user->id . '/delete') }}" class="btn btn-sm btn-danger mx-1"
-                                        onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');"
-                                        title="Xóa">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </td>
+                                
                             </tr>
                             @endforeach
                         </tbody>
@@ -77,6 +68,11 @@ Vai trò & Quyền
 <script>
     $(document).ready(function() {
         $('#usersTable').DataTable({
+            "paging": false, // Cho phép phân trang
+            "searching": true, // Tìm kiếm
+            "ordering": true, // Sắp xếp cột
+            "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+            "info": false,
             "language": {
                 "lengthMenu": "Hiển thị _MENU_ mục",
                 "zeroRecords": "Không tìm thấy dữ liệu phù hợp",

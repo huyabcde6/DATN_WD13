@@ -43,9 +43,9 @@ class Order extends Model
         return $this->belongsTo(StatusDonHang::class, 'status_donhang_id');
     }
 
-    public function products()
+    public function product()
     {
-        return $this->hasManyThrough(products::class, OrderDetail::class, 'order_id', 'id', 'id', 'products_id');
+        return $this->hasManyThrough(product::class, OrderDetail::class, 'order_id', 'id', 'id', 'products_id');
     }
     public function invoice()
     {
@@ -75,16 +75,19 @@ class Order extends Model
         ]);
 
         // Lưu chi tiết hóa đơn
-        foreach ($this->orderDetails as $orderDetail) {
+        foreach ($order->orderDetails as $orderDetail) {
+            // Lưu vào invoice_details
             $invoice->invoiceDetails()->create([
                 'product_name'  => $orderDetail->product_name,
-                'product_avata'  => $orderDetail->product_avata,
-                'color'         => $orderDetail->color,
-                'size'          => $orderDetail->size,
+                'product_avata' => $orderDetail->product_avata,
+                'attributes'    => is_string($orderDetail->attributes) 
+                                    ? json_decode($orderDetail->attributes, true) 
+                                    : $orderDetail->attributes, // Chuyển mảng thành JSON gọn gàng
                 'quantity'      => $orderDetail->quantity,
                 'price'         => $orderDetail->price,
             ]);
         }
+        
 
         return $invoice;
     }

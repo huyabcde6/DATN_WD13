@@ -13,12 +13,15 @@ class InvoiceDetail extends Model
         'invoice_id',
         'product_name',
         'product_avata',
-        'color',
-        'size',
+        'attributes',
         'quantity',
         'price',
     ];
 
+    protected $casts = [
+        'attributes' => 'array', // Tự động chuyển JSON thành mảng PHP
+    ];
+    
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);  // Liên kết với bảng 'invoices'

@@ -66,12 +66,7 @@ Quản lý Vai trò & Quyền
                                             <i class="fa fa-pencil-alt"></i>
                                         </button>
 
-                                        <button
-                                            class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 text-danger"
-                                            data-bs-toggle="modal" data-bs-target="#deletePermissionModal"
-                                            data-id="{{ $perm->id }}" title="Xóa">
-                                            <i class="fa fa-fw fa-times"></i>
-                                        </button>
+                                
                                     </div>
                                 </td>
                             </tr>
@@ -144,31 +139,6 @@ Quản lý Vai trò & Quyền
     </div>
 </div>
 
-<!-- Modal Xóa Quyền -->
-<div class="modal fade" id="deletePermissionModal" tabindex="-1" aria-labelledby="deletePermissionModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <form id="deletePermissionForm" method="POST">
-            @csrf
-            @method('DELETE')
-            <input type="hidden" id="edit-id" name="id">
-            <input type="hidden" id="edit-id" name="id" value="{{ old('id') }}">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deletePermissionModalLabel">Xóa Quyền</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có chắc chắn muốn xóa quyền này?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-danger">Xóa</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 
 
 @endsection
@@ -207,6 +177,11 @@ deleteModal.addEventListener('show.bs.modal', function(event) {
 <script>
 $(document).ready(function() {
     $('#permissionTable').DataTable({
+        "paging": false, // Cho phép phân trang
+        "searching": true, // Tìm kiếm
+        "ordering": true, // Sắp xếp cột
+        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+        "info": false,
         "language": {
             "lengthMenu": "Hiển thị _MENU_ mục",
             "zeroRecords": "Không tìm thấy dữ liệu phù hợp",

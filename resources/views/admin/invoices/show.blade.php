@@ -55,8 +55,7 @@
                                                 <th>#</th>
                                                 <th>Tên sản phẩm</th>
                                                 <th>Hình ảnh</th>
-                                                <th>Màu</th>
-                                                <th>Size</th>
+                                                <th>Phân loại</th>
                                                 <th>Số lượng</th>
                                                 <th>Giá</th>
                                                 <th>Tổng</th>
@@ -70,10 +69,13 @@
                                                 <td>{{ $detail->product_name }}</td>
                                                 <td>
                                                     <img src="{{ url('storage/' . $detail->product_avata ?? '' )}}"
-                                                        alt="{{ $detail->product_name }}" class="img-thumbnail" style="width: 70px; height: auto;">
+                                                        alt="{{ $detail->product_name }}" class="img-thumbnail"
+                                                        style="width: 70px; height: auto;">
                                                 </td>
-                                                <td>{{ $detail->color }}</td>
-                                                <td>{{ $detail->size }}</td>
+                                                <td>@foreach($detail->attributes as $attribute)
+                                                    {{ $attribute['name'] }}:
+                                                    {{ $attribute['value'] }}{{ !$loop->last ? ', ' : '' }}
+                                                    @endforeach</td>
                                                 <td>{{ $detail->quantity }}</td>
                                                 <td>{{ number_format($detail->price, 0, ',', '.') }} đ</td>
                                                 <td>{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }}

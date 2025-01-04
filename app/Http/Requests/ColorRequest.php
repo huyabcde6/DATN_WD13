@@ -22,7 +22,7 @@ class ColorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'value' => 'required|string|max:255',
+            'value' => 'required|string|max:255|unique:colors',
             'color_code' => 'nullable|string|max:255',
             'status' => 'nullable|boolean',
         ];
@@ -34,6 +34,7 @@ class ColorRequest extends FormRequest
             'value.required' => 'Màu không được để trống',
             'value.string' => 'Màu phải là chuỗi',
             'value.max' => 'Màu không vượt qua 255 ký tự',
+            'value.unique' => 'Màu này đã tồn tại',
             'color_code.string' => 'Màu phải là chuỗi',
             'color_code.max' => 'Màu không vượt qua 255 ký tự',
         ];

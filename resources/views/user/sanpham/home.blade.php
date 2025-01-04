@@ -1,5 +1,57 @@
 @extends('layouts.home')
+@section('css')
+<style>
+.coupon-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    max-width: 400px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
 
+.coupon-left {
+    background-color: #FFC107;
+    /* Màu vàng */
+    width: 10px;
+}
+
+.coupon-content {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.coupon-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.coupon-desc {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.coupon-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.copy-btn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    background-color: #333;
+}
+</style>
+@endsection
 @section('content')
 <!-- Hero/Intro Slider Start -->
 <div class="section">
@@ -22,7 +74,8 @@
                                 <p>
                                     {{ $banner->description }}
                                 </p>
-                                <a href="{{ route('shop.index',['category' => $banner->category_id]) }}" class="btn btn-lg btn-primary btn-hover-dark">
+                                <a href="{{ route('shop.index',['category' => $banner->category_id]) }}"
+                                    class="btn btn-lg btn-primary btn-hover-dark">
                                     Mua ngay
                                 </a>
                             </div>
@@ -119,42 +172,31 @@
 <div class="section">
     <div class="container">
         <!-- Banners Start -->
+        <h2>Ưu đãi dành cho bạn</h2>
         <div class="row mb-n6 overflow-hidden">
             <!-- Banner Start -->
-            <div class="col-md-6 col-12 mb-6">
-                <div class="banner" data-aos="fade-right" data-aos-delay="300">
-                    <div class="banner-image">
-                        <a href="shop-grid.html"><img src="{{ asset('ngdung/assets/images/banner/banner-4.jpg')}}"
-                                alt="Banner Image" /></a>
-                    </div>
-                    <div class="info">
-                        <div class="small-banner-content">
-                            <h4 class="sub-title">Giảm giá tớ <span>50%</span></h4>
-                            <h3 class="title">Váy công sở</h3>
-                            <a href="shop-grid.html" class="btn btn-primary btn-hover-dark btn-sm">Mua Ngay</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Banner End -->
 
-            <!-- Banner Start -->
-            <div class="col-md-6 col-12 mb-6">
-                <div class="banner" data-aos="fade-left" data-aos-delay="500">
-                    <div class="banner-image">
-                        <a href="shop-grid.html"><img src="{{ asset('ngdung/assets/images/banner/banner-5.jpg')}}"
-                                alt="Banner Image" /></a>
+            @forelse($coupons as $voucher)
+            <div class="mx-3 mt-3 coupon-card">
+                <div class="coupon-left"></div>
+                <div class="coupon-content">
+                    <div class="coupon-title">{{ $voucher->code }}</div>
+                    <div class="coupon-desc">
+                        giảm {{ number_format($voucher->discount_value, 0, ',', '.') }}% (tối đa
+                        {{ number_format($voucher->max_discount_amount, 0, ',', '.') }} đ) <br>
+                        Mã: <strong class="voucher-code">{{ $voucher->code }}</strong> <br>
+                        HSD: {{ \Carbon\Carbon::parse($voucher->end_date)->format('d-m-Y') }}
                     </div>
-                    <div class="info">
-                        <div class="small-banner-content">
-                            <h4 class="sub-title">Giảm giá tớ <span>40%</span></h4>
-                            <h3 class="title">Tất cả sản phẩm</h3>
-                            <a href="shop-grid.html" class="btn btn-primary btn-hover-dark btn-sm">Mua Ngay</a>
-                        </div>
+                    <div class="coupon-footer mt-2">
+                        <div class="fw-bold voucher-code">{{ $voucher->code }}</div>
+                        <button class="copy-btn">Sao chép mã</button>
                     </div>
                 </div>
             </div>
             <!-- Banner End -->
+            @empty
+            <p>Không có voucher nào khả dụng.</p>
+            @endforelse
         </div>
         <!-- Banners End -->
     </div>
@@ -172,7 +214,8 @@
                         <a class="nav-link active mt-3" data-bs-toggle="tab" href="#tab-product-new">Sản Phẩm Mới</a>
                     </li>
                     <li class="nav-item" data-aos="fade-up" data-aos-delay="400">
-                        <a class="nav-link mt-3" data-bs-toggle="tab" href="#tab-product-best-seller">Sản Phẩm Bán Chạy</a>
+                        <a class="nav-link mt-3" data-bs-toggle="tab" href="#tab-product-best-seller">Sản Phẩm Bán
+                            Chạy</a>
                     </li>
                     <li class="nav-item" data-aos="fade-up" data-aos-delay="500">
                         <a class="nav-link mt-3" data-bs-toggle="tab" href="#tab-product-sale">Sản Phẩm Sale</a>
@@ -194,31 +237,34 @@
                                 <div class="swiper-wrapper">
                                     @foreach($newProducts as $product)
                                     <div class="swiper-slide product-wrapper">
-                                        <div class="product product-border-left mb-10" data-aos="fade-up" data-aos-delay="300">
+                                        <div class="product product-border-left mb-10" data-aos="fade-up"
+                                            data-aos-delay="300">
                                             <div class="thumb">
                                                 <a href="{{ route('product.show', $product->slug) }}" class="image">
-                                                    <img class="image" src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" />
+                                                    <img class="image" src="{{ url('storage/' . $product->avata) }}"
+                                                        alt="{{ $product->name }}" />
                                                 </a>
                                                 <span class="badges">
                                                     <span class="new">New</span>
                                                 </span>
-                                                <div class="actions">
-                                                    <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                                    <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                                    <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
-                                                </div>
                                             </div>
                                             <div class="content">
                                                 <h5 class="title">
-                                                    <a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
+                                                    <a
+                                                        href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                                 </h5>
                                                 <span class="price">
-                                                    <span class="new">{{ number_format($product->price, 0, ',', '.') }} đ</span>
+                                                    <span class="new">{{ number_format($product->discount_price, 0, ',', '.') }}
+                                                        đ</span>
                                                     @if($product->discount_price)
-                                                    <span class="old">{{ number_format($product->discount_price, 0, ',', '.') }} đ</span>
+                                                    <span
+                                                        class="old">{{ number_format($product->price, 0, ',', '.') }}
+                                                        đ</span>
                                                     @endif
                                                 </span>
-                                                <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                                <a href="{{ route('product.show', $product->slug) }}"
+                                                    class="btn btn-sm btn-outline-dark btn-hover-primary"><i
+                                                        class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
                                             </div>
                                         </div>
                                     </div>
@@ -248,31 +294,35 @@
                                 <div class="swiper-wrapper">
                                     @foreach($bestSellingProducts as $product)
                                     <div class="swiper-slide product-wrapper">
-                                        <div class="product product-border-left mb-10" data-aos="fade-up" data-aos-delay="300">
+                                        <div class="product product-border-left mb-10" data-aos="fade-up"
+                                            data-aos-delay="300">
                                             <div class="thumb">
                                                 <a href="{{ route('product.show', $product->slug) }}" class="image">
-                                                    <img class="image" src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" />
+                                                    <img class="image" src="{{ url('storage/' . $product->avata) }}"
+                                                        alt="{{ $product->name }}" />
                                                 </a>
                                                 <span class="badges">
                                                     <span class="sale">Hot</span>
                                                 </span>
-                                                <div class="actions">
-                                                    <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                                    <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                                    <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
-                                                </div>
+                                            
                                             </div>
                                             <div class="content">
                                                 <h5 class="title">
-                                                    <a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
+                                                    <a
+                                                        href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                                 </h5>
                                                 <span class="price">
-                                                    <span class="new">{{ number_format($product->price, 0, ',', '.') }} đ</span>
+                                                    <span class="new">{{ number_format($product->discount_price, 0, ',', '.') }}
+                                                        đ</span>
                                                     @if($product->discount_price)
-                                                    <span class="old">{{ number_format($product->discount_price, 0, ',', '.') }} đ</span>
+                                                    <span
+                                                        class="old">{{ number_format($product->price, 0, ',', '.') }}
+                                                        đ</span>
                                                     @endif
                                                 </span>
-                                                <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                                <a href="{{ route('product.show', $product->slug) }}"
+                                                    class="btn btn-sm btn-outline-dark btn-hover-primary"><i
+                                                        class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
                                             </div>
                                         </div>
                                     </div>
@@ -302,31 +352,35 @@
                                 <div class="swiper-wrapper">
                                     @foreach($saleProducts as $product)
                                     <div class="swiper-slide product-wrapper">
-                                        <div class="product product-border-left mb-10" data-aos="fade-up" data-aos-delay="300">
+                                        <div class="product product-border-left mb-10" data-aos="fade-up"
+                                            data-aos-delay="300">
                                             <div class="thumb">
                                                 <a href="{{ route('product.show', $product->slug) }}" class="image">
-                                                    <img class="image" src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}" />
+                                                    <img class="image" src="{{ url('storage/' . $product->avata) }}"
+                                                        alt="{{ $product->name }}" />
                                                 </a>
                                                 <span class="badges">
                                                     <span class="sale">Sale</span>
                                                 </span>
-                                                <div class="actions">
-                                                    <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
-                                                    <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                                    <a href="#" class="action compare"><i class="pe-7s-shuffle"></i></a>
-                                                </div>
+                                            
                                             </div>
                                             <div class="content">
                                                 <h5 class="title">
-                                                    <a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
+                                                    <a
+                                                        href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                                 </h5>
                                                 <span class="price">
-                                                    <span class="new">{{ number_format($product->price, 0, ',', '.') }} VND</span>
+                                                    <span class="new">{{ number_format($product->discount_price, 0, ',', '.') }}
+                                                        VND</span>
                                                     @if($product->discount_price)
-                                                    <span class="old">{{ number_format($product->discount_price, 0, ',', '.') }} VND</span>
+                                                    <span
+                                                        class="old">{{ number_format($product->price, 0, ',', '.') }}
+                                                        VND</span>
                                                     @endif
                                                 </span>
-                                                <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm btn-outline-dark btn-hover-primary"><i class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
+                                                <a href="{{ route('product.show', $product->slug) }}"
+                                                    class="btn btn-sm btn-outline-dark btn-hover-primary"><i
+                                                        class="mdi mdi-eye text-muted fs-7 "></i> Xem chi tiết</a>
                                             </div>
                                         </div>
                                     </div>
@@ -365,7 +419,7 @@
             <div class="col-12" data-aos="fade-up" data-aos-delay="300">
                 <div class="banner">
                     <div class="banner-image">
-                        <a href="shop-grid.html"><img src="{{ asset('ngdung/assets/images/banner/big-banner.jpg')}}"
+                        <a href="shop-grid.html"><img src="{{ asset('ngdung/assets/images/banner/banchay_a01333a0db53411883d51490d22b7eab.webp')}}"
                                 alt="Banner" /></a>
                     </div>
                 </div>
@@ -385,17 +439,13 @@
         <div class="row mb-n6">
 
             @foreach($news as $new)
-            <div
-                class="col-lg-4 col-md-6 col-12 mb-6"
-                data-aos="fade-up"
-                data-aos-delay="300">
+            <div class="col-lg-4 col-md-6 col-12 mb-6" data-aos="fade-up" data-aos-delay="300">
 
                 <!-- Blog Single Post Start -->
                 <div class="blog-single-post-wrapper">
                     <div class="blog-thumb">
                         <a class="blog-overlay" href="{{ route('tintucdetail', ['id' => $new->id]) }}">
-                            <img class="fit-image" src="{{ url('storage/'. $new->avata) }}"
-                                alt="Blog Post" />
+                            <img class="fit-image" src="{{ url('storage/'. $new->avata) }}" alt="Blog Post" />
                         </a>
                     </div>
                     <div class="blog-content">
@@ -408,7 +458,8 @@
                         <p>
                             {{ $new->description }}
                         </p>
-                        <a href="{{ route('tintucdetail', ['id' => $new->id]) }}" class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
+                        <a href="{{ route('tintucdetail', ['id' => $new->id]) }}"
+                            class="btn btn-dark btn-hover-primary text-uppercase">Đọc thêm</a>
                     </div>
                 </div>
                 <!-- Blog Single Post End -->
@@ -417,5 +468,34 @@
         </div>
     </div>
 </div>
+
+@endsection
+@section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll('.copy-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Tìm mã voucher gần nút sao chép nhất
+            var voucherCode = button.closest('.coupon-card').querySelector('.voucher-code').textContent; 
+
+            var tempInput = document.createElement('input'); // Tạo một input ẩn tạm thời
+            tempInput.value = voucherCode;
+            document.body.appendChild(tempInput);
+
+            tempInput.select(); // Chọn nội dung của input
+            document.execCommand('copy'); // Thực hiện sao chép
+
+            document.body.removeChild(tempInput); // Xóa input tạm thời
+
+            Swal.fire({
+                title: 'Sao chép thành công!',
+                text: 'Mã khuyến mãi: ' + voucherCode,
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Đóng'
+            }); // Thông báo cho người dùng
+        });
+    });
+</script>
 
 @endsection

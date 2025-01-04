@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Product; // Thêm dòng này để sử dụng mô hình Product
+use Illuminate\Support\Facades\Auth;// Thêm dòng này để sử dụng mô hình Product
 use App\Models\products;
 
 class CheckoutController extends Controller
 {
     public function buyNow(Request $request)
     {
+        // Kiểm tra nếu người dùng chưa đăng nhập
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để mua hàng.');
+        }
+
         $user = Auth::user();
 
         // Lấy thông tin sản phẩm và số lượng từ request
@@ -18,7 +22,7 @@ class CheckoutController extends Controller
         $quantity = $request->input('quantity');
 
         // Tìm sản phẩm theo ID
-        $product = products::findOrFail($productId); // Sử dụng Product model thay vì ProductController
+        $product = products::findOrFail($productId);
 
         // Kiểm tra xem số lượng trong kho có đủ không
         if ($product->stock < $quantity) {
@@ -40,4 +44,5 @@ class CheckoutController extends Controller
             'total'
         ));
     }
+
 }

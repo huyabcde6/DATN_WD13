@@ -33,17 +33,13 @@ Danh sách sản phẩm
             <h4 class="fs-18 fw-semibold ml-0">Danh sách sản phẩm </h4>
         </div>
         <div class="flex-grow-2 mx-2">
-        <a href="{{ route('admin.products.create') }}"
-            class="btn btn-sm btn-alt-secondary mx-2 fs-18 rounded-2 border p-1 me-1 " data-bs-toggle="tooltip"
-            title="Thêm mới">
-            <i class="mdi mdi-plus text-muted px-4 mr-4">Thêm mới</i>
-        </a>
+
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="d-flex mt-3 justify-content-between align-items-center">
+                <div class="d-flex mt-3 mx-2 justify-content-between align-items-center">
                     <form action="{{ route('admin.products.index') }}" method="get" class="ms-2">
                         <div class="d-flex">
                             <select name="categories_id" class="form-control" id="categories_id">
@@ -62,28 +58,32 @@ Danh sách sản phẩm
                             <button type="submit" class="btn btn-dark ms-2">Lọc</button>
                         </div>
                     </form>
-
+                    <a href="{{ route('admin.products.create') }}"
+                        class="btn btn-sm btn-alt-primary mx-2 fs-18 rounded-2 border p-1 me-1 "
+                        data-bs-toggle="tooltip" title="Thêm mới">
+                        <i class="mdi mdi-plus text-muted px-1 mr-1">Thêm mới</i>
+                    </a>
                 </div>
 
                 <div class="card-body">
                     <table class="table table-bordered text-center" id="productTable">
                         <thead>
                             <tr>
-                                <th >#</th>
+                                <th>#</th>
                                 <th class="text-center">
-                                        Tên sản phẩm
+                                    Tên sản phẩm
                                 </th>
                                 <th class="text-center">Hình ảnh</th>
                                 <th class="text-center">
                                     Danh mục
                                 </th>
                                 <th class="text-center">
-                                        Giá
+                                    Giá
                                 </th>
                                 <th class="text-center">Giá giảm</th>
-                                <th class="text-center">Số lượng tồn kho</th>
+                                
                                 <th class="text-center">
-                                        Ngày tạo
+                                    Ngày tạo
                                 </th>
                                 <th class="text-center">Hiện/ẩn</th>
                                 <th class="text-center">Tương tác</th>
@@ -91,9 +91,9 @@ Danh sách sản phẩm
                         </thead>
 
                         <tbody class="align-middle">
-                            @foreach ($products as $product)
-                            <tr>
-                                <td>{{ $product->id }}</td>
+                            @foreach ($products as $key => $product)
+                            <tr data-order-id="{{ $product->id }}">
+                                <td>{{ $key + 1 }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>
                                     <img src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}"
@@ -103,14 +103,7 @@ Danh sách sản phẩm
                                 <td>{{ number_format($product->price, 0, '', '.') }} đ</td>
                                 <td>{{ $product->discount_price ? number_format($product->discount_price, 0, '', '.') . ' đ' : 'Không có' }}
                                 </td>
-                                <td>
-                                    {{ $product->productDetails->sum('quantity') }}
-                                    @if ($product->productDetails->sum('quantity') <= 5) <span class="text-danger">(Sắp
-                                        hết hàng!)</span>
-                                        @elseif ($product->productDetails->sum('quantity') <= 20) <span
-                                            class="text-warning">(Số lượng thấp)</span>
-                                            @endif
-                                </td>
+                                
 
                                 <td>{{ $product->created_at->format('d/m/Y') }}</td>
                                 <td class="{{ $product->iS_show ? 'text-success' : 'text-danger' }}">
@@ -199,6 +192,11 @@ document.getElementById('search').addEventListener('input', function() {
 <script>
 $(document).ready(function() {
     $('#productTable').DataTable({
+        "paging": false, // Cho phép phân trang
+        "searching": true, // Tìm kiếm
+        "ordering": true, // Sắp xếp cột
+        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+        "info": false,
         "language": {
             "lengthMenu": "Hiển thị _MENU_ mục",
             "zeroRecords": "Không tìm thấy dữ liệu phù hợp",

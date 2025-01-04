@@ -47,14 +47,6 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="">Trạng thái</label>
-                                <select name="status" class="form-control">
-                                    <option value="">--Chọn--</option>
-                                    <option value="1">Hiển thị</option>
-                                    <option value="0">Ẩn</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Save</button>
                             </div>
                         </form>

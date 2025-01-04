@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SizeRequet;
+use App\Http\Requests\SizeRequetUpdate;
 use Illuminate\Http\Request;
 use App\Models\Size;
 
@@ -33,7 +34,7 @@ class SizeController extends Controller
             $query->orderBy($request->sort, $request->direction ?? 'asc');
         }
 
-        $sizes = $query->paginate(10);
+        $sizes = $query->withCount('productDetails')->paginate(10);
 
         return view('admin.sizes.index', compact('sizes'));
     }
@@ -55,7 +56,7 @@ class SizeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SizeRequet $request, string $id)
+    public function update(SizeRequetUpdate $request, string $id)
     {
         $size = Size::findOrFail($id); // Tìm kích thước theo ID
         $size->update([
@@ -71,9 +72,22 @@ class SizeController extends Controller
      */
     public function destroy(string $id)
     {
+        // Tìm kích thước theo ID
         $size = Size::findOrFail($id);
+
+        // Kiểm tra nếu có sản phẩm nào đang sử dụng kích thước này
+        $isUsed = $size->productDetails()->exists();
+
+        if ($isUsed) {
+            return redirect()->route('admin.sizes.index')
+                ->with('error', 'Không thể xóa kích thước này vì đang được sử dụng trong sản phẩm.');
+        }
+
+        // Nếu không được sử dụng, xóa kích thước
         $size->delete();
 
-        return redirect()->route('admin.sizes.index')->with('success', 'Kích thước đã được xóa thành công.');
+        return redirect()->route('admin.sizes.index')
+            ->with('success', 'Kích thước đã được xóa thành công.');
     }
+
 }

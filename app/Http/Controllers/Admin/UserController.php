@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use App\Models\order;
+use App\Models\StatusDonHang;
 
 class UserController extends Controller
 
@@ -26,67 +28,23 @@ class UserController extends Controller
 
         return view('admin.users.index', compact('users'));
     }
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UserRequet $request)
+    public function show($id)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            "password" => Hash::make($request->password),
-            'status' => $request->status,
-        ]);
-        $user->syncRoles($request->roles);
+        // Lấy thông tin người dùng
+        $user = User::findOrFail($id);
 
-        return redirect('/users')->with('status', 'User đăng nhập thành công');
+        // Lấy số lượng đơn hàng đã đặt
+        $totalOrders = order::where('user_id', $id)->count();
+
+        // Lấy số lượng đơn hàng đã hoàn thành
+        $completedOrders = order::where('user_id', $id)
+            ->whereHas('status', function ($query) {
+                $query->where('type', 'Hoàn thành');
+            })
+            ->count();
+
+        return view('admin.users.show', compact('user', 'totalOrders', 'completedOrders'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function edit(User $user)
-    {
-
-        $roles = Role::pluck('name', 'name')->all();
-        $userRoles = $user->roles->pluck('name','name')->all();
-        return view('role-permission.user.edit', [
-            'user' => $user,
-            'roles'=> $roles,
-            'userRoles' => $userRoles
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UserRequet $request, User $user)
-    {
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'status' => $request->status,
-        ];
-        if(!empty($request->password)){
-            $data += [
-                'password' => Hash::make($request->password),
-            ];
-        }
-        $user->update($data);
-        $user->syncRoles($request->roles);
-
-        return redirect('/users')->with('status', 'User cập nhập thành công');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-
-    public function destroy($userId)
-    {
-        $user = User::findOrFail($userId);
-        $user->delete();
-        return redirect('/users')->with('success', 'Xóa thành công!');
-    }
 
 }

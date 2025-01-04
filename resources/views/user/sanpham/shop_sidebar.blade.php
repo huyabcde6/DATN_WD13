@@ -1,26 +1,14 @@
 @extends('layouts.home')
-@section('ccss')
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-@endsection
+
 @section('content')
 <!-- Breadcrumb Section Start -->
 <div class="section">
 
     <!-- Breadcrumb Area Start -->
-    <div class="breadcrumb-area bg-light ">
-        <div class="container-fluid">
-            <div class="breadcrumb-content">
-                <ul class="breadcrumb-list">
-                    <li>
-                        <a href="http://datn_wd13.test">Trang chủ</a>
-                    </li>
-                    <li class="active">
-                        <a href="http://datn_wd13.test/shop">Shop</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <div class="breadcrumb">
+        <a href="http://datn_wd13.test/"><i class="fa fa-home"></i> Trang Chủ</a>
+        <span class="breadcrumb-separator"> > </span>
+        <span><a href="http://datn_wd13.test/shop">Cửa hàng</a></span>
     </div>
     <!-- Breadcrumb Area End -->
 
@@ -98,14 +86,7 @@
                                     <img class="image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
                                         width="auto" height="auto" />
                                 </a>
-                                <div class="actions">
-                                    <a href="wishlist.html" title="Wishlist" class="action wishlist"><i
-                                            class="pe-7s-like"></i></a>
-                                    <a href="#" title="Quickview" class="action quickview" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
-                                    <a href="compare.html" title="Compare" class="action compare"><i
-                                            class="pe-7s-shuffle"></i></a>
-                                </div>
+                                
                             </div>
                             <div class="content">
                                 <h4 class="sub-title">{{ $product->categories->name }}
@@ -175,7 +156,7 @@
                                 <div class="search-box">
                                     <input type="text" name="keyword" class="form-control"
                                         placeholder="Nhập từ khóa cần tìm" value="{{ request('keyword') }}">
-                                    <button class="btn btn-dark btn-hover-primary" type="submit">
+                                    <button class="btn btn-dark btn-hover-primary" type="submit" style="margin:0px">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </div>
