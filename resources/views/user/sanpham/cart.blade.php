@@ -63,15 +63,20 @@
                         <!-- Table Body Start -->
                         <tbody id="cartItems">
                             @foreach ($cartItems as $item)
+                            
                             <tr>
                                 <td class="pro-thumbnail">
                                     <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
                                             height="auto" width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
-                                    <a href="{{ route('product.show', $item['slug']) }}">{{ $item['product_name'] }}
-                                        <br> {{ $item['size'] }} /
-                                        {{ $item['color'] }}</a>
+                                    <a href="{{ route('product.show', $item['slug']) }}">
+                                        {{ $item['name'] }}<br>
+                                        @foreach ($item['attributes'] as $attribute)
+                                        
+                                        {{ $attribute['value'] }}{{ !$loop->last ? ' / ' : '' }}
+                                        @endforeach
+                                    </a>
                                 </td>
                                 <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
                                         đ</span></td>
@@ -79,37 +84,37 @@
                                     <div class="quantity">
                                         <div class="cart-plus-minus" style="margin-left: 35px;">
                                             <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}"
-                                                type="text" data-id="{{ $item['product_detail_id'] }}"
-                                                data-available-quantity="{{ $item['available_quantity'] }}">
-                                            <div class="dec qtybutton" data-id="{{ $item['product_detail_id'] }}">-
-                                            </div>
-                                            <div class="inc qtybutton" data-id="{{ $item['product_detail_id'] }}">+
-                                            </div>
+                                                type="text" data-id="{{ $item['variant_id'] ?? $item['product_id'] }}"
+                                                data-available-quantity="{{ $item['stock_quantity'] }}">
+                                            <div class="dec qtybutton"
+                                                data-id="{{ $item['variant_id'] ?? $item['product_id'] }}">-</div>
+                                            <div class="inc qtybutton"
+                                                data-id="{{ $item['variant_id'] ?? $item['product_id'] }}">+</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="pro-subtotal">
-                                    <span class="subtotal-{{ $item['product_detail_id'] }}">
+                                    <span class="subtotal-{{ $item['variant_id'] ?? $item['product_id'] }}">
                                         {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 0, ',', '.') }}
                                         đ
                                     </span>
-
                                 </td>
                                 <td class="pro-remove">
-                                    <form id="delete-form-{{ $item['product_detail_id'] }}"
-                                        action="{{ route('cart.remove', $item['product_detail_id']) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger"
-                                            onclick="confirmDelete({{ $item['product_detail_id'] }})">
-                                            <i class="pe-7s-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
+    <form id="delete-form-{{ $item['variant_id'] ?? $item['product_id'] }}"
+        action="{{ route('cart.remove', ['productId' => $item['product_id'], 'variantId' => $item['variant_id'] ?? null]) }}"
+        method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger">
+            <i class="pe-7s-trash"></i>
+        </button>
+    </form>
+</td>
 
                             </tr>
                             @endforeach
                         </tbody>
+
                         <!-- Table Body End -->
 
                     </table>
@@ -138,16 +143,7 @@
                                     <td>Tổng giỏ hàng</td>
                                     <td class="sub-total">{{ number_format($subTotal, 0, ',', '.') }} đ</td>
                                 </tr>
-                                <!-- <tr>
-                                    <td>Phí vận chuyển</td>
-                                    <td>{{ number_format(30000, 0, ',', '.') }} đ</td> 
-                                </tr>
-                                <tr class="total">
-                                    <td>Tổng cộng</td>
-                                    <td class="total-amount">
-                                        {{ number_format($total, 0, ',', '.') }} đ
-                                    </td>
-                                </tr> -->
+                                
                             </table>
                         </div>
                         <!-- Responsive Table End -->
@@ -231,7 +227,7 @@ $(document).ready(function() {
                     var subtotalCell = inputField.closest('tr').find('.subtotal-' +
                         productDetailId);
                     var formattedSubtotal = formatNumber(response
-                    .item_price); // Đảm bảo giá được format đúng
+                        .item_price); // Đảm bảo giá được format đúng
 
                     // Cập nhật subtotal cho sản phẩm
                     subtotalCell.text(formattedSubtotal + ' đ');

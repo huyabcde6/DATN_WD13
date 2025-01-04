@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SizeRequet;
+use App\Http\Requests\SizeRequetUpdate;
 use Illuminate\Http\Request;
 use App\Models\Size;
 
 class SizeController extends Controller
 {
-    // public function __construct(){
-    //     $this->middleware('permission:view size', ['only' => ['index']]);
-    //     $this->middleware('permission:create size', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:edit size', ['only' => ['update', 'edit']]);
-    //     $this->middleware('permission:delete size', ['only' => ['destroy']]);
-    // }
+    public function __construct(){
+        $this->middleware('permission:view size', ['only' => ['index']]);
+        $this->middleware('permission:create size', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit size', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:delete size', ['only' => ['destroy']]);
+    }
 
     /**
      * Display a listing of the resource.
@@ -55,7 +56,7 @@ class SizeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SizeRequet $request, string $id)
+    public function update(SizeRequetUpdate $request, string $id)
     {
         $size = Size::findOrFail($id); // Tìm kích thước theo ID
         $size->update([

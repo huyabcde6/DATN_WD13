@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Egulias\EmailValidator\Parser\Comment;
 
-class products extends Model
+class product extends Model
 {
     use HasFactory, SoftDeletes, Sluggable;
 
@@ -27,7 +27,6 @@ class products extends Model
         'updated_at',
         'price',
         'discount_price',
-        'stock_quantity',
         'short_description',
     ];
     protected $casts = [
@@ -50,9 +49,9 @@ class products extends Model
         return $this->belongsTo(categories::class);
     }
 
-    public function productDetails()
+    public function variants()
     {
-        return $this->hasMany(ProductDetail::class, 'products_id');
+        return $this->hasMany(ProductVariant::class);
     }
 
     public function orderDetails()
@@ -68,10 +67,6 @@ class products extends Model
     }
     public function productComments() {
         return $this->hasMany(productComment::class);
-    }
-    public function products()
-    {
-        return $this->hasMany(products::class, 'color_id');
     }
 
 }
