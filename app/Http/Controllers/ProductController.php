@@ -81,58 +81,58 @@ class ProductController extends Controller
     }
 
     public function show($slug)
-{
-    // Lấy sản phẩm với các quan hệ liên quan
-    $product = Product::with([
-        'productImages',
-        'variants.attributes.attributeValue',
-        'categories',
-    ])->where('slug', $slug)->firstOrFail();
+    {
+        // Lấy sản phẩm với các quan hệ liên quan
+        $product = Product::with([
+            'productImages',
+            'variants.attributes.attributeValue',
+            'categories',
+        ])->where('slug', $slug)->firstOrFail();
 
-    $attributeValues = [];
+        $attributeValues = [];
 
-    // Thu thập giá trị attribute_value_id
-    foreach ($product->variants as $variant) {
-        foreach ($variant->attributes as $attribute) {
-            $attributeValues[] = $attribute->attribute_value_id;
+        // Thu thập giá trị attribute_value_id
+        foreach ($product->variants as $variant) {
+            foreach ($variant->attributes as $attribute) {
+                $attributeValues[] = $attribute->attribute_value_id;
+            }
         }
-    }
 
-    // Lấy chi tiết attribute values
-    $attributeDetails = AttributeValue::whereIn('id', $attributeValues)->get();
-    $attributes = [];
+        // Lấy chi tiết attribute values
+        $attributeDetails = AttributeValue::whereIn('id', $attributeValues)->get();
+        $attributes = [];
 
-    foreach ($attributeDetails as $attributeDetail) {
-        $attribute = $attributeDetail->attribute;
-        if (!in_array($attribute, $attributes)) {
-            $attributes[] = $attribute;
+        foreach ($attributeDetails as $attributeDetail) {
+            $attribute = $attributeDetail->attribute;
+            if (!in_array($attribute, $attributes)) {
+                $attributes[] = $attribute;
+            }
         }
+
+        // Thu thập biến thể sản phẩm
+        $variants = $product->variants->map(function ($variant) {
+            return [
+                'variant_id' => $variant->id,
+                'product_code' => $variant->product_code,
+                'price' => $variant->price,
+                'image' => $variant->image,
+                'stock_quantity' => $variant->stock_quantity,
+                'attributes' => $variant->attributes->map(function ($attribute) {
+                    return [
+                        'attribute_id' => $attribute->id,
+                        'attribute_name' => $attribute->attributeValue->attribute->name ?? null,
+                        'attribute_slug' => $attribute->attributeValue->attribute->slug ?? null,
+                        'attribute_value_id' => $attribute->attribute_value_id ?? null,
+                        'attribute_value_value' => $attribute->attributeValue->value ?? null,
+                        'attribute_value_color_code' => $attribute->attributeValue->color_code ?? null,
+                    ];
+                }),
+            ];
+        });
+        $products = Product::with('categories')->get();
+        // Trả về view
+
+        return view('user.sanpham.product_detail', compact('product', 'products', 'variants', 'attributes'));
     }
-
-    // Thu thập biến thể sản phẩm
-    $variants = $product->variants->map(function ($variant) {
-        return [
-            'variant_id' => $variant->id,
-            'product_code' => $variant->product_code,
-            'price' => $variant->price,
-            'image' => $variant->image,
-            'stock_quantity' => $variant->stock_quantity,
-            'attributes' => $variant->attributes->map(function ($attribute) {
-                return [
-                    'attribute_id' => $attribute->id,
-                    'attribute_name' => $attribute->attributeValue->attribute->name ?? null,
-                    'attribute_slug' => $attribute->attributeValue->attribute->slug ?? null,
-                    'attribute_value_id' => $attribute->attribute_value_id ?? null,
-                    'attribute_value_value' => $attribute->attributeValue->value ?? null,
-                    'attribute_value_color_code' => $attribute->attributeValue->color_code ?? null,
-                ];
-            }),
-        ];
-    });
-    $products = Product::with('categories')->get();
-    // Trả về view
-
-    return view('user.sanpham.product_detail', compact('product', 'products', 'variants', 'attributes'));
-}
 
 }

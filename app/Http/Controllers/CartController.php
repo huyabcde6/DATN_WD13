@@ -150,7 +150,11 @@ class CartController extends Controller
         return redirect()->back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại.');
     }
 }
-
+    public function count()
+    {
+        $count = session('cart') ? count(session('cart')) : 0;
+        return response()->json(['count' => $count]);
+    }
 
     
     
