@@ -207,19 +207,16 @@
                                 <h3 class="widget-title">Màu sắc</h3>
                                 <div class="sidebar-body">
                                     <ul class="checkbox-container categories-list">
-                                        @foreach ($colors as $color)
                                         <li>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input filter-color"
-                                                    id="color-{{ $color->color_id }}" name="colors[]"
-                                                    value="{{ $color->color_id }}"
-                                                    {{ in_array($color->color_id, request('colors', [])) ? 'checked' : '' }}>
-                                                <label class="custom-control-label" for="color-{{ $color->color_id }}">
-                                                    {{ $color->value }}
+                                                    >
+                                                <label class="custom-control-label" for="">
+ 
                                                 </label>
                                             </div>
                                         </li>
-                                        @endforeach
+
                                     </ul>
                                 </div>
                             </div>

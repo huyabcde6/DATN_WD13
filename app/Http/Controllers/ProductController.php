@@ -9,7 +9,7 @@ use App\Models\ProductVariantAttribute;
 use App\Models\ProductVariant;
 use App\Models\AttributeValue;
 use App\Models\categories;
-use App\Models\Color;
+
 use App\Models\Order;
 use App\Models\productComment;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ class ProductController extends Controller
         $sort = $request->input('sort');
         $limit = $request->input('limit', 12);
         $categoryFilter = $request->input('category');
-        $colorsFilter = $request->input('colors', []);
+
         $minPrice = $request->input('min_price', 0);
         $maxPrice = $request->input('max_price', 1000000);
         $keyword = $request->input('keyword');
@@ -72,12 +72,12 @@ class ProductController extends Controller
 
         // Lấy tất cả danh mục
         $categories = Categories::where('status', 1)->get();
-        $colors = Color::all();
+
         // Phân trang sản phẩm
         $products = $query->paginate($limit);
 
         // Trả về view với danh sách sản phẩm và danh mục
-        return view('user.sanpham.shop_sidebar', compact('products', 'categories', 'colors'));
+        return view('user.sanpham.shop_sidebar', compact('products', 'categories'));
     }
 
     public function show($slug)

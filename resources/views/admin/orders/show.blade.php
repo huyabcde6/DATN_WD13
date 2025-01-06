@@ -34,14 +34,13 @@
         <div class="card-body">
             <h2 class=" text-center">Sản phẩm trong đơn hàng</h2>
             <div class="table-responsive mx-3">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped text-center">
                     <thead class="thead-light">
                         <tr>
                             <th>#</th>
                             <th>Tên sản phẩm</th>
-                            <th>Hình ảnh</th>
-                            <th>Màu</th>
-                            <th>Size</th>
+                            <th class="text-center">Hình ảnh</th>
+                            <th class="text-center">Phân loại</th>
                             <th>Số lượng</th>
                             <th>Giá</th>
                             <th>Tổng tiền</th>
@@ -52,13 +51,15 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $detail->product_name }}</td>
-                            <td>
+                            <td class="text-center">
                                 <img src="{{ url('storage/' . $detail->product_avata ?? '' )}}"
                                     alt="{{ $detail->product_name }}" class="img-thumbnail"
                                     style="width: 70px; height: auto;">
                             </td>
-                            <td>{{ $detail->color }}</td>
-                            <td>{{ $detail->size }}</td>
+                            <td class="text-center">@foreach($detail->attributes as $attribute)
+                                            {{ $attribute['name'] }}:
+                                            {{ $attribute['value'] }}{{ !$loop->last ? ', ' : '' }}
+                                            @endforeach</td>
                             <td>{{ $detail->quantity }}</td>
                             <td>{{ number_format($detail->price, 0, ',', '.') }} đ</td>
                             <td>{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }} đ</td>

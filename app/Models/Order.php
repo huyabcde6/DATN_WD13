@@ -75,19 +75,17 @@ class Order extends Model
         ]);
 
         // Lưu chi tiết hóa đơn
-        foreach ($order->orderDetails as $orderDetail) {
-            // Lưu vào invoice_details
+        foreach ($this->orderDetails as $orderDetail) {
             $invoice->invoiceDetails()->create([
                 'product_name'  => $orderDetail->product_name,
-                'product_avata' => $orderDetail->product_avata,
+                'product_avata'  => $orderDetail->product_avata,
                 'attributes'    => is_string($orderDetail->attributes) 
                                     ? json_decode($orderDetail->attributes, true) 
-                                    : $orderDetail->attributes, // Chuyển mảng thành JSON gọn gàng
+                                    : $orderDetail->attributes,
                 'quantity'      => $orderDetail->quantity,
                 'price'         => $orderDetail->price,
             ]);
         }
-        
 
         return $invoice;
     }

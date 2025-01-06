@@ -34,7 +34,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         // Sử dụng quan hệ 'status' thay vì 'status_donhang_id'
-        $query = Auth::user()->order()->with(['status', 'orderDetails.products'])->orderBy('created_at', 'desc');
+        $query = Auth::user()->order()->with(['status', 'orderDetails.product'])->orderBy('created_at', 'desc');
 
         // Lọc theo trạng thái nếu có
         if ($request->has('status') && $request->status !== 'all') {
@@ -52,7 +52,7 @@ class OrderController extends Controller
     }
     public function show($id)
     {
-        $order = Order::with(['orderDetails.productDetail.products', 'status'])->findOrFail($id);
+        $order = Order::with(['orderDetails.productVariant.product', 'status'])->findOrFail($id);
         $totalAmount = $order->orderDetails->sum(function ($detail) {
             return $detail->price * $detail->quantity;
         });

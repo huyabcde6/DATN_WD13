@@ -87,7 +87,7 @@ class OrderController extends Controller
     public function show($id)
     {
         // Lấy đơn hàng với các chi tiết và trạng thái
-        $order = Order::with(['orderDetails.productDetail.products', 'status'])
+        $order = Order::with(['orderDetails.productVariant.product', 'status'])
             ->orderBy('created_at', 'desc')
             ->findOrFail($id);
 
@@ -194,6 +194,7 @@ class OrderController extends Controller
             'changed_by' => Auth::id(), // Người thay đổi
         ]);
     }
+
     protected function moveOrderToInvoice(Order $order)
     {
         // Kiểm tra nếu hóa đơn đã tồn tại (tránh trùng lặp)
@@ -223,13 +224,15 @@ class OrderController extends Controller
         // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
         foreach ($order->orderDetails as $orderDetail) {
             $invoice->invoiceDetails()->create([
-                'product_name'  => $orderDetail->name,
-                'product_avata'  => $orderDetail->avata,
-                'color' => $orderDetail->color,
-                'size' => $orderDetail->size,
-                'quantity' => $orderDetail->quantity,
-                'price' => $orderDetail->price,
+                'product_name'  => $orderDetail->product_name,
+                'product_avata' => $orderDetail->product_avata,
+                'attributes'    => is_string($orderDetail->attributes) 
+                                    ? json_decode($orderDetail->attributes, true) 
+                                    : $orderDetail->attributes, // Chuyển mảng thành JSON gọn gàng
+                'quantity'      => $orderDetail->quantity,
+                'price'         => $orderDetail->price,
             ]);
         }
     }
+    
 }

@@ -29,6 +29,6 @@ class InvoiceDetail extends Model
 
     public function product()
     {
-        return $this->belongsTo(products::class);  // Liên kết với bảng 'products'
+        return $this->belongsTo(product::class);  // Liên kết với bảng 'products'
     }
 }

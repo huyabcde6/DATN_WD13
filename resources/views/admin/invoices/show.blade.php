@@ -72,10 +72,36 @@
                                                         alt="{{ $detail->product_name }}" class="img-thumbnail"
                                                         style="width: 70px; height: auto;">
                                                 </td>
-                                                <td>@foreach($detail->attributes as $attribute)
-                                                    {{ $attribute['name'] }}:
-                                                    {{ $attribute['value'] }}{{ !$loop->last ? ', ' : '' }}
-                                                    @endforeach</td>
+                                                <td>
+    @php
+        // Kiểm tra nếu $detail->attributes là chuỗi JSON
+        if (is_string($detail->attributes)) {
+            $attributesData = json_decode($detail->attributes, true); // Giải mã JSON lớp đầu tiên
+        } elseif (is_array($detail->attributes)) {
+            $attributesData = $detail->attributes; // Gán trực tiếp nếu đã là mảng
+        } else {
+            $attributesData = null; // Không hợp lệ
+        }
+
+        // Kiểm tra và giải mã lớp thứ hai nếu tồn tại
+        $innerAttributes = isset($attributesData['attributes']) && is_string($attributesData['attributes'])
+            ? json_decode($attributesData['attributes'], true)
+            : (is_array($attributesData['attributes']) ? $attributesData['attributes'] : null);
+    @endphp
+
+    @if(is_array($innerAttributes))
+        @foreach($innerAttributes as $attribute)
+            @if(is_array($attribute) && isset($attribute['name'], $attribute['value']))
+                {{ $attribute['name'] }}: {{ $attribute['value'] }}{{ !$loop->last ? ', ' : '' }}
+            @else
+                Không hợp lệ
+            @endif
+        @endforeach
+    @else
+        Không có dữ liệu
+    @endif
+</td>
+
                                                 <td>{{ $detail->quantity }}</td>
                                                 <td>{{ number_format($detail->price, 0, ',', '.') }} đ</td>
                                                 <td>{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }}
@@ -114,7 +140,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <p class="mb-0 fw-medium fs-15">
-                                                                        {{ number_format($invoice->discount, 0, ',', '.') }}
+                                                                       - {{ number_format($invoice->discount, 0, ',', '.') }}
                                                                         đ</p>
                                                                 </td>
                                                             </tr>

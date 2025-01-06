@@ -161,30 +161,31 @@ form {
 
                 <!-- Bảng thông tin chi tiết đơn hàng -->
                 <div class="container mt-4">
-                    <table class="table table-bordered text-center">
+                    <table class="table table-bordered table-striped text-center">
                         <thead class="thead-light">
                             <tr>
                                 <th>#</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
-                                <th>Màu</th>
-                                <th>Size</th>
+                                <th>Phân loại</th>
                                 <th>Số lượng</th>
                                 <th>Giá</th>
                                 <th>Tổng tiền</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                             @foreach($order->orderDetails as $key => $detail)
-                            <tr>
+                            <tr >
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $detail->products->name }}</td>
+                                <td >{{ $detail->product_name }}</td>
                                 <td>
-                                    <img src="{{ url('storage/'. $detail->products->avata) }}"
-                                        alt="{{ $detail->products->name }}" style="width: 70px; height: auto;">
+                                    <img src="{{ url('storage/'. $detail->product_avata) }}"
+                                        alt="{{ $detail->product_name }}" style="width: 70px; height: auto;">
                                 </td>
-                                <td>{{ $detail->color }}</td>
-                                <td>{{ $detail->size }}</td>
+                                <td>@foreach($detail->attributes as $attribute)
+                                            {{ $attribute['name'] }}:
+                                            {{ $attribute['value'] }}{{ !$loop->last ? ', ' : '' }}
+                                            @endforeach</td>
                                 <td>{{ $detail->quantity }}</td>
                                 <td>{{ number_format($detail->price, 0, '', ',') }} ₫</td>
                                 <td>{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }} đ</td>
