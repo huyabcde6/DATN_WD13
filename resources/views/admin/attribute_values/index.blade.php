@@ -30,11 +30,11 @@
                     <td>{{ $attributeValue->color_code }}</td>
                     <td>
                         <a href="{{ route('admin.attribute_values.edit', $attributeValue) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('admin.attribute_values.destroy', $attributeValue) }}" method="POST" style="display: inline-block;">
+                        <!-- <form action="{{ route('admin.attribute_values.destroy', $attributeValue) }}" method="POST" style="display: inline-block;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
+                        </form> -->
                     </td>
                 </tr>
             @endforeach

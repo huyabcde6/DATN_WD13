@@ -7,7 +7,7 @@ use App\Http\Requests\CouponRequest;
 use App\Models\categories;
 use App\Models\Coupon_Conditions;
 use App\Models\Coupons;
-use App\Models\products;
+use App\Models\product;
 use Illuminate\Http\Request;
 
 class CouponsController extends Controller
@@ -21,7 +21,7 @@ class CouponsController extends Controller
     public function create()
     {
         // Lấy tất cả sản phẩm và danh mục
-        $products = products::all();
+        $products = product::all();
         $categories = categories::all();
 
         return view('admin.Coupons.addCoupons', compact('products', 'categories'));
@@ -66,7 +66,7 @@ class CouponsController extends Controller
     public function edit($id)
     {
         $coupon = Coupons::findOrFail($id);
-        $products = products::all(); // Lấy danh sách sản phẩm
+        $products = product::all(); // Lấy danh sách sản phẩm
         $categories = categories::all(); // Lấy danh sách danh mục
 
         return view('admin.coupons.editCoupont', compact('coupon', 'products', 'categories'));

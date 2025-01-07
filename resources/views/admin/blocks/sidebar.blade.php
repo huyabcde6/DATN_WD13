@@ -87,12 +87,6 @@
                              <li>
                                  <a class='tp-link' href="{{ route('admin.attribute_values.index') }}">Giá trị biến thể</a>
                              </li>
-                             <li>
-                                 <a class='tp-link' href="{{ route('admin.colors.index') }}">Màu sắc</a>
-                             </li>
-                             <li>
-                                 <a class='tp-link' href="{{ route('admin.sizes.index') }}">Kích thước</a>
-                             </li>
                          </ul>
                      </div>
                  </li>

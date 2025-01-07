@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryProductRequest;
 use App\Http\Requests\CategoryRequest;
 use App\Models\categories;
-use App\Models\products;
+use App\Models\product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -59,7 +59,7 @@ class CategoryProductController extends Controller
     public function create()
     {
 
-        $products = products::whereHas('categories', function ($query) {
+        $products = product::whereHas('categories', function ($query) {
             $query->where('name', 'không xác định');
         })
         ->orWhere('categories_id', null)
@@ -81,9 +81,9 @@ class CategoryProductController extends Controller
                 'status' => $request->boolean('status') // Dùng phương thức boolean để xử lý đúng kiểu boolean
 
             ]);
-            if ($request->has('products')) {
-                foreach ($request->products as $productId) {
-                    $product =   products::find($productId);
+            if ($request->has('product')) {
+                foreach ($request->product as $productId) {
+                    $product =   product::find($productId);
                     $product->categories_id = $category->id;
                     $product->save();
                 }
@@ -105,7 +105,7 @@ class CategoryProductController extends Controller
     public function edit($id)
     {
         $category = categories::findOrFail($id);
-        $products = products::where('categories_id', 13)->orWhere('categories_id', null)->get();
+        $products = product::where('categories_id', 13)->orWhere('categories_id', null)->get();
 
         return view('admin.categories.edit', compact('category', 'products'));
     }
@@ -124,8 +124,8 @@ class CategoryProductController extends Controller
                 'status' => $request->boolean('status')
             ]);
             if ($request->has('products')) {
-                foreach ($request->products as $productId) {
-                    $product =   products::find($productId);
+                foreach ($request->product as $productId) {
+                    $product =   product::find($productId);
                     $product->categories_id = $category->id;
                     $product->save();
                 }
@@ -166,7 +166,7 @@ class CategoryProductController extends Controller
         }
 
         // Cập nhật tất cả sản phẩm trong danh mục này về danh mục mặc định
-        products::where('categories_id', $id)->update(['categories_id' => $defaultCategory->id]);
+        product::where('categories_id', $id)->update(['categories_id' => $defaultCategory->id]);
 
         // Xóa danh mục
         $category->delete();
