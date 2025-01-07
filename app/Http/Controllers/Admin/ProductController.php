@@ -312,7 +312,6 @@ class ProductController extends Controller
         $categories = categories::where('status', true)->get();
         $attributes = Attribute::with('values')->get();
         $usedAttributes = $this->processUseAttributes($product);
-        
         $this->processVariants($product);
         $data = [
             'product' => $product,
@@ -396,12 +395,31 @@ class ProductController extends Controller
         return $variantsData;
     }
 
-    public function show(string $id)
+    public function show($id)
     {
-        $product = products::findOrFail($id);
+        // Lấy sản phẩm theo ID cùng với các biến thể và thuộc tính của chúng
+        $product = Product::with(['variants.attributes.attributeValue.attribute', 'productImages'])->findOrFail($id);
+        $attributes = Attribute::with('values')->get();
+        // Lấy các thuộc tính đã sử dụng trong sản phẩm
+        $usedAttributes = $this->processUseAttributes($product);
+        $this->processVariants($product);
+        // Lấy danh sách danh mục sản phẩm để hiển thị
+        $categories = categories::all();
+        // Trả về view hiển thị sản phẩm chi tiết
+        return view('admin.products.show', compact('product', 'usedAttributes', 'categories'));
+    }
+    private function processUsedAttributes($product)
+    {
+        // Tạo mảng lưu các thuộc tính của các biến thể đã được sử dụng
+        $usedAttributes = [];
 
-        $variants = $product->productDetails;
-        return view('admin.products.show', compact('product', 'variants'));
+        foreach ($product->variants as $variant) {
+            foreach ($variant->attributes as $attribute) {
+                $usedAttributes[$attribute->attribute_id] = $attribute->attribute;
+            }
+        }
+
+        return $usedAttributes;
     }
 
     public function destroy($id)

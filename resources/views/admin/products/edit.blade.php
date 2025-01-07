@@ -1073,18 +1073,6 @@ $(document).ready(function() {
         return '';
     }
 
-
-    // Hiển thị preview ảnh khi người dùng chọn ảnh
-    // $(document).on('change', 'input[name="new_variant_images[]"]', function(e) {
-    //     const reader = new FileReader();
-    //     const imgPreview = $(this).closest('td').find('.img-preview');
-
-    //     reader.onload = function(e) {
-    //         imgPreview.attr('src', e.target.result);
-    //     }
-
-    //     reader.readAsDataURL(this.files[0]);
-    // });
     $(document).on('change', '.variant-image-input', function(e) {
         const reader = new FileReader();
         const imgPreview = $(this).closest('td').find('.img-preview'); // Tìm ảnh trong cùng td
@@ -1274,13 +1262,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const MAX_KEYWORDS_LENGTH = 255;
     const MAX_DESCRIPTION_LENGTH = 160;
 
-    const metaTitleInput = document.querySelector('input[name="meta_title"]');
-    const metaKeywordsInput = document.querySelector('input[name="meta_keywords"]');
-    const metaDescriptionInput = document.querySelector('textarea[name="meta_description"]');
-
-    const metaTitleCounter = document.getElementById('meta-title-counter');
-    const metaKeywordsCounter = document.getElementById('meta-keywords-counter');
-    const metaDescriptionCounter = document.getElementById('meta-description-counter');
 
     function updateCounter(input, counter, maxLength) {
         const remaining = maxLength - input.value.length;
@@ -1303,28 +1284,6 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault(); // Chặn ngay lập tức
         }
     }
-
-    // Thêm sự kiện `keydown` và `input` cho các trường
-    metaTitleInput.addEventListener("keydown", (event) =>
-        handleKeydownEvent(event, metaTitleInput, MAX_TITLE_LENGTH)
-    );
-    metaTitleInput.addEventListener("input", () =>
-        handleInputEvent(metaTitleInput, metaTitleCounter, MAX_TITLE_LENGTH)
-    );
-
-    metaKeywordsInput.addEventListener("keydown", (event) =>
-        handleKeydownEvent(event, metaKeywordsInput, MAX_KEYWORDS_LENGTH)
-    );
-    metaKeywordsInput.addEventListener("input", () =>
-        handleInputEvent(metaKeywordsInput, metaKeywordsCounter, MAX_KEYWORDS_LENGTH)
-    );
-
-    metaDescriptionInput.addEventListener("keydown", (event) =>
-        handleKeydownEvent(event, metaDescriptionInput, MAX_DESCRIPTION_LENGTH)
-    );
-    metaDescriptionInput.addEventListener("input", () =>
-        handleInputEvent(metaDescriptionInput, metaDescriptionCounter, MAX_DESCRIPTION_LENGTH)
-    );
 });
 </script>
 @endsection

@@ -305,10 +305,10 @@ class OrderController extends Controller
                     'status_donhang_id' => StatusDonHang::getIdByType(StatusDonHang::DA_HUY),
                 ]);
                 foreach ($order->orderDetails as $orderDetail) {
-                    $productDetail = $orderDetail->productDetail;
-                    if ($productDetail) {
-                        $productDetail->quantity += $orderDetail->quantity; // Cộng lại số lượng sản phẩm
-                        $productDetail->save();
+                    $productVariant = $orderDetail->productVariant;
+                    if ($productVariant) {
+                        $productVariant->stock_quantity += $orderDetail->quantity; // Cộng lại số lượng sản phẩm
+                        $productVariant->save();
                     }
                 }
     
@@ -346,6 +346,17 @@ class OrderController extends Controller
                 // Kiểm tra hành động hủy đơn hàng hoặc giao hàng
                 if ($request->has('huy_don_hang')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::DA_HUY);
+                    foreach ($order->orderDetails as $orderDetail) {
+                        $productVariant = $orderDetail->productVariant;
+                        if ($productVariant) {
+                            // Cộng lại số lượng sản phẩm vào kho
+                            $productVariant->stock_quantity += $orderDetail->quantity;
+                            $productVariant->save();
+                        } else {
+                            // Nếu không có variant, ghi lại log để theo dõi
+                            Log::warning("Không tìm thấy productVariant cho đơn hàng chi tiết ID: " . $orderDetail->id);
+                        }
+                    }
                 } elseif ($request->has('hoan_thanh')) {
                     $params['status_donhang_id'] = StatusDonHang::getIdByType(StatusDonHang::HOAN_THANH);
                     $params['payment_status'] = 'đã thanh toán';

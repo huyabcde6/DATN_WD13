@@ -137,9 +137,31 @@ class OrderController extends Controller
                 if ($statusId == 7 && $order->method == 'VNPAY') {
                     // Nếu thanh toán qua VNPAY và trạng thái là 7, thay đổi trạng thái thanh toán thành "đã hoàn lại"
                     $order->payment_status = 'đã hoàn lại';
+                    foreach ($order->orderDetails as $orderDetail) {
+                        $productVariant = $orderDetail->productVariant;
+                        if ($productVariant) {
+                            // Cộng lại số lượng sản phẩm vào kho
+                            $productVariant->stock_quantity += $orderDetail->quantity;
+                            $productVariant->save();
+                        } else {
+                            // Nếu không có variant, ghi lại log để theo dõi
+                            Log::warning("Không tìm thấy productVariant cho đơn hàng chi tiết ID: " . $orderDetail->id);
+                        }
+                    }
                 } elseif ($statusId == 7) {
                     // Nếu không phải VNPAY và trạng thái là 7, thay đổi thanh toán thành "thất bại"
                     $order->payment_status = 'thất bại';
+                    foreach ($order->orderDetails as $orderDetail) {
+                        $productVariant = $orderDetail->productVariant;
+                        if ($productVariant) {
+                            // Cộng lại số lượng sản phẩm vào kho
+                            $productVariant->stock_quantity += $orderDetail->quantity;
+                            $productVariant->save();
+                        } else {
+                            // Nếu không có variant, ghi lại log để theo dõi
+                            Log::warning("Không tìm thấy productVariant cho đơn hàng chi tiết ID: " . $orderDetail->id);
+                        }
+                    }
                 }                
             } elseif ($order->status_donhang_id == 2 && $statusId == 3) {
                 $order->status_donhang_id = $statusId;
