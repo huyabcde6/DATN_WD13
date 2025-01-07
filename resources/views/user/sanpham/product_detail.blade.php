@@ -143,8 +143,10 @@
                     <!-- Stock Quantity Start -->
                     <div class="stock-quantity mb-3">
                         <span id="current-stock">
-                            Số lượng: <span id="stock-value">
-                                {{ $variants->sum('stock_quantity') }}
+                            Số lượng: 
+                            <span id="stock-value" 
+                                class="{{ $variants->sum('stock_quantity') == 0 ? 'text-danger' : '' }}">
+                                {{ $variants->sum('stock_quantity') == 0 ? 'Hết hàng' : $variants->sum('stock_quantity') }}
                             </span>
                         </span>
                     </div>
@@ -612,11 +614,30 @@
             }
                 document.getElementById('current-sku').textContent = "SKU: " + matchingVariant.product_code;
                 document.getElementById('current-price').textContent = new Intl.NumberFormat().format(matchingVariant.price) + " đ";
-                document.getElementById('stock-value').textContent = matchingVariant.stock_quantity;
+                // Kiểm tra nếu số lượng là 0, hiển thị "Hết hàng" màu đỏ, ngược lại hiển thị số lượng
+                const stockDisplay = matchingVariant.stock_quantity === 0 ? 'Hết hàng' : matchingVariant.stock_quantity;
+                const stockElement = document.getElementById('stock-value');
+                stockElement.textContent = stockDisplay;
+
+                // Nếu số lượng là 0, thêm lớp CSS để làm chữ đỏ
+                if (matchingVariant.stock_quantity === 0) {
+                    stockElement.style.color = 'red';
+                } else {
+                    stockElement.style.color = ''; // Khôi phục lại màu chữ mặc định
+                }
             } else {
                 // Hiển thị SKU mặc định và tổng số lượng tồn kho
                 document.getElementById('current-sku').textContent = "SKU: " + defaultSKU;
-                document.getElementById('stock-value').textContent = totalStockQuantity;
+                const stockDisplay = totalStockQuantity === 0 ? 'Hết hàng' : totalStockQuantity;
+                const stockElement = document.getElementById('stock-value');
+                stockElement.textContent = stockDisplay;
+
+                // Nếu tổng số lượng là 0, thêm lớp CSS để làm chữ đỏ
+                if (totalStockQuantity === 0) {
+                    stockElement.style.color = 'red';
+                } else {
+                    stockElement.style.color = ''; // Khôi phục lại màu chữ mặc định
+                }
             }
         }
         // Xử lý sự kiện thêm vào giỏ hàng
@@ -705,7 +726,6 @@
                 }
             });
         }
-
     });
 </script>
 

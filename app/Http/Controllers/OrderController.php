@@ -116,110 +116,111 @@ class OrderController extends Controller
      * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
     public function store(Request $request)
-{
-    if ($request->isMethod('POST')) {
-        DB::beginTransaction();
-        try {
-            // Chuẩn bị dữ liệu cho đơn hàng
-            $params = $request->except('_token');
-            $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
-            $params['date_order'] = now(); // Thời gian đặt hàng
-            $params['status_donhang_id'] = 1;
-            $params['payment_status'] = 'Chưa thanh toán'; // Trạng thái mặc định
+    {
+        if ($request->isMethod('POST')) {
+            DB::beginTransaction();
+            try {
+                // Chuẩn bị dữ liệu cho đơn hàng
+                $params = $request->except('_token');
+                $params['order_code'] = $this->generateUniqueOrderCode(); // Tạo mã đơn hàng duy nhất
+                $params['date_order'] = now(); // Thời gian đặt hàng
+                $params['status_donhang_id'] = 1;
+                $params['payment_status'] = 'Chưa thanh toán'; // Trạng thái mặc định
 
-            // Tạo đơn hàng
-            $order = Order::create($params);
-            $orderId = $order->id;
-            $carts = Session::get('cart', []); // Giỏ hàng từ session
+                // Tạo đơn hàng
+                $order = Order::create($params);
+                $orderId = $order->id;
+                $carts = Session::get('cart', []); // Giỏ hàng từ session
 
-            if ($request->mua === 'muangay') {
-                // Trường hợp "Mua ngay"
-                $productVariant = ProductVariant::with('attributes.attributeValue')->find($request->product_variant_id);
-
-                if (!$productVariant) {
-                    throw new \Exception('Biến thể sản phẩm không tồn tại.');
-                }
-
-                $order->orderDetails()->create([
-                    'order_id' => $orderId,
-                    'product_variant_id' => $productVariant->id,
-                    'quantity' => $request->quantity,
-                    'attributes' => $productVariant->attributes->map(function ($attr) {
-                        return [
-                            'name' => $attr->attributeValue->attribute->name,
-                            'value' => $attr->attributeValue->value,
-                        ];
-                    }),
-                    'price' => $request->price,
-                    'product_name' => $productVariant->product->name ?? 'Unknown',
-                    'product_avata' => $productVariant->product->avata ?? null,
-                ]);
-
-                // Giảm số lượng sản phẩm trong kho
-                if ($productVariant->stock_quantity >= $request->quantity) {
-                    $productVariant->stock_quantity -= $request->quantity;
-                    $productVariant->save();
-                } else {
-                    throw new \Exception('Số lượng sản phẩm không đủ trong kho.');
-                }
-            } else {
-                // Trường hợp "Thanh toán giỏ hàng"
-                foreach ($carts as $item) {
-                    $productVariant = ProductVariant::with('attributes.attributeValue')->find($item['variant_id']);
+                if ($request->mua === 'muangay') {
+                    // Trường hợp "Mua ngay"
+                    $productVariant = ProductVariant::with('attributes.attributeValue')->find($request->product_variant_id);
 
                     if (!$productVariant) {
                         throw new \Exception('Biến thể sản phẩm không tồn tại.');
                     }
 
+                    // Kiểm tra lại số lượng kho trước khi giảm
+                    if ($productVariant->stock_quantity < $request->quantity) {
+                        throw new \Exception('Số lượng sản phẩm không đủ trong kho.');
+                    }
+
+                    // Cập nhật số lượng sản phẩm trong kho
+                    $productVariant->stock_quantity -= $request->quantity;
+                    $productVariant->save();
+
                     $order->orderDetails()->create([
                         'order_id' => $orderId,
                         'product_variant_id' => $productVariant->id,
-                        'quantity' => $item['quantity'],
+                        'quantity' => $request->quantity,
                         'attributes' => $productVariant->attributes->map(function ($attr) {
                             return [
                                 'name' => $attr->attributeValue->attribute->name,
                                 'value' => $attr->attributeValue->value,
                             ];
                         }),
-                        'price' => $item['price'],
+                        'price' => $request->price,
                         'product_name' => $productVariant->product->name ?? 'Unknown',
                         'product_avata' => $productVariant->product->avata ?? null,
                     ]);
+                } else {
+                    // Trường hợp "Thanh toán giỏ hàng"
+                    foreach ($carts as $item) {
+                        $productVariant = ProductVariant::with('attributes.attributeValue')->find($item['variant_id']);
 
-                    // Giảm số lượng sản phẩm trong kho
-                    if ($productVariant->stock_quantity >= $item['quantity']) {
+                        if (!$productVariant) {
+                            throw new \Exception('Biến thể sản phẩm không tồn tại.');
+                        }
+
+                        // Kiểm tra lại số lượng kho trước khi giảm
+                        if ($productVariant->stock_quantity < $item['quantity']) {
+                            throw new \Exception('Số lượng sản phẩm không đủ trong kho');
+                        }
+
+                        // Cập nhật số lượng sản phẩm trong kho
                         $productVariant->stock_quantity -= $item['quantity'];
                         $productVariant->save();
-                    } else {
-                        throw new \Exception('Số lượng sản phẩm không đủ trong kho cho biến thể ID: ' . $productVariant->id);
+
+                        $order->orderDetails()->create([
+                            'order_id' => $orderId,
+                            'product_variant_id' => $productVariant->id,
+                            'quantity' => $item['quantity'],
+                            'attributes' => $productVariant->attributes->map(function ($attr) {
+                                return [
+                                    'name' => $attr->attributeValue->attribute->name,
+                                    'value' => $attr->attributeValue->value,
+                                ];
+                            }),
+                            'price' => $item['price'],
+                            'product_name' => $productVariant->product->name ?? 'Unknown',
+                            'product_avata' => $productVariant->product->avata ?? null,
+                        ]);
                     }
                 }
+
+                // Kiểm tra phương thức thanh toán
+                if ($request->input('method') === "VNPAY") {
+                    DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
+                    return $this->processVNP($order);
+                }
+
+                // Gửi email xác nhận đơn hàng
+                Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
+
+                // Xóa giỏ hàng
+                Session::forget('cart');
+
+                DB::commit();
+                return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Đơn hàng đã được tạo thành công.');
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('Lỗi tạo đơn hàng: ' . $e->getMessage());
+                return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra trong quá trình tạo đơn hàng: ' . $e->getMessage());
             }
-
-            // Kiểm tra phương thức thanh toán
-            if ($request->input('method') === "VNPAY") {
-                DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
-                return $this->processVNP($order);
-            }
-
-            // Gửi email xác nhận đơn hàng
-            Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
-
-            // Xóa giỏ hàng
-            Session::forget('cart');
-
-            DB::commit();
-            return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Đơn hàng đã được tạo thành công.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Lỗi tạo đơn hàng: ' . $e->getMessage());
-            return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra trong quá trình tạo đơn hàng: ' . $e->getMessage());
         }
+
+        return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
     }
-
-    return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
-}
-
 
     private function processVNP($order)
     {
