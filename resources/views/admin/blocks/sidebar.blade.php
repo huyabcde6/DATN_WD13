@@ -82,10 +82,10 @@
                      <div class="collapse" id="sidebar">
                          <ul class="nav-second-level">
                              <li>
-                                 <a class='tp-link' href="{{ route('admin.colors.index') }}">Màu sắc</a>
+                                 <a class='tp-link' href="{{ route('admin.attributes.index') }}">Thuộc tính biến thể</a>
                              </li>
                              <li>
-                                 <a class='tp-link' href="{{ route('admin.sizes.index') }}">Kích thước</a>
+                                 <a class='tp-link' href="{{ route('admin.attribute_values.index') }}">Giá trị biến thể</a>
                              </li>
                          </ul>
                      </div>

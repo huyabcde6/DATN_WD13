@@ -81,7 +81,7 @@ Danh sách sản phẩm
                                     Giá
                                 </th>
                                 <th class="text-center">Giá giảm</th>
-                                <th class="text-center">Số lượng tồn kho</th>
+                                
                                 <th class="text-center">
                                     Ngày tạo
                                 </th>
@@ -103,14 +103,7 @@ Danh sách sản phẩm
                                 <td>{{ number_format($product->price, 0, '', '.') }} đ</td>
                                 <td>{{ $product->discount_price ? number_format($product->discount_price, 0, '', '.') . ' đ' : 'Không có' }}
                                 </td>
-                                <td>
-                                    {{ $product->productDetails->sum('quantity') }}
-                                    @if ($product->productDetails->sum('quantity') <= 5) <span class="text-danger">(Sắp
-                                        hết hàng!)</span>
-                                        @elseif ($product->productDetails->sum('quantity') <= 20) <span
-                                            class="text-warning">(Số lượng thấp)</span>
-                                            @endif
-                                </td>
+                                
 
                                 <td>{{ $product->created_at->format('d/m/Y') }}</td>
                                 <td class="{{ $product->iS_show ? 'text-success' : 'text-danger' }}">

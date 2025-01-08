@@ -87,7 +87,7 @@ class OrderController extends Controller
     public function show($id)
     {
         // Lấy đơn hàng với các chi tiết và trạng thái
-        $order = Order::with(['orderDetails.productDetail.products', 'status'])
+        $order = Order::with(['orderDetails.productVariant.product', 'status'])
             ->orderBy('created_at', 'desc')
             ->findOrFail($id);
 
@@ -134,9 +134,35 @@ class OrderController extends Controller
             // Chuyển đổi trạng thái đơn hàng theo quy định
             if ($order->status_donhang_id == 1 && in_array($statusId, [2, 7])) {
                 $order->status_donhang_id = $statusId;
-                if ($statusId == 7) {
+                if ($statusId == 7 && $order->method == 'VNPAY') {
+                    // Nếu thanh toán qua VNPAY và trạng thái là 7, thay đổi trạng thái thanh toán thành "đã hoàn lại"
+                    $order->payment_status = 'đã hoàn lại';
+                    foreach ($order->orderDetails as $orderDetail) {
+                        $productVariant = $orderDetail->productVariant;
+                        if ($productVariant) {
+                            // Cộng lại số lượng sản phẩm vào kho
+                            $productVariant->stock_quantity += $orderDetail->quantity;
+                            $productVariant->save();
+                        } else {
+                            // Nếu không có variant, ghi lại log để theo dõi
+                            Log::warning("Không tìm thấy productVariant cho đơn hàng chi tiết ID: " . $orderDetail->id);
+                        }
+                    }
+                } elseif ($statusId == 7) {
+                    // Nếu không phải VNPAY và trạng thái là 7, thay đổi thanh toán thành "thất bại"
                     $order->payment_status = 'thất bại';
-                }
+                    foreach ($order->orderDetails as $orderDetail) {
+                        $productVariant = $orderDetail->productVariant;
+                        if ($productVariant) {
+                            // Cộng lại số lượng sản phẩm vào kho
+                            $productVariant->stock_quantity += $orderDetail->quantity;
+                            $productVariant->save();
+                        } else {
+                            // Nếu không có variant, ghi lại log để theo dõi
+                            Log::warning("Không tìm thấy productVariant cho đơn hàng chi tiết ID: " . $orderDetail->id);
+                        }
+                    }
+                }                
             } elseif ($order->status_donhang_id == 2 && $statusId == 3) {
                 $order->status_donhang_id = $statusId;
             } elseif ($order->status_donhang_id == 3 && $statusId == 4) {
@@ -166,6 +192,10 @@ class OrderController extends Controller
             // Lưu vào bảng lịch sử thay đổi trạng thái
             $this->logStatusChange($order, $previousStatus, $currentStatus);
             // Gửi email thông báo
+
+            // Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
+
+
             broadcast(new OderEvent($order));
             DB::commit();
             return back()->with('success', 'Đơn hàng đã được cập nhật thành công.');
@@ -186,6 +216,7 @@ class OrderController extends Controller
             'changed_by' => Auth::id(), // Người thay đổi
         ]);
     }
+
     protected function moveOrderToInvoice(Order $order)
     {
         // Kiểm tra nếu hóa đơn đã tồn tại (tránh trùng lặp)
@@ -215,13 +246,15 @@ class OrderController extends Controller
         // Sao chép chi tiết đơn hàng sang chi tiết hóa đơn
         foreach ($order->orderDetails as $orderDetail) {
             $invoice->invoiceDetails()->create([
-                'product_name'  => $orderDetail->name,
-                'product_avata'  => $orderDetail->avata,
-                'color' => $orderDetail->color,
-                'size' => $orderDetail->size,
-                'quantity' => $orderDetail->quantity,
-                'price' => $orderDetail->price,
+                'product_name'  => $orderDetail->product_name,
+                'product_avata' => $orderDetail->product_avata,
+                'attributes'    => is_string($orderDetail->attributes) 
+                                    ? json_decode($orderDetail->attributes, true) 
+                                    : $orderDetail->attributes, // Chuyển mảng thành JSON gọn gàng
+                'quantity'      => $orderDetail->quantity,
+                'price'         => $orderDetail->price,
             ]);
         }
     }
+    
 }

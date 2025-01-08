@@ -50,8 +50,7 @@
                                     <tr style="background-color: #f5f5f5;">
                                         <th style="padding: 10px; font-size: 14px; color: #333;">#</th>
                                         <th style="padding: 10px; font-size: 14px; color: #333;">Tên sản phẩm</th>
-                                        <th style="padding: 10px; font-size: 14px; color: #333;">Màu</th>
-                                        <th style="padding: 10px; font-size: 14px; color: #333;">Size</th>
+                                        <th style="padding: 10px; font-size: 14px; color: #333;">Phân loại</th>
                                         <th style="padding: 10px; font-size: 14px; color: #333;">Số lượng</th>
                                         <th style="padding: 10px; font-size: 14px; color: #333;">Giá</th>
                                         <th style="padding: 10px; font-size: 14px; color: #333;">Tổng</th>
@@ -61,9 +60,11 @@
                                     @foreach($order->orderDetails as $key => $detail)
                                     <tr>
                                         <td style="padding: 10px; font-size: 14px; color: #333;">{{ $key + 1 }}</td>
-                                        <td style="padding: 10px; font-size: 14px; color: #333;">{{ $detail->products->name }}</td>
-                                        <td style="padding: 10px; font-size: 14px; color: #333;">{{ $detail->color }}</td>
-                                        <td style="padding: 10px; font-size: 14px; color: #333;">{{ $detail->size }}</td>
+                                        <td style="padding: 10px; font-size: 14px; color: #333;">{{ $detail->product_name }}</td>
+                                        <td style="padding: 10px; font-size: 14px; color: #333;">@foreach($detail->attributes as $attribute)
+                                            {{ $attribute['name'] }}:
+                                            {{ $attribute['value'] }}{{ !$loop->last ? ', ' : '' }}
+                                            @endforeach</td>
                                         <td style="padding: 10px; font-size: 14px; color: #333;">{{ $detail->quantity }}</td>
                                         <td style="padding: 10px; font-size: 14px; color: #333;">{{ number_format($detail->price, 0, ',', '.') }} ₫</td>
                                         <td style="padding: 10px; font-size: 14px; color: #333;">{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }} ₫</td>

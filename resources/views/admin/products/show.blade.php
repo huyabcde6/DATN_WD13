@@ -38,23 +38,22 @@
                             <div class="col-6">
                                 <!-- Product Information -->
                                 <ul class="list-group">
-                                    <li class="list-group-item border-0 fs-5">Tên: <strong>{{ $product->name }}</strong></li>
+                                    <li class="list-group-item border-0 fs-5">Tên: <strong>{{ $product->name }}</strong>
+                                    </li>
                                     <li class="list-group-item border-0 fs-6">Giá:
                                         <strong>{{ number_format($product->price, 0, ',', '.') }} VNĐ</strong>
                                     </li>
                                     <li class="list-group-item border-0 fs-6">Giá khuyến mãi:
                                         <strong>{{ number_format($product->discount_price, 0, ',', '.') }} VNĐ</strong>
                                     </li>
-                                    <li class="list-group-item border-0 fs-6">Số lượng trong kho:
-                                        <strong>{{ $product->productDetails->sum('quantity') }}</strong>
-                                    </li>
+
                                     <li class="list-group-item border-0 fs-6">Mô tả ngắn:
                                         <strong>{{ $product->short_description }}</strong>
                                     </li>
                                     <li class="list-group-item border-0">Mổ tả chi tiết:
                                         <strong>{!! $product->description !!}</strong>
                                     </li>
-                                    
+
                                 </ul>
 
                             </div>
@@ -83,33 +82,38 @@
                         <table class="table table-striped text-center">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Mã biến thể</th>
-                                    <th>Ảnh</th>
-                                    <th>Kích thước</th>
-                                    <th>Màu</th>
+                                    <th>Mã sản phẩm</th>
                                     <th>Giá</th>
-                                    <th>Giá khuyến mãi</th>
-                                    <th>Số lượng</th>
+                                    <th>Số lượng tồn</th>
+                                    <th>Ảnh</th>
+                                    <th>Thuộc tính</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($variants as $variant)
+                                @foreach ($product->variants as $variant)
                                 <tr>
-                                    <td>{{ $variant->id }}</td>
                                     <td>{{ $variant->product_code }}</td>
+                                    <td>{{ number_format($variant->price) }} đ</td>
+                                    <td>{{ $variant->stock_quantity }}</td>
                                     <td>
-                                        <img src="{{ url('storage/'. $variant->image) }}" alt="Hình ảnh sản phẩm"
-                                            style="width: 100px; height: auto;">
+                                        @if ($variant->image)
+                                        <img src="{{ asset('storage/' . $variant->image) }}" alt="Variant Image"
+                                            width="100" />
+                                        @endif
                                     </td>
-                                    <td>{{ $variant->size->value }}</td>
-                                    <td>{{ $variant->color->value }}</td>
-                                    <td>{{ $variant->price }}</td>
-                                    <td>{{ $variant->discount_price }}</td>
-                                    <td>{{ $variant->quantity }}</td>
+                                    <td>
+                                        @foreach ($variant->attributes as $attribute)
+                                        <!-- Truy xuất giá trị thuộc tính từ attribute_value -->
+                                        @php
+                                        $attribute_value = $attribute->attributeValue;
+                                        @endphp
+                                        <span>({{ $attribute_value->value }})</span>
+                                        @endforeach
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
+
                         </table>
                     </div>
                 </div>

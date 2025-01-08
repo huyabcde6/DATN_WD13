@@ -13,9 +13,9 @@ class categories extends Model
     protected $table = 'categories';
     protected $fillable = ['name', 'slug', 'status'];
 
-    public function products()
+    public function product()
     {
-        return $this->hasMany(products::class, 'categories_id', 'id');
+        return $this->hasMany(product::class, 'categories_id', 'id');
     }
 
     public function updateStatus($status)

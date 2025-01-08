@@ -33,7 +33,8 @@ Vai trò & Quyền
                                 <th>Tên</th>
                                 <th>Email</th>
                                 <th>Vai trò</th>
-                                <th>Hành động</th>
+                                
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -49,12 +50,7 @@ Vai trò & Quyền
                                     @endforeach
                                     @endif
                                 </td>
-                                <td>
-                                    <a href="{{ url('userAdmin/' . $user->id . '/edit') }}" class="btn btn-sm btn-warning mx-1"
-                                        title="Chỉnh sửa">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
+                                
                             </tr>
                             @endforeach
                         </tbody>

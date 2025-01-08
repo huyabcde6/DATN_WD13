@@ -43,8 +43,7 @@
                                         <th>#</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Hình ảnh</th>
-                                        <th>Màu</th>
-                                        <th>Size</th>
+                                        <th>Phân loại</th>
                                         <th>Số lượng</th>
                                         <th>Giá</th>
                                         <th>Tổng tiền</th>
@@ -52,19 +51,24 @@
                                 </thead>
                                 <tbody>
                                     @foreach($order->orderDetails as $key => $detail)
-                                    <tr>
+                                    <tr class="align-items-center" style="text-align: center; vertical-align: middle;">
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $detail->products->name }}</td>
+                                        <td>{{ $detail->product_name }}</td>
                                         <td>
-                                            <img src="{{ url('storage/'. $detail->products->avata) }}"
-                                                alt="{{ $detail->products->name }}" style="width: 70px; height: auto;">
+                                            <img src="{{ url('storage/'. $detail->product_avata) }}"
+                                                alt="{{ $detail->product_name }}" style="width: 70px; height: auto;">
                                         </td>
-                                        <td>{{ $detail->color }}</td>
-                                        <td>{{ $detail->size }}</td>
+                                        <td>
+                                            @foreach($detail->attributes as $attribute)
+                                            {{ $attribute['name'] }}:
+                                            {{ $attribute['value'] }}{{ !$loop->last ? ', ' : '' }}
+                                            @endforeach
+                                        </td>
                                         <td>{{ $detail->quantity }}</td>
                                         <td>{{ number_format($detail->price, 0, '', ',') }} ₫</td>
                                         <td>{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }} đ</td>
                                     </tr>
+
                                     @endforeach
                                 </tbody>
                             </table>

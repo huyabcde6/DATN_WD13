@@ -18,10 +18,12 @@ class InvoiceController extends Controller
     }
 
     public function show($id)
-    {
+    {   
         $invoice = Invoice::with('status')->findOrFail($id);
+        // foreach ($invoice->invoiceDetails as => $detail) {
+        //     dd($detail); // Dừng lại và kiểm tra detail đầu tiên
+        // }
         return view('admin.invoices.show', compact('invoice'));
-        
     }
-
+    
 }

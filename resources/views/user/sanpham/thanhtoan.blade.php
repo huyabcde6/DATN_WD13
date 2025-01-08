@@ -173,8 +173,8 @@
                                         @endif
 
                                         <td class="cart-product-name text-start">
-                                            <a href="{{ route('product.show', $item['product_id']) }}">
-                                                {{ $item['product_name'] }}
+                                            <a href="{{ route('product.show', $item['slug']) }}">
+                                                {{ $item['name'] }}
                                             </a>
                                             <strong> × {{ $item['quantity'] }}</strong>
                                         </td>
@@ -222,38 +222,12 @@
                             <div class="d-flex flex-column">
                                 <div class="d-flex align-items-center mb-2">
                                     <input type="radio" name="method" value="COD" id="cod">
-                                    <input type="hidden" name="mua" value="{{$mua}}">
-                                    @if($mua === 'muangay')
-                                    @foreach ($cartItems as $item)
-                                    <input type="hidden" name="product_detail_id"
-                                        value="{{ $item['product_detail_id'] }}">
-                                    <input type="hidden" name="size" value="{{ $item['size'] }}">
-                                    <input type="hidden" name="color" value="{{ $item['color'] }}">
-                                    <input type="hidden" name="quantity" value="{{ $item['quantity'] }}">
-                                    <input type="hidden" name="product_name" value="{{ $item['product_name'] }}">
-                                    <input type="hidden" name="product_id" value="{{ $item['product_id'] }}">
-                                    <input type="hidden" name="price" value="{{ $item['price'] }}">
-                                    <input type="hidden" name="image" value="{{ $item['image'] }}">
-                                    @endforeach
-                                    @endif
+                                    
                                     <label for="cod" class="ms-2">Thanh toán khi nhận hàng</label>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <input type="radio" name="method" value="VNPAY" id="vnpay">
-                                    <input type="hidden" name="mua" value="{{$mua}}">
-                                    @if($mua === 'muangay')
-                                    @foreach ($cartItems as $item)
-                                    <input type="hidden" name="product_detail_id"
-                                        value="{{ $item['product_detail_id'] }}">
-                                    <input type="hidden" name="size" value="{{ $item['size'] }}">
-                                    <input type="hidden" name="color" value="{{ $item['color'] }}">
-                                    <input type="hidden" name="quantity" value="{{ $item['quantity'] }}">
-                                    <input type="hidden" name="product_name" value="{{ $item['product_name'] }}">
-                                    <input type="hidden" name="product_id" value="{{ $item['product_id'] }}">
-                                    <input type="hidden" name="price" value="{{ $item['price'] }}">
-                                    <input type="hidden" name="image" value="{{ $item['image'] }}">
-                                    @endforeach
-                                    @endif
+                                    
                                     <label for="vnpay" class="ms-2">Thanh toán bằng VNPAY</label>
                                 </div>
                             </div>

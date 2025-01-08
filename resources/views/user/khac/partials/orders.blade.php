@@ -30,8 +30,11 @@
                     <!-- Thông tin sản phẩm -->
                     <div class="w-75">
                         <h6 class="mb-0 mx-3 text-start"><strong>Sản phẩm:</strong> {{ $detail->product_name }}</h6>
-                        <p class="mb-0 mx-3 text-muted text-start" style="font-size: 14px;"><strong>Loại:</strong>
-                            {{ $detail->color }} / {{ $detail->size }}
+                        <p class="mb-0 mx-3 text-muted text-start" style="font-size: 14px;"><strong>Phân loại:</strong>
+                        @foreach($detail->attributes as $attribute)
+                                            
+                                            {{ $attribute['value'] }}{{ !$loop->last ? ' / ' : '' }}
+                                            @endforeach
                         </p>
                         <p class="mb-0 mx-3 text-start" style="font-size: 14px;"><strong>Số lượng:</strong>
                             {{ $detail->quantity }}
