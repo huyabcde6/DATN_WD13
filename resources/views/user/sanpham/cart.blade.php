@@ -50,6 +50,9 @@
                         <!-- Table Head Start -->
                         <thead>
                             <tr>
+                                <th class="pro-checkbox">
+                                    <input type="checkbox" id="select-all" style="display: block;" />
+                                </th>
                                 <th class="pro-thumbnail">Hình ảnh</th>
                                 <th class="pro-title">Sản phẩm</th>
                                 <th class="pro-price">Giá</th>
@@ -64,6 +67,9 @@
                         <tbody id="cartItems">
                             @foreach ($cartItems as $item)
                             <tr>
+                                <td class="pro-checkbox">
+                                    <input type="checkbox" class="select-item" data-id="{{ $item['variant_id'] }}" style="display: block;" />
+                                </td>
                                 <td class="pro-thumbnail">
                                     <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
                                             height="auto" width="70" alt="Product" /></a>
@@ -150,6 +156,9 @@
                                     <td>Tổng giỏ hàng</td>
                                     <td class="sub-total">{{ number_format($subTotal, 0, ',', '.') }} đ</td>
                                 </tr>
+                                <div class="total-section">
+                                    <h5>Tổng tiền các sản phẩm được chọn: <span class="sub-total">0 đ</span></h5>
+                                </div>
 
                             </table>
                         </div>
@@ -251,7 +260,30 @@
             // Hiển thị tổng giỏ hàng với định dạng tiền tệ
             $('.sub-total').text(total.toLocaleString('vi-VN') + ' đ');
         }
+        function updateCartTotal() {
+            var total = 0;
+            $('.select-item:checked').each(function () {
+                var variantId = $(this).data('id');
+                var subtotalText = $('.subtotal-' + variantId).text().replace(' đ', '').replace(/\./g, '').replace(/,/g, '');
+                total += parseFloat(subtotalText);
+            });
+            // Hiển thị tổng giỏ hàng với định dạng tiền tệ
+            $('.sub-total').text(total.toLocaleString('vi-VN') + ' đ');
+        }
+
+        // Xử lý checkbox sản phẩm được chọn
+        $('.select-item').on('change', function () {
+            updateCartTotal();
+        });
+
+        // Xử lý checkbox "Chọn tất cả"
+        $('#select-all').on('change', function () {
+            var isChecked = $(this).is(':checked');
+            $('.select-item').prop('checked', isChecked);
+            updateCartTotal();
+        });
     });
 </script>
+
 
 @endsection
