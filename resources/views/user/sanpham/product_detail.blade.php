@@ -1,24 +1,24 @@
 @extends('layouts.home')
 @section('css')
 <style>
-.unavailable {
-    opacity: 0.5;
-    /* Làm mờ màu không khả dụng */
-    pointer-events: none;
-    /* Ngăn chặn nhấp chuột vào các tùy chọn không khả dụng */
-    text-decoration: line-through;
+    .unavailable {
+        opacity: 0.5;
+        /* Làm mờ màu không khả dụng */
+        pointer-events: none;
+        /* Ngăn chặn nhấp chuột vào các tùy chọn không khả dụng */
+        text-decoration: line-through;
 
-    /* Gạch chéo */
-    .size-option.active {
-        border: 2px solid #000;
-        /* Đường viền đậm cho tùy chọn kích thước đã chọn */
+        /* Gạch chéo */
+        .size-option.active {
+            border: 2px solid #000;
+            /* Đường viền đậm cho tùy chọn kích thước đã chọn */
+        }
+
+        .color-option.active {
+            border: 2px solid #000;
+            /* Đường viền đậm cho tùy chọn màu sắc đã chọn */
+        }
     }
-
-    .color-option.active {
-        border: 2px solid #000;
-        /* Đường viền đậm cho tùy chọn màu sắc đã chọn */
-    }
-
     /* Kiểm tra nếu có một phần tử che khuất */
     .attribute-option {
         pointer-events: all;
@@ -373,10 +373,9 @@
 
             <!-- Start Comment Section (Moved) -->
             <div class="col-lg-12 col-custom single-product-comment">
-                @auth
+                <!-- @auth
                 <br><br><br>
                 <div class="review-form mb-4">
-                    <!-- Review Form Card -->
                     <h4>BÌNH LUẬN</h4>
                     <div class="card shadow-sm border-0">
                         <div class="card-header bg-dark text-white py-2">
@@ -399,7 +398,7 @@
                         </div>
                     </div>
                 </div>
-                @endauth
+                @endauth -->
 
                 <!-- Comments List -->
 

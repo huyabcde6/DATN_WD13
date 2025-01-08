@@ -19,96 +19,59 @@ class CouponRequestUpdate extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
-        $couponId = $this->route('coupon');
         return [
-            'code' => [
-            'required',
-            'string',
-        ],
-            'discount_type' => 'required|string|in:percentage,fixed_amount',
-            'discount_value' => [
-                'required',
-                'numeric',
-                function ($attribute, $value, $fail) {
-                    $discountType = request('discount_type');
-                    $maxDiscountAmount = request('max_discount_amount');
-
-                    // Validate for percentage type
-                    if ($discountType === 'percentage' && ($value < 0 || $value > 100)) {
-                        $fail('Giá trị giảm giá phải nằm trong khoảng từ 0 đến 100 khi loại giảm giá là phần trăm.');
-                    }
-
-                    // Validate for fixed amount type
-                    if ($discountType === 'fixed_amount') {
-                        if ($value < 0) {
-                            $fail('Giá trị giảm giá phải lớn hơn hoặc bằng 0 khi loại giảm giá là số tiền cố định.');
-                        }
-
-                        if (!is_null($maxDiscountAmount) && $value < $maxDiscountAmount) {
-                            $fail('Giá trị giảm giá phải lớn hơn hoặc bằng số tiền giảm tối đa khi loại giảm giá là số tiền cố định.');
-                        }
-                    }
-                },
-            ],
-            'max_discount_amount' => 'required|numeric|min:0',
-            'min_order_amount' => 'required|numeric|min:0',
-            'start_date' => 'required|date|before_or_equal:end_date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'total_quantity' => 'required|integer|min:1',
-            'status' => 'required|string|in:active,disabled',
+            'code' => 'required|string|max:255',
+            'discount_type' => 'required|string|in:percentage',
+            'discount_value' => 'required|numeric|min:1|max:99', // Giá trị giảm tối thiểu là 1, tối đa là 100%
+            'max_discount_amount' => 'nullable|numeric|min:1|max:99999999', // Giảm tối đa không quá 99 triệu
+            'min_order_amount' => 'nullable|numeric|min:1|max:99999999', // Đơn hàng tối thiểu không quá 99 triệu
+            'start_date' => 'required|date|after_or_equal:today', // Ngày bắt đầu phải từ hôm nay trở đi
+            'end_date' => 'required|date|after:start_date', // Ngày kết thúc phải sau ngày bắt đầu
+            'total_quantity' => 'required|integer|min:1|max:1000000', // Số lượng mã giảm giá tối thiểu là 1
+            'status' => 'required|in:active,disabled', // Trạng thái phải là 'active' hoặc 'disabled'
         ];
     }
-    public function messages(): array
+    public function messages()
     {
         return [
-            // Validate mã giảm giá
-            'code.required' => 'Mã coupon là bắt buộc.',
-            'code.string' => 'Mã coupon phải là một chuỗi ký tự.',
-            'code.unique' => 'Mã coupon này đã tồn tại.',
+            'code.required' => 'Mã giảm giá là bắt buộc.',
+            'code.string' => 'Mã giảm giá phải là một chuỗi ký tự.',
+            'code.max' => 'Mã giảm giá không được vượt quá 255 ký tự.',
 
-            // Validate loại giảm giá
             'discount_type.required' => 'Loại giảm giá là bắt buộc.',
             'discount_type.string' => 'Loại giảm giá phải là một chuỗi ký tự.',
-            'discount_type.in' => 'Loại giảm giá không hợp lệ. Chỉ có thể là "Phần trăm" hoặc "Số tiền cố định".',
+            'discount_type.in' => 'Loại giảm giá phải là "percentage".',
 
-            // Validate giá trị giảm giá
-            'discount_value.required' => 'Giá trị giảm giá là bắt buộc.',
-            'discount_value.numeric' => 'Giá trị giảm giá phải là một số.',
-            'discount_value.between' => 'Giá trị giảm giá phải nằm trong khoảng từ 0 đến 100 khi loại giảm giá là "Phần trăm".',
-            'discount_value.min' => 'Giá trị giảm giá phải lớn hơn hoặc bằng 0 khi loại giảm giá là "Số tiền cố định".',
-            'discount_value.custom_rule' => 'Giá trị giảm giá phải lớn hơn hoặc bằng số tiền giảm tối đa khi loại giảm giá là "Số tiền cố định".',
+            'discount_value.required' => 'Giá trị giảm là bắt buộc.',
+            'discount_value.numeric' => 'Giá trị giảm phải là một số.',
+            'discount_value.min' => 'Giá trị giảm phải lớn hơn hoặc bằng 1.',
+            'discount_value.max' => 'Giá trị giảm không được lớn hơn 99%.',
 
-            // Validate số tiền giảm tối đa
-            'max_discount_amount.required' => 'Số tiền giảm tối đa là bắt buộc.',
             'max_discount_amount.numeric' => 'Số tiền giảm tối đa phải là một số.',
-            'max_discount_amount.min' => 'Số tiền giảm tối đa phải lớn hơn hoặc bằng 0.',
+            'max_discount_amount.min' => 'Số tiền giảm tối đa phải lớn hơn 0.',
+            'max_discount_amount.max' => 'Số tiền giảm tối đa không được vượt quá 99 triệu đồng.',
 
-            // Validate số tiền tối thiểu cho đơn hàng
-            'min_order_amount.required' => 'Số tiền tối thiểu cho đơn hàng là bắt buộc.',
-            'min_order_amount.numeric' => 'Số tiền tối thiểu cho đơn hàng phải là một số.',
-            'min_order_amount.min' => 'Số tiền tối thiểu cho đơn hàng phải lớn hơn hoặc bằng 0.',
+            'min_order_amount.numeric' => 'Số tiền tối thiểu phải là một số.',
+            'min_order_amount.min' => 'Số tiền tối thiểu phải lớn hơn 1.',
+            'min_order_amount.max' => 'Số tiền tối thiểu không được vượt quá 99 triệu đồng.',
 
-            // Validate ngày bắt đầu
             'start_date.required' => 'Ngày bắt đầu là bắt buộc.',
             'start_date.date' => 'Ngày bắt đầu phải là một ngày hợp lệ.',
-            'start_date.before_or_equal' => 'Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.',
+            'start_date.after_or_equal' => 'Ngày bắt đầu phải là ngày hôm nay hoặc một ngày sau đó.',
 
-            // Validate ngày kết thúc
             'end_date.required' => 'Ngày kết thúc là bắt buộc.',
             'end_date.date' => 'Ngày kết thúc phải là một ngày hợp lệ.',
-            'end_date.after_or_equal' => 'Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.',
+            'end_date.after' => 'Ngày kết thúc phải sau ngày bắt đầu.',
 
-            // Validate số lượng tổng
-            'total_quantity.required' => 'Số lượng tổng là bắt buộc.',
-            'total_quantity.integer' => 'Số lượng tổng phải là một số nguyên.',
-            'total_quantity.min' => 'Số lượng tổng phải lớn hơn hoặc bằng 1.',
+            'total_quantity.required' => 'Số lượng mã giảm giá là bắt buộc.',
+            'total_quantity.integer' => 'Số lượng mã giảm giá phải là một số nguyên.',
+            'total_quantity.min' => 'Số lượng mã giảm giá phải lớn hơn hoặc bằng 1.',
+            'total_quantity.max' => 'Số lượng mã không được vượt quá 1 triệu.',
 
-            // Validate trạng thái
             'status.required' => 'Trạng thái là bắt buộc.',
-            'status.string' => 'Trạng thái phải là một chuỗi ký tự.',
-            'status.in' => 'Trạng thái không hợp lệ. Chỉ có thể là "active" hoặc "disabled".',
+            'status.in' => 'Trạng thái phải là "active" hoặc "disabled".',
         ];
     }
 }

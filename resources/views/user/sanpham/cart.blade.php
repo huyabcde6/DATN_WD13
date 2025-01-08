@@ -44,12 +44,16 @@
                 @else
 
                 <!-- Cart Table Start -->
+                <!-- Cart Table Start -->
                 <div class="cart-table table-responsive">
                     <table class="table table-bordered">
 
                         <!-- Table Head Start -->
                         <thead>
                             <tr>
+                                <th class="pro-checkbox">
+                                    <input type="checkbox" id="select-all" style="display: block;" />
+                                </th>
                                 <th class="pro-thumbnail">Hình ảnh</th>
                                 <th class="pro-title">Sản phẩm</th>
                                 <th class="pro-price">Giá</th>
@@ -64,9 +68,12 @@
                         <tbody id="cartItems">
                             @foreach ($cartItems as $item)
                             <tr>
+                                <td class="pro-checkbox">
+                                    <input type="checkbox" class="select-item" data-id="{{ $item['product_detail_id'] }}" style="display: block;" />
+                                </td>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
-                                            height="auto" width="70" alt="Product" /></a>
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" height="auto"
+                                            width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
                                     <a href="{{ route('product.show', $item['slug']) }}">
@@ -77,8 +84,6 @@
                                         @endforeach
                                     </a>
                                 </td>
-                                <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
-                                        đ</span></td>
                                 <td class="pro-quantity">
                                     <div class="quantity">
                                         <div class="cart-plus-minus" style="margin-left: 35px;">
@@ -126,6 +131,7 @@
 
                     </table>
                 </div>
+
                 @endif
 
             </div>
@@ -156,8 +162,14 @@
                         <!-- Responsive Table End -->
 
                     </div>
-                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
-                        hành thanh toán</a>
+                    <form id="checkout-form" action="{{ route('orders.create') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="selected_items" value="">
+                        <button type="submit" id="checkout-btn" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến hành thanh toán</button>
+                    </form>
+
+                    <!-- <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
+                        hành thanh toán</a> -->
                 </div>
 
                 <!-- Cart Calculation Area End -->
@@ -240,7 +252,6 @@
             // Cập nhật tổng giỏ hàng
             updateCartTotal();
         });
-
         // Cập nhật tổng giỏ hàng khi số lượng thay đổi
         function updateCartTotal() {
             var total = 0;

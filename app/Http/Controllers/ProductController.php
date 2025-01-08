@@ -28,7 +28,7 @@ class ProductController extends Controller
         $minPrice = $request->input('min_price', 0);
         $maxPrice = $request->input('max_price', 1000000);
         $keyword = $request->input('keyword');
-        
+
         // Truy vấn sản phẩm
         $query = product::query();
         if ($keyword) {
@@ -82,6 +82,12 @@ class ProductController extends Controller
 
     public function show($slug)
     {
+        // Comment
+        $comments = $product->productComments()
+            ->where('is_hidden', 0)
+            ->orderByDesc('created_at')
+            ->paginate(3);
+        $hasPurchased = true;
         // Lấy sản phẩm với các quan hệ liên quan
         $product = Product::with([
             'productImages',
@@ -101,7 +107,6 @@ class ProductController extends Controller
         // Lấy chi tiết attribute values
         $attributeDetails = AttributeValue::whereIn('id', $attributeValues)->get();
         $attributes = [];
-
         foreach ($attributeDetails as $attributeDetail) {
             $attribute = $attributeDetail->attribute;
             if (!in_array($attribute, $attributes)) {
@@ -132,7 +137,7 @@ class ProductController extends Controller
         $products = Product::with('categories')->get();
         // Trả về view
 
-        return view('user.sanpham.product_detail', compact('product', 'products', 'variants', 'attributes'));
+        return view('user.sanpham.product_detail', compact('product', 'products', 'variants', 'attributes', 'comments'));
     }
 
 }

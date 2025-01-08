@@ -73,7 +73,7 @@ class CouponsController extends Controller
     }
     public function update(CouponRequestUpdate $request, $id)
     {
-        
+
         $validated = $request->all();
 
         $coupon = Coupons::findOrFail($id);
