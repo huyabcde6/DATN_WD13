@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/fontawesome.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/vendor/pe-icon-7-stroke.min.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/plugins/swiper-bundle.min.css')}}" />
@@ -32,6 +33,166 @@
     <link rel="stylesheet" href="{{ asset('ngdung/assets/css/loading.css') }}" />
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
+<style>
+    .notification {
+        position: absolute;
+        right: 10px;
+        /* Khoảng cách từ cạnh phải của chuông */
+        top: 0;
+    }
+
+    .notification-container {
+        position: relative;
+    }
+
+    .notification-icon {
+        cursor: pointer;
+        position: relative;
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: 0;
+        right: -5px;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+
+    .notification-panel {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        background-color: #fff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        display: none;
+        /* Ẩn bảng thông báo mặc định */
+        z-index: 100;
+    }
+
+    .notification-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        background-color: #f0f2f5;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .notification-content {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .notification-item {
+        padding: 10px 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .notification-footer {
+        padding: 10px 15px;
+        background-color: #f0f2f5;
+        text-align: center;
+    }
+</style>
+<script>
+    async function toggleNotifications() {
+        const panel = document.getElementById('notificationPanel');
+        const isVisible = panel.style.display === 'block';
+
+        if (!isVisible) {
+            // Hiện bảng thông báo
+            panel.style.display = 'block';
+
+            // Gọi API để lấy dữ liệu mới nhất
+            try {
+                const response = await fetch('/api/get-latest-notifications');
+                if (response.ok) {
+                    const notifications = await response.json();
+                    displayNotifications(notifications);
+                } else {
+                    console.error('Failed to fetch notifications:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        } else {
+            // Ẩn bảng thông báo
+            panel.style.display = 'none';
+        }
+    }
+
+    // Hàm hiển thị thông báo
+    function displayNotifications(notifications) {
+        const content = document.querySelector('.notification-content');
+        content.innerHTML = ''; // Xóa nội dung cũ
+
+        if (notifications.length === 0) {
+            content.innerHTML = '<p>Không có thông báo mới.</p>';
+        } else {
+            notifications.forEach(notification => {
+                const item = document.createElement('div');
+                item.className = 'notification-item';
+                item.innerHTML = `
+                <p><strong>${notification.changed_by_name  || 'Admin'}</strong></p>
+                
+               <p>Đơn hàng <strong>${notification.order_code }</strong> của bạn đã được : 
+    ${notification.current_status || 'Không có nội dung'}
+</p>
+                <span style='text-align: right;  /* Canh phải */
+    font-size: 0.8em;    /* Giảm kích thước chữ */
+    display: block; '>
+    ${timeSince(new Date(notification.created_at))}
+</span>
+            `;
+                content.appendChild(item);
+            });
+        }
+    }
+
+    function timeSince(date) {
+        const seconds = Math.floor((new Date() - date) / 1000); // Chênh lệch tính bằng giây
+
+        const intervals = [{
+                label: 'năm',
+                seconds: 31536000
+            },
+            {
+                label: 'tháng',
+                seconds: 2592000
+            },
+            {
+                label: 'ngày',
+                seconds: 86400
+            },
+            {
+                label: 'giờ',
+                seconds: 3600
+            },
+            {
+                label: 'phút',
+                seconds: 60
+            },
+            {
+                label: 'giây',
+                seconds: 1
+            }
+        ];
+
+        for (const interval of intervals) {
+            const count = Math.floor(seconds / interval.seconds);
+            if (count > 0) {
+                return `${count} ${interval.label} trước`;
+            }
+        }
+
+        return 'vừa xong'; // Nếu khoảng cách thời gian rất nhỏ
+    }
+</script>
 
 <body>
     {{-- <div class="loader" style="display: none;"></div> --}}
@@ -79,8 +240,8 @@
                         <div class="col-xl-2 col-6">
                             <div class="header-actions">
                                 <!-- Search Header Action Button Start -->
-                                <a href="javascript:void(0)" class="header-action-btn header-action-btn-search"><i
-                                        class="pe-7s-search"></i></a>
+                                <!-- <a href="javascript:void(0)" ><i
+                                        class="pe-7s-search"></i></a> -->
                                 <!-- Search Header Action Button End -->
 
                                 <!-- User Account Header Action Button Start -->
@@ -112,6 +273,10 @@
                                     <i class="fa fa-bars"></i>
                                 </a>
                                 <!-- Mobile Menu Hambarger Action Button End -->
+                                <a href="#" class="header-action-btn header-action-btn-offcanvas-notification" style="font-size: 20px;" onclick="toggleNotifications()">
+                                    <i class="fa-solid fa-bell fa-shake"></i>
+                                    <!-- <span class="notification-badge">3</span> -->
+                                </a>
                             </div>
                         </div>
                         <!-- Header Action End -->
@@ -191,21 +356,26 @@
         <!-- Mobile Menu End -->
 
         <!-- Offcanvas Search Start -->
-        <div class="offcanvas-search">
-            <div class="offcanvas-search-inner">
-                <!-- Button Close Start -->
-                <div class="offcanvas-btn-close">
-                    <i class="pe-7s-close"></i>
+        <!-- Offcanvas Notification Start -->
+        <div class="notification-container">
+            <div class="notification-panel" id="notificationPanel">
+                <div class="notification-header">
+                    <h8>Thông báo</h8>
                 </div>
-                <!-- Button Close End -->
-
-                <!-- Offcanvas Search Form Start -->
-                <form class="offcanvas-search-form" action="#">
-                    <input type="text" placeholder="Search Here..." class="offcanvas-search-input" />
-                </form>
-                <!-- Offcanvas Search Form End -->
+                <div class="notification-content">
+                    <!-- Các thông báo sẽ được thêm vào đây -->
+                </div>
+                <div class="notification-footer">
+                    <a href="#">Xem thông báo trước đó</a>
+                </div>
             </div>
         </div>
+
+
+
+        <!-- Offcanvas Notification End -->
+
+
         <!-- Offcanvas Search End -->
 
         <!-- Cart Offcanvas Start -->

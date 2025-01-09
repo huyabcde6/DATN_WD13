@@ -361,7 +361,7 @@
  <script src="{{ asset('ngdung/assets/js/plugins/jquery-ui.min.js')}}"></script>
  <script src="{{ asset('ngdung/assets/js/plugins/lightgallery-all.min.js')}}"></script>
  <script src="{{ asset('ngdung/assets/js/plugins/thia-sticky-sidebar.min.js')}}"></script>
-
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
  <!--Main JS-->
  <script src="{{ asset('ngdung/assets/js/main.js')}}"></script>
  <script src="{{ asset('ngdung/assets/js/loading.js')}}"></script>

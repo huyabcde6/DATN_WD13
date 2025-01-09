@@ -24,7 +24,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponsController;
-use App\Models\Order; 
+use App\Models\Order;
 use App\Http\Controllers\VoucherController;
 
 
@@ -77,7 +77,7 @@ Route::post('/muangay', [OrderController::class, 'muangay'])->name('muangay');
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
-    Route::get('/create', [OrderController::class, 'create'])->name('create');
+    Route::post('/create', [OrderController::class, 'create'])->name('create');
     Route::post('/store', [OrderController::class, 'store'])->name('store');
     Route::post('/{id}/update', [OrderController::class, 'update'])->name('update');
     Route::get('/vnp/return', [OrderController::class, 'handleVNPReturn'])->name('vnp.return');
@@ -185,6 +185,7 @@ Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('produc
 Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('vocher');
 Route::post('/san-pham/{id}', [ProductController::class, 'locMau'])->name('product.locMau');
 Route::post('/update-address', [AddressController::class, 'updateAddress'])->name('user.updateAddress');
-// Route hiển thị danh sách voucher cho user
-Route::get('/vouchers', [VoucherController::class, 'index'])->name('user.vouchers');
-
+// // Route hiển thị danh sách voucher cho user
+// Route::get('/vouchers', [VoucherController::class, 'index'])->name('user.vouchers');
+//thông báo
+Route::get('/api/get-latest-notifications', [HomeController::class, 'getLatestNotifications']);

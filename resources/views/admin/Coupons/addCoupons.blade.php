@@ -28,14 +28,14 @@
                             <!-- Loại giảm giá -->
                             <div class="col-md-6 mb-3">
                                 <label for="discount_type" class="form-label">Loại Giảm Giá</label>
-                                <select name="discount_type" id="discount_type" class="form-select @error('discount_type') is-invalid @enderror">
-                                    <option value="percentage" {{ old('discount_type') == 'percentage' ? 'selected' : '' }}>Phần Trăm</option>
-                                    <option value="fixed_amount" {{ old('discount_type') == 'fixed_amount' ? 'selected' : '' }}>Số Tiền Cố Định</option>
+                                <select name="discount_type" id="discount_type" class="form-select" required disabled>
+                                    <option value="percentage">Phần Trăm</option>
                                 </select>
                                 @error('discount_type')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
 
                             <!-- Giá trị giảm -->
                             <div class="col-md-6 mb-3">
@@ -67,7 +67,7 @@
                             <!-- Ngày bắt đầu -->
                             <div class="col-md-6 mb-3">
                                 <label for="start_date" class="form-label">Ngày Bắt Đầu</label>
-                                <input type="datetime-local" name="start_date" id="start_date" class="form-control @error('start_date') is-invalid @enderror" value="{{ old('start_date') }}">
+                                <input type="datetime-local" name="start_date" id="start_date" class="form-control @error('start_date') is-invalid @enderror" value="{{ old('start_date') }}" min="{{ now()->format('Y-m-d\TH:i') }}">
                                 @error('start_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -76,7 +76,7 @@
                             <!-- Ngày kết thúc -->
                             <div class="col-md-6 mb-3">
                                 <label for="end_date" class="form-label">Ngày Kết Thúc</label>
-                                <input type="datetime-local" name="end_date" id="end_date" class="form-control @error('end_date') is-invalid @enderror" value="{{ old('end_date') }}">
+                                <input type="datetime-local" name="end_date" id="end_date" class="form-control @error('end_date') is-invalid @enderror" value="{{ old('end_date') }}" min="{{ now()->format('Y-m-d\TH:i') }}">
                                 @error('end_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
