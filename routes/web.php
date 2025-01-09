@@ -77,7 +77,7 @@ Route::post('/muangay', [OrderController::class, 'muangay'])->name('muangay');
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
-    Route::post('/create', [OrderController::class, 'create'])->name('create');
+    Route::get('/create', [OrderController::class, 'create'])->name('create');
     Route::post('/store', [OrderController::class, 'store'])->name('store');
     Route::post('/{id}/update', [OrderController::class, 'update'])->name('update');
     Route::get('/vnp/return', [OrderController::class, 'handleVNPReturn'])->name('vnp.return');

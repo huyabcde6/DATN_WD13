@@ -44,16 +44,12 @@
                 @else
 
                 <!-- Cart Table Start -->
-                <!-- Cart Table Start -->
                 <div class="cart-table table-responsive">
                     <table class="table table-bordered">
 
                         <!-- Table Head Start -->
                         <thead>
                             <tr>
-                                <th class="pro-checkbox">
-                                    <input type="checkbox" id="select-all" style="display: block;" />
-                                </th>
                                 <th class="pro-thumbnail">Hình ảnh</th>
                                 <th class="pro-title">Sản phẩm</th>
                                 <th class="pro-price">Giá</th>
@@ -68,12 +64,9 @@
                         <tbody id="cartItems">
                             @foreach ($cartItems as $item)
                             <tr>
-                                <td class="pro-checkbox">
-                                    <input type="checkbox" class="select-item" data-id="{{ $item['variant_id'] }}" style="display: block;" />
-                                </td>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" height="auto"
-                                            width="70" alt="Product" /></a>
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
+                                            height="auto" width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
                                     <a href="{{ route('product.show', $item['slug']) }}">
@@ -84,6 +77,8 @@
                                         @endforeach
                                     </a>
                                 </td>
+                                <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
+                                        đ</span></td>
                                 <td class="pro-quantity">
                                     <div class="quantity">
                                         <div class="cart-plus-minus" style="margin-left: 35px;">
@@ -131,7 +126,6 @@
 
                     </table>
                 </div>
-
                 @endif
 
             </div>
@@ -156,23 +150,14 @@
                                     <td>Tổng giỏ hàng</td>
                                     <td class="sub-total">{{ number_format($subTotal, 0, ',', '.') }} đ</td>
                                 </tr>
-                                <div class="total-section">
-                                    <h5>Tổng tiền các sản phẩm được chọn: <span class="sub-total">0 đ</span></h5>
-                                </div>
 
                             </table>
                         </div>
                         <!-- Responsive Table End -->
 
                     </div>
-                    <form id="checkout-form" action="{{ route('orders.create') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="selected_items" value="">
-                        <button type="submit" id="checkout-btn" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến hành thanh toán</button>
-                    </form>
-
-                    <!-- <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
-                        hành thanh toán</a> -->
+                    <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
+                        hành thanh toán</a>
                 </div>
 
                 <!-- Cart Calculation Area End -->
@@ -255,6 +240,7 @@
             // Cập nhật tổng giỏ hàng
             updateCartTotal();
         });
+
         // Cập nhật tổng giỏ hàng khi số lượng thay đổi
         function updateCartTotal() {
             var total = 0;
@@ -265,30 +251,7 @@
             // Hiển thị tổng giỏ hàng với định dạng tiền tệ
             $('.sub-total').text(total.toLocaleString('vi-VN') + ' đ');
         }
-        function updateCartTotal() {
-            var total = 0;
-            $('.select-item:checked').each(function () {
-                var variantId = $(this).data('id');
-                var subtotalText = $('.subtotal-' + variantId).text().replace(' đ', '').replace(/\./g, '').replace(/,/g, '');
-                total += parseFloat(subtotalText);
-            });
-            // Hiển thị tổng giỏ hàng với định dạng tiền tệ
-            $('.sub-total').text(total.toLocaleString('vi-VN') + ' đ');
-        }
-
-        // Xử lý checkbox sản phẩm được chọn
-        $('.select-item').on('change', function () {
-            updateCartTotal();
-        });
-
-        // Xử lý checkbox "Chọn tất cả"
-        $('#select-all').on('change', function () {
-            var isChecked = $(this).is(':checked');
-            $('.select-item').prop('checked', isChecked);
-            updateCartTotal();
-        });
     });
 </script>
-
 
 @endsection

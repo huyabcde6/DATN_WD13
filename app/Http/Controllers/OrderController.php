@@ -63,68 +63,55 @@ class OrderController extends Controller
      * Hiển thị form tạo đơn hàng mới.
      */
 
-    public function create(Request $request)
-    {
-        $user = Auth::user();
-        $cartItems = Session::get('cart', []);
-        
-        if (!empty($cartItems)) {
-            $subTotal = 0;
-        
-            foreach ($cartItems as &$item) {
-                // Lấy thông tin sản phẩm
-                $product = Product::find($item['product_id']);
-                if (!$product) {
-                    return redirect()->route('cart.index')->with('error', 'Sản phẩm không tồn tại.');
-                }
-        
-                // Gắn tên sản phẩm
-                $item['name'] = $product->name;
-                $item['slug'] = $product->slug;
-        
-                // Kiểm tra nếu có biến thể
-                if (isset($item['variant_id'])) {
-                    $variant = ProductVariant::find($item['variant_id']);
-                    if ($variant) {
-                        $item['variant_name'] = $variant->product_code; // Ví dụ: Mã biến thể
-                    }
-            
-                    // Gắn tên sản phẩm
-                    $item['name'] = $product->name;
-                    $item['slug'] = $product->slug;
-            
-                    // Kiểm tra nếu có biến thể
-                    if (isset($item['variant_id'])) {
-                        $variant = ProductVariant::find($item['variant_id']);
-                        if ($variant) {
-                            $item['variant_name'] = $variant->product_code; // Ví dụ: Mã biến thể
-                        }
-                    }
-            
-                    if (!isset($item['price']) || !isset($item['quantity'])) {
-                        return redirect()->route('cart.index')->with('error', 'Giỏ hàng có dữ liệu không hợp lệ.');
-                    }
-            
-                    $subTotal += $item['price'] * $item['quantity'];
-                }
-            
-                $shippingFee = 30000; // Phí vận chuyển
-                $total = $subTotal + $shippingFee;
-            
-                return view('user.sanpham.thanhtoan', compact(
-                    'cartItems',
-                    'subTotal',
-                    'shippingFee',
-                    'total',
-                    'user'
-                ));
-            }
-            
-        
-            return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
-        }
-
-    }
+     public function create()
+     {
+         $user = Auth::user();
+         $cartItems = Session::get('cart', []);
+         
+         if (!empty($cartItems)) {
+             $subTotal = 0;
+         
+             foreach ($cartItems as &$item) {
+                 // Lấy thông tin sản phẩm
+                 $product = Product::find($item['product_id']);
+                 if (!$product) {
+                     return redirect()->route('cart.index')->with('error', 'Sản phẩm không tồn tại.');
+                 }
+         
+                 // Gắn tên sản phẩm
+                 $item['name'] = $product->name;
+                 $item['slug'] = $product->slug;
+         
+                 // Kiểm tra nếu có biến thể
+                 if (isset($item['variant_id'])) {
+                     $variant = ProductVariant::find($item['variant_id']);
+                     if ($variant) {
+                         $item['variant_name'] = $variant->product_code; // Ví dụ: Mã biến thể
+                     }
+                 }
+         
+                 if (!isset($item['price']) || !isset($item['quantity'])) {
+                     return redirect()->route('cart.index')->with('error', 'Giỏ hàng có dữ liệu không hợp lệ.');
+                 }
+         
+                 $subTotal += $item['price'] * $item['quantity'];
+             }
+         
+             $shippingFee = 30000; // Phí vận chuyển
+             $total = $subTotal + $shippingFee;
+         
+             return view('user.sanpham.thanhtoan', compact(
+                 'cartItems',
+                 'subTotal',
+                 'shippingFee',
+                 'total',
+                 'user'
+             ));
+         }
+         
+     
+         return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
+     }
     /**
      * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
@@ -180,6 +167,7 @@ class OrderController extends Controller
                     // Trường hợp "Thanh toán giỏ hàng"
                     foreach ($carts as $item) {
                         $productVariant = ProductVariant::with('attributes.attributeValue')->find($item['variant_id']);
+
                         if (!$productVariant) {
                             throw new \Exception('Biến thể sản phẩm không tồn tại.');
                         }
@@ -221,22 +209,19 @@ class OrderController extends Controller
 
                 // Xóa giỏ hàng
                 Session::forget('cart');
+
                 DB::commit();
-                return redirect()->route('thank_you', ['order' => $order->id])
-                    ->with('success', 'Đơn hàng của bạn đã được tạo thành công!');
+                return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Đơn hàng đã được tạo thành công.');
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error('Lỗi tạo đơn hàng: ' . $e->getMessage());
-                return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+                return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra trong quá trình tạo đơn hàng: ' . $e->getMessage());
             }
         }
 
         return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
     }
-
-
-
-
+    
     private function processVNP($order)
     {
         // Tạo URL thanh toán VNP
