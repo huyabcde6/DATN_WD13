@@ -63,16 +63,7 @@ Route::delete('/cart/remove/{productId}/{variantId?}', [CartController::class, '
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
-Route::post('/muangay', [OrderController::class, 'muangay'])->name('muangay');
-// Route
-
-
-
-// Route::get('/login', [UserController::class, 'login'])->name('login');
-// Route::post('/login', [UserController::class, 'postLogin']);
-// Route::get('/register', [UserController::class, 'register'])->name('register');
-// Route::post('/register', [UserController::class, 'postRegister']);
-
+Route::post('/cart/move-to-selected', [CartController::class, 'moveToSelected'])->name('cart.move.to.selected');
 
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');

@@ -234,15 +234,6 @@
                             </form>
                         </div>
 
-                        <div class="add-to-wishlist">
-                            <form method="POST" action="{{ route('muangay') }}" id="muangay-form">
-                                @csrf
-                                <input type="hidden" name="products_id" value="{{ $product->id }}">
-                                <input type="hidden" name="quantity" id="muangay-quantity" value="">
-                                <button type="submit" class="btn btn-outline-dark btn-hover-primary" id="add-to-buy">Mua
-                                    Ngay</button>
-                            </form>
-                        </div>
                     </div>
                     <!-- Cart & Wishlist Button End -->
 
@@ -258,9 +249,9 @@
 
                     <!-- Product Delivery Policy Start -->
                     <ul class="product-delivery-policy border-top pt-4 mt-4 border-bottom pb-4">
-                        <li><i class="fa fa-check-square"></i><span>Chính sách bảo mật</span></li>
-                        <li><i class="fa fa-truck"></i><span>Chính sách giao hàng</span></li>
-                        <li><i class="fa fa-refresh"></i><span>Chính sách hoàn trả</span></li>
+                        <li><i class="fa fa-check-square"></i> <span> Chính sách bảo mật</span></li>
+                        <li><i class="fa fa-truck"></i> <span> Chính sách giao hàng</span></li>
+                        <li><i class="fa fa-refresh"></i> <span> Chính sách hoàn trả</span></li>
                     </ul>
                     <!-- Product Delivery Policy End -->
                 </div>
@@ -693,6 +684,8 @@
                             icon: 'success',
                             title: 'Thành công',
                             text: 'Sản phẩm đã được thêm vào giỏ hàng!',
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                         updateCartCount();
                     } else {
@@ -700,6 +693,8 @@
                             icon: 'error',
                             title: 'Lỗi',
                             text: 'Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!',
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                     }
                 })

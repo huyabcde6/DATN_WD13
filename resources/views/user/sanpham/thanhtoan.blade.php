@@ -76,7 +76,7 @@
                     @csrf
                     @method ('POST')
                     <input type="hidden" name="total" value="{{ $total }}">
-                    @foreach ($cartItems as $item)
+                    @foreach ($selectedCart as $item)
                     <input type="hidden" name="id_sp[]" value="{{$item['product_id']}}">
                     @endforeach
                     <input type="text" name="voucher" class="form-control" placeholder="Nhập mã giảm giá" />
@@ -165,7 +165,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($cartItems as $item)
+                                    @foreach ($selectedCart as $item)
                                     <tr>
                                         @if (!empty($item['product_avata']))
                                         <img src="{{ asset('storage/' . $item['product_avata']) }}" alt="Product Image">
