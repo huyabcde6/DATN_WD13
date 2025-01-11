@@ -164,7 +164,9 @@ Route::get('/gioithieu', function () {
 })->name('introduction');
 
 Route::middleware(['auth'])->group(function () {
-    Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
+    // routes/web.php
+    Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+
 });
 
 Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
@@ -180,3 +182,4 @@ Route::post('/update-address', [AddressController::class, 'updateAddress'])->nam
 // Route::get('/vouchers', [VoucherController::class, 'index'])->name('user.vouchers');
 //thông báo
 Route::get('/api/get-latest-notifications', [HomeController::class, 'getLatestNotifications']);
+Route::get('/product-comments/{product}', [CommentController::class, 'fetchComments'])->name('product.comments');

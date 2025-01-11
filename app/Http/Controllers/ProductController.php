@@ -102,7 +102,7 @@ class ProductController extends Controller
         $comments = $product->productComments()
             ->where('is_hidden', 0)
             ->orderByDesc('created_at')
-            ->paginate(3);
+            ->get();
         $hasPurchased = true;
         // Lấy chi tiết attribute values
         $attributeDetails = AttributeValue::whereIn('id', $attributeValues)->get();
