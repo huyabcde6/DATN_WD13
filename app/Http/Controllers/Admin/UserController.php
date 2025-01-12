@@ -14,6 +14,9 @@ use App\Models\StatusDonHang;
 class UserController extends Controller
 
 {
+    public function __construct(){
+        $this->middleware('permission:Xem danh sách người dùng', ['only' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */

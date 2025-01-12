@@ -44,15 +44,14 @@
                 @else
 
                 <!-- Cart Table Start -->
-                <!-- Cart Table Start -->
                 <div class="cart-table table-responsive">
                     <table class="table table-bordered">
 
                         <!-- Table Head Start -->
                         <thead>
-                            <tr>
-                                <th class="pro-checkbox">
-                                    <input type="checkbox" id="select-all" style="display: block;" />
+                            <tr>    
+                                <th class="pro-select">
+                                    <input type="checkbox" id="select-all" style="display: block;"> 
                                 </th>
                                 <th class="pro-thumbnail">Hình ảnh</th>
                                 <th class="pro-title">Sản phẩm</th>
@@ -66,14 +65,15 @@
 
                         <!-- Table Body Start -->
                         <tbody id="cartItems">
-                            @foreach ($cartItems as $item)
+                            @foreach ($cartItems as $index => $item)
                             <tr>
-                                <td class="pro-checkbox">
-                                    <input type="checkbox" class="select-item" data-id="{{ $item['product_detail_id'] }}" style="display: block;" />
+                                <td class="pro-select">
+                                <input type="checkbox" class="product-checkbox"   data-index="{{ $index }}"
+                                        style="display: block;">
                                 </td>
                                 <td class="pro-thumbnail">
-                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}" height="auto"
-                                            width="70" alt="Product" /></a>
+                                    <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
+                                            height="auto" width="70" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
                                     <a href="{{ route('product.show', $item['slug']) }}">
@@ -84,21 +84,23 @@
                                         @endforeach
                                     </a>
                                 </td>
+                                <td class="pro-price"><span>{{ number_format($item['price'] ?? 0, 0, ',', '.') }}
+                                        đ</span></td>
                                 <td class="pro-quantity">
                                     <div class="quantity">
                                         <div class="cart-plus-minus" style="margin-left: 35px;">
                                             <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}"
-                                                type="text" data-id="{{ $item['variant_id'] ?? $item['product_id'] }}"
+                                                type="text" data-id="{{ $item['variant_id'] }}"
                                                 data-available-quantity="{{ $item['stock_quantity'] }}"
-                                                data-product-id="{{ $item['product_id'] }}">
+                                                data-product-id="{{ $item['product_id'] }}" readonly>
                                             <!-- Lưu product_id ở đây -->
                                             <div class="dec qtybutton"
-                                                data-id="{{ $item['variant_id'] ?? $item['product_id'] }}"
+                                                data-id="{{ $item['variant_id'] }}"
                                                 data-product-id="{{ $item['product_id'] }}">-
                                                 <!-- Lưu product_id ở đây -->
                                             </div>
                                             <div class="inc qtybutton"
-                                                data-id="{{ $item['variant_id'] ?? $item['product_id'] }}"
+                                                data-id="{{ $item['variant_id'] }}"
                                                 data-product-id="{{ $item['product_id'] }}">+
                                                 <!-- Lưu product_id ở đây -->
                                             </div>
@@ -107,7 +109,7 @@
 
                                 </td>
                                 <td class="pro-subtotal">
-                                    <span class="subtotal-{{ $item['variant_id'] ?? $item['product_id'] }}">
+                                    <span class="subtotal-{{ $item['variant_id'] ?? $item['product_id'] }} subtotal-{{ $index }}">
                                         {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 0), 0, ',', '.') }}
                                         đ
                                     </span>
@@ -131,7 +133,6 @@
 
                     </table>
                 </div>
-
                 @endif
 
             </div>
@@ -154,7 +155,7 @@
                             <table class="table">
                                 <tr>
                                     <td>Tổng giỏ hàng</td>
-                                    <td class="sub-total">{{ number_format($subTotal, 0, ',', '.') }} đ</td>
+                                    <td class="sub-total">0 đ</td>
                                 </tr>
 
                             </table>
@@ -162,14 +163,8 @@
                         <!-- Responsive Table End -->
 
                     </div>
-                    <form id="checkout-form" action="{{ route('orders.create') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="selected_items" value="">
-                        <button type="submit" id="checkout-btn" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến hành thanh toán</button>
-                    </form>
-
-                    <!-- <a href="{{ route('orders.create') }}" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
-                        hành thanh toán</a> -->
+                    <button id="proceed-to-checkout" class="btn btn-dark btn-hover-primary rounded-0 w-100">Tiến
+                        hành thanh toán</button>
                 </div>
 
                 <!-- Cart Calculation Area End -->
@@ -195,27 +190,54 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+        // Cập nhật tổng tiền các sản phẩm được chọn
+        function updateSelectedTotal() {
+            var total = 0;
+
+            // Lặp qua các sản phẩm được chọn
+            $('.product-checkbox:checked').each(function () {
+                var index = $(this).data('index'); // Lấy index của sản phẩm
+                var subtotalText = $('.subtotal-' + index).text(); // Tìm tổng tiền của sản phẩm
+                var subtotal = parseFloat(subtotalText.replace(' đ', '').replace(/\./g, '').replace(/,/g, '')); // Chuyển đổi chuỗi thành số
+                total += subtotal;
+            });
+
+            // Hiển thị tổng tiền đã chọn
+            $('.sub-total').text(total.toLocaleString('vi-VN') + ' đ');
+        }
+
+        // Khi checkbox được chọn hoặc bỏ chọn
+        $('.product-checkbox').on('change', function () {
+            updateSelectedTotal(); // Cập nhật tổng tiền khi trạng thái checkbox thay đổi
+        });
+
+        // Khi checkbox "Chọn tất cả" được chọn hoặc bỏ chọn
+        $('#select-all').on('change', function () {
+            var isChecked = $(this).is(':checked'); // Kiểm tra trạng thái của checkbox "Chọn tất cả"
+            $('.product-checkbox').prop('checked', isChecked); // Đặt trạng thái cho tất cả checkbox trong tbody
+            updateSelectedTotal(); // Cập nhật tổng tiền
+        });
+
         // Cập nhật số lượng khi nhấn dấu cộng hoặc trừ
-        $('.qtybutton').on('click', function() {
+        $('.qtybutton').on('click', function () {
             var $button = $(this);
             var $input = $button.siblings('input');
             var quantity = parseInt($input.val());
             var availableQuantity = parseInt($input.data('available-quantity'));
-            
+
             // Lấy variant_id và product_id từ data-id và data-product-id
             var variantId = $input.data('id');
             var productId = $button.data('product-id'); // Lấy product_id từ data-product-id của nút
-            
+
             var $subtotal = $('.subtotal-' + variantId);
-            
+
             // Lấy giá trị giá của sản phẩm từ cột Giá (pro-price)
             var priceText = $button.closest('tr').find('.pro-price span').text();
             // Xóa " đ" và dấu phẩy nếu có
             var price = parseFloat(priceText.replace(' đ', '').replace(/,/g, ''));
-            
+
             if ($button.hasClass('inc') && quantity < availableQuantity) {
                 quantity++;
             } else if ($button.hasClass('dec') && quantity > 1) {
@@ -229,40 +251,79 @@
             var subtotal = price * quantity;
             $subtotal.text(subtotal.toLocaleString('vi-VN') + '.000' + ' đ');
 
+            // Gửi AJAX cập nhật số lượng
             $.ajax({
                 url: "{{ route('cart.update') }}", // Đảm bảo route này đúng
                 type: "POST",
                 data: {
                     _token: "{{ csrf_token() }}",
-                    product_id: productId,  // Truyền thêm product_id vào dữ liệu
-                    variant_id: variantId,  // Nếu có variant
+                    product_id: productId,
+                    variant_id: variantId,
                     quantity: quantity
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
-                        updateCartTotal(response.cart);
+                        updateSelectedTotal(); // Cập nhật tổng tiền sau khi cập nhật số lượng
                     } else {
-                        alert(response.message);
+                        Swal.fire('Thông báo', response.message, 'error');
                     }
                 },
-                error: function() {
-                    alert("Có lỗi xảy ra, vui lòng thử lại!");
+                error: function () {
+                    Swal.fire('Lỗi', 'Có lỗi xảy ra, vui lòng thử lại!', 'error');
                 }
             });
-            // Cập nhật tổng giỏ hàng
-            updateCartTotal();
         });
-        // Cập nhật tổng giỏ hàng khi số lượng thay đổi
-        function updateCartTotal() {
-            var total = 0;
-            $('.pro-subtotal span').each(function() {
-                var subtotal = $(this).text().replace(' đ', '').replace(/\./g, '').replace(/,/g, '');
-                total += parseFloat(subtotal);
+
+        // Khi nhấn nút "Tiến hành thanh toán"
+        $('#proceed-to-checkout').on('click', function () {
+            var selectedIndexes = [];
+            $('.product-checkbox:checked').each(function () {
+                var index = $(this).data('index'); // Lấy chỉ số sản phẩm được chọn
+                selectedIndexes.push(index);
             });
-            // Hiển thị tổng giỏ hàng với định dạng tiền tệ
-            $('.sub-total').text(total.toLocaleString('vi-VN') + ' đ');
-        }
+
+            if (selectedIndexes.length === 0) {
+                Swal.fire('Thông báo', 'Bạn chưa chọn sản phẩm nào!', 'warning');
+                return;
+            }
+
+            // Gửi danh sách chỉ số qua AJAX
+            $.ajax({
+                url: "{{ route('cart.move.to.selected') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    indexes: selectedIndexes
+                },
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            title: 'Thành công',
+                            text: 'Chuyển sản phẩm thành công!',
+                            icon: 'success',
+                            timer: 1000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = "{{ route('orders.create') }}";
+                        });
+                    } else {
+                        Swal.fire('Thông báo', response.message, 'error');
+                    }
+                },
+                error: function () {
+                    Swal.fire('Lỗi', 'Có lỗi xảy ra, vui lòng thử lại!', 'error');
+                }
+            });
+        });
+
+        // Xử lý tải lại trang khi người dùng quay lại từ cache
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) { // Trang được tải từ cache
+                location.reload(); // Tải lại trang để đảm bảo dữ liệu mới nhất
+            }
+        });
     });
 </script>
+
 
 @endsection

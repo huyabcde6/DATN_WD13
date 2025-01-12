@@ -26,28 +26,14 @@
                                 <input type="text" name="email" readonly value="{{ $user->email }}" class="form-control" />
                             </div>
                             <div class="mb-3">
-                                <label for="">Password</label>
-                                <input type="text" name="password" class="form-control" />
-                                @error('password')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="">Roles</label>
+                                <label for="roles" class="form-label">Roles</label>
                                 <select name="roles[]" class="form-control" multiple>
-                                    <option value="">Select Roles</option>
-                                    @foreach ($roles as $role)
-                                        <option
-                                            value="{{ $role }}"
-                                            {{ in_array($role, $userRoles) ? 'selected' : '' }}
-                                        >
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role }}" {{ in_array($role, $userRoles) ? 'selected' : '' }}>
                                             {{ $role }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('roles')
-                                    <span class="text-danger">{{ $message }}</span> 
-                                @enderror
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-primary">Update</button>

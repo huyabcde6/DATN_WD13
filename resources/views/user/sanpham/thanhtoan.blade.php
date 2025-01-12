@@ -1,54 +1,54 @@
 @extends('layouts.home')
 @section('css')
 <style>
-    .your-order-area {
-        padding: 20px;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-    }
+.your-order-area {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
 
-    .your-order-table th,
-    .your-order-table td {
-        vertical-align: middle;
-        padding: 10px;
-    }
+.your-order-table th,
+.your-order-table td {
+    vertical-align: middle;
+    padding: 10px;
+}
 
-    .your-order-table th {
-        background-color: #343a40;
-        color: #fff;
-        font-weight: 500;
-    }
+.your-order-table th {
+    background-color: #343a40;
+    color: #fff;
+    font-weight: 500;
+}
 
-    .your-order-table td {
-        background-color: #fff;
-    }
+.your-order-table td {
+    background-color: #fff;
+}
 
-    .cart-update-option {
-        margin-top: 20px;
-        gap: 10px;
-    }
+.cart-update-option {
+    margin-top: 20px;
+    gap: 10px;
+}
 
-    .apply-coupon-wrapper input {
-        max-width: 300px;
-        border-radius: 0;
-        margin-right: 10px;
-    }
+.apply-coupon-wrapper input {
+    max-width: 300px;
+    border-radius: 0;
+    margin-right: 10px;
+}
 
-    .order-button-payment button {
-        font-weight: bold;
-    }
+.order-button-payment button {
+    font-weight: bold;
+}
 
-    .single-payment {
-        border: 1px solid #dee2e6;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        background-color: #fff;
-    }
+.single-payment {
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
 
-    .payment-accordion-order-button {
-        margin-top: 20px;
-    }
+.payment-accordion-order-button {
+    margin-top: 20px;
+}
 </style>
 
 @endsection
@@ -76,7 +76,7 @@
                     @csrf
                     @method ('POST')
                     <input type="hidden" name="total" value="{{ $total }}">
-                    @foreach ($cartItems as $item)
+                    @foreach ($selectedCart as $item)
                     <input type="hidden" name="id_sp[]" value="{{$item['product_id']}}">
                     @endforeach
                     <input type="text" name="voucher" class="form-control" placeholder="Nhập mã giảm giá" />
@@ -156,7 +156,7 @@
                     <!-- Your Order Area Start -->
                     <div class="your-order-area border">
                         <h3 class="title">Đơn hàng của bạn</h3>
-                        <div class="your-order-table table-responsive">
+                        <div class="your-order-table table-responsive" >
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -165,8 +165,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($cartItems as $item)
-                                    <input type="hidden" name="select-item[]" value="{{ $item['product_detail_id'] }}" style="display: block;" />
+                                    @foreach ($selectedCart as $item)
                                     <tr>
                                         @if (!empty($item['product_avata']))
                                         <img src="{{ asset('storage/' . $item['product_avata']) }}" alt="Product Image">
@@ -187,7 +186,7 @@
                                 <tfoot>
                                     <tr>
                                         <th class="text-start" style="background-color: #ffffff; color: #000000;">Tổng phụ</th>
-                                        <td class="text-end">{{ number_format($subTotal, 0, ',', '.') }} ₫</td>
+                                        <td class="text-end" >{{ number_format($subTotal, 0, ',', '.') }} ₫</td>
                                         <input type="hidden" name="subtotal" value="{{ $subTotal }}">
                                     </tr>
                                     <tr>
@@ -257,69 +256,69 @@
 
 @section('js')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Lấy form và nút "Áp dụng mã"
-        const voucherForm = document.getElementById('voucher-form');
-        const voucherInput = document.querySelector('input[name="voucher"]');
-        const applyVoucherButton = document.getElementById('apply-voucher');
-        const voucherMessage = document.getElementById('voucher-message');
-        const discountDisplay = document.getElementById('discount-display');
-        const totalDisplay = document.getElementById('total-display');
-        const discountInput = document.getElementById('discount-input');
-        const totalinput = document.getElementById('total-input');
+document.addEventListener('DOMContentLoaded', function() {
+    // Lấy form và nút "Áp dụng mã"
+    const voucherForm = document.getElementById('voucher-form');
+    const voucherInput = document.querySelector('input[name="voucher"]');
+    const applyVoucherButton = document.getElementById('apply-voucher');
+    const voucherMessage = document.getElementById('voucher-message');
+    const discountDisplay = document.getElementById('discount-display');
+    const totalDisplay = document.getElementById('total-display');
+    const discountInput = document.getElementById('discount-input');
+    const totalinput = document.getElementById('total-input');
 
-        voucherForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Ngăn chặn form submit mặc định
+    voucherForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Ngăn chặn form submit mặc định
 
-            // Lấy giá trị mã giảm giá từ input
-            const voucherCode = voucherInput.value;
+        // Lấy giá trị mã giảm giá từ input
+        const voucherCode = voucherInput.value;
 
-            // Kiểm tra nếu voucher không rỗng
-            if (voucherCode.trim() === '') {
-                alert('Vui lòng nhập mã giảm giá.');
-                return;
-            }
+        // Kiểm tra nếu voucher không rỗng
+        if (voucherCode.trim() === '') {
+            alert('Vui lòng nhập mã giảm giá.');
+            return;
+        }
 
-            // Tạo FormData để gửi tất cả dữ liệu từ form
-            const formData = new FormData(voucherForm);
-            formData.append('voucher', voucherCode); // Thêm mã giảm giá vào FormData
+        // Tạo FormData để gửi tất cả dữ liệu từ form
+        const formData = new FormData(voucherForm);
+        formData.append('voucher', voucherCode); // Thêm mã giảm giá vào FormData
 
-            // Gửi AJAX để kiểm tra và áp dụng mã giảm giá
-            fetch("{{ route('vocher') }}", {
-                    method: 'POST',
-                    body: formData, // Gửi dữ liệu dưới dạng FormData
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Kiểm tra nếu có lỗi
-                    if (data.error) {
-                        voucherMessage.innerHTML =
-                            `<div class="alert alert-danger">${data.error}</div>`;
-                        discountDisplay.textContent = '0 ₫'; // Reset giá trị giảm giá
-                        totalDisplay.textContent =
-                            `{{ number_format($total, 0, ',', '.') }} ₫`; // Reset tổng giá trị
-                        discountInput.value = 0;
-                        totalinput.value = '{{ str_replace(".", "", $total) }}';
-                    } else {
-                        // Hiển thị thông tin giảm giá
-                        voucherMessage.innerHTML =
-                            `<div class="alert alert-success">${data.message}</div>`;
-                        discountDisplay.textContent = `${data.discount} ₫`;
-                        totalDisplay.textContent = `${data.total} ₫`;
-                        discountInput.value = data.discount.replace(/\./g, '');;
-                        totalinput.value = data.total.replace(/\./g, '');;
-                    }
-                })
-                .catch(error => {
-                    console.error('Có lỗi xảy ra khi áp dụng mã:', error);
+        // Gửi AJAX để kiểm tra và áp dụng mã giảm giá
+        fetch("{{ route('vocher') }}", {
+                method: 'POST',
+                body: formData, // Gửi dữ liệu dưới dạng FormData
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Kiểm tra nếu có lỗi
+                if (data.error) {
                     voucherMessage.innerHTML =
-                        `<div class="alert alert-danger">Đã xảy ra lỗi, vui lòng thử lại sau.</div>`;
-                });
-        });
+                        `<div class="alert alert-danger">${data.error}</div>`;
+                    discountDisplay.textContent = '0 ₫'; // Reset giá trị giảm giá
+                    totalDisplay.textContent =
+                        `{{ number_format($total, 0, ',', '.') }} ₫`; // Reset tổng giá trị
+                    discountInput.value = 0;
+                    totalinput.value = '{{ str_replace(".", "", $total) }}';
+                } else {
+                    // Hiển thị thông tin giảm giá
+                    voucherMessage.innerHTML =
+                        `<div class="alert alert-success">${data.message}</div>`;
+                    discountDisplay.textContent = `${data.discount} ₫`;
+                    totalDisplay.textContent = `${data.total} ₫`;
+                    discountInput.value = data.discount.replace(/\./g, '');;
+                    totalinput.value = data.total.replace(/\./g, '');;
+                }
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra khi áp dụng mã:', error);
+                voucherMessage.innerHTML =
+                    `<div class="alert alert-danger">Đã xảy ra lỗi, vui lòng thử lại sau.</div>`;
+            });
     });
+});
 </script>
 
 @endsection

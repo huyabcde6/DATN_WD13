@@ -62,57 +62,56 @@ class OrderController extends Controller
     /**
      * Hiển thị form tạo đơn hàng mới.
      */
-    public function create(Request $request)
-    {
-        $user = Auth::user();
-        $cartItems = Session::get('cart', []);
-        
-        if (!empty($cartItems)) {
-            $subTotal = 0;
-        
-            foreach ($cartItems as &$item) {
-                // Lấy thông tin sản phẩm
-                $product = Product::find($item['product_id']);
-                if (!$product) {
-                    return redirect()->route('cart.index')->with('error', 'Sản phẩm không tồn tại.');
-                }
-        
-                // Gắn tên sản phẩm
-                $item['name'] = $product->name;
-                $item['slug'] = $product->slug;
-        
-                // Kiểm tra nếu có biến thể
-                if (isset($item['variant_id'])) {
-                    $variant = ProductVariant::find($item['variant_id']);
-                    if ($variant) {
-                        $item['variant_name'] = $variant->product_code; // Ví dụ: Mã biến thể
-                    }
-                }
-        
-                if (!isset($item['price']) || !isset($item['quantity'])) {
-                    return redirect()->route('cart.index')->with('error', 'Giỏ hàng có dữ liệu không hợp lệ.');
-                }
-        
-                $subTotal += $item['price'] * $item['quantity'];
-            }
-        
-            $shippingFee = 30000; // Phí vận chuyển
-            $total = $subTotal + $shippingFee;
-        
-            return view('user.sanpham.thanhtoan', compact(
-                'cartItems',
-                'subTotal',
-                'shippingFee',
-                'total',
-                'user'
-            ));
-        }
-        
-    
-        return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
-    }
 
-
+     public function create()
+     {
+         $user = Auth::user();
+         $selectedCart = Session::get('selected_cart', []);
+         
+         if (!empty($selectedCart)) {
+             $subTotal = 0;
+         
+             foreach ($selectedCart as &$item) {
+                 // Lấy thông tin sản phẩm
+                 $product = Product::find($item['product_id']);
+                 if (!$product) {
+                     return redirect()->route('cart.index')->with('error', 'Sản phẩm không tồn tại.');
+                 }
+         
+                 // Gắn tên sản phẩm
+                 $item['name'] = $product->name;
+                 $item['slug'] = $product->slug;
+         
+                 // Kiểm tra nếu có biến thể
+                 if (isset($item['variant_id'])) {
+                     $variant = ProductVariant::find($item['variant_id']);
+                     if ($variant) {
+                         $item['variant_name'] = $variant->product_code; // Ví dụ: Mã biến thể
+                     }
+                 }
+         
+                 if (!isset($item['price']) || !isset($item['quantity'])) {
+                     return redirect()->route('cart.index')->with('error', 'Giỏ hàng có dữ liệu không hợp lệ.');
+                 }
+         
+                 $subTotal += $item['price'] * $item['quantity'];
+             }
+         
+             $shippingFee = 30000; // Phí vận chuyển
+             $total = $subTotal + $shippingFee;
+         
+             return view('user.sanpham.thanhtoan', compact(
+                 'selectedCart',
+                 'subTotal',
+                 'shippingFee',
+                 'total',
+                 'user'
+             ));
+         }
+         
+     
+         return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn hiện tại trống.');
+     }
     /**
      * Lưu trữ một đơn hàng mới vào cơ sở dữ liệu.
      */
@@ -131,72 +130,66 @@ class OrderController extends Controller
                 // Tạo đơn hàng
                 $order = Order::create($params);
                 $orderId = $order->id;
-                $carts = Session::get('cart', []); // Giỏ hàng từ session
 
-                if ($request->mua === 'muangay') {
-                    // Trường hợp "Mua ngay"
-                    $productVariant = ProductVariant::with('attributes.attributeValue')->find($request->product_variant_id);
+                // Lấy giỏ hàng tạm thời từ session
+                $selectedCart = Session::get('selected_cart', []);
+
+                if (empty($selectedCart)) {
+                    throw new \Exception('Giỏ hàng để thanh toán trống.');
+                }
+
+                // Trường hợp "Thanh toán giỏ hàng"
+                foreach ($selectedCart as $item) {
+                    $productVariant = ProductVariant::with('attributes.attributeValue')->find($item['variant_id']);
 
                     if (!$productVariant) {
                         throw new \Exception('Biến thể sản phẩm không tồn tại.');
                     }
 
                     // Kiểm tra lại số lượng kho trước khi giảm
-                    if ($productVariant->stock_quantity < $request->quantity) {
-                        throw new \Exception('Số lượng sản phẩm không đủ trong kho.');
+                    if ($productVariant->stock_quantity < $item['quantity']) {
+                        throw new \Exception('Số lượng sản phẩm không đủ trong kho');
                     }
 
                     // Cập nhật số lượng sản phẩm trong kho
-                    $productVariant->stock_quantity -= $request->quantity;
+                    $productVariant->stock_quantity -= $item['quantity'];
                     $productVariant->save();
 
                     $order->orderDetails()->create([
                         'order_id' => $orderId,
                         'product_variant_id' => $productVariant->id,
-                        'quantity' => $request->quantity,
+                        'quantity' => $item['quantity'],
                         'attributes' => $productVariant->attributes->map(function ($attr) {
                             return [
                                 'name' => $attr->attributeValue->attribute->name,
                                 'value' => $attr->attributeValue->value,
                             ];
                         }),
-                        'price' => $request->price,
+                        'price' => $item['price'],
                         'product_name' => $productVariant->product->name ?? 'Unknown',
                         'product_avata' => $productVariant->product->avata ?? null,
                     ]);
-                } else {
-                    // Trường hợp "Thanh toán giỏ hàng"
-                    foreach ($carts as $item) {
-                        $productVariant = ProductVariant::with('attributes.attributeValue')->find($item['variant_id']);
-                        if (!$productVariant) {
-                            throw new \Exception('Biến thể sản phẩm không tồn tại.');
-                        }
-
-                        // Kiểm tra lại số lượng kho trước khi giảm
-                        if ($productVariant->stock_quantity < $item['quantity']) {
-                            throw new \Exception('Số lượng sản phẩm không đủ trong kho');
-                        }
-
-                        // Cập nhật số lượng sản phẩm trong kho
-                        $productVariant->stock_quantity -= $item['quantity'];
-                        $productVariant->save();
-
-                        $order->orderDetails()->create([
-                            'order_id' => $orderId,
-                            'product_variant_id' => $productVariant->id,
-                            'quantity' => $item['quantity'],
-                            'attributes' => $productVariant->attributes->map(function ($attr) {
-                                return [
-                                    'name' => $attr->attributeValue->attribute->name,
-                                    'value' => $attr->attributeValue->value,
-                                ];
-                            }),
-                            'price' => $item['price'],
-                            'product_name' => $productVariant->product->name ?? 'Unknown',
-                            'product_avata' => $productVariant->product->avata ?? null,
-                        ]);
-                    }
                 }
+
+                // Xóa sản phẩm đã thanh toán khỏi giỏ hàng chính
+                $cart = Session::get('cart', []);
+                $updatedCart = array_filter($cart, function ($cartItem) use ($selectedCart) {
+                    foreach ($selectedCart as $selectedItem) {
+                        if (
+                            $cartItem['product_id'] === $selectedItem['product_id'] &&
+                            ($cartItem['variant_id'] ?? null) === ($selectedItem['variant_id'] ?? null)
+                        ) {
+                            return false; // Xóa sản phẩm nếu nó có trong selected_cart
+                        }
+                    }
+                    return true; // Giữ lại sản phẩm không có trong selected_cart
+                });
+
+                // Lưu lại giỏ hàng đã cập nhật
+                Session::put('cart', array_values($updatedCart));
+
+                // Xóa selected_cart
+                Session::forget('selected_cart');
 
                 // Kiểm tra phương thức thanh toán
                 if ($request->input('method') === "VNPAY") {
@@ -207,22 +200,17 @@ class OrderController extends Controller
                 // Gửi email xác nhận đơn hàng
                 Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
 
-                // Xóa giỏ hàng
-                Session::forget('cart');
                 DB::commit();
-                return redirect()->route('thank_you', ['order' => $order->id])
-                    ->with('success', 'Đơn hàng của bạn đã được tạo thành công!');
+                return redirect()->route('thank_you', ['order' => $order->id])->with('success', 'Đơn hàng đã được tạo thành công.');
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error('Lỗi tạo đơn hàng: ' . $e->getMessage());
-                return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+                return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra trong quá trình tạo đơn hàng: ' . $e->getMessage());
             }
         }
 
         return redirect()->route('cart.index')->with('error', 'Phương thức không hợp lệ.');
     }
-
-
 
 
     private function processVNP($order)
@@ -346,8 +334,10 @@ class OrderController extends Controller
         if ($request->isMethod('POST')) {
             DB::beginTransaction();
 
-            try {
+            try {  
+                
                 $order = Order::findOrFail($id);
+                $previousStatus = $order->status;
                 $params = [];
 
                 // Kiểm tra hành động hủy đơn hàng hoặc giao hàng
@@ -381,6 +371,8 @@ class OrderController extends Controller
 
                 // Cập nhật trạng thái đơn hàng
                 $order->update($params);
+                $currentStatus = $order->fresh()->status;
+                $this->logStatusChange($order, $previousStatus, $currentStatus);
                 broadcast(new OderEvent($order));
                 Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
                 DB::commit();
@@ -393,6 +385,16 @@ class OrderController extends Controller
         }
 
         return redirect()->route('orders.index')->with('error', 'Phương thức không hợp lệ.');
+    }
+    private function logStatusChange(Order $order, $previousStatus, $currentStatus)
+    {
+        OrderStatusHistory::create([
+            'order_id' => $order->id,
+            'previous_status_id' => $previousStatus ? $previousStatus->id : null, // Trạng thái trước khi thay đổi
+            'current_status_id' => $currentStatus->id, // Trạng thái hiện tại
+            'changed_at' => now(), // Thời gian thay đổi
+            'changed_by' => Auth::id(), // Người thay đổi
+        ]);
     }
     protected function moveOrderToInvoice(Order $order)
     {
@@ -554,53 +556,5 @@ class OrderController extends Controller
 
         return 0;
     }
-    public function muangay(Request $request)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        $user = Auth::user();
-        $request->validate([
-            'products_id' => 'required|exists:products,id',
-            'size' => 'required|integer|exists:sizes,size_id',
-            'color' => 'required|integer|exists:colors,color_id',
-            'quantity' => 'required|integer|min:1',
-        ]);
-
-        // Lấy giỏ hàng từ session
-        $productsId = $request->input('products_id');
-        $sizeId = $request->input('size');
-        $colorId = $request->input('color');
-        $quantity = $request->input('quantity');
-
-        $productDetail = ProductDetail::where('products_id', $productsId)
-            ->where('size_id', $sizeId)
-            ->where('color_id', $colorId)
-            ->first();
-        $variantKey = $productDetail->id;
-        $price = $productDetail->discount_price ? $productDetail->discount_price : $productDetail->price;
-        $cartItems[$variantKey] = [
-            'product_detail_id' => $productDetail->id,
-            'size' => $productDetail->size->value,
-            'color' => $productDetail->color->value,
-            'quantity' => $quantity,
-            'product_name' => $productDetail->products->name,
-            'product_id' => $productDetail->products_id,
-            'price' => $price, // Dùng giá khuyến mãi nếu có
-            'image' => $productDetail->products->avata,
-            'slug' => $productDetail->products->slug,
-        ];
-        $mua = 'muangay';
-        $subTotal = $price * $quantity;
-        $shippingFee = 30000; // 30,000 VND
-        $total = $subTotal + $shippingFee; // Tổng cộng bao gồm phí vận chuyển
-        return view('user.sanpham.thanhtoan', compact(
-            'cartItems',
-            'subTotal',
-            'shippingFee',
-            'total',
-            'user',
-            'mua'
-        ));
-    }
+    
 }

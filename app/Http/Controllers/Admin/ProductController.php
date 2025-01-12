@@ -26,13 +26,13 @@ use App\Models\ProductVariantAttribute;
 
 class ProductController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:view product', ['only' => ['index']]);
-    //     $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
-    //     $this->middleware('permission:edit product', ['only' => ['index']]);
-    //     $this->middleware('permission:delete product', ['only' => ['destroy']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('permission:Xem danh sách sản phẩm', ['only' => ['index', 'show']]);
+        $this->middleware('permission:Thêm mới sản phẩm', ['only' => ['create', 'store']]);
+        $this->middleware('permission:Cập nhật sản phẩm', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:Xóa sản phẩm', ['only' => ['destroy']]);
+    }
 
     public function index(Request $request)
     {
@@ -194,25 +194,6 @@ class ProductController extends Controller
 
             $product->save();
 
-
-            // Xử lý xóa hình ảnh phụ
-            // if ($request->has('remove_images')) {
-            //     foreach ($request->remove_images as $imageId) {
-            //         $image = ProductImage::findOrFail($imageId);
-            //         if (Storage::disk('public')->exists($image->image_path)) {
-            //             Storage::disk('public')->delete($image->image_path); // Xóa ảnh cũ
-            //         }
-            //         $image->delete();
-            //     }
-            // }
-
-            // // Thêm hình ảnh phụ mới
-            // if ($request->hasFile('images')) {
-            //     foreach ($request->file('images') as $image) {
-            //         $imagePath = $image->store('product_images', 'public');
-            //         $product->productImages()->create(['image_path' => $imagePath]);
-            //     }
-            // }
             $deleteImages = json_decode($request->input('deleted_images', '[]'));
             if(!empty($deletedImages)){
                 $productImages = ProductImage::whereIn('id', $deletedImages)->get();
@@ -408,20 +389,6 @@ class ProductController extends Controller
         // Trả về view hiển thị sản phẩm chi tiết
         return view('admin.products.show', compact('product', 'usedAttributes', 'categories'));
     }
-    private function processUsedAttributes($product)
-    {
-        // Tạo mảng lưu các thuộc tính của các biến thể đã được sử dụng
-        $usedAttributes = [];
-
-        foreach ($product->variants as $variant) {
-            foreach ($variant->attributes as $attribute) {
-                $usedAttributes[$attribute->attribute_id] = $attribute->attribute;
-            }
-        }
-
-        return $usedAttributes;
-    }
-
     public function destroy($id)
     {
         $products = products::findOrFail($id);

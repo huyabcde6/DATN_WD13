@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class AttributeValueController extends Controller
 {
+    public function __construct(){
+        $this->middleware('permission:Xem giá trị biến thể', ['only' => ['index']]);
+        $this->middleware('permission:Thêm mới giá trị biến thể', ['only' => ['create', 'store']]);
+        $this->middleware('permission:Sửa giá trị biến thể', ['only' => ['update', 'edit']]);
+        $this->middleware('permission:Xóa giá trị biến thể', ['only' => ['destroy']]);
+    }
     public function index()
     {
         $attributeValues = AttributeValue::with('attribute')->get();

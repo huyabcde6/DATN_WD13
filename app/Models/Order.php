@@ -45,7 +45,7 @@ class Order extends Model
 
     public function product()
     {
-        return $this->hasManyThrough(product::class, OrderDetail::class, 'order_id', 'id', 'id', 'products_id');
+        return $this->hasManyThrough(product::class, OrderDetail::class, 'order_id', 'id', 'id', 'product_id');
     }
     public function invoice()
     {

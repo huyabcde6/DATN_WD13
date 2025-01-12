@@ -11,7 +11,7 @@ class CartController extends Controller
 {
     // Hiển thị giỏ hàng
     public function index()
-    {
+    {   Session::forget('selected_cart');
         $cartItems = Session::get('cart', []);
         $shippingFee = 30000;
         $subTotal = 0;
@@ -37,14 +37,14 @@ class CartController extends Controller
                         'value' => $attribute->attributeValue->value ?? null,
                     ];
                 })->toArray() : [];
-
-                $subTotal += $item['price'] * $item['quantity'];
+  
             }
         }
 
-        $total = $subTotal + $shippingFee;
-
-        return view('user.sanpham.cart', compact('cartItems', 'subTotal', 'shippingFee', 'total'));
+        return response()->view('user.sanpham.cart', compact('cartItems', 'shippingFee'))
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0');
     }
 
     // Thêm sản phẩm vào giỏ hàng
@@ -247,4 +247,30 @@ class CartController extends Controller
 
         return $cartData;
     }
+    public function moveToSelected(Request $request)
+    {
+        $indexes = $request->input('indexes'); // Các chỉ số sản phẩm được chọn
+        if (empty($indexes)) {
+            return response()->json(['success' => false, 'message' => 'Không có sản phẩm nào được chọn.']);
+        }
+
+        $cart = Session::get('cart', []);
+        $selectedCart = Session::get('selected_cart', []);
+
+        // Di chuyển sản phẩm được chọn sang session `selected_cart`
+        foreach ($indexes as $index) {
+            if (isset($cart[$index])) {
+                $selectedCart[] = $cart[$index]; // Thêm sản phẩm vào session `selected_cart`
+
+            }
+        }
+
+        // Lưu lại session
+        Session::put('cart', array_values($cart)); // Sắp xếp lại chỉ số mảng
+        Session::put('selected_cart', $selectedCart);
+
+        return response()->json(['success' => true, 'message' => 'Sản phẩm đã được chuyển sang thanh toán.']);
+    }
+
+
 }
