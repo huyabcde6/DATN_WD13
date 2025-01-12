@@ -39,7 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'addPermissionToRole']);
     Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'givePermissionToRole']);
 
-
+    Route::get('userAdmin/{user}/edit', [AdminController::class, 'edit'])->name('userAdmin.edit');
+    
     Route::resource('userAdmin', AdminController::class);
     Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
 });

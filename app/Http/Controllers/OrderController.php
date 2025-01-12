@@ -334,8 +334,10 @@ class OrderController extends Controller
         if ($request->isMethod('POST')) {
             DB::beginTransaction();
 
-            try {
+            try {  
+                
                 $order = Order::findOrFail($id);
+                $previousStatus = $order->status;
                 $params = [];
 
                 // Kiểm tra hành động hủy đơn hàng hoặc giao hàng
@@ -369,6 +371,8 @@ class OrderController extends Controller
 
                 // Cập nhật trạng thái đơn hàng
                 $order->update($params);
+                $currentStatus = $order->fresh()->status;
+                $this->logStatusChange($order, $previousStatus, $currentStatus);
                 broadcast(new OderEvent($order));
                 Mail::to(Auth::user()->email)->send(new OrderStatusChanged($order));
                 DB::commit();
@@ -381,6 +385,16 @@ class OrderController extends Controller
         }
 
         return redirect()->route('orders.index')->with('error', 'Phương thức không hợp lệ.');
+    }
+    private function logStatusChange(Order $order, $previousStatus, $currentStatus)
+    {
+        OrderStatusHistory::create([
+            'order_id' => $order->id,
+            'previous_status_id' => $previousStatus ? $previousStatus->id : null, // Trạng thái trước khi thay đổi
+            'current_status_id' => $currentStatus->id, // Trạng thái hiện tại
+            'changed_at' => now(), // Thời gian thay đổi
+            'changed_by' => Auth::id(), // Người thay đổi
+        ]);
     }
     protected function moveOrderToInvoice(Order $order)
     {
@@ -542,5 +556,5 @@ class OrderController extends Controller
 
         return 0;
     }
-
+    
 }

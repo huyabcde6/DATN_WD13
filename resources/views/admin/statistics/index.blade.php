@@ -109,14 +109,17 @@
                                 <option value="12">Tháng 12</option>
                                 <!-- Thêm các năm khác -->
                             </select>
-                            <select id="yearSelect" class="form-control text-center" style="max-width: 90px;">
-                                <option value="2027">2027</option>
-                                <option value="2026">2026</option>
-                                <option value="2025">2025</option>
-                                <option value="2024" selected>2024</option>
-                                <option value="2023">2023</option>
-                                <option value="2022">2022</option>
-                                <!-- Thêm các năm khác -->
+                            <?php
+                            $currentYear = date('Y');
+                            $startYear = 1900; // Năm bắt đầu
+                            $endYear = 2100; // Năm kết thúc
+                            ?>
+                            <select id="yearSelect" class="form-control text-center" style="max-width: 90px; height: 40px; overflow-y: auto;">
+                                <?php for ($year = $endYear; $year >= $startYear; $year--): ?>
+                                    <option value="<?= $year ?>" <?= $year == $currentYear ? 'selected' : '' ?>>
+                                        <?= $year ?>
+                                    </option>
+                                <?php endfor; ?>
                             </select>
                         </div>
                     </div>
@@ -157,10 +160,10 @@
                             </div>
                             <button type="submit" class="btn btn-primary mt-3">Lọc</button>
                         </form>
+                        <div id="error-message" style="color: red; display: none; margin-top: 10px;"></div>
                     </div>
                 </div>
             </div>
-
             <!-- Sản phẩm bán chạy và Khách hàng thân thiết -->
             <div class="col-md-6 col-xl-6">
                 <!-- Sản phẩm bán chạy -->
@@ -599,4 +602,44 @@ orderStatusModal.addEventListener('show.bs.modal', function(event) {
     }
 });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        const errorMessage = document.getElementById('error-message');
+
+        function validateDates() {
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+            const today = new Date(); // Lấy ngày hiện tại
+
+            let error = ''; // Chuỗi thông báo lỗi
+
+            // Kiểm tra nếu ngày bắt đầu lớn hơn ngày kết thúc
+            if (startDate > endDate) {
+                error = 'Ngày bắt đầu không được lớn hơn ngày kết thúc.';
+            }
+
+            // Kiểm tra nếu ngày bắt đầu ở tương lai
+            if (startDate > today) {
+                error = 'Ngày bắt đầu không được ở tương lai.';
+            }
+
+            // Hiển thị hoặc ẩn thông báo lỗi
+            if (error) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = error;
+                startDateInput.value = ''; // Reset ngày bắt đầu
+            } else {
+                errorMessage.style.display = 'none';
+            }
+        }
+
+        // Lắng nghe sự kiện khi người dùng thay đổi giá trị
+        startDateInput.addEventListener('change', validateDates);
+        endDateInput.addEventListener('change', validateDates);
+    });
+</script>
+
+
 @endsection

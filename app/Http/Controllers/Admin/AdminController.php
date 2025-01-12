@@ -52,32 +52,32 @@ class AdminController extends Controller
     {
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
+
         return view('role-permission.user.edit', [
             'user' => $user,
             'roles' => $roles,
-            'userRoles' => $userRoles
+            'userRoles' => $userRoles,
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
     {
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'status' => $request->status,
-        ];
-        if (!empty($request->password)) {
-            $data += [
-                'password' => Hash::make($request->password),
-            ];
-        }
-        $user->update($data);
-        $user->syncRoles($request->roles);
 
-        return redirect('/userAdmin')->with('status', 'Admin cập nhập thành công');
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        // Update roles if provided
+        if ($request->has('roles')) {
+            $user->syncRoles($request->roles);
+        }
+
+        return $user->update($data);
+
+        return redirect()->route('users.index')->with('success', 'Người dùng đã được cập nhật thành công.');
     }
 
     /**
