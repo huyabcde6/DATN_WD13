@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Events\OrderUpdated;
 use Carbon\Carbon;
 use App\Mail\OrderStatusChanged;
+use App\Models\OrderAction;
 use App\Models\OrderStatusHistory;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -101,9 +102,16 @@ class OrderController extends Controller
             ->where('order_id', $id)
             ->orderBy('changed_at', 'desc')
             ->get();
-
+        $this->markNotificationAsRead($id);
         // Truyền dữ liệu sang view
         return view('admin.orders.show', compact('order', 'totalAmount', 'statusHistory'));
+    }
+    protected function markNotificationAsRead($orderId)
+    {
+        // Lấy tất cả thông báo cho đơn hàng này và đánh dấu là đã đọc
+        $notifications = OrderAction::where('order_id', $orderId)
+            ->where('is_read', false)  // Kiểm tra chỉ những thông báo chưa được đọc
+            ->update(['is_read' => true]);  // Đánh dấu là đã đọc
     }
 
 
@@ -162,7 +170,7 @@ class OrderController extends Controller
                             Log::warning("Không tìm thấy productVariant cho đơn hàng chi tiết ID: " . $orderDetail->id);
                         }
                     }
-                }                
+                }
             } elseif ($order->status_donhang_id == 2 && $statusId == 3) {
                 $order->status_donhang_id = $statusId;
             } elseif ($order->status_donhang_id == 3 && $statusId == 4) {
@@ -248,13 +256,12 @@ class OrderController extends Controller
             $invoice->invoiceDetails()->create([
                 'product_name'  => $orderDetail->product_name,
                 'product_avata' => $orderDetail->product_avata,
-                'attributes'    => is_string($orderDetail->attributes) 
-                                    ? json_decode($orderDetail->attributes, true) 
-                                    : $orderDetail->attributes, // Chuyển mảng thành JSON gọn gàng
+                'attributes'    => is_string($orderDetail->attributes)
+                    ? json_decode($orderDetail->attributes, true)
+                    : $orderDetail->attributes, // Chuyển mảng thành JSON gọn gàng
                 'quantity'      => $orderDetail->quantity,
                 'price'         => $orderDetail->price,
             ]);
         }
     }
-    
 }

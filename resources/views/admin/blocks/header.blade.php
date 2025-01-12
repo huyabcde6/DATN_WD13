@@ -26,6 +26,65 @@
                      </button>
                  </li>
                  <li class="dropdown notification-list topbar-dropdown">
+                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                         <i data-feather="bell" class="noti-icon"></i>
+                         <span class="badge bg-danger rounded-circle noti-icon-badge">{{$unreadCount}}</span>
+                     </a>
+                     <div class="dropdown-menu dropdown-menu-end dropdown-lg">
+
+                         <!-- item-->
+                         <div class="dropdown-item noti-title">
+                             <h5 class="m-0">
+                                 Thông báo
+                             </h5>
+                         </div>
+                         <!-- resources/views/notifications/index.blade.php -->
+                         <!-- resources/views/notifications/index.blade.php -->
+                         <div class="noti-scroll" data-simplebar>
+                             @foreach ($notifications as $notification)
+                             <a href="{{ $notification->action === 'comment' ? route('admin.comments.index') : route('admin.orders.show', $notification->order_id) }}"
+                                 class="dropdown-item notify-item text-muted link-primary @if($loop->first) active @endif">
+
+                                 <div class="d-flex align-items-center justify-content-between">
+                                     <p class="notify-details">{{ $notification->user->name }}</p>
+                                     <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                 </div>
+                                 <p class="mb-0 user-msg">
+                                     <small class="fs-14">
+                                         @switch($notification->action)
+                                         @case('cancel')
+                                         <strong><mark>{{ $notification->order->order_code }}</mark></strong>:<span class="text-reset">Đơn hàng đã bị hủy</span>
+                                         @break
+                                         @case('return')
+                                         <strong><mark>{{ $notification->order->order_code }}</mark></strong>:<span class="text-reset">Yêu cầu hoàn hàng</span>
+                                         @break
+                                         @case('complete')
+                                         <strong><mark>{{ $notification->order->order_code }}</mark></strong>:<span class="text-reset">Đơn hàng đã hoàn thành</span>
+                                         @break
+                                         @case('comment')
+                                         Đã bình luận <span class="text-reset"><strong><em>{{ $notification->comment }}</em></strong></span> cho sản phẩm <strong><mark>{{ $notification->product->name }}</mark></strong>
+                                         @break
+                                         @default
+                                         Chưa có thông báo nào
+                                         @endswitch
+                                     </small>
+                                 </p>
+                             </a>
+                             @endforeach
+                         </div>
+
+
+
+
+                         <!-- All-->
+                         <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+                             View all
+                             <i class="fe-arrow-right"></i>
+                         </a>
+
+                     </div>
+                 </li>
+                 <li class="dropdown notification-list topbar-dropdown">
 
                      <div class="dropdown-menu dropdown-menu-end dropdown-lg">
 
