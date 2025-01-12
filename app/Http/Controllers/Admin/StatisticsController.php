@@ -10,7 +10,8 @@ use App\Models\OrderDetail;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Invoice;
-use App\Models\products;
+use App\Models\product;
+use App\Models\product_varianit;
 use App\Models\InvoiceDetail;
 
 class StatisticsController extends Controller
@@ -29,24 +30,37 @@ class StatisticsController extends Controller
         $dailyRevenue = Invoice::whereDate('date_invoice', Carbon::today())
                             ->sum('total_price');
 
-        $totalProducts = products::count();
+        $totalProducts = product::count();
 
         $totalOrders = Order::whereMonth('created_at', Carbon::now()->month)
                                 ->whereYear('created_at', Carbon::now()->year)
                                 ->count();
 
-        // Truy vấn Top Products
-        $topProducts = products::select('products.id', 'products.name', 'products.avata', 'products.discount_price', 'categories.name as category_name', DB::raw('SUM(order_details.quantity) as total_sold'))
-                                ->join('categories', 'categories.id', '=', 'products.categories_id')
-                                ->join('product_details', 'products.id', '=', 'product_details.products_id')
-                                ->join('order_details', 'product_details.id', '=', 'order_details.product_detail_id')
-                                ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
-                                    return $query->whereBetween('order_details.created_at', [$startDate, $endDate]);
-                                })
-                                ->groupBy('products.id', 'products.name', 'products.avata', 'products.discount_price')
-                                ->orderByDesc('total_sold')
-                                ->take(5)
-                                ->get();
+        $topProducts = Product::select(
+                'products.id',
+                'products.name',
+                'products.avata',
+                'products.discount_price',
+                'categories.name as category_name',
+                DB::raw('SUM(order_details.quantity) as total_sold')
+            )
+            ->join('categories', 'categories.id', '=', 'products.categories_id') // Liên kết với danh mục
+            ->join('product_variants', 'products.id', '=', 'product_variants.product_id') // Liên kết với ProductVariant
+            ->join('order_details', 'product_variants.id', '=', 'order_details.product_variant_id') // Liên kết với OrderDetail
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                return $query->whereBetween('order_details.created_at', [$startDate, $endDate]);
+            })
+            ->groupBy(
+                'products.id',
+                'products.name',
+                'products.avata',
+                'products.discount_price',
+                'categories.name'
+            )
+            ->orderByDesc('total_sold') // Sắp xếp theo số lượng bán
+            ->take(5) // Lấy top 5 sản phẩm
+            ->get();
+
 
         // Truy vấn Top Customers
         $topCustomers = Order::select('orders.user_id', 

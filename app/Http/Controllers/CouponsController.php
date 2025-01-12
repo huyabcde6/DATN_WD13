@@ -12,6 +12,13 @@ use Illuminate\Http\Request;
 
 class CouponsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:Xem danh sách mã giảm giá', ['only' => ['index']]);
+        $this->middleware('permission:Thêm mới mã giảm giá', ['only' => ['create', 'store', 'add']]);
+        $this->middleware('permission:Cập nhật mã giảm giá', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:Xóa mã giảm giá', ['only' => ['destroy']]);
+    }
     public function index()
     {
         // Lấy tất cả mã giảm giá cùng với các điều kiện liên quan

@@ -25,7 +25,26 @@
                          <i data-feather="maximize" class="align-middle fullscreen noti-icon"></i>
                      </button>
                  </li>
+                 <li class="dropdown notification-list topbar-dropdown">
 
+                     <div class="dropdown-menu dropdown-menu-end dropdown-lg">
+
+                         <div class="notification-container">
+                             <div class="notification-panel" id="notificationPanel">
+                                 <div class="notification-header">
+                                     <h8>Thông báo</h8>
+                                 </div>
+                                 <div class="notification-content">
+                                     <!-- Các thông báo sẽ được thêm vào đây -->
+                                 </div>
+                                 <div class="notification-footer">
+                                     <a href="#">Xem thông báo trước đó</a>
+                                 </div>
+                             </div>
+                         </div>
+
+                     </div>
+                 </li>
                  <li class="dropdown notification-list topbar-dropdown">
                      <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button"
                          aria-haspopup="false" aria-expanded="false">
@@ -66,6 +85,7 @@
 
                      </div>
                  </li>
+
              </ul>
          </div>
 

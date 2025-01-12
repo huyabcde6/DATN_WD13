@@ -83,11 +83,7 @@ class ProductController extends Controller
     public function show($slug)
     {
         // Comment
-        $comments = $product->productComments()
-            ->where('is_hidden', 0)
-            ->orderByDesc('created_at')
-            ->paginate(3);
-        $hasPurchased = true;
+        
         // Lấy sản phẩm với các quan hệ liên quan
         $product = Product::with([
             'productImages',
@@ -103,7 +99,11 @@ class ProductController extends Controller
                 $attributeValues[] = $attribute->attribute_value_id;
             }
         }
-
+        $comments = $product->productComments()
+            ->where('is_hidden', 0)
+            ->orderByDesc('created_at')
+            ->get();
+        $hasPurchased = true;
         // Lấy chi tiết attribute values
         $attributeDetails = AttributeValue::whereIn('id', $attributeValues)->get();
         $attributes = [];

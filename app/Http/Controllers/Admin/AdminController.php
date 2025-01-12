@@ -12,6 +12,11 @@ use Spatie\Permission\Models\Role;
 class AdminController extends Controller
 
 {
+    public function __construct(){
+        $this->middleware('permission:Xem danh sách admin', ['only' => ['index']]);
+        $this->middleware('permission:Thêm mới tài khoản admin', ['only' => ['create', 'store']]);
+        $this->middleware('permission:Chỉnh sửa vai trò cho admin', ['only' => ['update', 'edit']]);
+    }
     public function index()
     {
         // Lọc tất cả người dùng có vai trò
@@ -34,13 +39,19 @@ class AdminController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            "password" => Hash::make($request->password),
+    {   
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|max:255|unique:users,email', // Loại bỏ ràng buộc định dạng email
+            'password' => 'required|string|min:8',
+            'roles' => 'required|array',
         ]);
-        $user->syncRoles($request->roles);
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'], // Lưu email như tài khoản
+            'password' => Hash::make($validated['password']),
+        ]);
+        $user->syncRoles($validated['roles']);
 
         return redirect('/userAdmin')->with('status', 'Admin thêm mới thành công');
     }
@@ -52,42 +63,42 @@ class AdminController extends Controller
     {
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
+
         return view('role-permission.user.edit', [
             'user' => $user,
             'roles' => $roles,
-            'userRoles' => $userRoles
+            'userRoles' => $userRoles,
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
     {
+        // Hiển thị dữ liệu để kiểm tra
+
+        // Xác thực dữ liệu
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'roles' => 'required|array', // Yêu cầu mảng roles
+        ]);
+
+        // Chuẩn bị dữ liệu để cập nhật
         $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'status' => $request->status,
+            'name' => $validated['name'],
         ];
-        if (!empty($request->password)) {
-            $data += [
-                'password' => Hash::make($request->password),
-            ];
-        }
+
+        // Cập nhật thông tin người dùng
         $user->update($data);
-        $user->syncRoles($request->roles);
 
-        return redirect('/userAdmin')->with('status', 'Admin cập nhập thành công');
+        // Đồng bộ vai trò
+        $user->syncRoles($validated['roles']);
+
+        // Điều hướng lại trang user admin với thông báo
+        return redirect('/userAdmin')->with('success', 'User updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
 
-    public function destroy($userId)
-    {
-        $user = User::findOrFail($userId);
-        $user->delete();
-        return redirect('/userAdmin')->with('success', 'Xóa thành công!');
-    }
 }

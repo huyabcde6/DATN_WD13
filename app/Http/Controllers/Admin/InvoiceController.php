@@ -10,6 +10,9 @@ use App\Models\InvoiceDetail;
 
 class InvoiceController extends Controller
 {
+    public function __construct(){
+        $this->middleware('permission:Xem hóa đơn', ['only' => ['index', 'show']]);
+    }
     public function index()
     {
         $invoices = Invoice::with('status')->orderBy('created_at', 'desc')->paginate(6);

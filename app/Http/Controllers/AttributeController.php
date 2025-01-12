@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(){
+        $this->middleware('permission:Xem thuộc tính biến thể', ['only' => ['index']]);
+        $this->middleware('permission:Thêm mới thuộc tính biến thể', ['only' => ['create', 'store']]);
+        $this->middleware('permission:Sửa thuộc tính biến thể', ['only' => ['update', 'edit']]);
+    }
     public function index()
     {
         $attributes = Attribute::all();

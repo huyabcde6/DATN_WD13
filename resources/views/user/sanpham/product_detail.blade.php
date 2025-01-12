@@ -234,15 +234,6 @@
                             </form>
                         </div>
 
-                        <div class="add-to-wishlist">
-                            <form method="POST" action="{{ route('muangay') }}" id="muangay-form">
-                                @csrf
-                                <input type="hidden" name="products_id" value="{{ $product->id }}">
-                                <input type="hidden" name="quantity" id="muangay-quantity" value="">
-                                <button type="submit" class="btn btn-outline-dark btn-hover-primary" id="add-to-buy">Mua
-                                    Ngay</button>
-                            </form>
-                        </div>
                     </div>
                     <!-- Cart & Wishlist Button End -->
 
@@ -258,9 +249,9 @@
 
                     <!-- Product Delivery Policy Start -->
                     <ul class="product-delivery-policy border-top pt-4 mt-4 border-bottom pb-4">
-                        <li><i class="fa fa-check-square"></i><span>Chính sách bảo mật</span></li>
-                        <li><i class="fa fa-truck"></i><span>Chính sách giao hàng</span></li>
-                        <li><i class="fa fa-refresh"></i><span>Chính sách hoàn trả</span></li>
+                        <li><i class="fa fa-check-square"></i> <span> Chính sách bảo mật</span></li>
+                        <li><i class="fa fa-truck"></i> <span> Chính sách giao hàng</span></li>
+                        <li><i class="fa fa-refresh"></i> <span> Chính sách hoàn trả</span></li>
                     </ul>
                     <!-- Product Delivery Policy End -->
                 </div>
@@ -373,7 +364,6 @@
 
             <!-- Start Comment Section (Moved) -->
             <div class="col-lg-12 col-custom single-product-comment">
-                <!-- @auth
                 <br><br><br>
                 <div class="review-form mb-4">
                     <h4>BÌNH LUẬN</h4>
@@ -382,24 +372,19 @@
                             <h6 class="mb-0" style="color: white">Đánh giá sản phẩm</h6>
                         </div>
 
-                        <div class="card-body bg-light">
-                            <form method="POST" action="{{ route('product.comment', $product->slug) }}" class="px-2">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="description" class="form-label small text-muted">Nội dung đánh
-                                        giá</label>
-                                    <textarea name="description" class="form-control form-control-sm border-dark"
-                                        rows="3" required placeholder="Nhập đánh giá của bạn về sản phẩm..."></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-dark btn-sm">
-                                    Gửi đánh giá
-                                </button>
-                            </form>
+                        <div class="card-body bg-light" id="comment-section" style="max-height: 400px; overflow-y: auto;">
+                        <!-- Nơi chứa bình luận -->
+                        <div id="comments-container">
+                            @include('user.sanpham.partials.comment_list', ['comments' => $comments])
                         </div>
+
+                        <!-- Chỗ tải thêm -->
+                        <div id="loading-spinner" class="text-center my-3" style="display: none;">
+                            <span>Đang tải...</span>
+                        </div>
+
                     </div>
                 </div>
-                @endauth -->
-
                 <!-- Comments List -->
 
             </div>
@@ -693,6 +678,8 @@
                             icon: 'success',
                             title: 'Thành công',
                             text: 'Sản phẩm đã được thêm vào giỏ hàng!',
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                         updateCartCount();
                     } else {
@@ -700,6 +687,8 @@
                             icon: 'error',
                             title: 'Lỗi',
                             text: 'Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!',
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                     }
                 })

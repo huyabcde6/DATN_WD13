@@ -12,12 +12,12 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    // public function __construct(){
-    //     $this->middleware('permission:view role', ['only' => ['index']]);
-    //     $this->middleware('permission:create role', ['only' => ['create', 'store', 'addPermissionToRole', 'givePermissionToRole']]);
-    //     $this->middleware('permission:edit role', ['only' => ['update', 'edit']]);
-    //     $this->middleware('permission:delete role', ['only' => ['destroy']]);
-    // }
+    public function __construct(){
+        $this->middleware('permission:Xem danh sách vai trò', ['only' => ['index']]);
+        $this->middleware('permission:Thêm mới vai trò', ['only' => ['create', 'store']]);
+        $this->middleware('permission:Cấp/sửa quyền', ['only' => ['addPermissionToRole', 'givePermissionToRole']]);
+        $this->middleware('permission:Sửa vai trò', ['only' => ['update', 'edit']]);
+    }
 
     public function index(Request $request)
     {

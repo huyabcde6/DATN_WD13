@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
 
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:view order', ['only' => ['index']]);
-    //     $this->middleware('permission:edit order', ['only' => ['update']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('permission:Xem trạng thái đơn hàng', ['only' => ['index', 'show']]);
+        $this->middleware('permission:Cập nhật trạng thái đơn hàng', ['only' => ['update']]);
+    }
 
     public function index(Request $request)
     {

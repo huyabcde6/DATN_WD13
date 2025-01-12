@@ -130,7 +130,6 @@
                                         <a class="mx-1 filter-link" data-status="4" href="#">Đã giao hàng</a>
                                         <a class="mx-1 filter-link" data-status="5" href="#">Hoàn thành</a>
                                         <a class="mx-1 filter-link" data-status="7" href="#">Đã hủy</a>
-                                        <a class="mx-1 filter-link" data-status="6,8" href="#">Chờ/Hoàn hàng</a>
                                     </div>
                                     <div class="myaccount-content" id="orders-container">
                                         @include('user.khac.partials.orders')

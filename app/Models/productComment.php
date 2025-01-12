@@ -11,13 +11,15 @@ class productComment extends Model
 
     protected $fillable = [
         'user_id',
-        'products_id',
+        'product_id',
         'description',
-        'image',
+        'images',
     ];  
-
+    protected $casts = [
+        'images' => 'array', // Tự động chuyển đổi JSON thành mảng PHP
+    ];
     public function product() {
-        return $this->belongsTo(products::class);
+        return $this->belongsTo(product::class);
     }
     public function user() {
         return $this->belongsTo(User::class);

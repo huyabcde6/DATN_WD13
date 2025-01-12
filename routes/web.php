@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'addPermissionToRole']);
     Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'givePermissionToRole']);
 
+    Route::get('userAdmin/{user}/edit', [AdminController::class, 'edit'])->name('userAdmin.edit');
+    Route::put('userAdmin/{user}', [AdminController::class, 'update'])->name('userAdmin.update');
 
     Route::resource('userAdmin', AdminController::class);
     Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
@@ -63,21 +65,12 @@ Route::delete('/cart/remove/{productId}/{variantId?}', [CartController::class, '
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/total', [CartController::class, 'getTotal'])->name('cart.total');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
-Route::post('/muangay', [OrderController::class, 'muangay'])->name('muangay');
-// Route
-
-
-
-// Route::get('/login', [UserController::class, 'login'])->name('login');
-// Route::post('/login', [UserController::class, 'postLogin']);
-// Route::get('/register', [UserController::class, 'register'])->name('register');
-// Route::post('/register', [UserController::class, 'postRegister']);
-
+Route::post('/cart/move-to-selected', [CartController::class, 'moveToSelected'])->name('cart.move.to.selected');
 
 Route::prefix('orders')->middleware('auth')->as('orders.')->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('index');
     Route::get('/show/{id}', [OrderController::class, 'show'])->name('show');
-    Route::post('/create', [OrderController::class, 'create'])->name('create');
+    Route::get('/create', [OrderController::class, 'create'])->name('create');
     Route::post('/store', [OrderController::class, 'store'])->name('store');
     Route::post('/{id}/update', [OrderController::class, 'update'])->name('update');
     Route::get('/vnp/return', [OrderController::class, 'handleVNPReturn'])->name('vnp.return');
@@ -173,7 +166,9 @@ Route::get('/gioithieu', function () {
 })->name('introduction');
 
 Route::middleware(['auth'])->group(function () {
-    Route::post('/san-pham/{slug}/comment', [CommentController::class, 'store'])->name('product.comment');
+    // routes/web.php
+    Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+
 });
 
 Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
@@ -189,3 +184,4 @@ Route::post('/update-address', [AddressController::class, 'updateAddress'])->nam
 // Route::get('/vouchers', [VoucherController::class, 'index'])->name('user.vouchers');
 //thông báo
 Route::get('/api/get-latest-notifications', [HomeController::class, 'getLatestNotifications']);
+Route::get('/product-comments/{product}', [CommentController::class, 'fetchComments'])->name('product.comments');
