@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:Xem bình luận', ['only' => ['index']]);
+        $this->middleware('permission:Ẩn bình luận', ['only' => ['hide']]);
+
+    }
     public function index()
     {
         $comments = productComment::with('user', 'product')

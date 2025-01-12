@@ -55,11 +55,6 @@ Vai trò & Quyền
                                         title="Chỉnh sửa">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="{{ url('userAdmin/' . $user->id . '/delete') }}" class="btn btn-sm btn-danger mx-1"
-                                        onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');"
-                                        title="Xóa">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
                                 </td>
                             </tr>
                             @endforeach

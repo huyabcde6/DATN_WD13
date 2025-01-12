@@ -40,7 +40,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('roles/{roleId}/give-permission', [App\Http\Controllers\Admin\RoleController::class, 'givePermissionToRole']);
 
     Route::get('userAdmin/{user}/edit', [AdminController::class, 'edit'])->name('userAdmin.edit');
-    
+    Route::put('userAdmin/{user}', [AdminController::class, 'update'])->name('userAdmin.update');
+
     Route::resource('userAdmin', AdminController::class);
     Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
 });

@@ -9,12 +9,11 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionControler extends Controller
 {
-    // public function __construct(){
-    //     $this->middleware('permission:view permission', ['only' => ['index']]);
-    //     $this->middleware('permission:create permission', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:edit permission', ['only' => ['update', 'edit']]);
-    //     $this->middleware('permission:delete permission', ['only' => ['destroy']]);
-    // }
+    public function __construct(){
+        $this->middleware('permission:Xem danh sách quyền', ['only' => ['index']]);
+        $this->middleware('permission:Thêm mới quyền', ['only' => ['create', 'store']]);
+        $this->middleware('permission:Chỉnh sửa quyền', ['only' => ['update', 'edit']]);
+    }
 
     public function index(Request $request, $sort_by = 'id', $sort_order = 'asc')
     {
@@ -70,7 +69,7 @@ class PermissionControler extends Controller
             'name' => $request->name
         ]);
 
-        return redirect('permission')->with('status', 'Permission Updated Successfully');
+        return Back()->with('status', 'Permission Updated Successfully');
     }
 
     public function destroy($permissionId)

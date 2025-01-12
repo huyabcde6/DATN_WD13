@@ -26,13 +26,13 @@ use App\Models\ProductVariantAttribute;
 
 class ProductController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:view product', ['only' => ['index']]);
-    //     $this->middleware('permission:create product', ['only' => ['create', 'store', 'add']]);
-    //     $this->middleware('permission:edit product', ['only' => ['index']]);
-    //     $this->middleware('permission:delete product', ['only' => ['destroy']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('permission:Xem danh sách sản phẩm', ['only' => ['index', 'show']]);
+        $this->middleware('permission:Thêm mới sản phẩm', ['only' => ['create', 'store']]);
+        $this->middleware('permission:Cập nhật sản phẩm', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:Xóa sản phẩm', ['only' => ['destroy']]);
+    }
 
     public function index(Request $request)
     {
