@@ -28,7 +28,7 @@
                  <li class="dropdown notification-list topbar-dropdown">
                      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                          <i data-feather="bell" class="noti-icon"></i>
-                         <span class="badge bg-danger rounded-circle noti-icon-badge">{{$unreadCount}}</span>
+                         <span class="badge bg-danger rounded-circle noti-icon-badge">{{ $unreadCount ?? 0 }}</span>
                      </a>
                      <div class="dropdown-menu dropdown-menu-end dropdown-lg">
 
@@ -41,6 +41,7 @@
                          <!-- resources/views/notifications/index.blade.php -->
                          <!-- resources/views/notifications/index.blade.php -->
                          <div class="noti-scroll" data-simplebar>
+                         @if (isset($notifications) && $notifications->isNotEmpty())
                              @foreach ($notifications as $notification)
                              <a href="{{ $notification->action === 'comment' ? route('admin.comments.index') : route('admin.orders.show', $notification->order_id) }}"
                                  class="dropdown-item notify-item text-muted link-primary @if($loop->first) active @endif">
@@ -71,6 +72,12 @@
                                  </p>
                              </a>
                              @endforeach
+                        @else
+                            <!-- Không có thông báo -->
+                            <div class="dropdown-item notify-item text-muted text-center">
+                                <p class="mb-0">Bạn không có thông báo nào</p>
+                            </div>
+                        @endif
                          </div>
 
 

@@ -418,21 +418,17 @@ button.button-css:hover {
                                             <!-- Dòng 2 -->
                                             <div class="d-flex justify-content-between">
                                                 <!-- Is hot deal -->
-                                                <input type="hidden" name="is_hot" value="0">
                                                 <div class="form-check form-switch form-check-inline col-md">
-                                                    <input class="form-check-input" type="checkbox" id="is_ho"
-                                                        name="is_hot" value="1"
-                                                        {{ old('is_hot', $product->is_hot) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="is_hot">Hot deal</label>
+                                                <input class="form-check-input mx-1" type="checkbox" name="is_hot" id="is_hot"
+                                                value="1" {{ old('iS_hot', $product->iS_hot) == 1 ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="is_hot">Hot</label>
                                                 </div>
 
                                                 <!-- Show home -->
-                                                <input type="hidden" name="is_new" value="0">
                                                 <div class="form-check form-switch form-check-inline col-md">
-                                                    <input class="form-check-input" type="checkbox" id="is_new"
-                                                        name="is_new" value="1"
-                                                        {{ old('is_new', $product->is_new) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="is_new">New</label>
+                                                <input class="form-check-input mx-1" type="checkbox" name="is_new" id="is_new"
+                                                 value="1" {{ old('iS_new', $product->iS_new) == 1 ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="is_new">New</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -901,14 +897,19 @@ $(document).ready(function() {
         const existingVariants = new Set(); // Sử dụng Set để lưu trữ tổ hợp không trùng lặp
 
         // Khi trang được tải, lưu các biến thể đã có từ DB vào Set
-        $('.variant-existing').each(function() {
-            const size = $(this).data('size'); // Lấy giá trị kích cỡ từ dữ liệu HTML
-            const color = $(this).data('color'); // Lấy giá trị màu sắc từ dữ liệu HTML
+        $('.variant-existing').each(function () {
+            let variantAttributes = [];
+            // Lấy tất cả các thuộc tính từ hàng biến thể hiện tại
+            $(this).find('td[data-attribute-id]').each(function () {
+                const attributeId = $(this).data('attribute-id');
+                const valueId = $(this).data('value-id');
+                variantAttributes.push(`${attributeId}:${valueId}`);
+                
+            });
 
-            // Luôn sắp xếp `size` và `color` theo thứ tự chữ cái
-            const sortedCombination = [size, color].sort().join(
-                ','); // Sắp xếp và tạo tổ hợp
-            existingVariants.add(sortedCombination); // Thêm tổ hợp vào Set để kiểm tra
+            // Sắp xếp tổ hợp thuộc tính theo thứ tự chữ cái để đảm bảo tính nhất quán
+            const sortedCombination = variantAttributes.sort().join(',');
+            existingVariants.add(sortedCombination); // Thêm tổ hợp vào Set
             console.log(`Tổ hợp từ DB: ${sortedCombination}`);
         });
 
@@ -1152,6 +1153,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const deletedImages = []; // Mảng lưu các ID của ảnh phụ bị xóa
     const deletedImagesInput = document.getElementById('deleted-images');
+
     // Hàm hiển thị ảnh chính từ DB
     function loadMainImageFromDB(url, container) {
         if (url) {

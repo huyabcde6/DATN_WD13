@@ -169,6 +169,7 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
+            
             // Tìm sản phẩm theo ID
             $product = product::findOrFail($id);
 
@@ -181,8 +182,8 @@ class ProductController extends Controller
             $product->short_description = $request->short_description;
             $product->description = $request->description;
             $product->is_show = $request->is_show ? 1 : 0;
-            $product->is_hot = $request->has('is_hot') ? 1 : 0;
-            $product->is_new = $request->has('is_new') ? 1 : 0;
+            $product->is_new = $request->has('is_new'); // True nếu checkbox được chọn
+            $product->is_hot = $request->has('is_hot');
 
             // Xử lý ảnh đại diện
             if ($request->hasFile('avata')) {
@@ -195,20 +196,24 @@ class ProductController extends Controller
             $product->save();
 
             $deleteImages = json_decode($request->input('deleted_images', '[]'));
-            if(!empty($deletedImages)){
-                $productImages = ProductImage::whereIn('id', $deletedImages)->get();
-                foreach ($productImages as $productImage){
-                    Storage::delete($productImage->image);
-                    $productImage->delete();
+            // Thêm hình ảnh phụ mới
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $imagePath = $image->store('product_images', 'public');
+                    $product->productImages()->create(['image_path' => $imagePath]);
                 }
             }
-            if($request->hasFile('images')) {
-                foreach($request->file('images') as $image){
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_path' => $this->uploadImage($image),
-                        'is_main' => 0,
-                    ]);
+            // Xử lý các hình ảnh bị xóa
+            if ($request->has('deleted_images') && !empty($request->deleted_images)) {
+                $deletedImages = explode(',', $request->deleted_images);
+                foreach ($deletedImages as $imageId) {
+                    $image = ProductImage::find($imageId);
+                    if ($image) {
+                        // Xóa hình ảnh khỏi storage
+                        Storage::disk('public')->delete($image->image_path);
+                        // Xóa hình ảnh khỏi cơ sở dữ liệu
+                        $image->delete();
+                    }
                 }
             }
             // $product->update($request->except('images', 'deleted_images'));
