@@ -52,4 +52,10 @@ class User extends Authenticatable
     public function order(){
         return $this->hasMany(Order::class);
     }
+    public function shifts()
+    {
+        return $this->belongsToMany(Shift::class, 'user_shift', 'user_id', 'shift_id')
+                    ->withPivot('assigned_date')
+                    ->withTimestamps();
+    }
 }

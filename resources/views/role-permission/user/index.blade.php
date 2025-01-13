@@ -55,6 +55,7 @@ Vai trò & Quyền
                                         title="Chỉnh sửa">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    <a href="{{ route('user.show-assign-shift', $user->id) }}" class="btn btn-primary">Gán Ca</a>
                                 </td>
                             </tr>
                             @endforeach

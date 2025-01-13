@@ -7,6 +7,7 @@ Danh sách sản phẩm
 @section('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
@@ -15,17 +16,6 @@ Danh sách sản phẩm
 @endsection
 
 @section('content')
-@if (session()->has('error'))
-<div class="alert alert-danger">
-    {{ session()->get('error') }}
-</div>
-@endif
-
-@if (session()->has('success'))
-<div class="alert alert-success">
-    {{ session()->get('success') }}
-</div>
-@endif
 
 <div class="row m-3">
     <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column ">
@@ -189,6 +179,8 @@ document.getElementById('search').addEventListener('input', function() {
 @section('js')
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#productTable').DataTable({
@@ -213,5 +205,23 @@ $(document).ready(function() {
     });
 });
 </script>
+@if (session('error'))
+<script>
+$(document).ready(function() {
+    toastr.error("{{ session('error') }}", "Thất bại", {
+        timeOut: 5000
+    });
+});
+</script>
+@endif
 
+@if (session('success'))
+<script>
+$(document).ready(function() {
+    toastr.success("{{ session('success') }}", "Thành công", {
+        timeOut: 5000
+    });
+});
+</script>
+@endif
 @endsection
