@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\comment;
 use App\Models\Order;
+use App\Models\OrderAction;
 use App\Models\productComment;
 use App\Models\product;
 use Illuminate\Http\Request;
@@ -15,13 +16,12 @@ class CommentController extends Controller
     {
         $this->middleware('permission:Xem bình luận', ['only' => ['index']]);
         $this->middleware('permission:Ẩn bình luận', ['only' => ['hide']]);
-
     }
     public function index()
     {
         $comments = productComment::with('user', 'product')
             ->latest()
-            
+
             ->paginate(7);
 
         return view('admin.comments.index', compact('comments'));
@@ -34,7 +34,7 @@ class CommentController extends Controller
             'comment' => 'required|string|max:500',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         // Kiểm tra số lượng file
         if ($request->hasFile('images') && count($request->file('images')) > 3) {
             return redirect()->back()->withErrors(['images' => 'Bạn chỉ được gửi tối đa 3 hình ảnh.']);
@@ -54,13 +54,19 @@ class CommentController extends Controller
                 $imagePaths[] = $path; // Thêm đường dẫn vào mảng
             }
         }
-    
+
         // Lưu bình luận vào cơ sở dữ liệu
         productComment::create([
             'product_id' => $product->id,
             'user_id' => auth()->id(),
             'description' => $request->comment,
             'images' => $imagePaths, // Lưu mảng đường dẫn hình ảnh dưới dạng JSON
+        ]);
+        OrderAction::create([
+            'user_id' => auth()->id(),
+            'product_id' => $product->id,
+            'action' => 'comment', // Hành động là bình luận
+            'comment' => $request->comment,
         ]);
 
         return redirect()->back()->with('success', 'Bình luận đã được gửi thành công!');
@@ -71,11 +77,11 @@ class CommentController extends Controller
     public function hide($commentId)
     {
         $comment = productComment::findOrFail($commentId);
-        
+
         $comment->is_hidden = !$comment->is_hidden;
 
         $comment->save();
-    
+
         return back()->with('success', 'Đã cập nhật trạng thái bình luận!');
     }
 
@@ -91,5 +97,4 @@ class CommentController extends Controller
             'next_page' => $comments->nextPageUrl(),
         ]);
     }
-
 }
