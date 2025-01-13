@@ -1,39 +1,11 @@
 @extends('layouts.home')
 @section('css')
 <style>
-    .unavailable {
+    .attribute-option.disabled {
         opacity: 0.5;
-        /* Làm mờ màu không khả dụng */
-        pointer-events: none;
-        /* Ngăn chặn nhấp chuột vào các tùy chọn không khả dụng */
-        text-decoration: line-through;
 
-        /* Gạch chéo */
-        .size-option.active {
-            border: 2px solid #000;
-            /* Đường viền đậm cho tùy chọn kích thước đã chọn */
-        }
-
-        .color-option.active {
-            border: 2px solid #000;
-            /* Đường viền đậm cho tùy chọn màu sắc đã chọn */
-        }
-    }
-    /* Kiểm tra nếu có một phần tử che khuất */
-    .attribute-option {
-        pointer-events: all;
     }
 
-    /* Thêm một chút hiệu ứng để làm nổi bật khi người dùng chọn thuộc tính */
-    .attribute-option.selected {
-        border: 2px solid #FF0000;
-        /* Viền đỏ khi đã chọn */
-        background-color: #FFD700;
-        /* Màu vàng cho lựa chọn */
-    }
-
-
-}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 @endsection
@@ -567,13 +539,29 @@
                 const selectedElement = document.getElementById('selected-' + attributeSlug);
                 if (selectedElement) {
                     selectedElement.textContent = valueName;
-                }
+                }   
+                updateDisabledOptions(attributeId, valueId);
 
                 // Cập nhật thông tin sản phẩm
                 updateProductInfo(selectedOptions);
             });
         });
 
+        function updateDisabledOptions(attributeId, selectedValueId) {
+            attributeOptions.forEach(option => {
+                const optionAttributeId = option.getAttribute('data-attribute-id');
+                const optionValueId = option.getAttribute('data-value-id');
+
+                // Nếu cùng nhóm thuộc tính, kiểm tra trạng thái
+                if (optionAttributeId === attributeId) {
+                    if (optionValueId !== selectedValueId) {
+                        option.classList.add('disabled');
+                    } else {
+                        option.classList.remove('disabled');
+                    }
+                }
+            });
+        }
         // Hàm tìm biến thể phù hợp và cập nhật thông tin
         function updateProductInfo(selectedOptions) {
             const matchingVariant = productVariants.find(variant => {
