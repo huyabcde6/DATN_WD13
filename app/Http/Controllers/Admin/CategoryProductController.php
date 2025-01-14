@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryProductController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('permission:Xem danh mục', ['only' => ['index']]);
         $this->middleware('permission:Thêm mới danh mục', ['only' => ['create', 'store']]);
         $this->middleware('permission:Sửa danh mục', ['only' => ['update', 'edit']]);
@@ -62,9 +63,9 @@ class CategoryProductController extends Controller
         $products = product::whereHas('categories', function ($query) {
             $query->where('name', 'không xác định');
         })
-        ->orWhere('categories_id', null)
-        ->get();
-    
+            ->orWhere('categories_id', null)
+            ->get();
+
         return view('admin.categories.create', compact('products'));
     }
 
@@ -175,5 +176,4 @@ class CategoryProductController extends Controller
         return redirect()->route('admin.categories.index')
             ->with('status_succeed', 'Xóa danh mục thành công');
     }
-
 }

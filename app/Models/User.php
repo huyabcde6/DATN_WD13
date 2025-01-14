@@ -49,13 +49,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function order(){
+    public function order()
+    {
         return $this->hasMany(Order::class);
     }
     public function shifts()
     {
         return $this->belongsToMany(Shift::class, 'user_shift', 'user_id', 'shift_id')
-                    ->withPivot('assigned_date')
-                    ->withTimestamps();
+            ->withPivot('assigned_date')
+            ->withTimestamps();
+    }
+    public function reviews()
+    {
+        return $this->hasMany(productComment::class);
     }
 }

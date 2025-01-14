@@ -1,54 +1,54 @@
 @extends('layouts.home')
 @section('css')
 <style>
-.filter-link {
-    position: relative;
-    /* Đảm bảo dải màu đỏ sẽ hiển thị đúng dưới liên kết */
-    padding-bottom: 2px;
-    /* Thêm một chút khoảng cách dưới để dải màu đỏ không bị dính vào chữ */
-    text-decoration: none;
-    /* Loại bỏ gạch dưới mặc định */
-}
+    .filter-link {
+        position: relative;
+        /* Đảm bảo dải màu đỏ sẽ hiển thị đúng dưới liên kết */
+        padding-bottom: 2px;
+        /* Thêm một chút khoảng cách dưới để dải màu đỏ không bị dính vào chữ */
+        text-decoration: none;
+        /* Loại bỏ gạch dưới mặc định */
+    }
 
-.filter-link::after {
-    content: '';
-    /* Không có nội dung */
-    position: absolute;
-    /* Đặt dải màu dưới */
-    left: 0;
-    /* Căn trái */
-    right: 0;
-    /* Căn phải */
-    bottom: 0;
-    /* Căn dưới */
-    height: 2px;
-    /* Dải màu có chiều cao 2px */
-    background-color: red;
-    /* Màu đỏ */
-    transform: scaleX(0);
-    /* Ẩn dải màu ban đầu */
-    transform-origin: bottom right;
-    /* Đặt điểm gốc của hiệu ứng là phía dưới bên phải */
-    transition: transform 0.3s ease;
-    /* Hiệu ứng chuyển động mượt mà */
-}
+    .filter-link::after {
+        content: '';
+        /* Không có nội dung */
+        position: absolute;
+        /* Đặt dải màu dưới */
+        left: 0;
+        /* Căn trái */
+        right: 0;
+        /* Căn phải */
+        bottom: 0;
+        /* Căn dưới */
+        height: 2px;
+        /* Dải màu có chiều cao 2px */
+        background-color: red;
+        /* Màu đỏ */
+        transform: scaleX(0);
+        /* Ẩn dải màu ban đầu */
+        transform-origin: bottom right;
+        /* Đặt điểm gốc của hiệu ứng là phía dưới bên phải */
+        transition: transform 0.3s ease;
+        /* Hiệu ứng chuyển động mượt mà */
+    }
 
-.myaccount-content {
-    padding: 15px;
-}
+    .myaccount-content {
+        padding: 15px;
+    }
 
-.filter-link:hover::after {
-    transform: scaleX(1);
-    /* Khi hover, dải màu đỏ sẽ hiển thị */
-    transform-origin: bottom left;
-    /* Thay đổi điểm gốc khi hover */
-}
+    .filter-link:hover::after {
+        transform: scaleX(1);
+        /* Khi hover, dải màu đỏ sẽ hiển thị */
+        transform-origin: bottom left;
+        /* Thay đổi điểm gốc khi hover */
+    }
 
-#loading p {
-    font-size: 14px;
-    color: #666;
-    font-style: italic;
-}
+    #loading p {
+        font-size: 14px;
+        color: #666;
+        font-style: italic;
+    }
 </style>
 @endsection
 
@@ -84,9 +84,9 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4">
                             <div class="myaccount-tab-menu nav" role="tablist">
-                                <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
-                                    Trang chủ</a>
-                                <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i>
+                                <!-- <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
+                                    Trang chủ</a> -->
+                                <a href="#orders" data-bs-toggle="tab" class="active"><i class="fa fa-cart-arrow-down"></i>
                                     Đơn hàng</a>
                                 <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i>Chi tiết tài
                                     khoản </a>
@@ -107,7 +107,7 @@
                         <div class="col-lg-9 col-md-8">
                             <div class="tab-content" id="myaccountContent">
                                 <!-- Single Tab Content Start -->
-                                <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
+                                <!-- <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
                                     <div class="myaccount-content" style="">
                                         <h3 class="title">Tài khoản</h3>
                                         <div class="welcome">
@@ -115,13 +115,13 @@
                                             <p>Địa chỉ: {{ $user->address  ?? ''}}</p>
                                             <p>Số điện thoại: {{ $user->number_phone ??''}}</p>
                                             <hr>
-                                            
+
                                         </div>
-                                        
+
                                     </div>
-                                </div>
-                                <div class="tab-pane fade" id="orders" role="tabpanel">
-                                <h5 class="mb-3">Đơn Hàng Của Bạn</h5>
+                                </div> -->
+                                <div class="tab-pane fade show active" id="orders" role="tabpanel">
+                                    <h5 class="mb-3">Đơn Hàng Của Bạn</h5>
                                     <div class="d-flex justify-content-evenly mb-3 fs-12">
                                         <a class="mx-1 filter-link active" data-status="all">Tất cả</a>
                                         <a class="mx-1 filter-link" data-status="1">Chờ xác nhận</a>
@@ -224,61 +224,61 @@
 @endsection
 @section('js')
 <script>
-let page = 1;
-let isLoading = false;
-let currentStatus = 'all'; // Trạng thái mặc định là "Tất cả"
+    let page = 1;
+    let isLoading = false;
+    let currentStatus = 'all'; // Trạng thái mặc định là "Tất cả"
 
-window.addEventListener('scroll', function() {
-    if (isLoading) return;
+    window.addEventListener('scroll', function() {
+        if (isLoading) return;
 
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    const scrolled = window.scrollY;
-    if (scrollable - scrolled <= 100) {
-        loadMoreOrders();
-    }
-});
-
-document.querySelectorAll('.filter-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        // Đặt lại trạng thái lọc
-        document.querySelectorAll('.filter-link').forEach(link => link.classList.remove('active'));
-        this.classList.add('active');
-
-        // Cập nhật trạng thái hiện tại
-        currentStatus = this.getAttribute('data-status');
-        page = 1; // Reset về trang đầu tiên
-
-        // Xóa danh sách hiện tại và tải lại
-        document.getElementById('orders-container').innerHTML = '';
-        loadMoreOrders();
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = window.scrollY;
+        if (scrollable - scrolled <= 100) {
+            loadMoreOrders();
+        }
     });
-});
 
-function loadMoreOrders() {
-    isLoading = true;
-    document.getElementById('loading').style.display = 'block';
+    document.querySelectorAll('.filter-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
 
-    fetch(`{{ route('orders.index') }}?page=${page}&status=${currentStatus}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.text())
-        .then(html => {
-            const container = document.getElementById('orders-container');
-            if (page === 1) container.innerHTML = ''; // Xóa nội dung cũ nếu là trang đầu
-            container.insertAdjacentHTML('beforeend', html); // Chèn thêm dữ liệu vào container
-            page++; // Tăng số trang
-            isLoading = false;
-            document.getElementById('loading').style.display = 'none';
-        })
-        .catch(error => {
-            console.error(error);
-            isLoading = false;
-            document.getElementById('loading').style.display = 'none';
+            // Đặt lại trạng thái lọc
+            document.querySelectorAll('.filter-link').forEach(link => link.classList.remove('active'));
+            this.classList.add('active');
+
+            // Cập nhật trạng thái hiện tại
+            currentStatus = this.getAttribute('data-status');
+            page = 1; // Reset về trang đầu tiên
+
+            // Xóa danh sách hiện tại và tải lại
+            document.getElementById('orders-container').innerHTML = '';
+            loadMoreOrders();
         });
-}
+    });
+
+    function loadMoreOrders() {
+        isLoading = true;
+        document.getElementById('loading').style.display = 'block';
+
+        fetch(`{{ route('orders.index') }}?page=${page}&status=${currentStatus}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const container = document.getElementById('orders-container');
+                if (page === 1) container.innerHTML = ''; // Xóa nội dung cũ nếu là trang đầu
+                container.insertAdjacentHTML('beforeend', html); // Chèn thêm dữ liệu vào container
+                page++; // Tăng số trang
+                isLoading = false;
+                document.getElementById('loading').style.display = 'none';
+            })
+            .catch(error => {
+                console.error(error);
+                isLoading = false;
+                document.getElementById('loading').style.display = 'none';
+            });
+    }
 </script>
 @endsection

@@ -12,28 +12,58 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:Xem bình luận', ['only' => ['index']]);
-        $this->middleware('permission:Ẩn bình luận', ['only' => ['hide']]);
-    }
-    public function index()
-    {
-        $comments = productComment::with('user', 'product')
-            ->latest()
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:Xem bình luận', ['only' => ['index']]);
+    //     $this->middleware('permission:Ẩn bình luận', ['only' => ['hide']]);
+    // }
+    // public function index()
+    // {
+    //     $comments = productComment::with('user', 'product')
+    //         ->latest()
 
-            ->paginate(7);
+    //         ->paginate(7);
+
+    //     return view('admin.comments.index', compact('comments'));
+    // }
+    public function index(Request $request)
+    {
+        $search = $request->get('search');
+        $searchBy = $request->get('search_by', 'description'); // Mặc định tìm kiếm theo nội dung
+
+        $comments = productComment::with('user', 'product')
+            ->latest();
+
+        // Kiểm tra và áp dụng tìm kiếm
+        if ($search) {
+            if ($searchBy == 'description') {
+                $comments = $comments->where('description', 'like', '%' . $search . '%');
+            } elseif ($searchBy == 'user_name') {
+                $comments = $comments->whereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+            } elseif ($searchBy == 'product_name') {
+                $comments = $comments->whereHas('product', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+            }
+        }
+
+        // Phân trang và truyền dữ liệu cho view
+        $comments = $comments->paginate(7);
 
         return view('admin.comments.index', compact('comments'));
     }
+
     public function store(Request $request)
     {
+        // dd($request->all());
         // Kiểm tra dữ liệu gửi lên
         $request->validate([
             'product_name' => 'required|string|max:255',
             'comment' => 'required|string|max:500',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        // 'images.*' => 'nullable|image',
 
         // Kiểm tra số lượng file
         if ($request->hasFile('images') && count($request->file('images')) > 3) {

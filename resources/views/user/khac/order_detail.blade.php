@@ -2,6 +2,14 @@
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
+    .success {
+        background-color: #d4edda;
+        /* Xanh nhạt */
+        /* padding: 10px; */
+        border-radius: 5px;
+    }
+
+
     .custom-container {
         margin: 0 auto;
         padding: 0 15px;
@@ -266,19 +274,24 @@
                 <div class="row mx-3 my-3">
                     <!-- Thẻ thông tin đơn hàng -->
                     <div class="card">
-                        <div class="d-flex m-3 justify-content-between">
-                            <div class="col-md-12">
-                                <p><strong>Ngày đặt:</strong> {{ $order->created_at->format('d-m-Y') }}</p>
-                                <p id="order-status-{{ $order->id }}"><strong>Trạng thái đơn hàng:</strong>
-                                    <mark>{{ $order->status->type ?? 'N/A' }}</mark>
-                                </p>
-                                <p style="font-size: 14px;"><strong>Trạng thái thanh toán:</strong> <mark>
-                                        {{ $order->payment_status }}</mark></p>
+                        <div class="order-info d-flex justify-content-between mx-3">
+
+                            <div class="">
                                 <p><strong>Người nhận:</strong> {{ $order->nguoi_nhan }}</p>
                                 <p><strong>Email:</strong> {{ $order->email }}</p>
                                 <p><strong>Số điện thoại:</strong> {{ $order->number_phone }}</p>
                                 <p><strong>Địa chỉ:</strong> {{ $order->address }}</p>
                                 <p><strong>Ghi chú:</strong> {{ $order->ghi_chu }}</p>
+                            </div>
+                            <div class="">
+                                <p id="order-status-{{ $order->id }}">
+                                    <strong>Trạng thái đơn hàng:</strong>
+                                    <span class="{{ ($order->status->type ?? '') === 'Hoàn thành' ? 'success' : '' }}">{{ $order->status->type ?? 'N/A' }}</span>
+                                </p>
+                                <p><strong>Trạng thái thanh toán:</strong>
+                                    <span class="{{$order->payment_status === 'đã thanh toán'? 'success' : ''}}">{{ $order->payment_status }}</span>
+                                </p>
+                                <p><strong>Ngày đặt:</strong> {{ $order->created_at->format('d-m-Y') }}</p>
                             </div>
                         </div>
                     </div>
@@ -298,25 +311,26 @@
                                 <th>Tổng tiền</th>
                             </tr>
                         </thead>
-                        <tbody >
+                        <tbody>
                             @foreach($order->orderDetails as $key => $detail)
-                            <tr >
+                            <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td >{{ $detail->product_name }}</td>
+                                <td>{{ $detail->product_name }}</td>
                                 <td>
                                     <img src="{{ url('storage/'. $detail->product_avata) }}"
                                         alt="{{ $detail->product_name }}" style="width: 70px; height: auto;">
                                 </td>
                                 <td>@foreach($detail->attributes as $attribute)
-                                            {{ $attribute['name'] }}:
-                                            {{ $attribute['value'] }}{{ !$loop->last ? ', ' : '' }}
-                                            @endforeach</td>
+                                    {{ $attribute['name'] }}:
+                                    {{ $attribute['value'] }}{{ !$loop->last ? ', ' : '' }}
+                                    @endforeach
+                                </td>
                                 <td>{{ $detail->quantity }}</td>
                                 <td>{{ number_format($detail->price, 0, '', ',') }} ₫</td>
                                 <td>{{ number_format($detail->price * $detail->quantity, 0, ',', '.') }} đ</td>
                             </tr>
                             <!-- from bình luận -->
-                           
+
                             @endforeach
                         </tbody>
                     </table>

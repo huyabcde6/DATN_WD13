@@ -86,7 +86,7 @@
                                     <img class="image" src="{{ url('storage/'. $product->avata) }}" alt="Product"
                                         width="auto" height="auto" />
                                 </a>
-                                
+
                             </div>
                             <div class="content">
                                 <h4 class="sub-title">{{ $product->categories->name }}
@@ -209,10 +209,9 @@
                                     <ul class="checkbox-container categories-list">
                                         <li>
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input filter-color"
-                                                    >
+                                                <input type="checkbox" class="custom-control-input filter-color">
                                                 <label class="custom-control-label" for="">
- 
+
                                                 </label>
                                             </div>
                                         </li>
@@ -271,38 +270,38 @@
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    // Khởi tạo thanh trượt với giá trị min, max
-    $("#slider-range").slider({
-        range: true,
-        min: 0,
-        max: 1000000, // Giá trị tối đa của sản phẩm
-        step: 1000, // Bước nhảy mỗi lần
-        values: [{
-            {
-                request('min_price', 0)
-            }
-        }, {
-            {
-                request('max_price', 1000000)
-            }
-        }],
-        slide: function(event, ui) {
-            // Cập nhật giá trị của min_price và max_price
-            $("#min_price").val(ui.values[0]);
-            $("#max_price").val(ui.values[1]);
+    $(document).ready(function() {
+        // Khởi tạo thanh trượt với giá trị min, max
+        $("#slider-range").slider({
+            range: true,
+            min: 0,
+            max: 1000000, // Giá trị tối đa của sản phẩm
+            step: 1000, // Bước nhảy mỗi lần
+            values: [{
+                {
+                    request('min_price', 0)
+                }
+            }, {
+                {
+                    request('max_price', 1000000)
+                }
+            }],
+            slide: function(event, ui) {
+                // Cập nhật giá trị của min_price và max_price
+                $("#min_price").val(ui.values[0]);
+                $("#max_price").val(ui.values[1]);
 
-            // Cập nhật hiển thị giá hiện tại
-            $("#amount").text("Giá: " + ui.values[0] + " - " + ui.values[1]);
-        }
+                // Cập nhật hiển thị giá hiện tại
+                $("#amount").text("Giá: " + ui.values[0] + " - " + ui.values[1]);
+            }
+        });
+
+        // Cập nhật giá trị mặc định của input min_price và max_price khi trang tải
+        $("#min_price").val($("#slider-range").slider("values", 0));
+        $("#max_price").val($("#slider-range").slider("values", 1));
+
+        // Cập nhật hiển thị giá khi trang tải
+        $("#amount").text("Giá: " + $("#min_price").val() + " - " + $("#max_price").val());
     });
-
-    // Cập nhật giá trị mặc định của input min_price và max_price khi trang tải
-    $("#min_price").val($("#slider-range").slider("values", 0));
-    $("#max_price").val($("#slider-range").slider("values", 1));
-
-    // Cập nhật hiển thị giá khi trang tải
-    $("#amount").text("Giá: " + $("#min_price").val() + " - " + $("#max_price").val());
-});
 </script>
 @endsection

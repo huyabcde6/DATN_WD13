@@ -71,7 +71,7 @@ class ProductController extends Controller
 
 
     public function create()
-    {   
+    {
         $categories = categories::where('status', true)->get();
         $attributes = Attribute::with('values')->get();
         return view('admin.products.create', compact('categories', 'attributes'));
@@ -79,9 +79,9 @@ class ProductController extends Controller
 
 
     public function store(ProductRequest  $request)
-    {   
+    {
         DB::beginTransaction();
-        
+
         try {
             // Tìm sản phẩm theo ID
             $product = new product();
@@ -130,13 +130,14 @@ class ProductController extends Controller
         }
     }
 
-    private function storeVariants($product, $request) {
+    private function storeVariants($product, $request)
+    {
         $variantPrices = $request->input('variant_prices');
         $variantStocks = $request->input('variant_stocks');
         $variantSkus = $request->input('variant_skus');
         $variantImages = $request->file('variant_images');
         $variantValues = $request->input('values');
-    
+
         foreach ($variantPrices as $index => $price) {
             $variant = ProductVariant::create([
                 'product_id' => $product->id,
@@ -145,7 +146,7 @@ class ProductController extends Controller
                 'stock_quantity' => $variantStocks[$index],
                 'image' => $variantImages[$index] ? $this->uploadImageVariant($variantImages[$index]) : null,
             ]);
-    
+
             if (isset($variantValues[$index])) {
                 foreach ($variantValues[$index] as $value) {
                     ProductVariantAttribute::create([
@@ -157,9 +158,10 @@ class ProductController extends Controller
             }
         }
     }
-    
-    private function uploadImageVariant($image) {
-        if($image){
+
+    private function uploadImageVariant($image)
+    {
+        if ($image) {
             return $image->store('product_variants', 'public');
         }
         return null;
@@ -169,7 +171,7 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            
+
             // Tìm sản phẩm theo ID
             $product = product::findOrFail($id);
 
@@ -229,8 +231,8 @@ class ProductController extends Controller
             $this->addNewVariants($request, $product);
 
             DB::commit();
-            
-            
+
+
             return redirect()->route('admin.products.index')->with('success', 'Cập nhật sản phẩm thành công!');
         } catch (\Exception $e) {
             Log::error('Error updating product: ' . $e->getMessage(), [
@@ -242,16 +244,17 @@ class ProductController extends Controller
         }
     }
 
-    private function updateExistingVariants($request, $product){
-        
+    private function updateExistingVariants($request, $product)
+    {
+
         $variantIds = $request->input('variant_ids', []);
         $variantPrices = $request->input('variant_prices', []);
         $variantStocks = $request->input('variant_stocks', []);
         $variantSkus = $request->input('variant_skus', []);
         $variantImages = $request->file('variant_images', []);
-        foreach($variantIds as $index => $variantId){
+        foreach ($variantIds as $index => $variantId) {
             $variant = ProductVariant::find($variantId);
-            if($variant){
+            if ($variant) {
                 $variant->update([
                     'price' => $variantPrices[$index],
                     'product_code' => $variantSkus[$index],
@@ -262,7 +265,8 @@ class ProductController extends Controller
         }
     }
 
-    private function addNewVariants($request, $product){
+    private function addNewVariants($request, $product)
+    {
         // dd($request->all());
 
         $newVariantPrices = $request->input('new_variant_prices', []);
@@ -279,8 +283,8 @@ class ProductController extends Controller
                 'image' => isset($newVariantImages[$index]) ? $this->uploadImageVariant($newVariantImages[$index]) : null,
             ]);
 
-            if(isset($newValues[$index])){
-                foreach ($newValues[$index] as $value){
+            if (isset($newValues[$index])) {
+                foreach ($newValues[$index] as $value) {
                     ProductVariantAttribute::create([
                         'product_variant_id' => $newVariant->id,
                         'attribute_id' => $value['attribute_id'],
@@ -290,10 +294,10 @@ class ProductController extends Controller
             }
         }
     }
-    
+
     public function edit($id)
     {
-        
+
         $product = Product::with('variants.attributes.attributeValue.attribute')->findOrFail($id);
         $categories = categories::where('status', true)->get();
         $attributes = Attribute::with('values')->get();
@@ -305,8 +309,8 @@ class ProductController extends Controller
             'attributes' => $attributes,
             'usedAttributes' => $usedAttributes,
         ];
-        
-        return view('admin.products.edit', compact('data','product', 'attributes', 'usedAttributes','categories'));
+
+        return view('admin.products.edit', compact('data', 'product', 'attributes', 'usedAttributes', 'categories'));
     }
 
     private function processUseAttributes($product)
