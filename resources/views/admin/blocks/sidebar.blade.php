@@ -119,6 +119,9 @@
                              <li>
                                  <a class='tp-link' href="{{ url('userAdmin') }}">Admin</a>
                              </li>
+                             <li>
+                                 <a class='tp-link' href="{{ route('admin.shifts.index') }}">Ca làm</a>
+                             </li>
                          </ul>
                      </div>
                  </li>

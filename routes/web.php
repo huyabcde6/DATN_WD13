@@ -25,7 +25,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponsController;
 use App\Models\Order;
-use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\Admin\ShiftController;
 
 
 
@@ -41,7 +41,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('userAdmin/{user}/edit', [AdminController::class, 'edit'])->name('userAdmin.edit');
     Route::put('userAdmin/{user}', [AdminController::class, 'update'])->name('userAdmin.update');
-
+    Route::get('/user/{user}/assign-shift', [ShiftController::class, 'showAssignShiftForm'])->name('user.show-assign-shift');
+    Route::post('/user/{user}/assign-shift', [ShiftController::class, 'assignShift'])->name('user.assign-shift');
     Route::resource('userAdmin', AdminController::class);
     Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
 });
@@ -87,19 +88,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'check.shift'])->as('admin.')->group(function () {
 
     // Các route cho quản lý sản phẩm
     Route::resource('products', AdminProductController::class);
-
+    Route::resource('shifts', ShiftController::class);
     // Quản lý đơn hàng
     Route::resource('orders', AdminOrderController::class);
-
-    // Quản lý kích thước
-    Route::resource('sizes', SizeController::class);
-
-    // Quản lý màu sắc
-    Route::resource('colors', ColorController::class);
 
     // Quản lý Banner
     Route::resource('banners', BannerController::class);
