@@ -69,7 +69,7 @@ Danh sách sản phẩm
                                     Giá
                                 </th>
                                 <th class="text-center">Giá giảm</th>
-                                
+
                                 <th class="text-center">
                                     Ngày tạo
                                 </th>
@@ -87,11 +87,15 @@ Danh sách sản phẩm
                                     <img src="{{ url('storage/' . $product->avata) }}" alt="{{ $product->name }}"
                                         width="50px" height="auto" class="img-thumbnail">
                                 </td>
-                                <td>{{ $product->categories->name ?? 'Không có' }}</td>
+                                <td>{{ $product->categories->name ?? 'Không có' }}
+                                    -<span class="{{ $product->categories->status ? 'text-success' : 'text-danger' }}">
+                                        {{ $product->categories->status ? 'Hiển thị' : 'Ẩn' }}
+                                    </span>
+                                </td>
                                 <td>{{ number_format($product->price, 0, '', '.') }} đ</td>
                                 <td>{{ $product->discount_price ? number_format($product->discount_price, 0, '', '.') . ' đ' : 'Không có' }}
                                 </td>
-                                
+
 
                                 <td>{{ $product->created_at->format('d/m/Y') }}</td>
                                 <td class="{{ $product->iS_show ? 'text-success' : 'text-danger' }}">
@@ -135,49 +139,87 @@ Danh sách sản phẩm
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
-
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 <script>
-$(document).ready(function() {
-    $('#productTable').DataTable({
-        "paging": false, // Cho phép phân trang
-        "searching": true, // Tìm kiếm
-        "ordering": true, // Sắp xếp cột
-        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
-        "info": false,
-        "language": {
-            "lengthMenu": "Hiển thị _MENU_ mục",
-            "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
-            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
-            "infoEmpty": "Không có dữ liệu",
-            "search": "Tìm kiếm:",
-            "paginate": {
-                "first": "Đầu",
-                "last": "Cuối",
-                "next": "Tiếp",
-                "previous": "Trước"
-            }
-        }
+    document.querySelectorAll('.delete-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định
+            const deleteBtn = this.querySelector('.delete-btn');
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa sản phẩm này?',
+                text: "Hành động này không thể hoàn tác!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Có, xóa!',
+                cancelButtonText: 'Không, hủy bỏ!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
     });
-});
+
+    // Xử lý tìm kiếm với debounce
+    let timeout = null;
+    document.getElementById('search').addEventListener('input', function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            document.getElementById('search-form').submit();
+        }, 1000);
+    });
+</script>
+@endpush
+@endsection
+@section('js')
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#productTable').DataTable({
+            "paging": false, // Cho phép phân trang
+            "searching": true, // Tìm kiếm
+            "ordering": true, // Sắp xếp cột
+            "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+            "info": false,
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ mục",
+                "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                "infoEmpty": "Không có dữ liệu",
+                "search": "Tìm kiếm:",
+                "paginate": {
+                    "first": "Đầu",
+                    "last": "Cuối",
+                    "next": "Tiếp",
+                    "previous": "Trước"
+                }
+            }
+        });
+    });
 </script>
 @if (session('error'))
 <script>
-$(document).ready(function() {
-    toastr.error("{{ session('error') }}", "Thất bại", {
-        timeOut: 5000
+    $(document).ready(function() {
+        toastr.error("{{ session('error') }}", "Thất bại", {
+            timeOut: 5000
+        });
     });
-});
 </script>
 @endif
 
 @if (session('success'))
 <script>
-$(document).ready(function() {
-    toastr.success("{{ session('success') }}", "Thành công", {
-        timeOut: 5000
+    $(document).ready(function() {
+        toastr.success("{{ session('success') }}", "Thành công", {
+            timeOut: 5000
+        });
     });
-});
 </script>
 @endif
 @endsection

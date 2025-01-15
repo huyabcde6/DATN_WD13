@@ -28,7 +28,7 @@ Danh sách danh mục
         <div class="col-12">
             <div class="card">
                 <div class="d-flex m-3 justify-content-between align-items-center">
-                    <a href="{{ route('admin.categories.create') }}"class="btn btn-sm btn-alt-primary mx-2 fs-18 rounded-2 border p-1 me-1 "
+                    <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-alt-primary mx-2 fs-18 rounded-2 border p-1 me-1 "
                         data-bs-toggle="tooltip" title="Thêm mới">
                         <i class="mdi mdi-plus text-muted px-1 mr-1">Thêm mới</i></a>
                 </div>
@@ -56,7 +56,11 @@ Danh sách danh mục
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>
+                                    <td>
+                                        <span class="{{ $item->status ? 'text-success' : 'text-danger' }}">
+                                            {{ $item->status ? 'Hiển thị' : 'Ẩn' }}
+                                        </span>
+                                    </td>
                                     <td>{{ $item->product_count ?? 0 }}</td><!-- Hiển thị số lượng sản phẩm -->
                                     <td>
                                         <div class="d-flex justify-content-center align-items-center">
@@ -64,12 +68,12 @@ Danh sách danh mục
                                                 href="{{ route('admin.categories.edit', $item->id ) }}">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
-                                            <button
+                                            <!-- <button
                                                 class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 text-danger"
                                                 data-bs-toggle="modal" data-bs-target="#deleteModal"
                                                 data-id="{{ $item->id }}">
                                                 <i class="fa fa-fw fa-times text-danger"></i>
-                                            </button>
+                                            </button> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -113,53 +117,53 @@ Danh sách danh mục
 
 
 <script>
-// Logic to handle Edit and Delete modals
-document.querySelectorAll('[data-bs-target="#editModal"]').forEach(button => {
-    button.addEventListener('click', function() {
-        const id = this.dataset.id;
-        const name = this.dataset.name;
-        const status = this.dataset.status;
+    // Logic to handle Edit and Delete modals
+    document.querySelectorAll('[data-bs-target="#editModal"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.dataset.id;
+            const name = this.dataset.name;
+            const status = this.dataset.status;
 
-        document.getElementById('edit-id').value = id;
-        document.getElementById('edit-name').value = name;
-        document.getElementById('edit-status').value = status;
-        document.getElementById('editForm').action = `/admin/categories/${id}`;
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-status').value = status;
+            document.getElementById('editForm').action = `/admin/categories/${id}`;
+        });
     });
-});
 
-document.querySelectorAll('[data-bs-target="#deleteModal"]').forEach(button => {
-    button.addEventListener('click', function() {
-        const id = this.dataset.id;
-        document.getElementById('deleteForm').action = `/admin/categories/${id}`;
+    document.querySelectorAll('[data-bs-target="#deleteModal"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.dataset.id;
+            document.getElementById('deleteForm').action = `/admin/categories/${id}`;
+        });
     });
-});
 </script>
 
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('#categoryTable').DataTable({
-        "paging": false, // Cho phép phân trang
-        "searching": true, // Tìm kiếm
-        "ordering": true, // Sắp xếp cột
-        "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
-        "info": false,
-        "language": {
-            "lengthMenu": "Hiển thị _MENU_ mục",
-            "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
-            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
-            "infoEmpty": "Không có dữ liệu",
-            "search": "Tìm kiếm:",
-            "paginate": {
-                "first": "Đầu",
-                "last": "Cuối",
-                "next": "Tiếp",
-                "previous": "Trước"
+    $(document).ready(function() {
+        $('#categoryTable').DataTable({
+            "paging": false, // Cho phép phân trang
+            "searching": true, // Tìm kiếm
+            "ordering": true, // Sắp xếp cột
+            "lengthChange": false, // Ẩn lựa chọn số lượng bản ghi trên mỗi trang
+            "info": false,
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ mục",
+                "zeroRecords": "Không tìm thấy dữ liệu phù hợp",
+                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                "infoEmpty": "Không có dữ liệu",
+                "search": "Tìm kiếm:",
+                "paginate": {
+                    "first": "Đầu",
+                    "last": "Cuối",
+                    "next": "Tiếp",
+                    "previous": "Trước"
+                }
             }
-        }
+        });
     });
-});
 </script>
 
 @endsection
