@@ -32,12 +32,7 @@ Quản lý Vai trò & Quyền
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="d-flex m-3 justify-content-between align-items-center">
-                    <button class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
-                        data-bs-toggle="modal" data-bs-target="#addPermissionModal">
-                        <i class="mdi mdi-plus text-muted"></i> Thêm Quyền
-                    </button>
-                </div>
+
                 <div class="card-body">
                     <table class="table table-bordered text-center" id="permissionTable">
                         <thead>
@@ -48,7 +43,6 @@ Quản lý Vai trò & Quyền
                                 <th class="text-center">
                                         Tên quyền
                                 </th>
-                                <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
 
@@ -57,18 +51,6 @@ Quản lý Vai trò & Quyền
                             <tr>
                                 <td>{{ $perm->id }}</td>
                                 <td>{{ $perm->name }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <button
-                                            class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1"
-                                            data-bs-toggle="modal" data-bs-target="#editPermissionModal"
-                                            data-id="{{ $perm->id }}" data-name="{{ $perm->name }}" title="Chỉnh sửa">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </button>
-
-                                
-                                    </div>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>

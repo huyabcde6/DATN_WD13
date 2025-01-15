@@ -33,7 +33,7 @@ class PermissionControler extends Controller
         $query->orderBy($sortBy, $sortOrder);
 
         // Phân trang kết quả
-        $permission = $query->paginate(10);
+        $permission = $query->paginate(20);
 
         // Truyền các biến cần thiết vào view
         return view('role-permission.permission.index', [

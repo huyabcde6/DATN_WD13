@@ -1,12 +1,14 @@
-<x-app-web-layout>
+@extends('layouts.admin')
+@section('content')
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <h4>
-                            Create Users
-                            <a href="{{ url('userAdmin') }}" class="btn btn-danger float-end ">Back</a>
+                            Thêm mới tài khoản
+                            <a href="{{ url('userAdmin') }}" class="btn btn-danger float-end ">Quay lại</a>
                         </h4>
                     </div>
                     <div class="card-body">
@@ -14,7 +16,7 @@
                             @csrf
 
                             <div class="mb-3">
-                                <label for=""> Name</label>
+                                <label for="">Tên tài khoản</label>
                                 <input type="text" name="name" value="{{ old('name') }}" class="form-control" />
                                 @error('name')
                                     <span class="text-danger">{{ $message }}</span>
@@ -28,16 +30,16 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for=""> Password</label>
+                                <label for="">Mật khẩu</label>
                                 <input type="text" name="password" value="{{ old('password') }}" class="form-control" />
                                 @error('password')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for=""> Roles</label>
+                                <label for=""> Vai trò</label>
                                 <select name="roles[]" class="form-control" multiple>
-                                    <option value="">Select Roles</option>
+                                    
                                     @foreach ($roles as $role )
                                     <option @selected(in_array($role, old('roles', []))) value="{{ $role }}">{{ $role }}</option>
                                     @endforeach
@@ -56,4 +58,5 @@
         </div>
     </div>
 
-</x-app-web-layout>
+
+@endsection

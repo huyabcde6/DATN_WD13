@@ -74,14 +74,20 @@ class OrderController extends Controller
 
         // Paginate kết quả
         $orders = $query->paginate(5);
-
+        $notifications = OrderAction::orderBy('created_at', 'desc') // Sắp xếp theo thời gian
+        ->limit(10) // Giới hạn số lượng thông báo hiển thị
+        ->get();
+        $unreadCount = OrderAction::where('is_read', false)->count();
+    // Lấy dữ liệu và phân trang
         // Truyền các biến vào view
         return view('admin.orders.index', [
             'orders' => $orders,
             'statuses' => StatusDonhang::all(),
             'sort_by' => $sortBy,  // Truyền lại tham số sắp xếp để giữ giá trị trong view
             'sort_order' => $sortOrder, // Truyền lại thứ tự sắp xếp
-            'search' => $request->search,  // Truyền lại từ khóa tìm kiếm để hiển thị trong form
+            'search' => $request->search,
+            'notifications' => $notifications,
+            'unreadCount' => $unreadCount, // Truyền lại từ khóa tìm kiếm để hiển thị trong form
         ]);
     }
 

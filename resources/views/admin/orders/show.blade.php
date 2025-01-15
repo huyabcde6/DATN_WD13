@@ -102,10 +102,18 @@
                 <tbody>
                     @forelse ($statusHistory as $history)
                     <tr>
-                        <td>{{ $history->changed_at }}</td>
+                        <td>{{ \Carbon\Carbon::parse($history->changed_at)->format('H:i (d-m-Y)') }}</td>
+
                         <td>{{ $history->previousStatus ? $history->previousStatus->type : 'N/A' }}</td>
                         <td>{{ $history->currentStatus ? $history->currentStatus->type : 'N/A' }}</td>
-                        <td>{{ $history->user ? $history->user->name : 'N/A' }}</td>
+                        <td>
+                            @if ($history->user)
+                                {{ $history->user->roles->pluck('name')->first() }} : {{ $history->user->name }}
+                            @else
+                                N/A
+                            @endif
+                        </td>
+
                     </tr>
                     @empty
                     <tr>

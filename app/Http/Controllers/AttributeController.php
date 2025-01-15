@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Attribute;
 use Illuminate\Http\Request;
+use App\Http\Requests\AttributeRequest;
+use App\Http\Requests\AttributeUpdateRequest;
 
 class AttributeController extends Controller
 {
@@ -29,16 +31,11 @@ class AttributeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AttributeRequest  $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255',
-        ]);
+        Attribute::create($request->validated());
 
-        Attribute::create($request->only('name', 'slug'));
-
-        return redirect()->route('admin.attributes.index')->with('success', 'Attribute created successfully!');
+        return redirect()->route('admin.attributes.index')->with('success', 'Thêm mới thuộc tính thành công!');
     }
 
     /**
@@ -60,16 +57,11 @@ class AttributeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Attribute $attribute)
+    public function update(AttributeUpdateRequest  $request, Attribute $attribute)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255',
-        ]);
+        $attribute->update($request->validated());
 
-        $attribute->update($request->only('name', 'slug'));
-
-        return redirect()->route('admin.attributes.index')->with('success', 'Attribute updated successfully!');
+        return redirect()->route('admin.attributes.index')->with('success', 'Cập nhật thuộc tính thành công!');
     }
 
     /**

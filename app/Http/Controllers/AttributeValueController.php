@@ -16,8 +16,9 @@ class AttributeValueController extends Controller
     }
     public function index()
     {
+        $attributes = Attribute::all();
         $attributeValues = AttributeValue::with('attribute')->get();
-        return view('admin.attribute_values.index', compact('attributeValues'));
+        return view('admin.attribute_values.index', compact('attributeValues', 'attributes'));
     }
 
     public function create()

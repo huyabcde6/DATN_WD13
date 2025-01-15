@@ -27,8 +27,8 @@ Quản lý Vai trò & Quyền
                 <div class="card">
                     <div class="card-header">
                         <h4>
-                            Roles : {{ $role->name }}
-                            <a href="{{ url('roles') }}" class="btn btn-danger float-end ">Back</a>
+                            Vai trò : {{ $role->name }}
+                            <a href="{{ url('roles') }}" class="btn btn-danger float-end ">Quay lại</a>
                         </h4>
                     </div>
                     <div class="card-body">
@@ -61,7 +61,7 @@ Quản lý Vai trò & Quyền
 
                             </div>
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
                             </div>
                         </form>
                     </div>

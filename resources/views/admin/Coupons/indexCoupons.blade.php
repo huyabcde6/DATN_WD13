@@ -55,14 +55,8 @@
                             </td>
                             <td>
                                 <a href="{{ route('admin.Coupons.edit', $coupon->id) }}"
-                                    class="btn btn-sm btn-primary">Sửa</a>
-                                <form action="{{ route('admin.Coupons.destroy', $coupon->id) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
-                                </form>
+                                    class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "><i class="fa fa-pencil-alt"></i></a>
+                                
                             </td>
                         </tr>
                         @empty

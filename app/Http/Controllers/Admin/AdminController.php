@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use App\Models\OrderAction;
 
 class AdminController extends Controller
 
@@ -21,18 +22,29 @@ class AdminController extends Controller
     {
         // Lọc tất cả người dùng có vai trò
         $users = User::whereHas('roles')->get();
-
+        $notifications = OrderAction::orderBy('created_at', 'desc') // Sắp xếp theo thời gian
+            ->limit(10) // Giới hạn số lượng thông báo hiển thị
+            ->get();
+        $unreadCount = OrderAction::where('is_read', false)->count();
         // Trả về view với danh sách người dùng
         return view('role-permission.user.index', [
-            'users' => $users
+            'users' => $users,
+            'notifications' => $notifications,
+            'unreadCount' => $unreadCount,
         ]);
     }
 
     public function create()
     {
         $roles = Role::pluck('name', 'name')->all();
+        $notifications = OrderAction::orderBy('created_at', 'desc') // Sắp xếp theo thời gian
+            ->limit(10) // Giới hạn số lượng thông báo hiển thị
+            ->get();
+        $unreadCount = OrderAction::where('is_read', false)->count();
         return view('role-permission.user.create', [
-            'roles' => $roles
+            'roles' => $roles,
+            'notifications' => $notifications,
+            'unreadCount' => $unreadCount,
         ]);
     }
     /**
@@ -63,11 +75,16 @@ class AdminController extends Controller
     {
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
-
+        $notifications = OrderAction::orderBy('created_at', 'desc') // Sắp xếp theo thời gian
+        ->limit(10) // Giới hạn số lượng thông báo hiển thị
+        ->get();
+        $unreadCount = OrderAction::where('is_read', false)->count();
         return view('role-permission.user.edit', [
             'user' => $user,
             'roles' => $roles,
             'userRoles' => $userRoles,
+            'notifications' => $notifications,
+            'unreadCount' => $unreadCount,
         ]);
     }
 

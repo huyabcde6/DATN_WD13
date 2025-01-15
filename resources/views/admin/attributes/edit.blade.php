@@ -1,30 +1,48 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container">
-    <h1>Edit Attribute</h1>
-
-    <form action="{{ route('admin.attributes.update', $attribute) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" class="form-control" value="{{ $attribute->name }}" required>
+<div class="container mt-5">
+    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+        <div class="flex-grow-1">
+            <h4 class="fs-18 fw-semibold m-0">Chỉnh Sửa Thuộc Tính</h4>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label for="slug">Slug</label>
-            <input type="text" name="slug" id="slug" class="form-control" value="{{ $attribute->slug }}">
+    <div class="card shadow">
+        <div class="card-body">
+            <form action="{{ route('admin.attributes.update', $attribute) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="row">
+                    <!-- Tên thuộc tính -->
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">Tên Thuộc Tính <span class="text-danger">*</span>:</label>
+                        <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ $attribute->name }}">
+                        @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Slug -->
+                    <div class="col-md-6 mb-3">
+                        <label for="slug" class="form-label">Slug</label>
+                        <input type="text" name="slug" id="slug" class="form-control" value="{{ $attribute->slug }}">
+                    </div>
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ route('admin.attributes.index') }}" class="btn btn-secondary">Quay Lại</a>
+                    <button type="submit" class="btn btn-primary">Cập Nhật</button>
+                </div>
+            </form>
         </div>
-
-        <button type="submit" class="btn btn-primary mt-3">Update</button>
-    </form>
+    </div>
 </div>
 @endsection
+
 @section('js')
-<script src="{{ asset('assets/admin/libs/quill/quill.core.js')}}"></script>
-<script src="{{ asset('assets/admin/libs/quill/quill.min.js')}}"></script>
 <script>
     document.getElementById('name').addEventListener('keyup', function() {
         const name = this.value;

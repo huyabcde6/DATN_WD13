@@ -9,6 +9,7 @@ use App\Models\categories;
 use App\Models\product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\OrderAction;
 
 class CategoryProductController extends Controller
 {
@@ -43,10 +44,13 @@ class CategoryProductController extends Controller
         } else {
             $query->orderBy('categories.id', 'desc'); // Mặc định sắp xếp theo id giảm dần
         }
-
+        $notifications = OrderAction::orderBy('created_at', 'desc') // Sắp xếp theo thời gian
+            ->limit(10) // Giới hạn số lượng thông báo hiển thị
+            ->get();
+        $unreadCount = OrderAction::where('is_read', false)->count();
         // Lấy dữ liệu và phân trang
         $categories = $query->paginate(6);
-        return view('admin.categories.index', compact('categories'))
+        return view('admin.categories.index', compact('categories', 'notifications', 'unreadCount'))
             ->with('search', $request->search)
             ->with('sort', $request->sort)
             ->with('order', $request->order);

@@ -24,4 +24,10 @@ class productComment extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+    public function getImageUrlsAttribute()
+    {
+        return collect($this->images)->map(function ($image) {
+            return asset('storage/' . $image);
+        });
+    }
 }

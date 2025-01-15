@@ -20,9 +20,9 @@ Vai trò & Quyền
             @endif
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4>Danh sách người dùng và vai trò</h4>
-                    <a href="{{ url('userAdmin/create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Thêm vai trò
+                    <h4>Danh sách tài khoản và vai trò</h4>
+                    <a href="{{ url('userAdmin/create') }}" class="btn btn-">
+                        <i class="fas fa-plus"></i> Thêm tài khoản
                     </a>
                 </div>
                 <div class="card-body">
@@ -51,11 +51,10 @@ Vai trò & Quyền
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ url('userAdmin/' . $user->id . '/edit') }}" class="btn btn-sm btn-warning mx-1"
+                                    <a href="{{ url('userAdmin/' . $user->id . '/edit') }}" class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
                                         title="Chỉnh sửa">
-                                        <i class="fas fa-edit"></i>
+                                        <i class="fa fa-pencil-alt"></i>
                                     </a>
-                                    <a href="{{ route('user.show-assign-shift', $user->id) }}" class="btn btn-primary">Gán Ca</a>
                                 </td>
                             </tr>
                             @endforeach

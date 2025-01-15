@@ -193,7 +193,26 @@ class OrderController extends Controller
                         'product_avata' => $productVariant->product->avata ?? null,
                     ]);
                 }
+                
+                if (Session::has('discount_applied')) {
+                    $couponId = Session::get('discount_applied');
+                    $coupon = Coupons::find($couponId);
 
+                    // Nếu không tìm thấy mã hoặc số lượng mã đã hết
+                    if (!$coupon || $coupon->total_quantity <= $coupon->used_quantity) {
+                        // Xóa mã giảm giá trong session để tránh lỗi lặp lại
+                        Session::forget('discount_applied');
+
+                        // Xóa đơn hàng vừa tạo
+                        $order->delete();
+
+                        // Trả về trang giỏ hàng kèm thông báo lỗi
+                        return redirect()->route('cart.index')->with('error', 'Mã giảm giá đã hết lượt sử dụng.');
+                    }
+
+                    // Tăng số lượng đã sử dụng nếu mã hợp lệ
+                    $this->incrementCouponUsage($coupon);
+                }
                 // Xóa sản phẩm đã thanh toán khỏi giỏ hàng chính
                 $cart = Session::get('cart', []);
                 $updatedCart = array_filter($cart, function ($cartItem) use ($selectedCart) {
@@ -213,7 +232,8 @@ class OrderController extends Controller
 
                 // Xóa selected_cart
                 Session::forget('selected_cart');
-
+                // Kiểm tra mã giảm giá
+                
                 // Kiểm tra phương thức thanh toán
                 if ($request->input('method') === "VNPAY") {
                     DB::commit(); // Lưu đơn hàng trước khi chuyển hướng
@@ -620,5 +640,19 @@ class OrderController extends Controller
         }
 
         return 0;
+    }
+    private function incrementCouponUsage($coupon)
+    {
+        // Kiểm tra và tăng số lượng mã giảm giá đã sử dụng
+        if ($coupon) {
+            $coupon->increment('used_quantity');
+
+            // Đảm bảo số lượng mã đã sử dụng không vượt quá tổng số lượng
+            if ($coupon->used_quantity > $coupon->total_quantity) {
+                $coupon->used_quantity = $coupon->total_quantity;
+                $coupon->save();
+            }
+        }
+        Session::forget('discount_applied');
     }
 }

@@ -32,29 +32,38 @@
 
                  <li class="menu-title">Quản trị</li>
                  <li>
-                     <a class='tp-link' href="{{ route('admin.statistics.index') }}">
-                         <i data-feather="home"></i>
-                         <span> Dashboards </span>
-                     </a>
+                    @can('Xem thống kê')
+                        <a class='tp-link' href="{{ route('admin.statistics.index') }}">
+                            <i data-feather="home"></i>
+                            <span> Dashboards </span>
+                        </a>
+                    @endcan
+                     
                  </li>
                  <li>
+                    @can('Xem danh sách người dùng')
                      <a class='tp-link' href="{{ route('admin.users.index') }}">
                          <i data-feather="users"></i>
                          <span> Quản lý người dùng </span>
                      </a>
+                     @endcan
                  </li>
                  {{-- <li class="menu-title">Kinh doanh</li> --}}
                  <li>
+                 @can('Xem danh mục')
                      <a class='tp-link' href="{{ route('admin.categories.index') }}">
                          <i data-feather="align-center"></i>
                          <span> Danh mục sản phẩm </span>
                      </a>
+                     @endcan
                  </li>
                  <li>
+                 @can('Xem danh sách sản phẩm')
                      <a class='tp-link' href="{{route('admin.products.index')}}">
                          <i data-feather="package"></i>
                          <span> Quản lý sản phẩm </span>
                      </a>
+                     @endcan
                  </li>
                  <li>
                      <a href="#sideOrder" data-bs-toggle="collapse">
@@ -64,12 +73,16 @@
                      </a>
                      <div class="collapse" id="sideOrder">
                          <ul class="nav-second-level">
+                         @can('Xem trạng thái đơn hàng')
                              <li>
                                  <a class='tp-link' href="{{route('admin.orders.index')}}">Trạng thái đơn hàng</a>
                              </li>
+                             @endcan
+                             @can('Xem hóa đơn')
                              <li>
                                  <a class='tp-link' href="{{route('admin.invoices.index')}}">Hóa đơn</a>
                              </li>
+                             @endcan
                          </ul>
                      </div>
                  </li>
@@ -81,12 +94,16 @@
                      </a>
                      <div class="collapse" id="sidebar">
                          <ul class="nav-second-level">
+                         @can('Xem thuộc tính biến thể')
                              <li>
                                  <a class='tp-link' href="{{ route('admin.attributes.index') }}">Thuộc tính biến thể</a>
                              </li>
+                             @endcan
+                             @can('Xem giá trị biến thể')
                              <li>
                                  <a class='tp-link' href="{{ route('admin.attribute_values.index') }}">Giá trị biến thể</a>
                              </li>
+                             @endcan
                          </ul>
                      </div>
                  </li>
@@ -110,32 +127,39 @@
                      </a>
                      <div class="collapse" id="sideRole">
                          <ul class="nav-second-level">
+                         @can('Xem danh sách vai trò')
                              <li>
                                  <a class='tp-link' href="{{ url('roles') }}">Vai trò</a>
                              </li>
+                             @endcan
+                             @can('Xem danh sách quyền')
                              <li>
                                  <a class='tp-link' href="{{ url('permission') }}">Quyền</a>
                              </li>
+                             @endcan
+                             @can('Xem danh sách admin')
                              <li>
                                  <a class='tp-link' href="{{ url('userAdmin') }}">Admin</a>
                              </li>
-                             <li>
-                                 <a class='tp-link' href="{{ route('admin.shifts.index') }}">Ca làm</a>
-                             </li>
+                             @endcan
                          </ul>
                      </div>
                  </li>
                  <li>
+                 @can('Xem danh sách mã giảm giá')
                      <a class='tp-link' href="{{ route('admin.Coupons.index') }}">
                          <i data-feather="file-text"></i>
                          <span> Quản lý Mã Giảm Giá </span>
                      </a>
+                     @endcan
                  </li>
                  <li>
+                 @can('Xem bình luận')
                     <a class='tp-link' href="{{ route('admin.comments.index') }}">
                         <i class="bi bi-chat"></i>
                         <span> Quản lý Bình Luận </span>
                     </a>
+                    @endcan
                 </li>
              </ul>
 

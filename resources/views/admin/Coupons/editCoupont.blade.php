@@ -56,7 +56,7 @@
                                 <input type="text" name="discount_value" id="discount_value"
                                     class="form-control @error('discount_value') is-invalid @enderror"
                                     placeholder="Nhập giá trị giảm"
-                                    value="{{ old('discount_value', $coupon->discount_value) }}">
+                                    value="{{ old('discount_value', number_format($coupon->discount_value, 0, '.', '')) }}">
 
                                 <!-- Display validation error for 'discount_value' -->
                                 @error('discount_value')
@@ -72,7 +72,7 @@
                                 <input type="text" name="max_discount_amount" id="max_discount_amount"
                                     class="form-control @error('max_discount_amount') is-invalid @enderror"
                                     placeholder="Nhập số tiền tối đa"
-                                    value="{{ old('max_discount_amount', $coupon->max_discount_amount) }}">
+                                    value="{{ old('max_discount_amount', number_format($coupon->max_discount_amount, 0, '.', '')) }}">
 
                                 <!-- Display validation error for 'max_discount_amount' -->
                                 @error('max_discount_amount')
@@ -88,7 +88,7 @@
                                 <input type="number" name="min_order_amount" id="min_order_amount"
                                     class="form-control @error('min_order_amount') is-invalid @enderror"
                                     placeholder="Nhập số tiền tối thiểu"
-                                    value="{{ old('min_order_amount', $coupon->min_order_amount) }}">
+                                    value="{{ old('min_order_amount', number_format($coupon->min_order_amount, 0, '.', '')) }}">
 
                                 <!-- Display validation error for 'min_order_amount' -->
                                 @error('min_order_amount')
