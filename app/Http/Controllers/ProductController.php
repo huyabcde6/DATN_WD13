@@ -68,7 +68,10 @@ class ProductController extends Controller
             default:
                 $query->orderBy('id', 'asc');
                 break;
-        }
+        }   
+        $attributes = Attribute::with('values')
+        ->where('name', 'Màu sắc') // Giả sử thuộc tính màu sắc có tên là "Màu sắc"
+        ->first();
 
         // Lấy tất cả danh mục
         $categories = Categories::where('status', 1)->get();
@@ -77,7 +80,7 @@ class ProductController extends Controller
         $products = $query->paginate($limit);
 
         // Trả về view với danh sách sản phẩm và danh mục
-        return view('user.sanpham.shop_sidebar', compact('products', 'categories'));
+        return view('user.sanpham.shop_sidebar', compact('products', 'categories', 'attributes'));
     }
 
     public function show($slug)
@@ -139,5 +142,77 @@ class ProductController extends Controller
 
         return view('user.sanpham.product_detail', compact('product', 'products', 'variants', 'attributes', 'comments'));
     }
+
+    public function filterProducts(Request $request)
+    {
+        // Debug request nhận được
+        \Log::info('Filter Request:', $request->all());
+    
+        $query = Product::with(['categories'])->select([
+            'id', 
+            'name', 
+            'slug', 
+            'avata', 
+            'price', 
+            'discount_price', 
+            'short_description',
+            'categories_id'
+        ]);
+        
+        if ($request->has('category') && $request->category) {
+            $query->where('categories_id', $request->category);
+        }
+        if ($request->has('prices') && is_array($request->prices)) {
+            $query->where(function ($q) use ($request) {
+                foreach ($request->prices as $priceRange) {
+                    [$min, $max] = explode('-', $priceRange);
+                    $q->orWhereBetween('price', [(float)$min, (float)$max]);
+                }
+            });
+        }
+        if ($request->has('keyword') && $request->keyword) {
+            $query->where('name', 'LIKE', '%' . $request->keyword . '%');
+        }
+    
+        if ($request->has('colors') && is_array($request->colors)) {
+            $query->whereHas('variants.attributes.attributeValue', function ($q) use ($request) {
+                $q->whereIn('value', $request->colors);
+            });
+        }
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'newest':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                default:
+                    break;
+            }
+        }
+    
+        // Phân trang
+        $limit = $request->get('limit', 12);
+        $products = $query->paginate($limit);
+    
+        // Debug response trả về
+        \Log::info('Filter Response:', $products->toArray());
+    
+        return response()->json([
+            'products' => [
+                'data' => $products->items(),
+                'links' => $products->links()->toHtml(),
+            ],
+        ]);
+    }
+    
+
 
 }

@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('userAdmin/{userId}/delete', [App\Http\Controllers\Admin\AdminController::class, 'destroy']);
 });
 
-
+Route::get('/ajax/products/filter', [ProductController::class, 'filterProducts'])->name('ajax.products.filter');
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 
