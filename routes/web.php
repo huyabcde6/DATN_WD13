@@ -105,7 +105,7 @@ Route::prefix('admin')->middleware(['auth'])->as('admin.')->group(function () {
     Route::resource('categories', CategoryProductController::class);
 
     Route::resource('users', UserController::class);
-
+    Route::get('users/{id}/toggle', [UserController::class, 'toggleActivation'])->name('users.toggle');
     Route::get('/', [StatisticsController::class, 'index'])->name('statistics.index');
 
     Route::resource('attribute_values', AttributeValueController::class);

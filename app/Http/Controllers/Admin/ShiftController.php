@@ -44,8 +44,16 @@ class ShiftController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
+            'end_time' => 'required|date_format:H:i',
         ]);
+        
+        if (strtotime($request->start_time) >= strtotime($request->end_time)) {
+            // Trường hợp ca làm việc qua đêm
+            if (strtotime($request->end_time) >= strtotime('12:00:00')) {
+                return redirect()->back()->withErrors(['end_time' => 'Thời gian kết thúc không hợp lệ. Ca đêm kết thúc phải sau 12 giờ sáng.']);
+            }
+        }
+        
 
         Shift::create([
             'name' => $request->name,
@@ -61,11 +69,18 @@ class ShiftController extends Controller
     }
     public function update(Request $request, Shift $shift)
     {
+        // Chuyển đổi định dạng nếu cần
+        $request->merge([
+            'start_time' => date('H:i', strtotime($request->start_time)),
+            'end_time' => date('H:i', strtotime($request->end_time)),
+        ]);
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'start_time' => 'required',
-            'end_time' => 'required',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i',
         ]);
+
 
         $shift->update([
             'name' => $request->name,
@@ -75,5 +90,6 @@ class ShiftController extends Controller
 
         return redirect()->route('admin.shifts.index')->with('success', 'Ca làm việc đã được cập nhật thành công!');
     }
+
 
 }

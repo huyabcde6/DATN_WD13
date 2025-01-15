@@ -226,22 +226,24 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Gán sự kiện khi modal được hiển thị
-        const commentModal = document.getElementById('commentModal');
-        commentModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const productName = button.getAttribute('data-product-name');
-            const modalProductNameDisplay = document.getElementById('modal-product-name-display');
-            const modalProductName = document.getElementById('modal-product-name');
-
-            modalProductNameDisplay.value = productName; // Hiển thị tên sản phẩm
-            modalProductName.value = productName; // Gán giá trị cho input ẩn
-        });
-
-        // Hiển thị hình ảnh được chọn
-        const imageInput = document.getElementById('images');
-        const previewContainer = document.getElementById('preview-images');
+    document.addEventListener('DOMContentLoaded', function () {
+    // Gán sự kiện khi modal được hiển thị
+    const commentModal = document.getElementById('commentModal');
+    commentModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const productName = button.getAttribute('data-product-name');
+        const modalProductNameDisplay = document.getElementById('modal-product-name-display');
+        const modalProductName = document.getElementById('modal-product-name');
+        
+        modalProductNameDisplay.value = productName; // Hiển thị tên sản phẩm
+        modalProductName.value = productName; // Gán giá trị cho input ẩn
+    });
+});
+</script>
+<script>
+    // Hiển thị hình ảnh được chọn
+    const imageInput = document.getElementById('images');
+    const previewContainer = document.getElementById('preview-images');
 
         imageInput.addEventListener('change', function() {
             // Xóa nội dung cũ trong vùng preview

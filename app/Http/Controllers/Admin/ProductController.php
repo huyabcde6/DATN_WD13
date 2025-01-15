@@ -6,12 +6,10 @@ use App\Models\AttributeValue;
 use App\Models\Attribute;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\categories;
 use App\Models\product;
-use App\Models\Size;
-use App\Models\Color;
-use App\Models\ProductDetail;
 use App\Models\ProductImage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -20,9 +18,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantAttribute;
-
-
-
 
 class ProductController extends Controller
 {
@@ -129,45 +124,55 @@ class ProductController extends Controller
             return back()->withErrors(['error' => 'Có lỗi xảy ra: ' . $e->getMessage()]);
         }
     }
-
-    private function storeVariants($product, $request)
-    {
-        $variantPrices = $request->input('variant_prices');
-        $variantStocks = $request->input('variant_stocks');
-        $variantSkus = $request->input('variant_skus');
-        $variantImages = $request->file('variant_images');
-        $variantValues = $request->input('values');
-
+    private function storeVariants($product, $request) {
+        $variantPrices = $request->input('variant_prices', []); // Đảm bảo là mảng
+        $variantStocks = $request->input('variant_stocks', []);
+        $variantSkus = $request->input('variant_skus', []);
+        $variantImages = $request->file('variant_images', []);
+        $variantValues = $request->input('values', []);
+    
+        // Kiểm tra nếu không phải là mảng, trả về lỗi hoặc bỏ qua
+        if (!is_array($variantPrices) || !is_array($variantStocks) || !is_array($variantSkus) || !is_array($variantValues)) {
+            throw new \InvalidArgumentException('Invalid input data.');
+        }
         foreach ($variantPrices as $index => $price) {
+            // Kiểm tra tồn tại giá trị tại $index
+            $sku = $variantSkus[$index] ?? null;
+            $stock = $variantStocks[$index] ?? null;
+            $image = $variantImages[$index] ?? null;
+    
+            if ($sku === null || $stock === null) {
+                continue; // Bỏ qua nếu dữ liệu không hợp lệ
+            }
+    
             $variant = ProductVariant::create([
                 'product_id' => $product->id,
-                'product_code' => $variantSkus[$index],
+                'product_code' => $sku,
                 'price' => $price,
-                'stock_quantity' => $variantStocks[$index],
-                'image' => $variantImages[$index] ? $this->uploadImageVariant($variantImages[$index]) : null,
+                'stock_quantity' => $stock,
+                'image' => $image ? $this->uploadImageVariant($image) : null,
             ]);
-
-            if (isset($variantValues[$index])) {
+            if (isset($variantValues[$index]) && is_array($variantValues[$index])) {
                 foreach ($variantValues[$index] as $value) {
-                    ProductVariantAttribute::create([
-                        'product_variant_id' => $variant->id,
-                        'attribute_id' => $value['attribute_id'],
-                        'attribute_value_id' => $value['attribute_value_id'],
-                    ]);
+                    if (isset($value['attribute_id'], $value['attribute_value_id'])) {
+                        ProductVariantAttribute::create([
+                            'product_variant_id' => $variant->id,
+                            'attribute_id' => $value['attribute_id'],
+                            'attribute_value_id' => $value['attribute_value_id'],
+                        ]);
+                    }
                 }
             }
         }
     }
-
-    private function uploadImageVariant($image)
-    {
-        if ($image) {
+    private function uploadImageVariant($image) {
+        if($image){
             return $image->store('product_variants', 'public');
         }
         return null;
     }
 
-    public function update(ProductRequest $request, $id)
+    public function update(ProductUpdateRequest $request, $id)
     {
         DB::beginTransaction();
         try {

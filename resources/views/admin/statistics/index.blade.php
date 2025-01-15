@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="d-flex justify-content-center align-items-baseline mb-0">
                                     <div class="fs-20 mb-0 me-2 fw-semibold text-dark">
-                                        {{ number_format($dailyRevenue) }} đ</div>
+                                        {{ number_format($dailyRevenue, 0, ',', '.') }} đ</div>
                                 </div>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Lọc theo ngày khách hàng, sản phẩm</h5>
+                        <h5 class="card-title mb-0">Lọc theo ngày khách hàng, sản phẩm, doanh thu, đơn hàng</h5>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('admin.statistics.index') }}" method="GET">
@@ -161,6 +161,39 @@
                             <button type="submit" class="btn btn-primary mt-3">Lọc</button>
                         </form>
                         <div id="error-message" style="color: red; display: none; margin-top: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-9 mb-3 text-muted">Doanh thu</div>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-baseline mb-0">
+                                    <div class="fs-20 mb-0 me-2 fw-semibold text-dark">
+                                        {{number_format($filteredRevenue, 0, ',', '.')}} đ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-9 mb-3 text-muted">Đơn hàng</div>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-baseline mb-0">
+                                    <div class="fs-20 mb-0 me-2 fw-semibold text-dark">{{$filteredOrders}} đơn hàng</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -417,7 +450,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-
     // Hàm vẽ biểu đồ
     function renderChart(revenueData, month = null) {
         let categories, revenues;
@@ -486,6 +518,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         return val.toLocaleString('vi-VN') + " VNĐ";
                     }
                 }
+            },
+            dataLabels: {
+                enabled: false // Tắt hiển thị số trên cột
             }
         };
 

@@ -62,6 +62,7 @@ class CommentController extends Controller
         $request->validate([
             'product_name' => 'required|string|max:255',
             'comment' => 'required|string|max:500',
+            'images.*' => 'nullable|image',
         ]);
         // 'images.*' => 'nullable|image',
 
@@ -92,12 +93,12 @@ class CommentController extends Controller
             'description' => $request->comment,
             'images' => $imagePaths, // Lưu mảng đường dẫn hình ảnh dưới dạng JSON
         ]);
-        OrderAction::create([
-            'user_id' => auth()->id(),
-            'product_id' => $product->id,
-            'action' => 'comment', // Hành động là bình luận
-            'comment' => $request->comment,
-        ]);
+        // OrderAction::create([
+        //     'user_id' => auth()->id(),
+        //     'product_id' => $product->id,
+        //     'action' => 'comment', // Hành động là bình luận
+        //     'comment' => $request->comment,
+        // ]);
 
         return redirect()->back()->with('success', 'Bình luận đã được gửi thành công!');
     }

@@ -437,8 +437,7 @@ button.button-css:hover {
 
                                     <!-- Nút tải ảnh chính -->
                                     <div class="form-group image-preview" id="main-image-preview">
-                                        <label class="form-label">Tải lên ảnh chính<span
-                                                class="text-danger">*</span>:</label>
+                                        <label class="form-label">Tải lên ảnh chính:</label>
                                         <div class="custom-file">
                                             <input type="file" name="avata" class="form-control-file"
                                                 id="main-image-input">
@@ -449,8 +448,7 @@ button.button-css:hover {
 
                                     <!-- Tải lên ảnh phụ -->
                                     <div class="form-group image-preview" id="sub-images-preview">
-                                        <label class="form-label">Tải lên ảnh phụ<span
-                                                class="text-danger">*</span>:</label>
+                                        <label class="form-label">Tải lên ảnh phụ:</label>
                                         <div class="custom-file">
                                             <input type="file" name="images[]" class="form-control-file" multiple
                                                 id="sub-images-input">
@@ -555,10 +553,12 @@ button.button-css:hover {
                                                 <!-- Truy xuất giá trị thuộc tính từ attribute_value -->
                                                 @php
                                                 $attribute_value = $attribute->attributeValue;
+                                               
                                                 @endphp
+                                                
 
-                                                <td>
-                                                    <span>{{ $attribute_value->value }}</span>
+                                                <td >
+                                                    <span data-attribute-id="{{ $attribute_value->attribute_id }}" data-value-id="{{ $attribute_value->id }}">{{ $attribute_value->value }}</span>
                                                 </td>
                                                 @endforeach
                                                 @for ($i = $variant->attributes->count(); $i < $maxAttributesCount; $i++)
@@ -899,19 +899,18 @@ $(document).ready(function() {
         // Khi trang được tải, lưu các biến thể đã có từ DB vào Set
         $('.variant-existing').each(function () {
             let variantAttributes = [];
-            // Lấy tất cả các thuộc tính từ hàng biến thể hiện tại
-            $(this).find('td[data-attribute-id]').each(function () {
-                const attributeId = $(this).data('attribute-id');
+            // Lấy tất cả các giá trị (value_id) từ hàng biến thể hiện tại
+            $(this).find('span[data-value-id]').each(function () {
                 const valueId = $(this).data('value-id');
-                variantAttributes.push(`${attributeId}:${valueId}`);
-                
+                variantAttributes.push(valueId); // Chỉ lấy value_id
             });
 
-            // Sắp xếp tổ hợp thuộc tính theo thứ tự chữ cái để đảm bảo tính nhất quán
-            const sortedCombination = variantAttributes.sort().join(',');
+            // Sắp xếp tổ hợp giá trị theo thứ tự chữ cái để đảm bảo tính nhất quán
+            const sortedCombination = variantAttributes.sort().join(','); // Kết hợp thành chuỗi
             existingVariants.add(sortedCombination); // Thêm tổ hợp vào Set
             console.log(`Tổ hợp từ DB: ${sortedCombination}`);
         });
+
 
         // Tạo tổ hợp biến thể khi nhấn nút "Tạo biến thể"
         $('#generate-variants-btn').on('click', function() {

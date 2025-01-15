@@ -23,12 +23,12 @@
 
         <div class="form-group">
             <label for="start_time">Giờ Bắt Đầu:</label>
-            <input type="time" name="start_time" id="start_time" class="form-control" required>
+            <input type="text" name="start_time" id="start_time" class="form-control" placeholder="HH:mm" required>
         </div>
 
         <div class="form-group">
             <label for="end_time">Giờ Kết Thúc:</label>
-            <input type="time" name="end_time" id="end_time" class="form-control" required>
+            <input type="text" name="end_time" id="end_time" class="form-control" placeholder="HH:mm" required>
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">Thêm Mới</button>
