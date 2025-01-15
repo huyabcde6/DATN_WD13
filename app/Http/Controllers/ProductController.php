@@ -30,7 +30,10 @@ class ProductController extends Controller
         $keyword = $request->input('keyword');
 
         // Truy vấn sản phẩm
-        $query = product::query();
+        $query = $products = Product::where('iS_show', 1)
+            ->whereHas('categories', function ($query) {
+                $query->where('status', 1); // Lọc danh mục có trạng thái là "hiện"
+            });
         if ($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%');
         }
@@ -86,7 +89,7 @@ class ProductController extends Controller
     public function show($slug)
     {
         // Comment
-        
+
         // Lấy sản phẩm với các quan hệ liên quan
         $product = Product::with([
             'productImages',
@@ -216,3 +219,4 @@ class ProductController extends Controller
 
 
 }
+
