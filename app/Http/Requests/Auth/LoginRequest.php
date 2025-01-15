@@ -50,8 +50,15 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt($this->only('email', 'password') + ['status' => 1], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
+
+            $user = \App\Models\User::where('email', $this->email)->first();
+            if ($user && $user->status == 0) {
+                throw ValidationException::withMessages([
+                    'email' => 'Tài khoản của bạn đã bị vô hiệu hóa.',
+                ]);
+            }
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),

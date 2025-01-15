@@ -83,13 +83,19 @@ class StatisticsController extends Controller
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
+        $filteredRevenue = Invoice::whereBetween('date_invoice', [$startDate, $endDate])
+            ->sum('total_price');
+
+        // Tổng số đơn hàng trong khoảng thời gian lọc
+        $filteredOrders = Order::whereBetween('created_at', [$startDate, $endDate])
+            ->count();
 
         // Trả về dữ liệu cho view
         $notifications = OrderAction::orderBy('created_at', 'desc') // Sắp xếp theo thời gian
             ->limit(10) // Giới hạn số lượng thông báo hiển thị
             ->get();
         $unreadCount = OrderAction::where('is_read', false)->count();
-        return view('admin.statistics.index', compact('revenue', 'dailyRevenue', 'totalProducts', 'totalOrders', 'topProducts', 'pendingOrders', 'topCustomers', 'notifications', 'unreadCount'));
+        return view('admin.statistics.index', compact('filteredRevenue', 'filteredOrders', 'revenue', 'dailyRevenue', 'totalProducts', 'totalOrders', 'topProducts', 'pendingOrders', 'topCustomers', 'notifications', 'unreadCount'));
     }
 
     public function getRevenueByYear(Request $request)

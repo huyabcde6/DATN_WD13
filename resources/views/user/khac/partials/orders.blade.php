@@ -228,7 +228,9 @@ document.addEventListener('DOMContentLoaded', function() {
         modalProductNameDisplay.value = productName; // Hiển thị tên sản phẩm
         modalProductName.value = productName; // Gán giá trị cho input ẩn
     });
-
+});
+</script>
+<script>
     // Hiển thị hình ảnh được chọn
     const imageInput = document.getElementById('images');
     const previewContainer = document.getElementById('preview-images');
@@ -264,6 +266,4 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.readAsDataURL(file);
         });
     });
-});
-
 </script>

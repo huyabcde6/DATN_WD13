@@ -48,6 +48,19 @@ class UserController extends Controller
 
         return view('admin.users.show', compact('user', 'totalOrders', 'completedOrders'));
     }
+    public function toggleActivation($id)
+    {
+        // Tìm người dùng theo ID
+        $user = User::findOrFail($id);
+
+        // Thay đổi trạng thái kích hoạt
+        $user->status = $user->status == 1 ? 0 : 1;
+        $user->save();
+
+        // Trả về thông báo thành công
+        return redirect()->route('admin.users.index')->with('success', 'Trạng thái tài khoản đã được cập nhật thành công.');
+    }
+
 
 
 }

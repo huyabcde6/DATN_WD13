@@ -340,8 +340,7 @@ button.button-css:hover {
                             <div class="col-5">
                                 <!-- Danh mục -->
                                 <div class="row form-group mb-3">
-                                    <label class="form-label" for="catalogue-select">Danh mục<span
-                                            class="text-danger">*</span>:</label>
+                                    <label class="form-label" for="catalogue-select">Danh mục:</label>
                                     <select name="categories_id" id="categories_id" class="form-select">
                                         @foreach($categories as $category)
                                         <option value="{{ $category->id }}"
@@ -406,7 +405,8 @@ button.button-css:hover {
 
                                 <!-- Tải lên ảnh phụ -->
                                 <div class="form-group image-preview" id="sub-images-preview">
-                                    <label class="form-label">Tải lên ảnh phụ<span class="text-danger">*</span>:</label>
+                                    <label class="form-label">Tải lên ảnh phụ<span
+                                    class="text-danger">*</span>:</label>
                                     @error('images')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -1268,4 +1268,29 @@ function removeVietnameseTones(str) {
         .replace(/đ/g, "d").replace(/Đ/g, "D");
 }
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById('myForm'); // Form của bạn
+    const variantContainer = document.getElementById('variant-container'); // Container chứa danh sách biến thể
+
+    // Hàm kiểm tra xem có ít nhất một biến thể hay không
+    function validateVariants() {
+        const variants = variantContainer.querySelectorAll('.variant');
+        if (variants.length === 0) {
+            alert('Bạn phải tạo ít nhất một biến thể trước khi lưu sản phẩm!');
+            return false;
+        }
+        return true;
+    }
+
+    // Lắng nghe sự kiện submit trên form
+    form.addEventListener('submit', function(event) {
+        // Kiểm tra biến thể trước khi gửi form
+        if (!validateVariants()) {
+            event.preventDefault(); // Ngăn chặn submit nếu không có biến thể
+        }
+    });
+});
+</script>
+
 @endsection

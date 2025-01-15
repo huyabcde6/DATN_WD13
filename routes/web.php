@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('admin')->middleware(['auth', 'check.shift'])->as('admin.')->group(function () {
+Route::prefix('admin')->middleware(['auth'])->as('admin.')->group(function () {
 
     // Các route cho quản lý sản phẩm
     Route::resource('products', AdminProductController::class);
@@ -105,7 +105,7 @@ Route::prefix('admin')->middleware(['auth', 'check.shift'])->as('admin.')->group
     Route::resource('categories', CategoryProductController::class);
 
     Route::resource('users', UserController::class);
-
+    Route::get('users/{id}/toggle', [UserController::class, 'toggleActivation'])->name('users.toggle');
     Route::get('/', [StatisticsController::class, 'index'])->name('statistics.index');
 
     Route::resource('attribute_values', AttributeValueController::class);

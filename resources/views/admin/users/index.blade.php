@@ -37,6 +37,7 @@ Quản lý người dùng
                                 <th class="text-center">Họ Tên</th>
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Ngày tạo</th>
+                                <th class="text-center">Trạng thái</th>
                                 <th class="text-center">Tương tác</th>
                             </tr>
                         </thead>
@@ -49,10 +50,20 @@ Quản lý người dùng
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>
+                                    @if ($user->status == 1)
+                                        <span class="badge bg-success">Kích Hoạt</span>
+                                    @else
+                                        <span class="badge bg-danger">Không Kích Hoạt</span>
+                                    @endif
+                                </td>
+                                <td>
                                     <a href="{{ route('admin.users.show', $user->id) }}"
                                         class="btn btn-sm btn-alt-secondary mx-1 fs-18 rounded-2 border p-1 me-1 "
                                         data-bs-toggle="tooltip" title="Xem">
                                         <i class="mdi mdi-eye "></i>
+                                    </a>
+                                    <a href="{{ route('admin.users.toggle', $user->id) }}" class="btn btn-warning btn-sm">
+                                        {{ $user->status == 1 ? 'Vô Hiệu Hóa' : 'Kích Hoạt' }}
                                     </a>
                                 </td>
                             </tr>

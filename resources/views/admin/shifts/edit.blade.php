@@ -32,7 +32,6 @@
             <label for="end_time">Giờ Kết Thúc:</label>
             <input type="time" name="end_time" id="end_time" class="form-control" value="{{ old('end_time', $shift->end_time) }}" required>
         </div>
-
         <button type="submit" class="btn btn-success mt-3">Cập Nhật</button>
         <a href="{{ route('admin.shifts.index') }}" class="btn btn-secondary mt-3">Quay Lại</a>
     </form>

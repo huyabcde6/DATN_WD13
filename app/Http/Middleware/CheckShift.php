@@ -38,7 +38,7 @@ class CheckShift
         }
 
         if (!$currentShift) {
-            return redirect()->route('admin.statistics.index')->withErrors(['error' => 'Bạn không có quyền truy cập ngoài giờ làm việc.']);
+            return redirect()->route('home.index')->withErrors(['error' => 'Bạn không có quyền truy cập ngoài giờ làm việc.']);
         }
 
         return $next($request);
