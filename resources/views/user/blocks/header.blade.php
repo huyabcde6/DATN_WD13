@@ -238,11 +238,7 @@
 
                         <!-- Header Action Start -->
                         <div class="col-xl-2 col-6">
-                            @auth
-                            <div>
-                                <span>Hi, {{ Auth::user()->name }}</span>
-                            </div>
-                            @endauth
+                            
                             <div class="header-actions">
                                 <!-- Search Header Action Button Start -->
                                 <!-- <a href="javascript:void(0)" ><i
@@ -251,10 +247,15 @@
 
                                 <!-- User Account Header Action Button Start -->
 
-                                <a href="{{ Auth::check() ? route ('orders.index') : route ('login') }}" class="header-action-btn d-none d-md-block">
+                                @auth
+                                <a href="{{ route('orders.index') }}" class="header-action-btn d-none d-md-block">
+                                    <span>Hi, {{ last(explode(' ', Auth::user()->name)) }}</span>
+                                </a>
+                                @else
+                                <a href="{{ route('login') }}" class="header-action-btn d-none d-md-block">
                                     <i class="pe-7s-user"></i>
                                 </a>
-
+                                @endauth
 
                                 <!-- User Account Header Action Button End -->
 

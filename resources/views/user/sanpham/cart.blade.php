@@ -1,5 +1,9 @@
 @extends('layouts.home')
+@section('css')
+<style>
 
+</style>
+@endsection
 @section('content')
 <!-- Breadcrumb Section Start -->
 <div class="section">
@@ -73,7 +77,7 @@
                                 </td>
                                 <td class="pro-thumbnail">
                                     <a href="#"><img class="img-fluid" src="{{ url('storage/'. $item['image']) }}"
-                                            height="auto" width="70" alt="Product" /></a>
+                                            height="auto" width="60" alt="Product" /></a>
                                 </td>
                                 <td class="pro-title">
                                     <a href="{{ route('product.show', $item['slug']) }}">
@@ -88,7 +92,7 @@
                                         đ</span></td>
                                 <td class="pro-quantity">
                                     <div class="quantity">
-                                        <div class="cart-plus-minus" style="margin-left: 35px;">
+                                        <div class="cart-plus-minus" style="margin-left: 15px;">
                                             <input class="cart-plus-minus-box" value="{{ $item['quantity'] }}"
                                                 type="text" data-id="{{ $item['variant_id'] }}"
                                                 data-available-quantity="{{ $item['stock_quantity'] }}"
@@ -238,10 +242,30 @@
             // Xóa " đ" và dấu phẩy nếu có
             var price = parseFloat(priceText.replace(' đ', '').replace(/,/g, ''));
 
-            if ($button.hasClass('inc') && quantity < availableQuantity) {
-                quantity++;
-            } else if ($button.hasClass('dec') && quantity > 1) {
-                quantity--;
+            if ($button.hasClass('inc')) {
+                if (quantity < availableQuantity) {
+                    quantity++;
+                } else {
+                    Swal.fire({
+                        title: 'Thông báo',
+                        text: 'Số lượng tối đa bạn có thể mua là ' + availableQuantity + '.',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                    return; // Dừng lại nếu vượt quá giới hạn
+                }
+            } else if ($button.hasClass('dec')) {
+                if (quantity > 1) {
+                    quantity--;
+                } else {
+                    Swal.fire({
+                        title: 'Thông báo',
+                        text: 'Số lượng tối thiểu là 1 sản phẩm.',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                    return; // Dừng lại nếu số lượng là 1
+                }
             }
 
             // Cập nhật số lượng trong input

@@ -28,7 +28,7 @@
                             <!-- Loại giảm giá -->
                             <div class="col-md-6 mb-3">
                                 <label for="discount_type" class="form-label">Loại Giảm Giá</label>
-                                <select name="discount_type" id="discount_type" class="form-select" required disabled>
+                                <select name="discount_type" id="discount_type" class="form-control" required disabled>
                                     <option value="percentage">Phần Trăm</option>
                                 </select>
                                 @error('discount_type')

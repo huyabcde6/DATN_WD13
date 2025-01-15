@@ -322,14 +322,29 @@ class OrderController extends Controller
                     'method' => 'VNPAY',
                     'status_donhang_id' => StatusDonHang::getIdByType(StatusDonHang::DA_HUY),
                 ]);
+                // Khôi phục sản phẩm về kho và thêm lại vào giỏ hàng
+                $restoredCart = [];
                 foreach ($order->orderDetails as $orderDetail) {
+                    // Khôi phục số lượng trong kho
                     $productVariant = $orderDetail->productVariant;
                     if ($productVariant) {
-                        $productVariant->stock_quantity += $orderDetail->quantity; // Cộng lại số lượng sản phẩm
+                        $productVariant->stock_quantity += $orderDetail->quantity;
                         $productVariant->save();
                     }
+
+                    // Thêm sản phẩm vào session giỏ hàng
+                    $restoredCart[] = [
+                        'product_id' => $orderDetail->productVariant->product_id,
+                        'variant_id' => $orderDetail->product_variant_id,
+                        'price' => $orderDetail->price,
+                        'quantity' => $orderDetail->quantity,
+                    ];
                 }
 
+                // Lấy giỏ hàng hiện tại và hợp nhất với sản phẩm đã khôi phục
+                $cart = Session::get('cart', []);
+                $updatedCart = array_merge($cart, $restoredCart);
+                Session::put('cart', $updatedCart);
                 // Xóa bỏ đơn hàng khi thanh toán thất bại
                 $order->delete();
             }
