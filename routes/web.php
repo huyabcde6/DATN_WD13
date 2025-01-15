@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::prefix('admin')->middleware(['auth', 'check.shift'])->as('admin.')->group(function () {
+Route::prefix('admin')->middleware(['auth'])->as('admin.')->group(function () {
 
     // Các route cho quản lý sản phẩm
     Route::resource('products', AdminProductController::class);
@@ -163,7 +163,6 @@ Route::get('/gioithieu', function () {
 Route::middleware(['auth'])->group(function () {
     // routes/web.php
     Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
-
 });
 
 Route::prefix('admin')->middleware('auth')->as('admin.')->group(function () {
@@ -180,3 +179,5 @@ Route::post('/update-address', [AddressController::class, 'updateAddress'])->nam
 //thông báo
 Route::get('/api/get-latest-notifications', [HomeController::class, 'getLatestNotifications']);
 Route::get('/product-comments/{product}', [CommentController::class, 'fetchComments'])->name('product.comments');
+Route::get('admin/comments', [CommentController::class, 'index'])->name('admin.comments.index');
+Route::post('admin/comments/{comment}/hide', [CommentController::class, 'hide'])->name('admin.comments.hide');

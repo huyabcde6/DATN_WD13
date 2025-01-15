@@ -35,21 +35,43 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         // Sử dụng quan hệ 'status' thay vì 'status_donhang_id'
-        $query = Auth::user()->order()->with(['status', 'orderDetails.product'])->orderBy('created_at', 'desc');
+        $query = Auth::user()->order()
+            ->with([
+                'status',
+                'orderDetails.product',
+                'orderDetails.product.productVariants'  // Ensure you're including the product variants
+            ])
+            ->join('order_details', 'order_details.order_id', '=', 'orders.id') // Join order_details to orders
+            ->join('product_variants', 'product_variants.id', '=', 'order_details.product_variant_id') // Join product_variants
+            ->join('products', 'products.id', '=', 'product_variants.product_id') // Join products to get the product_id
+            ->select(
+                'orders.*',
+                'order_details.product_name',
+                'products.id as product_id',  // Get the product_id
+                'products.name as product_name',
+                'products.price as product_price'
+            )
+            ->orderBy('orders.created_at', 'desc'); // Execute the query
+
+        // Convert to array and dump it for debugging
+        // dd($query->toArray());
 
         // Lọc theo trạng thái nếu có
         if ($request->has('status') && $request->status !== 'all') {
             $query->where('status_donhang_id', $request->status);
         }
         $role = User::whereHas('roles')->where('id', Auth::user()->id)->exists();
-        $orders = $query->paginate(3); // Mỗi lần tải 3 đơn hàng
-
+        $orders = $query->paginate(3);
+        // dd($orders->toArray());
+        // Mỗi lần tải 3 đơn hàng
+        $reviewedProductIds = Auth::user()->reviews()->pluck('product_id')->toArray();
+        // dd($reviewedProductIds);
         // Nếu là request AJAX (khi cuộn hoặc lọc), trả về HTML của orders
         if ($request->ajax()) {
             return view('user.khac.partials.orders', compact('orders'))->render();
         }
         $user = Auth::user();
-        return view('user.khac.my_account', compact('orders', 'user', 'role'));
+        return view('user.khac.my_account', compact('orders', 'user', 'role', 'reviewedProductIds'));
     }
     public function show($id)
     {
